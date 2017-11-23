@@ -26,14 +26,14 @@ public class PlayerController : MonoBehaviour {
 
 		if(Input.GetButtonDown("Jump") && _onGround){
 			body.velocity = new Vector3 (0, jumpForce, 0);
-			Debug.Log ("JUMP");
+			//Debug.Log ("JUMP");
 			animBody.SetBool("isJumping", true);
 		}
 		if(_onGround && body.velocity.y < 0){
-			Debug.Log ("PAS JUMP");
+			//Debug.Log ("PAS JUMP");
 			animBody.SetBool("isJumping", false);
 		}
-		Debug.Log ("sol ?" + _onGround);
+		//Debug.Log ("sol ?" + _onGround);
 		Vector3 velocityAxis = new Vector3 (Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
 		animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x+velocityAxis.z));
 
