@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 
 	private Animator animBody;
 	private bool _onGround = false;
+    private bool isDoubleJump;
 
 	// Use this for initialization
 	void Start () {
