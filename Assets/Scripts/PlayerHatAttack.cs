@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerHatAttack : MonoBehaviour {
 
     [SerializeField]
-    private GameObject hat;
-    private Transform hand;
-    private Transform head;
+    private GameObject hatHead;
+    [SerializeField]
+    private GameObject hatHand;
     private Transform initialTransform;
     private bool hatInHand;
     private Vector3 localPositionHead;
@@ -21,8 +21,6 @@ public class PlayerHatAttack : MonoBehaviour {
         animBody = GetComponent<Animator>();
     // Use this for initialization
         initialTransform = transform;
-        head = GameObject.FindGameObjectWithTag("Head").transform;
-        hand = GameObject.FindGameObjectWithTag("Hand").transform;
 
         localPositionHead = new Vector3(0.00551694f, 0.4424813f, 0.0006193146f);
         localRotationHead = Quaternion.Euler(new Vector3(-2.453f, 0.283f, -0.234f));
@@ -30,8 +28,12 @@ public class PlayerHatAttack : MonoBehaviour {
         localPositionHand = new Vector3(-0.162f, 0.216f, -0.4f);
         localRotationHand = Quaternion.Euler(new Vector3(-167.944f, 127.187f, -28.23599f));
 
-        hat.transform.localPosition = localPositionHead;
-        hat.transform.localRotation = localRotationHead;
+        hatHead.transform.localPosition = localPositionHead;
+        hatHead.transform.localRotation = localRotationHead;
+
+        hatHand.transform.localPosition = localPositionHand;
+        hatHand.transform.localRotation = localRotationHand;
+        hatHand.SetActive(false);
 
         hatInHand = false;
     }
@@ -42,22 +44,18 @@ public class PlayerHatAttack : MonoBehaviour {
 
         if (Input.GetKeyDown("g") && !hatInHand)
         {
-            
-            hat.transform.parent = null;
-            hat.transform.parent = hand;
-            hat.transform.localPosition = localPositionHand;
-            hat.transform.localRotation = localRotationHand;
+            hatHead.SetActive(false);
+            hatHand.SetActive(true);
             hatInHand = true;
             animBody.SetBool("isAttacking", true);
         }
 
         if (Input.GetKeyDown("h") && hatInHand)
         {
-            hat.transform.parent = null;
-            hat.transform.parent = head;
-            hat.transform.localPosition = localPositionHead;
-            hat.transform.localRotation = localRotationHead;
+            hatHead.SetActive(true);
+            hatHand.SetActive(false);
             hatInHand = false;
+            animBody.SetBool("isAttacking", false);
         }
     }
 }
