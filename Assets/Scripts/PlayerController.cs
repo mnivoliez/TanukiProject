@@ -11,7 +11,9 @@ public class PlayerController : MonoBehaviour {
 
 	private Animator animBody;
 	private bool _onGround = false;
-    private bool isDoubleJump;
+    private bool isJumping;
+    private bool isDoubleJumping;
+    private int nbJump = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -25,14 +27,21 @@ public class PlayerController : MonoBehaviour {
 
 		_onGround = CheckGroundCollision();
 
-		if(Input.GetButtonDown("Jump") && _onGround){
+        if (Input.GetButtonDown("Jump") && isJumping && nbJump < 1) {
+            nbJump++;
+            body.velocity = new Vector3(0, jumpForce, 0);
+            animBody.SetBool("isDoubleJumping", true);
+        }
+        if (Input.GetButtonDown("Jump") && _onGround){
 			body.velocity = new Vector3 (0, jumpForce, 0);
-			//Debug.Log ("JUMP");
-			animBody.SetBool("isJumping", true);
+            isJumping = true;
+            animBody.SetBool("isJumping", true);
 		}
-		if(_onGround && body.velocity.y < 0){
-			//Debug.Log ("PAS JUMP");
-			animBody.SetBool("isJumping", false);
+        if (_onGround && body.velocity.y < 0){
+            isJumping = false;
+            nbJump = 0;
+            animBody.SetBool("isDoubleJumping", false);
+            animBody.SetBool("isJumping", false);
 		}
 		//Debug.Log ("sol ?" + _onGround);
 		Vector3 velocityAxis = new Vector3 (Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
