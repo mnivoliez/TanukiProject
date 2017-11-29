@@ -5,43 +5,53 @@ using UnityEngine;
 public class PlayerDistantAttack : MonoBehaviour {
 
     [SerializeField]
-    private GameObject hatHead;
+    private GameObject leafHead;
     [SerializeField]
-    private GameObject hatHand;
+    private GameObject leafHand;
+    [SerializeField]
+    private GameObject leafPrefab;
+    [SerializeField]
+    private GameObject spawnLeaf;
+    [SerializeField]
+    private GameObject rangeMaxLeaf;
     private Transform initialTransform;
-    private bool hatInHand;
-    private Vector3 localPositionHead;
-    private Quaternion localRotationHead;
-    private Vector3 localPositionHand;
-    private Quaternion localRotationHand;
+    private bool leafInHand;
+    private bool leafIsBack;
+
     private Animator animBody;
 
-    // Use this for initialization
     void Start() {
         animBody = GetComponent<Animator>();
-
         initialTransform = transform;
-
-        localPositionHead = new Vector3(0.00551694f, 0.4424813f, 0.0006193146f);
-        localRotationHead = Quaternion.Euler(new Vector3(-2.453f, 0.283f, -0.234f));
-
-        localPositionHand = new Vector3(-0.162f, 0.216f, -0.4f);
-        localRotationHand = Quaternion.Euler(new Vector3(-167.944f, 127.187f, -28.23599f));
-
-        hatHead.transform.localPosition = localPositionHead;
-        hatHead.transform.localRotation = localRotationHead;
-
-        hatHand.transform.localPosition = localPositionHand;
-        hatHand.transform.localRotation = localRotationHand;
-        hatHand.SetActive(false);
-
-        hatInHand = false;
+        leafHand.SetActive(false);
+        leafIsBack = true;
+        leafInHand = false;
     }
 
-    // Update is called once per frame
     void Update() {
 
-        
+        if (Input.GetButtonDown("Fire2") && !leafInHand) {
+            leafIsBack = false;
+            animBody.SetBool("isDistantAttacking", true);
+            leafHead.SetActive(false);
+            leafInHand = true;
+            GameObject LeafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
+            LeafBoomerang.GetComponent<MoveLeaf>().setSpawnPosition(spawnLeaf);
+            LeafBoomerang.GetComponent<MoveLeaf>().setTargetPosition(rangeMaxLeaf);
 
+        }
+
+        if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("DistantAttack") && leafInHand) {
+            animBody.SetBool("isDistantAttacking", false);
+        }
+
+        if (leafIsBack && leafInHand) {
+            leafHead.SetActive(true);
+            leafInHand = false;
+        }
+    }
+
+    public void SetLeafIsBack() {
+        leafIsBack = true;
     }
 }

@@ -5,11 +5,11 @@ using UnityEngine;
 public class PlayerMeleeAttack : MonoBehaviour {
 
     [SerializeField]
-    private GameObject LeafHead;
+    private GameObject leafHead;
     [SerializeField]
-    private GameObject LeafHand;
+    private GameObject leafHand;
     private Transform initialTransform;
-    private bool LeafInHand;
+    private bool leafInHand;
     //private Vector3 localPositionHead;
     //private Quaternion localRotationHead;
     //private Vector3 localPositionHand;
@@ -32,26 +32,26 @@ public class PlayerMeleeAttack : MonoBehaviour {
 
         //LeafHand.transform.localPosition = localPositionHand;
         //LeafHand.transform.localRotation = localRotationHand;
-        LeafHand.SetActive(false);
+        leafHand.SetActive(false);
 
-        LeafInHand = false;
+        leafInHand = false;
     }
 
     // Update is called once per frame
     void Update(){
 
-        if (Input.GetButtonDown("Fire1") && !LeafInHand){
+        if (Input.GetButtonDown("Fire1") && !leafInHand){
             
             animBody.SetBool("isAttacking", true);
-            LeafHead.SetActive(false);
-            LeafHand.SetActive(true);
-            LeafInHand = true;
+            leafHead.SetActive(false);
+            leafHand.SetActive(true);
+            leafInHand = true;
         }
 
-        if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack") && LeafInHand) {
-            LeafHead.SetActive(true);
-            LeafHand.SetActive(false);
-            LeafInHand = false;
+        if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack") && leafInHand) {
+            leafHead.SetActive(true);
+            leafHand.SetActive(false);
+            leafInHand = false;
             animBody.SetBool("isAttacking", false);
         }
         
