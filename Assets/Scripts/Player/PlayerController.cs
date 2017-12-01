@@ -43,9 +43,16 @@ public class PlayerController : MonoBehaviour {
             animBody.SetBool("isDoubleJumping", false);
             animBody.SetBool("isJumping", false);
 		}
-		//Debug.Log ("sol ?" + _onGround);
-		Vector3 velocityAxis = new Vector3 (Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
-		animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x+velocityAxis.z));
+        //Debug.Log ("sol ?" + _onGround);
+        Vector3 velocityAxis;
+        if (!_onGround) {
+            velocityAxis = new Vector3(Input.GetAxis("Horizontal") * movespeed / 4, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
+        }
+        else {
+            velocityAxis = new Vector3(Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
+        }
+
+        animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x+velocityAxis.z));
 
 //		// Rotate the player's model to show direction
 //		if (velocityAxis.magnitude > 0.2f) {

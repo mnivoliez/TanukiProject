@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerAbsorption : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    private Animator animBody;
+    public GameObject sakePot;
+
+    void Start () {
+        animBody = GetComponent<Animator>();
+        sakePot.SetActive(false);
+    }
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
@@ -18,6 +20,9 @@ public class PlayerAbsorption : MonoBehaviour {
         if (Input.GetButtonDown("Fire3")) {
 
             if (collid.gameObject.CompareTag("Yokai")) {
+                animBody.SetBool("isAbsorbing", true);
+                sakePot.SetActive(true);
+
                 collid.gameObject.GetComponent<YokaiController>().Absorbed();
                 gameObject.GetComponent<PlayerCollectableController>().AddYokai();
             }

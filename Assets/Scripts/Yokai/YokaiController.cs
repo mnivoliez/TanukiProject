@@ -9,13 +9,13 @@ public class YokaiController : MonoBehaviour {
     private float speed = 5f;
     private float rotationSpeed = 10f;
     private GameObject target;
-    // Use this for initialization
+
+
     void Start () {
         target = GameObject.FindGameObjectWithTag("Player");
 
     }
 	
-	// Update is called once per frame
 	void Update () {
 
         if (isAbsorbed) {
@@ -31,6 +31,8 @@ public class YokaiController : MonoBehaviour {
 
     void Die() {
         if (transform.position == target.transform.position) {
+            target.GetComponent<Animator>().SetBool("isAbsorbing", false);
+            target.GetComponent<PlayerAbsorption>().sakePot.SetActive(false);
             Destroy(gameObject);
         }
         else {
