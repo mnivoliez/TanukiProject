@@ -14,36 +14,58 @@ public class PlayerController : MonoBehaviour {
     private bool isJumping;
     private bool isDoubleJumping;
     private int nbJump = 0;
+    [SerializeField]
+    private GameObject ParachuteLeaf;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		body = GetComponent<Rigidbody>();
 		animBody = GetComponent <Animator> ();
+        ParachuteLeaf.SetActive(false);
 
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
 		_onGround = CheckGroundCollision();
 
+        //GLIDE
+        if (Input.GetButton("Jump") && isJumping && !_onGround && body.velocity.y < 0) {
+            
+            body.velocity = new Vector3(0, -1.5f, 0);
+            animBody.SetBool("isGliding", true);
+            ParachuteLeaf.SetActive(true);
+        }
+        //Glide
+        if (Input.GetButtonUp("Jump") && isJumping && !_onGround) {
+            ParachuteLeaf.SetActive(false);
+            animBody.SetBool("isGliding", false);
+        }
+
+        //DOUBLE JUMP
         if (Input.GetButtonDown("Jump") && isJumping && nbJump < 1) {
             nbJump++;
             body.velocity = new Vector3(0, jumpForce, 0);
             animBody.SetBool("isDoubleJumping", true);
         }
+        //JUMP
         if (Input.GetButtonDown("Jump") && _onGround){
 			body.velocity = new Vector3 (0, jumpForce, 0);
             isJumping = true;
             animBody.SetBool("isJumping", true);
 		}
+        //LAND
         if (_onGround && body.velocity.y < 0){
             isJumping = false;
             nbJump = 0;
+            ParachuteLeaf.SetActive(false);
             animBody.SetBool("isDoubleJumping", false);
             animBody.SetBool("isJumping", false);
 		}
-       
+        
+        
+
         Vector3 velocityAxis;
         //if (!_onGround) {
         //    velocityAxis = new Vector3(Input.GetAxis("Horizontal") * movespeed / 4, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
