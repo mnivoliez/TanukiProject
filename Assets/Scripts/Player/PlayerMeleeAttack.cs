@@ -26,7 +26,7 @@ public class PlayerMeleeAttack : MonoBehaviour {
     // Update is called once per frame
     void Update(){
 
-        if (timerAttack > 0.5)
+        if (timerAttack > 0.3)
         {
             animBody.SetBool("isChargingAttack", true);
             leafHead.SetActive(false);
@@ -45,9 +45,9 @@ public class PlayerMeleeAttack : MonoBehaviour {
             Debug.Log(timerAttack);
         }
 
-        if (Input.GetButtonUp("Fire1") && !leafInHand){
+        if (Input.GetButtonUp("Fire1")){
             // Basic attack
-            if (timerAttack < 0.5)
+            if (timerAttack < 0.3 && !leafInHand)
             {
                 animBody.SetBool("isAttacking", true);
                 leafHead.SetActive(false);
@@ -55,10 +55,12 @@ public class PlayerMeleeAttack : MonoBehaviour {
                 leafInHand = true;
             }
             // Charged attack
-            else
+            else if (timerAttack >= 0.3)
             {
-                //animBody.SetBool("isChargedAttack", true);
+                animBody.SetBool("isChargedAttack", true);
             }
+
+            timerAttack = 0;
         }        
 
         if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack") && leafInHand) {
@@ -66,6 +68,8 @@ public class PlayerMeleeAttack : MonoBehaviour {
             leafHand.SetActive(false);
             leafInHand = false;
             animBody.SetBool("isAttacking", false);
+            animBody.SetBool("isChargedAttack", false);
+            animBody.SetBool("isChargingAttack", false);
         }
         
     }
