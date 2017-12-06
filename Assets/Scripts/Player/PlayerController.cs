@@ -17,12 +17,15 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private GameObject ParachuteLeaf;
 
+    private Vector3 velocityAxis;
+    private Vector3 airVelocity;
+
     // Use this for initialization
     void Start () {
 		body = GetComponent<Rigidbody>();
 		animBody = GetComponent <Animator> ();
         ParachuteLeaf.SetActive(false);
-
+        
     }
 	
 	// Update is called once per frame
@@ -51,7 +54,8 @@ public class PlayerController : MonoBehaviour {
         }
         //JUMP
         if (Input.GetButtonDown("Jump") && _onGround){
-			body.velocity = new Vector3 (0, jumpForce, 0);
+            airVelocity = velocityAxis;
+            body.velocity = new Vector3 (0, jumpForce, 0);
             isJumping = true;
             animBody.SetBool("isJumping", true);
 		}
@@ -76,18 +80,32 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Debug.Log ("sol ?" + _onGround);
-        Vector3 velocityAxis = new Vector3 (Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
-		animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x+velocityAxis.z));
+        velocityAxis = new Vector3 (Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
+		animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x)+ Mathf.Abs(velocityAxis.z));
+        if ((Mathf.Abs(velocityAxis.x) + Mathf.Abs(velocityAxis.z)) < movespeed) {
+            animBody.SetFloat("SpeedMultiplier", Mathf.Abs(velocityAxis.x) + Mathf.Abs(velocityAxis.z));
+        }
+        else {
+            animBody.SetFloat("SpeedMultiplier", movespeed);
+        }
         
 
-//		// Rotate the player's model to show direction
-//		if (velocityAxis.magnitude > 0.2f) {
-//			transform.rotation = Quaternion.LookRotation (velocityAxis);
-//		}
+        if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("Run")) {
+           // this.animBody.GetCurrentAnimatorStateInfo(0).speed = (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical") / 2);
+        }
 
+        //		// Rotate the player's model to show direction
+        //		if (velocityAxis.magnitude > 0.2f) {
+        //			transform.rotation = Quaternion.LookRotation (velocityAxis);
+        //		}
 
-		body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y,Vector3.up) * velocityAxis;
-
+        if (!_onGround) {
+            //airVelocity = new Vector3(Input.GetAxis("Horizontal") * airVelocity.x, velocityAxis.y, Input.GetAxis("Vertical") * airVelocity.z);
+            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((Input.GetAxis("Horizontal")*4) + airVelocity.x, velocityAxis.y, (Input.GetAxis("Vertical")*4) + airVelocity.z);
+        }
+        else {
+            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * velocityAxis;
+        }
 	}
 		
 
