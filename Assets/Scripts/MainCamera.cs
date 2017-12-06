@@ -52,7 +52,7 @@ public class MainCamera : MonoBehaviour {
 
 	void FixedUpdate(){
 		if (target != null) {
-			transform.position = Vector3.Lerp(transform.position, target.transform.position + CameraOffset, 10 * Time.deltaTime);
+			transform.position = Vector3.Lerp(transform.position, target.transform.position + CameraOffset, 40 * Time.deltaTime);
 			positionTarget = target.transform;
 			positionTarget.position.Set(target.transform.position.x, target.transform.position.y, target.transform.position.z);
 			transform.LookAt (positionTarget);
