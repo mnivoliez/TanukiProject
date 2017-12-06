@@ -63,18 +63,22 @@ public class PlayerController : MonoBehaviour {
             animBody.SetBool("isDoubleJumping", false);
             animBody.SetBool("isJumping", false);
 		}
-        
-        
 
-        Vector3 velocityAxis;
-        //if (!_onGround) {
-        //    velocityAxis = new Vector3(Input.GetAxis("Horizontal") * movespeed / 4, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
-        //}
-        //else {
-            velocityAxis = new Vector3(Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
-        //}
+        //DEATH
+        if (Input.GetKeyDown("c"))
+        {
+            animBody.SetBool("isDead", true);
+        }
 
-        animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x+velocityAxis.z));
+        if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
+        {
+            animBody.SetBool("isDead", false);
+        }
+
+        //Debug.Log ("sol ?" + _onGround);
+        Vector3 velocityAxis = new Vector3 (Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
+		animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x+velocityAxis.z));
+        
 
 //		// Rotate the player's model to show direction
 //		if (velocityAxis.magnitude > 0.2f) {
@@ -87,12 +91,7 @@ public class PlayerController : MonoBehaviour {
 	}
 		
 
-
-
-
-
-
-
+    
 	private bool CheckGroundCollision(){
 		// We can use a layer mask to tell the Physics Raycast which layers we are trying to hit.
 		// This will allow us to restrict which objects this applies to.
