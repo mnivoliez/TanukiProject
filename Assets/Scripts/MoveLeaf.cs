@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveLeaf : MonoBehaviour {
 
-    private float initialSpeed = 10f;
+    private float initialSpeed = 15f;
     private float currentSpeed;
     private float rotationSpeed = 50f;
     private GameObject spawnLeaf = null;

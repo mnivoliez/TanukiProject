@@ -42,7 +42,7 @@ public class PlayerMeleeAttack : MonoBehaviour {
         if (Input.GetButton("Fire1") && !leafInHand)
         {
             timerAttack += Time.deltaTime;
-            Debug.Log(timerAttack);
+            
         }
 
         if (Input.GetButtonUp("Fire1")){
