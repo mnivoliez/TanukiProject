@@ -33,14 +33,14 @@ public class PlayerController : MonoBehaviour {
 
 		_onGround = CheckGroundCollision();
 
-        //GLIDE
+        //GLIDE ON
         if (Input.GetButton("Jump") && isJumping && !_onGround && body.velocity.y < 0) {
-            
+            nbJump++;
             body.velocity = new Vector3(0, -1.5f, 0);
             animBody.SetBool("isGliding", true);
             ParachuteLeaf.SetActive(true);
         }
-        //Glide
+        //GLIDE OFF
         if (Input.GetButtonUp("Jump") && isJumping && !_onGround) {
             ParachuteLeaf.SetActive(false);
             animBody.SetBool("isGliding", false);
@@ -126,4 +126,10 @@ public class PlayerController : MonoBehaviour {
 		}
 		return false;
 	}
+
+    public void SetIsJumping(bool isJump) {
+        isJumping = isJump;
+        nbJump++;
+        animBody.SetBool("isJumping", true);
+    }
 }
