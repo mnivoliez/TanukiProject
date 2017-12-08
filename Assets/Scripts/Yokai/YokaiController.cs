@@ -6,7 +6,8 @@ public class YokaiController : MonoBehaviour {
 
 
     private bool isAbsorbed = false;
-    private float speed = 5f;
+    private bool isKnocked = true;
+    private float speed = 8f;
     private float rotationSpeed = 10f;
     private GameObject target;
 
@@ -47,5 +48,9 @@ public class YokaiController : MonoBehaviour {
             transform.Rotate(Vector3.up, rotationSpeed);
             rotationSpeed += 2;
         }
+    }
+
+    public bool GetIsKnocked() {
+        return isKnocked;
     }
 }
