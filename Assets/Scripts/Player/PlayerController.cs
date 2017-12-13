@@ -18,7 +18,12 @@ public class PlayerController : MonoBehaviour {
     private GameObject ParachuteLeaf;
 
     private Vector3 velocityAxis;
+    private Vector3 orientationMove;
     private Vector3 airVelocity;
+
+    public Transform pivot;
+    public float rotateSpeed;
+    public GameObject playerModel;
 
     // Use this for initialization
     void Start () {
@@ -80,25 +85,17 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Debug.Log ("sol ?" + _onGround);
-        velocityAxis = new Vector3 (Input.GetAxis("Horizontal") * movespeed, body.velocity.y, Input.GetAxis("Vertical") * movespeed);
-		animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x)+ Mathf.Abs(velocityAxis.z));
-        if ((Mathf.Abs(velocityAxis.x) + Mathf.Abs(velocityAxis.z)) < movespeed) {
-            animBody.SetFloat("SpeedMultiplier", Mathf.Abs(velocityAxis.x) + Mathf.Abs(velocityAxis.z));
-        }
-        else {
-            animBody.SetFloat("SpeedMultiplier", movespeed);
-        }
+        
+        velocityAxis = new Vector3 (Input.GetAxis("Horizontal"), body.velocity.y, Input.GetAxis("Vertical"));
+        orientationMove = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
+        velocityAxis = velocityAxis.normalized * movespeed;
+        velocityAxis.y = body.velocity.y;
+
+        animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x)+ Mathf.Abs(velocityAxis.z));
+        animBody.SetFloat("SpeedMultiplier", movespeed);
         
 
-        if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("Run")) {
-           // this.animBody.GetCurrentAnimatorStateInfo(0).speed = (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical") / 2);
-        }
-
-        //		// Rotate the player's model to show direction
-        //		if (velocityAxis.magnitude > 0.2f) {
-        //			transform.rotation = Quaternion.LookRotation (velocityAxis);
-        //		}
-
+        //AIR CONTROL
         if (!_onGround) {
             //airVelocity = new Vector3(Input.GetAxis("Horizontal") * airVelocity.x, velocityAxis.y, Input.GetAxis("Vertical") * airVelocity.z);
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((Input.GetAxis("Horizontal")*4) + airVelocity.x, velocityAxis.y, (Input.GetAxis("Vertical")*4) + airVelocity.z);
@@ -106,7 +103,16 @@ public class PlayerController : MonoBehaviour {
         else {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * velocityAxis;
         }
-	}
+
+        //Move player on direction based on camera
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
+            transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
+            Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
+            playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
+        }
+
+
+    }
 		
 
     
