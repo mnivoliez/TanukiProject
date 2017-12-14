@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 	
-	public float movespeed;
-	public float jumpForce;
+    private float speed;
+    public float moveSpeed;
+    public float movespeedWithObject;
+    public float jumpForce;
 	public float gravityScale;
 	public Rigidbody body;
 
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     private bool isJumping;
     private bool isDoubleJumping;
     private int nbJump = 0;
+    private bool canDoubleJump;
     [SerializeField]
     private GameObject ParachuteLeaf;
 
@@ -24,22 +27,30 @@ public class PlayerController : MonoBehaviour {
     public Transform pivot;
     public float rotateSpeed;
     public GameObject playerModel;
+    
 
     // Use this for initialization
     void Start () {
 		body = GetComponent<Rigidbody>();
 		animBody = GetComponent <Animator> ();
         ParachuteLeaf.SetActive(false);
-        
+        canDoubleJump = true;
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-		_onGround = CheckGroundCollision();
+        speed = moveSpeed;
+
+        if (GameObject.Find("Catchable Object").transform.childCount != 0)
+        {
+            speed = movespeedWithObject;
+        }
+
+        _onGround = CheckGroundCollision();
 
         //GLIDE ON
-        if (Input.GetButton("Jump") && isJumping && !_onGround && body.velocity.y < 0) {
+        if (Input.GetButton("Jump") && isJumping && !_onGround && body.velocity.y < 0 && canDoubleJump) {
             nbJump++;
             body.velocity = new Vector3(0, -1.5f, 0);
             animBody.SetBool("isGliding", true);
@@ -52,13 +63,14 @@ public class PlayerController : MonoBehaviour {
         }
 
         //DOUBLE JUMP
-        if (Input.GetButtonDown("Jump") && isJumping && nbJump < 1) {
+        if (Input.GetButtonDown("Jump") && isJumping && nbJump < 1 && canDoubleJump) {
             nbJump++;
             body.velocity = new Vector3(0, jumpForce, 0);
             animBody.SetBool("isDoubleJumping", true);
         }
         //JUMP
-        if (Input.GetButtonDown("Jump") && _onGround){
+        if (Input.GetButtonDown("Jump") && _onGround)
+        {
             airVelocity = velocityAxis;
             body.velocity = new Vector3 (0, jumpForce, 0);
             isJumping = true;
@@ -88,11 +100,11 @@ public class PlayerController : MonoBehaviour {
         
         velocityAxis = new Vector3 (Input.GetAxis("Horizontal"), body.velocity.y, Input.GetAxis("Vertical"));
         orientationMove = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
-        velocityAxis = velocityAxis.normalized * movespeed;
+        velocityAxis = velocityAxis.normalized * speed;
         velocityAxis.y = body.velocity.y;
 
         animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x)+ Mathf.Abs(velocityAxis.z));
-        animBody.SetFloat("SpeedMultiplier", movespeed);
+        animBody.SetFloat("SpeedMultiplier", speed);
         
 
         //AIR CONTROL
@@ -138,4 +150,18 @@ public class PlayerController : MonoBehaviour {
         nbJump++;
         animBody.SetBool("isJumping", true);
     }
+
+    public bool CanDoubleJump
+    {
+        get
+        {
+            return canDoubleJump;
+        }
+
+        set
+        {
+            canDoubleJump = value;
+        }
+    }
+
 }
