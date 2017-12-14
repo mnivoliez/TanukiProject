@@ -69,8 +69,7 @@ public class PlayerController : MonoBehaviour {
             animBody.SetBool("isDoubleJumping", true);
         }
         //JUMP
-        if (Input.GetButtonDown("Jump") && _onGround)
-        {
+        if (Input.GetButtonDown("Jump") && _onGround){
             airVelocity = velocityAxis;
             body.velocity = new Vector3 (0, jumpForce, 0);
             isJumping = true;
@@ -86,19 +85,19 @@ public class PlayerController : MonoBehaviour {
 		}
 
         //DEATH
-        if (Input.GetKeyDown("c"))
-        {
+        if (Input.GetKeyDown("c")){
             animBody.SetBool("isDead", true);
         }
 
-        if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("Dead"))
-        {
+        if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("Dead")){
             animBody.SetBool("isDead", false);
         }
 
         //Debug.Log ("sol ?" + _onGround);
         
+        //Deplacement du personnage
         velocityAxis = new Vector3 (Input.GetAxis("Horizontal"), body.velocity.y, Input.GetAxis("Vertical"));
+        //Orientation du personnage
         orientationMove = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
         velocityAxis = velocityAxis.normalized * speed;
         velocityAxis.y = body.velocity.y;
@@ -109,8 +108,12 @@ public class PlayerController : MonoBehaviour {
 
         //AIR CONTROL
         if (!_onGround) {
-            //airVelocity = new Vector3(Input.GetAxis("Horizontal") * airVelocity.x, velocityAxis.y, Input.GetAxis("Vertical") * airVelocity.z);
-            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((Input.GetAxis("Horizontal")*4) + airVelocity.x, velocityAxis.y, (Input.GetAxis("Vertical")*4) + airVelocity.z);
+            ////airVelocity = new Vector3(Input.GetAxis("Horizontal") * airVelocity.x, velocityAxis.y, Input.GetAxis("Vertical") * airVelocity.z);
+            //if(airVelocity.x > 10) {
+
+            //}
+            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((Input.GetAxis("Horizontal")*6) + airVelocity.x, velocityAxis.y, (Input.GetAxis("Vertical")*12) + airVelocity.z);
+            //body.velocity = Quaternion.AngleAxis(pivot.transform.eulerAngles.y, Vector3.up) * new Vector3(velocityAxis.x*2, velocityAxis.y, velocityAxis.z*2);
         }
         else {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * velocityAxis;

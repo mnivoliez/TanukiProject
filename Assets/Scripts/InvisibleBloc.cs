@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class InvisibleBloc : MonoBehaviour {
 
-    private BoxCollider boxCollider;
+    private Collider boxCollider;
     private MeshRenderer meshRenderer;
 
 	// Use this for initialization
 	void Start () {
-        boxCollider = transform.parent.GetComponent<BoxCollider>();
+        boxCollider = transform.parent.GetComponent<Collider>();
         meshRenderer = transform.parent.GetComponent<MeshRenderer>();
         boxCollider.enabled = false;
         meshRenderer.enabled = false;
