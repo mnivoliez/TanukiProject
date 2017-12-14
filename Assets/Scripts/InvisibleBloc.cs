@@ -15,7 +15,7 @@ public class InvisibleBloc : MonoBehaviour {
         meshRenderer.enabled = false;
     }
     
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerStay(Collider collider)
     {
         if (collider.gameObject.tag == "Lantern")
         {
