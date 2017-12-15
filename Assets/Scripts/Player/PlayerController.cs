@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour {
             //if(airVelocity.x > 10) {
 
             //}
-            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((Input.GetAxis("Horizontal")*6) + airVelocity.x, velocityAxis.y, (Input.GetAxis("Vertical")*12) + airVelocity.z);
+            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((Input.GetAxis("Horizontal")*6), velocityAxis.y, (Input.GetAxis("Vertical")*12));
             //body.velocity = Quaternion.AngleAxis(pivot.transform.eulerAngles.y, Vector3.up) * new Vector3(velocityAxis.x*2, velocityAxis.y, velocityAxis.z*2);
         }
         else {
