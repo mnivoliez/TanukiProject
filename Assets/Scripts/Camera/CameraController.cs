@@ -28,10 +28,26 @@ public class CameraController : MonoBehaviour {
 
 	void LateUpdate () {
         pivotCam.transform.position = target.position;
-        float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
+        
+        float horizontal;
+        if (Input.GetJoystickNames().Length == 0) {
+            horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
+        }
+        else {
+            horizontal = Input.GetAxis("Horizontal") * rotateSpeed;
+        }
+        
         pivotCam.Rotate(0, horizontal, 0);
 
-        float vertical = Input.GetAxis("Mouse Y") * rotateSpeed;
+        float vertical;
+        if (Input.GetJoystickNames().Length == 0) {
+            vertical = Input.GetAxis("Mouse Y") * rotateSpeed;
+        }
+        else {
+            vertical = Input.GetAxis("Vertical") * rotateSpeed;
+        }
+
+       
         if (inverseCam) {
             pivotCam.Rotate(vertical, 0, 0);
         }

@@ -7,17 +7,18 @@ public class MoveLeaf : MonoBehaviour {
     private float initialSpeed = 15f;
     private float currentSpeed;
     private float rotationSpeed = 50f;
+    private float damage;
     private GameObject spawnLeaf = null;
     private Vector3 targetPosition = Vector3.zero;
     private bool arrived = false;
 
-    void Start () {
+    void Start() {
         currentSpeed = initialSpeed;
     }
-	
-	void Update () {
 
-        
+    void Update() {
+
+
 
         if (!arrived) {
             MoveTo();
@@ -36,9 +37,9 @@ public class MoveLeaf : MonoBehaviour {
                 Destroy(gameObject);
             }
         }
-        
 
-        
+
+
     }
 
 
@@ -52,11 +53,38 @@ public class MoveLeaf : MonoBehaviour {
         transform.Rotate(Vector3.left, rotationSpeed);
     }
 
-    public void setSpawnPosition(GameObject spPos) {
+    public void SetSpawnPosition(GameObject spPos) {
         spawnLeaf = spPos;
     }
 
-    public void setTargetPosition(GameObject tPos) {
+    public void SetTargetPosition(GameObject tPos) {
         targetPosition = new Vector3(tPos.transform.position.x, tPos.transform.position.y, tPos.transform.position.z);
     }
+
+    public void SetDamage(float dmg) {
+        damage = dmg;
+    }
+
+    public float GetDamage() {
+        return damage;
+    }
+
+    void OnTriggerEnter(Collider collid) {
+
+        if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
+            collid.gameObject.GetComponent<YokaiController>().BeingHit();
+            collid.gameObject.GetComponent<YokaiController>().LooseHp(damage);
+            targetPosition = collid.gameObject.transform.position;
+        }
+
+    }
+
+    void OnTriggerExit(Collider collid) {
+
+        if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
+            collid.gameObject.GetComponent<YokaiController>().EndHit();
+        }
+
+    }
+
 }

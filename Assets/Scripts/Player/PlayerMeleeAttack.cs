@@ -12,12 +12,16 @@ public class PlayerMeleeAttack : MonoBehaviour {
     private bool leafInHand;
     private Animator animBody;
     private float timerAttack;
+    [SerializeField]
+    private GameObject attackRange;
+    [SerializeField]
+    private float meleeDamage;
 
 
     void Start () {
         animBody = GetComponent<Animator>();
         initialTransform = transform;
-        
+        attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
 
         leafInHand = false;
@@ -49,6 +53,7 @@ public class PlayerMeleeAttack : MonoBehaviour {
             // Basic attack
             if (timerAttack < 0.3 && !leafInHand)
             {
+                attackRange.SetActive(true);
                 animBody.SetBool("isAttacking", true);
                 leafHead.SetActive(false);
                 leafHand.SetActive(true);
@@ -57,6 +62,7 @@ public class PlayerMeleeAttack : MonoBehaviour {
             // Charged attack
             else if (timerAttack >= 0.3)
             {
+                attackRange.SetActive(true);
                 animBody.SetBool("isChargedAttack", true);
             }
 
@@ -64,6 +70,7 @@ public class PlayerMeleeAttack : MonoBehaviour {
         }        
 
         if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack") && leafInHand) {
+            attackRange.SetActive(false);
             leafHead.SetActive(true);
             leafHand.SetActive(false);
             leafInHand = false;

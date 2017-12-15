@@ -18,6 +18,9 @@ public class PlayerDistantAttack : MonoBehaviour {
     private bool leafInHand;
     private bool leafIsBack;
 
+    [SerializeField]
+    private float distantDamage;
+
     private Animator animBody;
 
     void Start() {
@@ -36,8 +39,9 @@ public class PlayerDistantAttack : MonoBehaviour {
             leafHead.SetActive(false);
             leafInHand = true;
             GameObject LeafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
-            LeafBoomerang.GetComponent<MoveLeaf>().setSpawnPosition(spawnLeaf);
-            LeafBoomerang.GetComponent<MoveLeaf>().setTargetPosition(rangeMaxLeaf);
+            LeafBoomerang.GetComponent<MoveLeaf>().SetSpawnPosition(spawnLeaf);
+            LeafBoomerang.GetComponent<MoveLeaf>().SetTargetPosition(rangeMaxLeaf);
+            LeafBoomerang.GetComponent<MoveLeaf>().SetDamage(distantDamage);
 
         }
 

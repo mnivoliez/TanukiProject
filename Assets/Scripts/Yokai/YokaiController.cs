@@ -6,10 +6,17 @@ public class YokaiController : MonoBehaviour {
 
 
     private bool isAbsorbed = false;
-    private bool isKnocked = true;
+    private bool isKnocked = false;
+    [SerializeField]
     private float speed = 8f;
+    [SerializeField]
+    private float hp = 3f;
     private float rotationSpeed = 10f;
     private GameObject target;
+    [SerializeField]
+    private Material knockedTexture;
+    [SerializeField]
+    private Material normalTexture;
 
 
     void Start () {
@@ -52,5 +59,33 @@ public class YokaiController : MonoBehaviour {
 
     public bool GetIsKnocked() {
         return isKnocked;
+    }
+
+    public void LooseHp(float damage) {
+        hp -= damage;
+
+        if (hp <= 0) {
+            isKnocked = true;
+            transform.GetChild(0).GetComponent<Renderer>().material = knockedTexture;
+            transform.GetChild(1).GetComponent<Renderer>().material = knockedTexture;
+        }
+    }
+
+    public void BeingHit() {
+        transform.GetChild(0).GetComponent<Renderer>().material = knockedTexture;
+        transform.GetChild(1).GetComponent<Renderer>().material = knockedTexture;
+    }
+
+    public void EndHit() {
+        transform.GetChild(0).GetComponent<Renderer>().material = normalTexture;
+        transform.GetChild(1).GetComponent<Renderer>().material = normalTexture;
+    }
+
+    public void SetHp(float healPoint) {
+        hp = healPoint;
+    }
+
+    public float GetHp() {
+        return hp;
     }
 }
