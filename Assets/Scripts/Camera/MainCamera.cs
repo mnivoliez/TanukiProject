@@ -4,41 +4,7 @@ using UnityEngine;
 
 public class MainCamera : MonoBehaviour {
 
-	//Camera Fixe
-//	public GameObject target; // The target in which to follow
-//	public Vector3 CameraOffset = new Vector3(0,10,-20); // This will allow us to offset the camera for the player's view.
-//	public bool useOffsetValues;
-//
-//	void Start () {
-//
-//	}
-//
-//	void Update(){
-		//if (target != null) {
-	//		transform.position = CameraOffset;
-	//		transform.LookAt (target.transform);
-	//	}
-//	}
 
-
-//	//======================================================================================
-//	//Camera Follow
-//	public GameObject target; // The target in which to follow
-//	public Vector3 CameraOffset = new Vector3(0,5,-10); // This will allow us to offset the camera for the player's view.
-//	public bool useOffsetValues;
-//
-//	void Start () {
-//	CameraOffset = new Vector3(0,5,-10);
-//	}
-//
-//	void Update(){
-//		if (target != null) {
-//			transform.position = target.transform.position + CameraOffset;
-//			transform.LookAt (target.transform);
-//		}
-//	}
-
-	//======================================================================================
 	//Camera Follow Smooth
 	public GameObject target; // The target in which to follow
 	public Vector3 CameraOffset; // This will allow us to offset the camera for the player's view.
@@ -61,7 +27,7 @@ public class MainCamera : MonoBehaviour {
 
             //transform.RotateAround(target.transform.position, new Vector3(0, 1, 0), Input.GetAxis("MoveCamera") * 2);
 
-            transform.position = Vector3.Lerp(transform.position, target.transform.position + CameraOffset, 10 * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, target.transform.position + CameraOffset, 20 * Time.deltaTime);
 
             transform.LookAt (target.transform.position);
             //transform.position = Vector3.Lerp(transform.position, target.transform.position + CameraOffset, 40 * Time.deltaTime);
