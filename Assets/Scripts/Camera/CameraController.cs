@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour {
             horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
         }
         else {
-            horizontal = Input.GetAxis("Horizontal") * rotateSpeed;
+            horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * rotateSpeed;
         }
         
         pivotCam.Rotate(0, horizontal, 0);
@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour {
             vertical = Input.GetAxis("Mouse Y") * rotateSpeed;
         }
         else {
-            vertical = Input.GetAxis("Vertical") * rotateSpeed;
+            vertical = Input.GetAxis("MoveCameraGamepadVertical") * rotateSpeed;
         }
 
        

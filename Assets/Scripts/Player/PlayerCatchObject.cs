@@ -29,7 +29,7 @@ public class PlayerCatchObject : MonoBehaviour {
             playerController.CanDoubleJump = false;
         }
 
-        if (Input.GetButtonDown("Catch Object"))
+        if (Input.GetButtonDown("Fire3"))
         {
             if (parentObjectInHand.transform.childCount == 0 && nearestObject != null)
             {
