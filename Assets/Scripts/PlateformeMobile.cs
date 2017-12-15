@@ -11,16 +11,14 @@ public class PlateformeMobile : MonoBehaviour {
 
 	void OnCollisionEnter (Collision col)
 	{
-		if (col.gameObject.CompareTag("Player")) {
-			col.transform.parent = transform;
-		}
-	}
+        
+        col.transform.parent = transform.parent;
+        
+    }
 
 	void OnCollisionExit (Collision col)
 	{
-		if (col.gameObject.CompareTag("Player")) {
-			col.transform.parent = null;
-		}
+		col.transform.parent = null;
 	}
 	// Update is called once per frame
 	void Update () {

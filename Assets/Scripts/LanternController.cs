@@ -7,11 +7,12 @@ public class LanternController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         gameObject.transform.parent.GetComponent<Renderer>().sharedMaterial.SetVector("_Center", transform.position);
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-
+        transform.localScale = transform.localScale;
         gameObject.transform.parent.GetComponent<Renderer>().sharedMaterial.SetVector("_Center", transform.position);
 
         if (gameObject.transform.parent.gameObject.transform.parent == null)
