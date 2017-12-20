@@ -50,6 +50,7 @@ public class YokaiController : MonoBehaviour {
             else {
                 transform.localScale -= new Vector3(0.05f, 0.05f, 0.05f);
             }
+            speed = speed + 0.2f;
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
             transform.Rotate(Vector3.right, rotationSpeed);
             transform.Rotate(Vector3.up, rotationSpeed);

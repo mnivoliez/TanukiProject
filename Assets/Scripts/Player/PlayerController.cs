@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour {
     private bool canDoubleJump;
     [SerializeField]
     private GameObject ParachuteLeaf;
+    [SerializeField]
+    private GameObject leafHead;
 
     private Vector3 velocityAxis;
     private Vector3 orientationMove;
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour {
         //GLIDE ON
         if (Input.GetButton("Jump") && isJumping && !_onGround && body.velocity.y < 0 && canDoubleJump) {
             nbJump++;
+            leafHead.SetActive(false);
             body.velocity = new Vector3(0, -1.5f, 0);
             animBody.SetBool("isGliding", true);
             ParachuteLeaf.SetActive(true);
@@ -60,6 +63,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButtonUp("Jump") && isJumping && !_onGround) {
             ParachuteLeaf.SetActive(false);
             animBody.SetBool("isGliding", false);
+            leafHead.SetActive(true);
         }
 
         //DOUBLE JUMP
