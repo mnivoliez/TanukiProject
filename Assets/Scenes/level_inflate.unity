@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -77,17 +77,15 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
-    m_PVRFilterTypeDirect: 0
-    m_PVRFilterTypeIndirect: 0
-    m_PVRFilterTypeAO: 0
+    m_PVRFiltering: 0
     m_PVRFilteringMode: 1
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
     m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
-    m_PVRFilteringAtrousPositionSigmaIndirect: 2
-    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_PVRFilteringAtrousColorSigma: 1
+    m_PVRFilteringAtrousNormalSigma: 1
+    m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -109,8 +107,6 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
-    debug:
-      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &28182721
 GameObject:
@@ -123,7 +119,7 @@ GameObject:
   - component: {fileID: 28182725}
   - component: {fileID: 28182724}
   - component: {fileID: 28182723}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +148,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -168,7 +163,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -207,7 +201,7 @@ GameObject:
   - component: {fileID: 45998031}
   - component: {fileID: 45998030}
   - component: {fileID: 45998029}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +217,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -239,7 +232,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -291,7 +283,7 @@ GameObject:
   - component: {fileID: 63845991}
   - component: {fileID: 63845990}
   - component: {fileID: 63845989}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (26)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +312,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -336,7 +327,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -375,7 +365,8 @@ GameObject:
   - component: {fileID: 82058779}
   - component: {fileID: 82058778}
   - component: {fileID: 82058777}
-  m_Layer: 0
+  - component: {fileID: 82058781}
+  m_Layer: 8
   m_Name: BounceCube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +382,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -407,7 +397,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -448,6 +437,18 @@ Transform:
   m_Father: {fileID: 378716778}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 12.076, y: 0, z: 0}
+--- !u!114 &82058781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 82058776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15dea528120cb514daf95198f4ae2e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceRebond: 20
 --- !u!1 &100410982
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +460,7 @@ GameObject:
   - component: {fileID: 100410986}
   - component: {fileID: 100410985}
   - component: {fileID: 100410984}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -488,7 +489,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -504,7 +504,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -544,7 +543,7 @@ GameObject:
   - component: {fileID: 103914481}
   - component: {fileID: 103914480}
   - component: {fileID: 103914479}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +559,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -576,7 +574,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -629,7 +626,7 @@ GameObject:
   - component: {fileID: 120865766}
   - component: {fileID: 120865765}
   - component: {fileID: 120865764}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rampeBois
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -645,7 +642,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -661,7 +657,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -714,7 +709,7 @@ GameObject:
   - component: {fileID: 133330502}
   - component: {fileID: 133330501}
   - component: {fileID: 133330500}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -730,7 +725,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -746,7 +740,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -798,7 +791,7 @@ GameObject:
   - component: {fileID: 137793635}
   - component: {fileID: 137793634}
   - component: {fileID: 137793633}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -827,7 +820,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -843,7 +835,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -872,6 +863,63 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 137793631}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &153137205
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4690247991521070, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.8206501
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690247991521070, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 5.907174
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690247991521070, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -20.68883
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690247991521070, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0.10583143
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690247991521070, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690247991521070, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690247991521070, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.9943841
+      objectReference: {fileID: 0}
+    - target: {fileID: 4690247991521070, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114213449973827458, guid: 8d8cd0b88591eb54cb62e26d09549da6,
+        type: 2}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1858020839}
+    - target: {fileID: 81495087615837700, guid: 8d8cd0b88591eb54cb62e26d09549da6,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &153137206 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4489630985016570, guid: 8d8cd0b88591eb54cb62e26d09549da6,
+    type: 2}
+  m_PrefabInternal: {fileID: 153137205}
 --- !u!1 &174263928
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,7 +931,7 @@ GameObject:
   - component: {fileID: 174263932}
   - component: {fileID: 174263931}
   - component: {fileID: 174263930}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -912,7 +960,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -928,7 +975,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -967,7 +1013,7 @@ GameObject:
   - component: {fileID: 185520475}
   - component: {fileID: 185520474}
   - component: {fileID: 185520473}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -983,7 +1029,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -999,7 +1044,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1051,7 +1095,7 @@ GameObject:
   - component: {fileID: 199549196}
   - component: {fileID: 199549195}
   - component: {fileID: 199549194}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1080,7 +1124,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1096,7 +1139,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1135,7 +1177,7 @@ GameObject:
   - component: {fileID: 203557430}
   - component: {fileID: 203557429}
   - component: {fileID: 203557428}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1164,7 +1206,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1180,7 +1221,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1208,6 +1248,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 203557426}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &218474821 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1377227220088642, guid: 808203ed0a7345544b8b92a494a165d8,
+    type: 2}
+  m_PrefabInternal: {fileID: 776169779}
 --- !u!1 &248431870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,7 +1264,7 @@ GameObject:
   - component: {fileID: 248431874}
   - component: {fileID: 248431873}
   - component: {fileID: 248431872}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1248,7 +1293,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1264,7 +1308,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1303,7 +1346,7 @@ GameObject:
   - component: {fileID: 266741918}
   - component: {fileID: 266741917}
   - component: {fileID: 266741916}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1332,7 +1375,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1348,7 +1390,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1387,7 +1428,7 @@ GameObject:
   - component: {fileID: 272815075}
   - component: {fileID: 272815074}
   - component: {fileID: 272815073}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1403,7 +1444,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1419,7 +1459,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1468,7 +1507,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 304081255}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1534,7 +1573,7 @@ GameObject:
   - component: {fileID: 361113162}
   - component: {fileID: 361113161}
   - component: {fileID: 361113160}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1550,7 +1589,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1566,7 +1604,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1618,7 +1655,7 @@ GameObject:
   - component: {fileID: 361768252}
   - component: {fileID: 361768251}
   - component: {fileID: 361768250}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1634,7 +1671,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1650,7 +1686,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1703,7 +1738,7 @@ GameObject:
   - component: {fileID: 363666870}
   - component: {fileID: 363666869}
   - component: {fileID: 363666868}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1732,7 +1767,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1748,7 +1782,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1787,7 +1820,7 @@ GameObject:
   - component: {fileID: 375136436}
   - component: {fileID: 375136435}
   - component: {fileID: 375136434}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1816,7 +1849,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1832,7 +1864,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1900,7 +1931,7 @@ Transform:
   - {fileID: 1090030142}
   - {fileID: 632700927}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &387955713
 GameObject:
@@ -1913,7 +1944,8 @@ GameObject:
   - component: {fileID: 387955716}
   - component: {fileID: 387955715}
   - component: {fileID: 387955714}
-  m_Layer: 0
+  - component: {fileID: 387955718}
+  m_Layer: 8
   m_Name: BounceCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1929,7 +1961,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1945,7 +1976,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1980,12 +2010,123 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 387955713}
   m_LocalRotation: {x: 0.1118343, y: 0.21501489, z: -0.024793068, w: 0.9698696}
-  m_LocalPosition: {x: -32.98, y: 6.21, z: 33.25}
+  m_LocalPosition: {x: -32.98, y: 5.4, z: 32.1}
   m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 378716778}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 13.155001, y: 25.000002, z: 0}
+--- !u!114 &387955718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 387955713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15dea528120cb514daf95198f4ae2e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceRebond: 20
+--- !u!1001 &439504585
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4493783442726944, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.4875852
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493783442726944, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 2.4686651
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493783442726944, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -16.65847
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493783442726944, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493783442726944, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493783442726944, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493783442726944, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493783442726944, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114688236704194188, guid: f15a088e0fd86e14e9a1daff8041aa29,
+        type: 2}
+      propertyPath: inflateForm
+      value: 
+      objectReference: {fileID: 218474821}
+    - target: {fileID: 114688236704194188, guid: f15a088e0fd86e14e9a1daff8041aa29,
+        type: 2}
+      propertyPath: normalForm
+      value: 
+      objectReference: {fileID: 1858020826}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f15a088e0fd86e14e9a1daff8041aa29, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &453548222
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 1.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 14.099998
+      objectReference: {fileID: 0}
+    - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -4.0293846
+      objectReference: {fileID: 0}
+    - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114304009459580628, guid: f56aa1970afcb584cb81b3a933e591b1,
+        type: 2}
+      propertyPath: pivot
+      value: 
+      objectReference: {fileID: 153137206}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &476490751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,7 +2138,7 @@ GameObject:
   - component: {fileID: 476490755}
   - component: {fileID: 476490754}
   - component: {fileID: 476490753}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2026,7 +2167,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2042,7 +2182,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2082,7 +2221,7 @@ GameObject:
   - component: {fileID: 476522467}
   - component: {fileID: 476522466}
   - component: {fileID: 476522465}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2098,7 +2237,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2114,7 +2252,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2163,7 +2300,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 632700927}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branches
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2208,7 +2345,7 @@ GameObject:
   - component: {fileID: 661356900}
   - component: {fileID: 661356899}
   - component: {fileID: 661356898}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2237,7 +2374,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2253,7 +2389,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2289,7 +2424,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 671704462}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2320,7 +2455,7 @@ GameObject:
   - component: {fileID: 680423371}
   - component: {fileID: 680423370}
   - component: {fileID: 680423369}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2349,7 +2484,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2365,7 +2499,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2401,7 +2534,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 686101386}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2432,7 +2565,7 @@ GameObject:
   - component: {fileID: 687545401}
   - component: {fileID: 687545400}
   - component: {fileID: 687545399}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2461,7 +2594,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2477,7 +2609,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2517,7 +2648,7 @@ GameObject:
   - component: {fileID: 688060946}
   - component: {fileID: 688060945}
   - component: {fileID: 688060944}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2546,7 +2677,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2562,7 +2692,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2601,7 +2730,7 @@ GameObject:
   - component: {fileID: 716038632}
   - component: {fileID: 716038631}
   - component: {fileID: 716038630}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2617,7 +2746,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2633,7 +2761,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2740,7 +2867,7 @@ GameObject:
   - component: {fileID: 742472598}
   - component: {fileID: 742472597}
   - component: {fileID: 742472596}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2769,7 +2896,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2785,7 +2911,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2852,6 +2977,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1377227220088642, guid: 808203ed0a7345544b8b92a494a165d8, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 808203ed0a7345544b8b92a494a165d8, type: 2}
   m_IsPrefabParent: 0
@@ -2867,7 +2996,7 @@ GameObject:
   - component: {fileID: 798498672}
   - component: {fileID: 798498671}
   - component: {fileID: 798498674}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformMove (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2896,7 +3025,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2912,7 +3040,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2969,7 +3096,7 @@ GameObject:
   - component: {fileID: 798654187}
   - component: {fileID: 798654186}
   - component: {fileID: 798654185}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3002,7 +3129,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3018,7 +3144,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3070,7 +3195,7 @@ GameObject:
   - component: {fileID: 808108502}
   - component: {fileID: 808108501}
   - component: {fileID: 808108500}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3086,7 +3211,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3102,7 +3226,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3154,7 +3277,7 @@ GameObject:
   - component: {fileID: 845411182}
   - component: {fileID: 845411181}
   - component: {fileID: 845411180}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3183,7 +3306,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3199,7 +3321,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3239,7 +3360,7 @@ GameObject:
   - component: {fileID: 879064438}
   - component: {fileID: 879064437}
   - component: {fileID: 879064440}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformMove (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3268,7 +3389,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3284,7 +3404,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3340,7 +3459,7 @@ GameObject:
   - component: {fileID: 887548092}
   - component: {fileID: 887548091}
   - component: {fileID: 887548090}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (30)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3369,7 +3488,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3385,7 +3503,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3424,7 +3541,7 @@ GameObject:
   - component: {fileID: 910682471}
   - component: {fileID: 910682470}
   - component: {fileID: 910682469}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3440,7 +3557,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3456,7 +3572,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3508,7 +3623,7 @@ GameObject:
   - component: {fileID: 922238397}
   - component: {fileID: 922238396}
   - component: {fileID: 922238395}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3524,7 +3639,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3540,7 +3654,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3592,7 +3705,7 @@ GameObject:
   - component: {fileID: 948767712}
   - component: {fileID: 948767711}
   - component: {fileID: 948767710}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3621,7 +3734,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3637,7 +3749,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3676,7 +3787,7 @@ GameObject:
   - component: {fileID: 955407654}
   - component: {fileID: 955407653}
   - component: {fileID: 955407652}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3692,7 +3803,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3708,7 +3818,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3760,7 +3869,7 @@ GameObject:
   - component: {fileID: 960284357}
   - component: {fileID: 960284356}
   - component: {fileID: 960284355}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3789,7 +3898,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3805,7 +3913,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3844,7 +3951,7 @@ GameObject:
   - component: {fileID: 963967730}
   - component: {fileID: 963967729}
   - component: {fileID: 963967728}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3873,7 +3980,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3889,7 +3995,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3929,7 +4034,7 @@ GameObject:
   - component: {fileID: 967195685}
   - component: {fileID: 967195684}
   - component: {fileID: 967195683}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3958,7 +4063,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3974,7 +4078,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4010,7 +4113,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 973848123}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4041,7 +4144,7 @@ GameObject:
   - component: {fileID: 998969839}
   - component: {fileID: 998969838}
   - component: {fileID: 998969837}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4070,7 +4173,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4086,7 +4188,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4126,7 +4227,7 @@ GameObject:
   - component: {fileID: 1014668896}
   - component: {fileID: 1014668895}
   - component: {fileID: 1014668894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4142,7 +4243,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4158,7 +4258,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4210,7 +4309,7 @@ GameObject:
   - component: {fileID: 1031413463}
   - component: {fileID: 1031413462}
   - component: {fileID: 1031413461}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4239,7 +4338,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4255,7 +4353,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4294,7 +4391,7 @@ GameObject:
   - component: {fileID: 1047171333}
   - component: {fileID: 1047171332}
   - component: {fileID: 1047171331}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4310,7 +4407,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4326,7 +4422,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4378,7 +4473,7 @@ GameObject:
   - component: {fileID: 1070880802}
   - component: {fileID: 1070880801}
   - component: {fileID: 1070880800}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (25)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4407,7 +4502,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4423,7 +4517,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4459,7 +4552,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1090030142}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platforms25d
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4527,7 +4620,7 @@ GameObject:
   - component: {fileID: 1142032210}
   - component: {fileID: 1142032209}
   - component: {fileID: 1142032208}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4543,7 +4636,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4559,7 +4651,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4611,7 +4702,7 @@ GameObject:
   - component: {fileID: 1148578255}
   - component: {fileID: 1148578254}
   - component: {fileID: 1148578253}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4627,7 +4718,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4643,7 +4733,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4695,7 +4784,7 @@ GameObject:
   - component: {fileID: 1165464838}
   - component: {fileID: 1165464837}
   - component: {fileID: 1165464836}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4711,7 +4800,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4727,7 +4815,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4780,7 +4867,7 @@ GameObject:
   - component: {fileID: 1171911017}
   - component: {fileID: 1171911016}
   - component: {fileID: 1171911015}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformElevator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4813,7 +4900,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4829,7 +4915,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4881,7 +4966,7 @@ GameObject:
   - component: {fileID: 1189844712}
   - component: {fileID: 1189844711}
   - component: {fileID: 1189844710}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4897,7 +4982,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4913,7 +4997,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -4965,7 +5048,7 @@ GameObject:
   - component: {fileID: 1206635804}
   - component: {fileID: 1206635803}
   - component: {fileID: 1206635802}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4994,7 +5077,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5010,7 +5092,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5050,7 +5131,7 @@ GameObject:
   - component: {fileID: 1251767531}
   - component: {fileID: 1251767530}
   - component: {fileID: 1251767529}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5066,7 +5147,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5082,7 +5162,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5134,7 +5213,7 @@ GameObject:
   - component: {fileID: 1265756528}
   - component: {fileID: 1265756527}
   - component: {fileID: 1265756526}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5150,7 +5229,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5166,7 +5244,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5218,7 +5295,7 @@ GameObject:
   - component: {fileID: 1274677296}
   - component: {fileID: 1274677295}
   - component: {fileID: 1274677294}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform5x5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5234,7 +5311,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5250,7 +5326,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5303,7 +5378,7 @@ GameObject:
   - component: {fileID: 1306638077}
   - component: {fileID: 1306638076}
   - component: {fileID: 1306638075}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5319,7 +5394,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5335,7 +5409,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5452,7 +5525,7 @@ GameObject:
   - component: {fileID: 1342621360}
   - component: {fileID: 1342621359}
   - component: {fileID: 1342621358}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5468,7 +5541,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5484,7 +5556,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5533,7 +5604,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1352184405}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platforms5x5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5568,7 +5639,7 @@ GameObject:
   - component: {fileID: 1492778202}
   - component: {fileID: 1492778201}
   - component: {fileID: 1492778200}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5584,7 +5655,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5600,7 +5670,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5652,7 +5721,7 @@ GameObject:
   - component: {fileID: 1535543979}
   - component: {fileID: 1535543978}
   - component: {fileID: 1535543977}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5668,7 +5737,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5684,7 +5752,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5733,7 +5800,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1552346902}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformMoves01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5766,7 +5833,7 @@ GameObject:
   - component: {fileID: 1573745473}
   - component: {fileID: 1573745472}
   - component: {fileID: 1573745471}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform5x5 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5782,7 +5849,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5798,7 +5864,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5851,7 +5916,7 @@ GameObject:
   - component: {fileID: 1581003264}
   - component: {fileID: 1581003263}
   - component: {fileID: 1581003262}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (32)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5880,7 +5945,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5896,7 +5960,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5932,7 +5995,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1586354343}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformMoves02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5965,7 +6028,7 @@ GameObject:
   - component: {fileID: 1604375411}
   - component: {fileID: 1604375410}
   - component: {fileID: 1604375409}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformBase (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5994,7 +6057,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6010,7 +6072,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6050,7 +6111,7 @@ GameObject:
   - component: {fileID: 1609620145}
   - component: {fileID: 1609620144}
   - component: {fileID: 1609620143}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platformMove (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6096,7 +6157,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6112,7 +6172,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6151,7 +6210,7 @@ GameObject:
   - component: {fileID: 1770424470}
   - component: {fileID: 1770424469}
   - component: {fileID: 1770424468}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6180,7 +6239,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6196,7 +6254,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6235,7 +6292,7 @@ GameObject:
   - component: {fileID: 1779006913}
   - component: {fileID: 1779006912}
   - component: {fileID: 1779006911}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6251,7 +6308,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6267,7 +6323,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6319,7 +6374,7 @@ GameObject:
   - component: {fileID: 1784273375}
   - component: {fileID: 1784273374}
   - component: {fileID: 1784273373}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6335,7 +6390,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6351,7 +6405,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6403,7 +6456,7 @@ GameObject:
   - component: {fileID: 1820735097}
   - component: {fileID: 1820735096}
   - component: {fileID: 1820735095}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform5x5 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6419,7 +6472,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6435,7 +6487,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6488,7 +6539,7 @@ GameObject:
   - component: {fileID: 1830960612}
   - component: {fileID: 1830960611}
   - component: {fileID: 1830960610}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6517,7 +6568,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6533,7 +6583,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6562,6 +6611,16 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1830960608}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1858020826 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1127765674376460, guid: f56aa1970afcb584cb81b3a933e591b1,
+    type: 2}
+  m_PrefabInternal: {fileID: 453548222}
+--- !u!4 &1858020839 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1,
+    type: 2}
+  m_PrefabInternal: {fileID: 453548222}
 --- !u!1 &1870407728 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1380180128553864, guid: 81f32350b21c20044adc6b2e2d23fe52,
@@ -6596,7 +6655,7 @@ GameObject:
   - component: {fileID: 1877015850}
   - component: {fileID: 1877015849}
   - component: {fileID: 1877015848}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6625,7 +6684,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6641,7 +6699,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6681,7 +6738,7 @@ GameObject:
   - component: {fileID: 1945976587}
   - component: {fileID: 1945976586}
   - component: {fileID: 1945976585}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6697,7 +6754,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6713,7 +6769,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6765,7 +6820,7 @@ GameObject:
   - component: {fileID: 1955033480}
   - component: {fileID: 1955033479}
   - component: {fileID: 1955033478}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6794,7 +6849,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6810,7 +6864,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6850,7 +6903,7 @@ GameObject:
   - component: {fileID: 1972485123}
   - component: {fileID: 1972485122}
   - component: {fileID: 1972485121}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6879,7 +6932,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6895,7 +6947,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6934,7 +6985,7 @@ GameObject:
   - component: {fileID: 1991288601}
   - component: {fileID: 1991288600}
   - component: {fileID: 1991288599}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: branche (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6963,7 +7014,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6979,7 +7029,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -7019,7 +7068,7 @@ GameObject:
   - component: {fileID: 2000737190}
   - component: {fileID: 2000737189}
   - component: {fileID: 2000737188}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform5x5 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7035,7 +7084,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -7051,7 +7099,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -7154,7 +7201,7 @@ GameObject:
   - component: {fileID: 2110649896}
   - component: {fileID: 2110649895}
   - component: {fileID: 2110649894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: platform25d (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7183,7 +7230,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -7199,7 +7245,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -7238,7 +7283,7 @@ GameObject:
   - component: {fileID: 2129257069}
   - component: {fileID: 2129257068}
   - component: {fileID: 2129257067}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7254,7 +7299,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -7270,7 +7314,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
