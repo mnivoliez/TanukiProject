@@ -17,6 +17,11 @@ public class YokaiController : MonoBehaviour {
     private Material knockedTexture;
     [SerializeField]
     private Material normalTexture;
+    [SerializeField]
+    private GameObject hitParticle;
+    [SerializeField]
+    private GameObject knockedParticle;
+
 
 
     void Start () {
@@ -67,14 +72,17 @@ public class YokaiController : MonoBehaviour {
 
         if (hp <= 0) {
             isKnocked = true;
+            Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             transform.GetChild(0).GetComponent<Renderer>().material = knockedTexture;
             transform.GetChild(1).GetComponent<Renderer>().material = knockedTexture;
         }
     }
 
     public void BeingHit() {
+        Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
         transform.GetChild(0).GetComponent<Renderer>().material = knockedTexture;
         transform.GetChild(1).GetComponent<Renderer>().material = knockedTexture;
+        
     }
 
     public void EndHit() {
