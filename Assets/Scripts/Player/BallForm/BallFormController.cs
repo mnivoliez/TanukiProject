@@ -29,7 +29,7 @@ public class BallFormController : MonoBehaviour {
 
         //JUMP
         if (Input.GetButtonDown("Jump") && _onGround) {
-            body.AddForce(Vector3.up*jumpForce, ForceMode.Impulse);
+            body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isJumping = true;
             //animBody.SetBool("isJumping", true);
         }
@@ -40,15 +40,15 @@ public class BallFormController : MonoBehaviour {
             //animBody.SetBool("isDoubleJumping", false);
             //animBody.SetBool("isJumping", false);
         }
-        
+
         Vector3 velocityAxis;
         velocityAxis = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        if(Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0) {
+        if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0) {
             body.AddForce(-body.velocity / 2, ForceMode.Impulse);
         }
 
- 
- 
+
+
         if (body.velocity.magnitude < maxSpeed) {
             body.AddForce(velocityAxis * movespeed, ForceMode.Impulse);
         }
@@ -69,7 +69,7 @@ public class BallFormController : MonoBehaviour {
 
         // We will use a Physics.Raycast to see if there is anything on the ground below the player.
         // We can limit the distance to make sure that we are touching the bottom of the collider.
-        if (Physics.Raycast(transform.position + meshBounds.center, Vector3.down, meshBounds.extents.y+0.5f, layerMask)) {
+        if (Physics.Raycast(transform.position + meshBounds.center, Vector3.down, meshBounds.extents.y + 0.5f, layerMask)) {
             return true;
         }
 

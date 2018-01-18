@@ -13,12 +13,12 @@ public class InflateController : MonoBehaviour {
     private GameObject smokeSpawner;
 
 
-    void Start () {
+    void Start() {
         isInflate = false;
 
     }
-	
-	void Update () {
+
+    void Update() {
 
 
         if (Input.GetButtonDown("Transformation")) {
@@ -44,11 +44,11 @@ public class InflateController : MonoBehaviour {
                     normalForm.SetActive(false);
                     isInflate = true;
                 }
-               
+
             }
 
-            
+
         }
-		
-	}
+
+    }
 }

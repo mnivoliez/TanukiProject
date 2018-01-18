@@ -19,7 +19,7 @@ public class PlayerMeleeAttack : MonoBehaviour {
     private bool leafIsBack;
 
 
-    void Start () {
+    void Start() {
         animBody = GetComponent<Animator>();
         initialTransform = transform;
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
@@ -31,12 +31,12 @@ public class PlayerMeleeAttack : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update(){
+    void Update() {
 
         leafIsBack = GetComponent<PlayerDistantAttack>().GetLeafIsBack();
         //Debug.Log("Leaf is back: " + leafIsBack);
 
-        if (timerAttack > 0.3){
+        if (timerAttack > 0.3) {
             animBody.SetBool("isChargingAttack", true);
             leafHead.SetActive(false);
             leafHand.SetActive(true);
@@ -49,12 +49,12 @@ public class PlayerMeleeAttack : MonoBehaviour {
 
         if (Input.GetButton("Fire1") && !leafInHand && leafIsBack) {
             timerAttack += Time.deltaTime;
-            
+
         }
 
         if (Input.GetButtonUp("Fire1") && leafIsBack) {
             // Basic attack
-            if (timerAttack < 0.3 && !leafInHand){
+            if (timerAttack < 0.3 && !leafInHand) {
                 attackRange.SetActive(true);
                 animBody.SetBool("isAttacking", true);
                 leafHead.SetActive(false);
@@ -62,13 +62,13 @@ public class PlayerMeleeAttack : MonoBehaviour {
                 leafInHand = true;
             }
             // Charged attack
-            else if (timerAttack >= 0.3){
+            else if (timerAttack >= 0.3) {
                 attackRange.SetActive(true);
                 animBody.SetBool("isChargedAttack", true);
             }
 
             timerAttack = 0;
-        }        
+        }
 
         if (this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack") && leafInHand) {
             attackRange.SetActive(false);
@@ -79,6 +79,6 @@ public class PlayerMeleeAttack : MonoBehaviour {
             animBody.SetBool("isChargedAttack", false);
             animBody.SetBool("isChargingAttack", false);
         }
-        
+
     }
 }

@@ -24,18 +24,18 @@ public class YokaiController : MonoBehaviour {
 
 
 
-    void Start () {
+    void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
 
     }
-	
-	void Update () {
+
+    void Update() {
 
         if (isAbsorbed) {
             Die();
         }
 
-	}
+    }
 
     public void Absorbed() {
         isAbsorbed = true;
@@ -49,7 +49,7 @@ public class YokaiController : MonoBehaviour {
             Destroy(gameObject);
         }
         else {
-            if (transform.localScale.x < 0 && transform.localScale.y < 0 && transform.localScale.z < 0 ) {
+            if (transform.localScale.x < 0 && transform.localScale.y < 0 && transform.localScale.z < 0) {
                 transform.localScale = Vector3.zero;
             }
             else {
@@ -82,7 +82,7 @@ public class YokaiController : MonoBehaviour {
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
         transform.GetChild(0).GetComponent<Renderer>().material = knockedTexture;
         transform.GetChild(1).GetComponent<Renderer>().material = knockedTexture;
-        
+
     }
 
     public void EndHit() {

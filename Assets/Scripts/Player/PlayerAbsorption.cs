@@ -18,15 +18,15 @@ public class PlayerAbsorption : MonoBehaviour {
     public Transform loadingBar;
     public Transform centerButton;
 
-    void Start () {
+    void Start() {
         animBody = GetComponent<Animator>();
         sakePot.SetActive(false);
         currentAbsorption = false;
     }
-	
-	void Update () {
-		
-	}
+
+    void Update() {
+
+    }
 
     void OnTriggerStay(Collider collid) {
         Debug.Log("HE !");
@@ -50,13 +50,13 @@ public class PlayerAbsorption : MonoBehaviour {
                 absorptionTimer -= 0.03f;
                 absorptionGauge -= 0.01f;
                 if (Input.GetButtonDown("Fire3")) {
-                    centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x+5, centerButton.GetComponent<RectTransform>().sizeDelta.y+5);
+                    centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
                     centerButton.GetComponent<Image>().color = Color.grey;
                     absorptionGauge += 1;
                     Debug.Log("+1 !");
                 }
 
-                loadingBar.GetComponent<Image>().fillAmount = absorptionTimer*25 / 100;
+                loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
 
                 if (absorptionGauge > maxAbsorptionGauge) {
                     collid.gameObject.GetComponent<YokaiController>().Absorbed();
