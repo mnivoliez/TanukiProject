@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour {
     public bool useOffsetValues;
     public bool inverseCam;
 
-    void Start () {
+    void Start() {
 
         if (!useOffsetValues) {
             offset = target.position - transform.position;
@@ -23,20 +23,20 @@ public class CameraController : MonoBehaviour {
         //pivotCam.transform.parent = target;
         pivotCam.transform.parent = null;
         Cursor.lockState = CursorLockMode.Locked;
-	}
-	
+    }
 
-	void LateUpdate () {
+
+    void LateUpdate() {
         pivotCam.transform.position = target.position;
-        
+
         float horizontal;
         if (Input.GetJoystickNames().Length == 0) {
             horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
         }
         else {
-            horizontal = Input.GetAxis("Horizontal") * rotateSpeed;
+            horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * rotateSpeed;
         }
-        
+
         pivotCam.Rotate(0, horizontal, 0);
 
         float vertical;
@@ -44,10 +44,10 @@ public class CameraController : MonoBehaviour {
             vertical = Input.GetAxis("Mouse Y") * rotateSpeed;
         }
         else {
-            vertical = Input.GetAxis("Vertical") * rotateSpeed;
+            vertical = Input.GetAxis("MoveCameraGamepadVertical") * rotateSpeed;
         }
 
-       
+
         if (inverseCam) {
             pivotCam.Rotate(vertical, 0, 0);
         }
@@ -70,11 +70,11 @@ public class CameraController : MonoBehaviour {
         transform.position = target.position - (camRotation * offset);
 
         //transform.position = target.position - offset;
-        if(transform.position.y < target.position.y) {
+        if (transform.position.y < target.position.y) {
             transform.position = new Vector3(transform.position.x, target.transform.position.y, transform.position.z);
         }
 
         transform.LookAt(target.position);
 
-	}
+    }
 }

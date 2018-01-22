@@ -58,4 +58,8 @@ public class PlayerDistantAttack : MonoBehaviour {
     public void SetLeafIsBack() {
         leafIsBack = true;
     }
+
+    public bool GetLeafIsBack() {
+        return leafIsBack;
+    }
 }
