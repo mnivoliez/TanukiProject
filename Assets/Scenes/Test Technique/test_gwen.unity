@@ -417,13 +417,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4163729518700874, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114304009459580628, guid: f56aa1970afcb584cb81b3a933e591b1,
         type: 2}
       propertyPath: pivot
       value: 
       objectReference: {fileID: 1850739601}
+    - target: {fileID: 114304009459580628, guid: f56aa1970afcb584cb81b3a933e591b1,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
   m_IsPrefabParent: 0
@@ -790,6 +795,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1356615357}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1375699316 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1879459404527658, guid: f56aa1970afcb584cb81b3a933e591b1,
+    type: 2}
+  m_PrefabInternal: {fileID: 783850392}
 --- !u!1 &1471567587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,7 +1040,7 @@ Transform:
   m_Children:
   - {fileID: 1850739601}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1850739600
 GameObject:
@@ -1142,3 +1152,25 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1974701572}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2022145120 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1127765674376460, guid: f56aa1970afcb584cb81b3a933e591b1,
+    type: 2}
+  m_PrefabInternal: {fileID: 783850392}
+--- !u!114 &2022145121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2022145120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8785fde58362145982fffd4b0210a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  airControl: 6
+  jumpForce: 12
+  pivot: {fileID: 1850739601}
+  rotateSpeed: 10
+  playerModel: {fileID: 1375699316}
