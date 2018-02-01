@@ -9,7 +9,9 @@ public class CharacterController : MonoBehaviour {
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float airControl = 6f;
     [SerializeField] private float jumpForce = 12f;
-    
+
+    private List<GameObject> _grounds = new List<GameObject>();
+
 
     //Orientation Camera player
     [Header("CAMERA")]
@@ -35,7 +37,9 @@ public class CharacterController : MonoBehaviour {
 
     private void Update() {
         
-        onGround = CheckGroundCollision();
+        onGround = IsGrounded();
+        if (onGround)
+            Debug.Log(onGround);
         UpdateInput();
         currentState.Tick();
     }
@@ -50,19 +54,45 @@ public class CharacterController : MonoBehaviour {
             currentState.OnStateEnter();
     }
 
-    private bool CheckGroundCollision() {
-        // We can use a layer mask to tell the Physics Raycast which layers we are trying to hit.
-        // This will allow us to restrict which objects this applies to.
-        int layerMask = 1 << LayerMask.NameToLayer("Ground");
-        Bounds meshBounds = GetComponent<MeshFilter>().mesh.bounds;
 
-        // We will use a Physics.Raycast to see if there is anything on the ground below the player.
-        // We can limit the distance to make sure that we are touching the bottom of the collider.
-        if (Physics.Raycast(transform.position + meshBounds.center, Vector3.down, meshBounds.extents.y, layerMask)) {
-            return true;
+    void OnCollisionEnter(Collision coll) {
+        GameObject gO = coll.gameObject;
+
+        if (gO.layer == LayerMask.NameToLayer("Ground")) {
+            ContactPoint[] contacts = coll.contacts;
+
+            if (contacts.Length > 0) {
+                foreach (ContactPoint c in contacts) {
+                    if (c.normal.y >= 0.5f && c.normal.y <= 1f) {
+                        _grounds.Add(gO);
+                        break;
+                    }
+                }
+            }
         }
-        return false;
     }
+
+    void OnCollisionExit(Collision coll) {
+        if (IsGrounded()) {
+            GameObject gO = coll.gameObject;
+
+            if (_grounds.Contains(gO)) {
+                _grounds.Remove(gO);
+            }
+        }
+    }
+
+    private bool IsGrounded() {
+        return _grounds.Count > 0;
+    }
+
+    private float AbsoluteVal(float nb) {
+        if (nb < 0) {
+            nb *= -1;
+        }
+        return nb;
+    }
+
 
     void UpdateInput() {
 
