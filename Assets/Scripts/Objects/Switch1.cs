@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switch1 : MonoBehaviour {
+public class Switch1 : MonoBehaviour
+{
 
 
     public GameObject porte;
 
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
     }
 
 
-    void OnCollisionEnter(Collision collider) {
+    void OnCollisionEnter(Collision collider)
+    {
 
         porte.SetActive(false);
 
@@ -21,7 +24,8 @@ public class Switch1 : MonoBehaviour {
 
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
     }
 }
