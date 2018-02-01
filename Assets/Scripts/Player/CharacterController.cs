@@ -63,6 +63,9 @@ public class CharacterController : MonoBehaviour {
 
             if (contacts.Length > 0) {
                 foreach (ContactPoint c in contacts) {
+                    // c.normal.y = 0 => Vertical
+                    // c.normal.y = 0.5 => 45°
+                    // c.normal.y = 1 => Horizontal
                     if (c.normal.y >= 0.5f && c.normal.y <= 1f) {
                         _grounds.Add(gO);
                         break;
