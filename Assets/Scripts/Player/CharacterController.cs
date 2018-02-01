@@ -38,8 +38,6 @@ public class CharacterController : MonoBehaviour {
     private void Update() {
         
         onGround = IsGrounded();
-        if (onGround)
-            Debug.Log(onGround);
         UpdateInput();
         currentState.Tick();
     }
