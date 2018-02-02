@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public enum MovementState {
-    Idle, Run, Jump, DoubleJump, Fall,
+    Idle, Run, Jump, DoubleJump, Fall
 }
 
 public struct MovementStateParam {
