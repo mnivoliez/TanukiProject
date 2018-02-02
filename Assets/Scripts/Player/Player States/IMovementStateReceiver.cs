@@ -8,8 +8,8 @@ public interface IMovementStateReceiver {
     void OnStateExit(MovementState state);
 }
 
-/*public interface IInteractStateReceiver {
+public interface IInteractStateReceiver {
 
     void Enter(InteractState state);
     void Exit(InteractState state);
-}*/
+}

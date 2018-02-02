@@ -8,16 +8,15 @@ public enum InteractState {
 }
 
 public struct InteractStateParam {
-    public bool grounded;
-    public bool GlideButton;
-    public bool MeleeAttackButton;
-    public bool DistantAttackButton;
-    public bool SpawnLureButton;
-    public bool TransformationButton;
-    public bool ActivateButton;
-    public bool AbsorbButton;
-    public bool CarryButton;
-    public bool PushButton;
+    public bool canGlide;
+    public bool canMeleeAttack;
+    public bool canDistantAttack;
+    public bool canSpawnLure;
+    public bool canTransform;
+    public bool canActivate;
+    public bool canAbsorb;
+    public bool canCarry;
+    public bool canPush;
 }
 
 public class InteractStateController {
@@ -71,83 +70,164 @@ public class InteractStateController {
         return newState;
     }
 
-    InteractState ManageNothing(InteractState previous, InteractState param) {
+    InteractState ManageNothing(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
-        //IDLE
-        if (IsIdle(param)) {
-            newState = InteractState.Idle;
+
+        //Glide
+        if (param.canGlide) {
+            newState = InteractState.Glide;
         }
 
-        // STILL MOVING UP
-        if (IsGoingUp(param)) {
-            if (param.jumpRequired) {
-                newState = InteractState.DoubleJump;
-            }
-            else {
-                newState = InteractState.Jump;
-            }
-
+        //MeleeAttack
+        if (param.canMeleeAttack) {
+            newState = InteractState.MeleeAttack;
         }
+
+        //DistantAttack
+        if (param.canDistantAttack) {
+            newState = InteractState.DistantAttack;
+        }
+
+        //SpawnLure
+        if (param.canSpawnLure) {
+            newState = InteractState.SpawnLure;
+        }
+
+        //Transformation
+        if (param.canTransform) {
+            newState = InteractState.Transformation;
+        }
+
+        //Activate
+        if (param.canActivate) {
+            newState = InteractState.Activate;
+        }
+
+        //Absorb
+        if (param.canAbsorb) {
+            newState = InteractState.Absorb;
+        }
+
+        //Carry
+        if (param.canCarry) {
+            newState = InteractState.Carry;
+        }
+
+        //Push
+        if (param.canPush) {
+            newState = InteractState.Push;
+        }
+
+        //// STILL MOVING UP
+        //if (IsGoingUp(param)) {
+        //    if (param.jumpRequired) {
+        //        newState = InteractState.DoubleJump;
+        //    }
+        //    else {
+        //        newState = InteractState.Jump;
+        //    }
+
+        //}
 
         return newState;
     }
 
     InteractState ManageGlide(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
-        //IDLE
-        if (IsIdle(param)) {
-            newState = InteractState.Idle;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
         }
-
         return newState;
 
     }
 
-    InteractState MeleeAttack(InteractState previous, InteractStateParam param) {
+    InteractState ManageMeleeAttack(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
-        //IDLE
-        if (IsIdle(param)) {
-            newState = InteractState.Idle;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
         }
-
         return newState;
     }
 
-    InteractState DistantAttack(InteractState previous, InteractStateParam param) {
+    InteractState ManageDistantAttack(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
 
-        //FAll
-        if (IsFalling(param)) {
-            newState = InteractState.Fall;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
         }
         return newState;
     }
 
-    InteractState SpawnLure(InteractState previous, InteractStateParam param) {
+    InteractState ManageSpawnLure(InteractState previous, InteractStateParam param) {
+        InteractState newState = previous;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
+        }
+        return newState;
+    }
+
+    InteractState ManageTransformation(InteractState previous, InteractStateParam param) {
+        InteractState newState = previous;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
+        }
+        return newState;
+    }
+    InteractState ManageActivate(InteractState previous, InteractStateParam param) {
+        InteractState newState = previous;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
+        }
+        return newState;
+    }
+    InteractState ManageAbsorb(InteractState previous, InteractStateParam param) {
+        InteractState newState = previous;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
+        }
+        return newState;
+    }
+    InteractState ManageCarry(InteractState previous, InteractStateParam param) {
+        InteractState newState = previous;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
+        }
+        return newState;
+    }
+
+    InteractState ManagePush(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //RUN
-        if (IsRunning(param)) {
-            newState = InteractState.Run;
+        //NOTHING
+        if (!param.canGlide) {
+            newState = InteractState.Nothing;
         }
-
-
         return newState;
     }
 
-    bool IsIdle(InteractStateParam param) {
-        return param.grounded && ((Mathf.Abs(param.velocity.x) + Mathf.Abs(param.velocity.z)) < 0.1f);
-    }
 
-    bool IsRunning(InteractStateParam param) {
-        return param.grounded && ((Mathf.Abs(param.velocity.x) + Mathf.Abs(param.velocity.z)) >= 0.1f);
-    }
+    //bool IsIdle(InteractStateParam param) {
+    //    return param.grounded && ((Mathf.Abs(param.velocity.x) + Mathf.Abs(param.velocity.z)) < 0.1f);
+    //}
 
-    bool IsGoingUp(InteractStateParam param) {
-        return !param.grounded && param.velocity.y > 0;
-    }
+    //bool IsRunning(InteractStateParam param) {
+    //    return param.grounded && ((Mathf.Abs(param.velocity.x) + Mathf.Abs(param.velocity.z)) >= 0.1f);
+    //}
 
-    bool IsFalling(InteractStateParam param) {
-        return !param.grounded && param.velocity.y < 0;
-    }
+    //bool IsGoingUp(InteractStateParam param) {
+    //    return !param.grounded && param.velocity.y > 0;
+    //}
+
+    //bool IsFalling(InteractStateParam param) {
+    //    return !param.grounded && param.velocity.y < 0;
+    //}
 
 }
