@@ -22,7 +22,8 @@ public class BounceEffect : MonoBehaviour {
         Rigidbody entity = collision.gameObject.GetComponent<Rigidbody>();
         entity.velocity = Vector3.zero;
         if (collision.gameObject.name == "Player") {
-            collision.gameObject.GetComponent<PlayerController>().SetIsJumping(true);
+            //collision.gameObject.GetComponent<PlayerController>().SetIsJumping(true);
+            Debug.Log("BOING");
         }
         entity.AddForce(Vector3.up * forceRebond, ForceMode.VelocityChange);
     }

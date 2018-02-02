@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+struct InputParams {
+    public bool requestJump;
+    public float moveX;
+    public float moveZ;
+
+}
 public class CharacterController : MonoBehaviour {
 
     [Header("PLAYER")]
@@ -23,35 +29,50 @@ public class CharacterController : MonoBehaviour {
     private Vector3 inputVelocityAxis;
 
     private Rigidbody body;
-    private State currentState;
+    private MovementState previousState;
+    private MovementState movementState;
+    private MovementStateParam moveStateParameters;
+    private MovementStateController moveStateCtrl;
+    InputParams inputParameters;
+
+
+
     private bool onGround;
 
     //Animation
-    private Animator animBody;
+    private AnimatorController animBody;
 
     private void Start() {
-        SetState(new IdleState(this));
+        movementState = MovementState.Idle;
         body = GetComponent<Rigidbody>();
-        animBody = GetComponent<Animator>();
+        animBody = GetComponent<AnimatorController>();
+        moveStateParameters = new MovementStateParam();
+        moveStateCtrl = new MovementStateController();
+        inputParameters = new InputParams();
     }
 
     private void Update() {
         
         onGround = IsGrounded();
         UpdateInput();
-        currentState.Tick();
+        previousState = movementState;
+
+        //deplacements
+        ApplyInput();
+
+        UpdateMoveStateParameters();
+
+        movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
+
+        float speed = Mathf.Sqrt(Mathf.Pow(inputParameters.moveX, 2) + Mathf.Pow(inputParameters.moveZ, 2));
+
+        if (previousState != movementState) {
+            animBody.OnStateExit(previousState);
+            animBody.OnStateEnter(movementState);
+        }
+        animBody.UpdateState(movementState, speed, moveSpeed);
+        
     }
-
-    public void SetState(State state) {
-        if (currentState != null)
-            currentState.OnStateExit();
-
-        currentState = state;
-
-        if (currentState != null)
-            currentState.OnStateEnter();
-    }
-
 
     void OnCollisionEnter(Collision coll) {
         GameObject gO = coll.gameObject;
@@ -95,45 +116,57 @@ public class CharacterController : MonoBehaviour {
     }
 
 
-    void UpdateInput() {
+    InputParams UpdateInput() {
 
+        inputParameters.requestJump = Input.GetButtonDown("Jump");
+        inputParameters.moveX = Input.GetAxis("Horizontal");
+        inputParameters.moveZ = Input.GetAxis("Vertical");
+
+        return inputParameters;
+
+    }
+
+    void ApplyInput() {
+        //Debug.Log("STATE: " + movementState);
+        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall)/* ou si maudit et pas en state jump / fall */;
+        Debug.Log("Here the state:" + movementState);
         //JUMP
-        if (Input.GetButtonDown("Jump") && onGround) {
+        if (inputParameters.requestJump && canJump) {
             body.velocity = new Vector3(0, jumpForce, 0);
-            animBody.SetBool("isJumping", true);
         }
-
-        //Deplacement du personnage
-        inputVelocityAxis = new Vector3(Input.GetAxis("Horizontal"), body.velocity.y, Input.GetAxis("Vertical"));
+        
+        inputVelocityAxis = new Vector3(inputParameters.moveX, body.velocity.y, inputParameters.moveZ);
         //Orientation du personnage
-        orientationMove = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
+        orientationMove = (transform.forward * inputParameters.moveZ) + (transform.right * inputParameters.moveX);
         inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed;
         inputVelocityAxis.y = body.velocity.y;
-
-        animBody.SetFloat("Speed", Mathf.Abs(inputVelocityAxis.x) + Mathf.Abs(inputVelocityAxis.z));
-        animBody.SetFloat("SpeedMultiplier", moveSpeed);
 
 
         //AIR CONTROL
         if (!onGround) {
-            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((Input.GetAxis("Horizontal") * airControl), inputVelocityAxis.y, (Input.GetAxis("Vertical") * (airControl*2)));
+            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((inputParameters.moveX * airControl), inputVelocityAxis.y, (inputParameters.moveZ * (airControl * 2)));
         }
         else {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * inputVelocityAxis;
         }
 
         //Move player on direction based on camera
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
+        if (inputParameters.moveX != 0 || inputParameters.moveZ != 0) {
             transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
             playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
         }
+    }
 
+    void UpdateMoveStateParameters() {
+        moveStateParameters.velocity = body.velocity;
+        moveStateParameters.jumpRequired = inputParameters.requestJump;
+        moveStateParameters.grounded = IsGrounded();
     }
 
     public bool GetOnGround() {return onGround;}
     public float GetJumpForce() { return jumpForce; }
-    public Rigidbody GetBody() { return body; }
-    public Animator GetAnimbody() { return animBody; }
+    
+    
 
 }
