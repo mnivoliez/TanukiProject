@@ -73,9 +73,7 @@ public class PlayerMeleeAttack : MonoBehaviour {
 			timerAttack = 0;
 		}
 
-		if ((this.animBody.GetCurrentAnimatorStateInfo(0).IsName("JumpInsantPostAttack") || 
-			this.animBody.GetCurrentAnimatorStateInfo(0).IsName("RunInsantPostAttack") || 
-			this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack")) && leafInHand) {
+		if ((this.animBody.GetCurrentAnimatorStateInfo(0).IsName("JumpInsantPostAttack") || this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack")) && leafInHand) {
 			attackRange.SetActive(false);
 			leafHead.SetActive(true);
 			leafHand.SetActive(false);
