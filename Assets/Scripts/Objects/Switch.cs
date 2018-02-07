@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switch : MonoBehaviour {
+public class Switch : MonoBehaviour
+{
 
     public GameObject plateforme;
     public GameObject plateforme1;
@@ -11,11 +12,13 @@ public class Switch : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
     }
 
 
-    void OnCollisionEnter(Collision collider) {
+    void OnCollisionEnter(Collision collider)
+    {
         plateforme.SetActive(true);
         plateforme1.SetActive(true);
         plateforme2.SetActive(true);
@@ -25,7 +28,8 @@ public class Switch : MonoBehaviour {
 
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
     }
 }
