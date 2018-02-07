@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Capacity {
+    Nothing, DoubleJump, Glide
+}
+
 public class YokaiController : MonoBehaviour
 {
-
 
     private bool isAbsorbed = false;
     private bool isKnocked = false;
@@ -22,6 +25,8 @@ public class YokaiController : MonoBehaviour
     private GameObject hitParticle;
     [SerializeField]
     private GameObject knockedParticle;
+    [SerializeField]
+    private Capacity capacity;
 
 
 
@@ -51,8 +56,6 @@ public class YokaiController : MonoBehaviour
     {
         if (transform.position == target.transform.position)
         {
-            target.GetComponent<Animator>().SetBool("isAbsorbing", false);
-            //target.GetComponent<PlayerAbsorption>().sakePot.SetActive(false);
             Destroy(gameObject);
         }
         else
@@ -76,6 +79,10 @@ public class YokaiController : MonoBehaviour
     public bool GetIsKnocked()
     {
         return isKnocked;
+    }
+
+    public Capacity GetCapacity() {
+        return capacity;
     }
 
     public void LooseHp(float damage)

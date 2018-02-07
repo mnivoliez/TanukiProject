@@ -91,6 +91,9 @@ public class CharacterController : MonoBehaviour {
 
     private InputController inputController;
 
+    // Capacity
+    [SerializeField] private bool hasDoubleJumpCapacity;
+
     //Animation
     private AnimatorController animBody;
     private InteractBehavior interactBehaviorCtrl;
@@ -179,7 +182,7 @@ public class CharacterController : MonoBehaviour {
 
     void MoveAccordingToInput(InputParams inputParams) {
         //Debug.Log("STATE: " + movementState);
-        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall)/* ou si maudit et pas en state jump / fall */;
+        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall || movementState == MovementState.Jump && !hasDoubleJumpCapacity)/* ou si maudit et pas en state jump / fall */;
         //Debug.Log("Here the state:" + movementState);
         //JUMP
         if (inputParams.jumpRequest && canJump) {
@@ -446,7 +449,25 @@ public class CharacterController : MonoBehaviour {
             }
 
         }else if (previousInteractState == InteractState.Absorb) {
-            interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
+            Capacity capacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
+            if (capacity != Capacity.Nothing) {
+                AddPower(capacity);
+            }
+        }
+    }
+
+    private void AddPower(Capacity capacity) {
+        switch (capacity) {
+
+            case Capacity.Nothing:
+                break;
+
+            case Capacity.DoubleJump:
+                hasDoubleJumpCapacity = true;
+                break;
+
+            case Capacity.Glide:
+                break;
         }
     }
 }
