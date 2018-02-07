@@ -15,7 +15,7 @@ public class BounceEffect : MonoBehaviour {
 
         Koda.AddForce(-collision.contacts[0].normal * 200, ForceMode.Impulse); // 200 = coeffRebond
 
-        Debug.Log("BOING");
+        //Debug.Log("BOING");
     }
 
     /*private void OnCollisionExit(Collision collision) {
