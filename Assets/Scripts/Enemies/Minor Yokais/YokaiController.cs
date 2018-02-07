@@ -52,7 +52,7 @@ public class YokaiController : MonoBehaviour
         if (transform.position == target.transform.position)
         {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
-            target.GetComponent<PlayerAbsorption>().sakePot.SetActive(false);
+            //target.GetComponent<PlayerAbsorption>().sakePot.SetActive(false);
             Destroy(gameObject);
         }
         else

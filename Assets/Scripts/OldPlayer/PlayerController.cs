@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MoveStatesMachine { Idle, Run, Jump, DoubleJump, Glide, Fly, Shrink, Dead};
+public enum ActionStatesMachine { MeleeAttack, RangeAttack, TakeObject, Absorb, Lure};
+
 public class PlayerController : MonoBehaviour {
 
     private float speed;
@@ -16,7 +19,7 @@ public class PlayerController : MonoBehaviour {
     private bool isJumping;
     private bool isDoubleJumping;
     private int nbJump = 0;
-    private bool canDoubleJump;
+    public bool canDoubleJump;
     [SerializeField]
     private GameObject ParachuteLeaf;
     [SerializeField]
@@ -30,8 +33,11 @@ public class PlayerController : MonoBehaviour {
     public float rotateSpeed;
     public GameObject playerModel;
 
+    //Refactor
+    public MoveStatesMachine currentMoveState;
+    public ActionStatesMachine currentActionState;
 
-    // Use this for initialization
+
     void Start() {
         body = GetComponent<Rigidbody>();
         animBody = GetComponent<Animator>();
@@ -39,7 +45,7 @@ public class PlayerController : MonoBehaviour {
         canDoubleJump = true;
     }
 
-    // Update is called once per frame
+
     void Update() {
 
         speed = moveSpeed;
@@ -133,14 +139,128 @@ public class PlayerController : MonoBehaviour {
     }
 
 
+    //void Update() {
+
+    //    speed = moveSpeed;
+
+    //    if (GameObject.Find("Catchable Object").transform.childCount != 0) {
+    //        speed = movespeedWithObject;
+    //    }
+
+    //    _onGround = CheckGroundCollision();
+
+    //    switch (currentMoveState) {
+
+    //        case MoveStatesMachine.Idle:
+
+    //            break;
+
+    //        case MoveStatesMachine.Run:
+
+    //            break;
+
+    //        case MoveStatesMachine.Jump:
+
+    //            //GLIDE ON
+    //            if (Input.GetButton("Jump") && !_onGround && body.velocity.y < 0 && canDoubleJump) {
+    //                nbJump++;
+    //                leafHead.SetActive(false);
+    //                body.velocity = new Vector3(0, -1.5f, 0);
+    //                animBody.SetBool("isGliding", true);
+    //                ParachuteLeaf.SetActive(true);
+    //                currentMoveState = MoveStatesMachine.Glide;
+    //            }
+
+
+    //            //DOUBLE JUMP
+    //            if (Input.GetButtonDown("Jump") && canDoubleJump) {
+    //                body.velocity = new Vector3(0, jumpForce, 0);
+    //                animBody.SetBool("isDoubleJumping", true);
+    //                currentMoveState = MoveStatesMachine.DoubleJump;
+    //            }
+    //            break;
+
+    //        case MoveStatesMachine.DoubleJump:
+
+    //            break;
+
+    //        case MoveStatesMachine.Glide:
+    //            //GLIDE OFF
+    //            if (Input.GetButtonUp("Jump") && !_onGround) {
+    //                ParachuteLeaf.SetActive(false);
+    //                animBody.SetBool("isGliding", false);
+    //                leafHead.SetActive(true);
+    //                currentMoveState = MoveStatesMachine.DoubleJump;
+    //            }
+    //            break;
+
+    //        case MoveStatesMachine.Fly:
+
+    //            break;
+
+    //        case MoveStatesMachine.Shrink:
+
+    //            break;
+
+    //        case MoveStatesMachine.Dead:
+    //            animBody.SetBool("isDead", true);
+    //            break;
+
+    //        default:
+
+    //            break;
+    //    }
+
+    //    //JUMP
+    //    if (Input.GetButtonDown("Jump") && _onGround) {
+    //        airVelocity = velocityAxis;
+    //        body.velocity = new Vector3(0, jumpForce, 0);
+    //        animBody.SetBool("isJumping", true);
+    //        currentMoveState = MoveStatesMachine.Jump;
+    //    }
+
+    //    //LAND
+    //    if (_onGround && body.velocity.y < 0) {
+    //        ParachuteLeaf.SetActive(false);
+    //        animBody.SetBool("isDoubleJumping", false);
+    //        animBody.SetBool("isJumping", false);
+    //        currentMoveState = MoveStatesMachine.Idle;
+    //    }
+
+    //    //Player movement
+    //    velocityAxis = new Vector3(Input.GetAxis("Horizontal"), body.velocity.y, Input.GetAxis("Vertical"));
+    //    //Player Orientation
+    //    orientationMove = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
+    //    velocityAxis = velocityAxis.normalized * speed;
+    //    velocityAxis.y = body.velocity.y;
+
+    //    animBody.SetFloat("Speed", Mathf.Abs(velocityAxis.x) + Mathf.Abs(velocityAxis.z));
+    //    animBody.SetFloat("SpeedMultiplier", speed);
+
+
+    //    //AIR CONTROL
+    //    if (!_onGround) {
+    //        body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((Input.GetAxis("Horizontal") * 6), velocityAxis.y, (Input.GetAxis("Vertical") * 12));
+    //    }
+    //    else {
+    //        body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * velocityAxis;
+    //    }
+
+    //    //Rotate player on direction based on camera
+    //    if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) {
+    //        transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
+    //        Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
+    //        playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
+    //    }
+
+
+    //}
+
 
     private bool CheckGroundCollision() {
         // We can use a layer mask to tell the Physics Raycast which layers we are trying to hit.
         // This will allow us to restrict which objects this applies to.
         int layerMask = 1 << LayerMask.NameToLayer("Ground");
-
-        // We will get the bounds of the MeshFilter (our player's sphere) so we can
-        // get the coordinates of where the bottom is.
         Bounds meshBounds = GetComponent<MeshFilter>().mesh.bounds;
 
         // We will use a Physics.Raycast to see if there is anything on the ground below the player.
@@ -151,20 +271,21 @@ public class PlayerController : MonoBehaviour {
         return false;
     }
 
+    //private void OnCollisionEnter(Collision collision) {
+
+    //    if (collision.gameObject.CompareTag("Bumper")) {
+    //        body.velocity = Vector3.zero;
+    //        animBody.SetBool("isJumping", true);
+    //        currentMoveState = MoveStatesMachine.Jump;
+    //        body.AddForce(Vector3.up * collision.gameObject.GetComponent<BounceEffect>().forceRebond, ForceMode.VelocityChange);
+    //    }
+        
+    //}
+
     public void SetIsJumping(bool isJump) {
         isJumping = isJump;
         nbJump++;
         animBody.SetBool("isJumping", true);
-    }
-
-    public bool CanDoubleJump {
-        get {
-            return canDoubleJump;
-        }
-
-        set {
-            canDoubleJump = value;
-        }
     }
 
 }
