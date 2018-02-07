@@ -57,4 +57,77 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
         }
     }
 
+    public void OnStateEnter(InteractState state) {
+        switch (state) {
+
+            case InteractState.Glide:
+                animBody.SetBool("isGliding", true);
+                break;
+
+            case InteractState.MeleeAttack:
+                animBody.SetBool("isAttacking", true);
+                break;
+
+            case InteractState.DistantAttack:
+                animBody.SetBool("isDistantAttacking", true);
+                break;
+
+            case InteractState.SpawnLure:
+                //animBody.SetBool("isAttacking", true);
+                break;
+
+            case InteractState.Inflate:
+                //animBody.SetBool("isAttacking", true);
+                break;
+
+            case InteractState.Tiny:
+                //animBody.SetBool("isAttacking", true);
+                break;
+
+            case InteractState.Activate:
+                //animBody.SetBool("isAttacking", true);
+                break;
+
+            case InteractState.Absorb:
+                animBody.SetBool("isAbsorbing", true);
+                break;
+        }
+    }
+
+    public void OnStateExit(InteractState state) {
+        switch (state) {
+            case InteractState.Glide:
+                animBody.SetBool("isJumping", false);
+                break;
+
+            case InteractState.MeleeAttack:
+                animBody.SetBool("isAttacking", false);
+                break;
+
+            case InteractState.DistantAttack:
+                animBody.SetBool("isDistantAttacking", false);
+                break;
+
+            case InteractState.SpawnLure:
+                //animBody.SetBool("isAttacking", false);
+                break;
+
+            case InteractState.Inflate:
+                //animBody.SetBool("isAttacking", false);
+                break;
+
+            case InteractState.Tiny:
+                //animBody.SetBool("isAttacking", false);
+                break;
+
+            case InteractState.Activate:
+                //animBody.SetBool("isAttacking", false);
+                break;
+
+            case InteractState.Absorb:
+                animBody.SetBool("isAbsorbing", false);
+                break;
+        }
+    }
+
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public enum InteractState {
-    Nothing, Glide, MeleeAttack, DistantAttack, SpawnLure, Transformation, Activate, Absorb, Carry, Push
+    Nothing, Glide, MeleeAttack, DistantAttack, SpawnLure, Inflate, Tiny, Activate, Absorb, Carry, Push
 }
 
 public struct InteractStateParam {
@@ -12,9 +12,11 @@ public struct InteractStateParam {
     public bool canMeleeAttack;
     public bool canDistantAttack;
     public bool canSpawnLure;
-    public bool canTransform;
+    public bool canInflate;
+    public bool canResize;
     public bool canActivate;
     public bool canAbsorb;
+    public bool yokaiStillInRange;
     public bool canCarry;
     public bool canPush;
 }
@@ -24,9 +26,17 @@ public class InteractStateController {
     public InteractState GetNewState(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         switch (previous) {
+
             case InteractState.Nothing:
                 newState = ManageNothing(previous, param);
+
+
+
+
                 break;
+
+
+
             case InteractState.Glide:
                 newState = ManageGlide(previous, param);
                 break;
@@ -45,8 +55,12 @@ public class InteractStateController {
                 newState = ManageSpawnLure(previous, param);
                 break;
 
-            case InteractState.Transformation:
-                newState = ManageTransformation(previous, param);
+            case InteractState.Inflate:
+                newState = ManageInflate(previous, param);
+                break;
+
+            case InteractState.Tiny:
+                newState = ManageResize(previous, param);
                 break;
 
             case InteractState.Activate:
@@ -66,6 +80,7 @@ public class InteractStateController {
                 break;
 
         }
+
 
         return newState;
     }
@@ -93,9 +108,14 @@ public class InteractStateController {
             newState = InteractState.SpawnLure;
         }
 
-        //Transformation
-        if (param.canTransform) {
-            newState = InteractState.Transformation;
+        //Inflate
+        if (param.canInflate) {
+            newState = InteractState.Inflate;
+        }
+
+        //Resize
+        if (param.canResize) {
+            newState = InteractState.Tiny;
         }
 
         //Activate
@@ -134,6 +154,11 @@ public class InteractStateController {
 
     InteractState ManageGlide(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
+
+        if (param.canGlide) {
+            newState = InteractState.Glide;
+        }
+
         //NOTHING
         if (!param.canGlide) {
             newState = InteractState.Nothing;
@@ -145,6 +170,8 @@ public class InteractStateController {
     InteractState ManageMeleeAttack(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //NOTHING
+        
+        //DETECTER LA FIN DE L'ANIMATION OU UN AUTRE MOYEN DE DECLENCHER LE RETOUR A L'ETAT NOTHING
         if (!param.canGlide) {
             newState = InteractState.Nothing;
         }
@@ -170,7 +197,16 @@ public class InteractStateController {
         return newState;
     }
 
-    InteractState ManageTransformation(InteractState previous, InteractStateParam param) {
+    InteractState ManageInflate(InteractState previous, InteractStateParam param) {
+        InteractState newState = previous;
+        //NOTHING
+        if (param.canInflate) {
+            newState = InteractState.Nothing;
+        }
+        return newState;
+    }
+
+    InteractState ManageResize(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //NOTHING
         if (!param.canGlide) {
@@ -178,6 +214,7 @@ public class InteractStateController {
         }
         return newState;
     }
+
     InteractState ManageActivate(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //NOTHING
@@ -189,7 +226,7 @@ public class InteractStateController {
     InteractState ManageAbsorb(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //NOTHING
-        if (!param.canGlide) {
+        if (!param.yokaiStillInRange) {
             newState = InteractState.Nothing;
         }
         return newState;
