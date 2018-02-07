@@ -25,7 +25,7 @@ public class PlayerCatchObject : MonoBehaviour {
     void Update() {
 
         if (parentObjectInHand.transform.childCount != 0) {
-            playerController.CanDoubleJump = false;
+            playerController.canDoubleJump = false;
         }
 
         if (Input.GetButtonDown("Fire3")) {
@@ -43,7 +43,7 @@ public class PlayerCatchObject : MonoBehaviour {
                 body.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
                 objectInHand.GetComponent<Rigidbody>().useGravity = true;
                 objectInHand = null;
-                playerController.CanDoubleJump = true;
+                playerController.canDoubleJump = true;
             }
         }
     }
