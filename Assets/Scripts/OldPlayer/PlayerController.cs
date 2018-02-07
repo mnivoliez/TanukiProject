@@ -8,7 +8,6 @@ public enum ActionStatesMachine { MeleeAttack, RangeAttack, TakeObject, Absorb, 
 public class PlayerController : MonoBehaviour {
 
 <<<<<<< refs/remotes/base/master:Assets/Scripts/OldPlayer/PlayerController.cs
-<<<<<<< refs/remotes/base/master:Assets/Scripts/OldPlayer/PlayerController.cs
     private float speed;
     public float moveSpeed;
     public float movespeedWithObject;
@@ -290,8 +289,6 @@ public class PlayerController : MonoBehaviour {
         animBody.SetBool("isJumping", true);
     }
 =======
-=======
->>>>>>> clean animator controller and mask animation:Assets/Scripts/Player/PlayerController.cs
 	private float speed;
 	public float moveSpeed;
 	public float movespeedWithObject;
@@ -463,9 +460,6 @@ public class PlayerController : MonoBehaviour {
 			canDoubleJump = value;
 		}
 	}
-<<<<<<< refs/remotes/base/master:Assets/Scripts/OldPlayer/PlayerController.cs
->>>>>>> clean animator controller and mask animation:Assets/Scripts/Player/PlayerController.cs
-=======
 >>>>>>> clean animator controller and mask animation:Assets/Scripts/Player/PlayerController.cs
 
 }
