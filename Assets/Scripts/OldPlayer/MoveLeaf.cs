@@ -33,7 +33,7 @@ public class MoveLeaf : MonoBehaviour {
             if (transform.position == spawnLeaf.transform.position) {
                 arrived = false;
                 currentSpeed = initialSpeed;
-                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDistantAttack>().SetLeafIsBack();
+                //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDistantAttack>().SetLeafIsBack();
                 Destroy(gameObject);
             }
         }
