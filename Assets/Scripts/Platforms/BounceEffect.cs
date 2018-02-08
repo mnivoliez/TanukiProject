@@ -5,7 +5,7 @@ using UnityEngine;
 public class BounceEffect : MonoBehaviour {
 
 
-    public float coeffRebond;
+    [SerializeField] private int coeffRebond = 200;
 
 
     private void OnCollisionEnter(Collision collision) {
@@ -13,7 +13,7 @@ public class BounceEffect : MonoBehaviour {
         Vector3 Koda_old_velocity = Koda.velocity;
         ContactPoint contact = collision.contacts[0];
 
-        Koda.AddForce(-collision.contacts[0].normal * 200, ForceMode.Impulse); // 200 = coeffRebond
+        Koda.AddForce(-collision.contacts[0].normal * coeffRebond, ForceMode.Impulse); // 200 = coeffRebond
 
         //Debug.Log("BOING");
     }
