@@ -11,22 +11,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1126762360363800}
   m_IsPrefabParent: 1
---- !u!1 &1005436436280234
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4428729476254314}
-  - component: {fileID: 135737932901784292}
-  m_Layer: 0
-  m_Name: AreaAffect
-  m_TagString: Lantern
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1126762360363800
 GameObject:
   m_ObjectHideFlags: 0
@@ -39,6 +23,8 @@ GameObject:
   - component: {fileID: 135343783729361262}
   - component: {fileID: 23731509713687960}
   - component: {fileID: 54165474020601054}
+  - component: {fileID: 114670405756390012}
+  - component: {fileID: 135632726860779252}
   m_Layer: 9
   m_Name: Lantern
   m_TagString: Lantern
@@ -55,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4802161063630320}
   - component: {fileID: 108721360719839662}
-  - component: {fileID: 114145311313362648}
   m_Layer: 9
   m_Name: Point light
   m_TagString: Untagged
@@ -87,26 +72,12 @@ Transform:
   m_GameObject: {fileID: 1126762360363800}
   m_LocalRotation: {x: 0.000000072643154, y: -0.0000001490116, z: 0.0000001459848,
     w: 1}
-  m_LocalPosition: {x: -70.4, y: 2.2, z: -52.4}
+  m_LocalPosition: {x: 20.99, y: 20.7, z: 33.27}
   m_LocalScale: {x: 0.24233705, y: 0.24233699, z: 0.24233697}
   m_Children:
-  - {fileID: 4428729476254314}
   - {fileID: 4802161063630320}
   - {fileID: 4728790153155840}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4428729476254314
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1005436436280234}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0000017182, z: 0}
-  m_LocalScale: {x: 2.946511, y: 2.9465094, z: 2.9465094}
-  m_Children: []
-  m_Father: {fileID: 4092344738433662}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4728790153155840
@@ -120,7 +91,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4092344738433662}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4802161063630320
 Transform:
@@ -133,7 +104,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4092344738433662}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23731509713687960
 MeshRenderer:
@@ -144,6 +115,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -159,6 +131,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -261,17 +234,18 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114145311313362648
+--- !u!114 &114670405756390012
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1569596799557060}
+  m_GameObject: {fileID: 1126762360363800}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55a73615de7689c4eb1b982524fdac84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _light: {fileID: 108721360719839662}
 --- !u!135 &135343783729361262
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -284,12 +258,12 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &135737932901784292
+--- !u!135 &135632726860779252
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1005436436280234}
+  m_GameObject: {fileID: 1126762360363800}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1

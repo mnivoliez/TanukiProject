@@ -4,29 +4,43 @@ using UnityEngine;
 
 public class LanternController : MonoBehaviour
 {
-
+    private Renderer _renderer;
+    [SerializeField] Light _light;
     // Use this for initialization
     void Start()
     {
-        gameObject.transform.parent.GetComponent<Renderer>().sharedMaterial.SetVector("_Center", transform.position);
+        _renderer = GetComponent<Renderer>();
+        _renderer.sharedMaterial.SetVector("_Center", transform.position);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.localScale = transform.localScale;
-        gameObject.transform.parent.GetComponent<Renderer>().sharedMaterial.SetVector("_Center", transform.position);
+        _renderer.sharedMaterial.SetVector("_Center", transform.position);
 
-        if (gameObject.transform.parent.gameObject.transform.parent == null)
+        if (transform.parent == null)
         {
-            gameObject.transform.parent.GetComponent<Renderer>().sharedMaterial.SetFloat("_Distance", 5f);
-            GetComponent<Light>().intensity = 1;
+            _renderer.sharedMaterial.SetFloat("_Distance", 5f);
+            _light.intensity = 1;
         }
         else
         {
-            gameObject.transform.parent.GetComponent<Renderer>().sharedMaterial.SetFloat("_Distance", 10f);
-            GetComponent<Light>().intensity = 1.6f;
+            _renderer.sharedMaterial.SetFloat("_Distance", 10f);
+            _light.intensity = 1.6f;
+        }
+    }
+
+    public bool isInEffectArea(Vector3 point)
+    {
+        float dist = Vector3.Distance(transform.position, point);
+        if (transform.parent == null)
+        {
+            return dist < 5f;
+        }
+        else
+        {
+            return dist < 10f;
         }
     }
 }
