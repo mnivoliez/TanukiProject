@@ -14,11 +14,28 @@ public class AirStream : MonoBehaviour {
 		
 	}
 
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Player")) {
+
+            if (other.gameObject.GetComponent<CharacterController>().GetInteractState() == InteractState.Glide) {
+                Rigidbody bodyObject = other.gameObject.GetComponent<Rigidbody>();
+                //bodyObject.AddForce(Vector3.up * 100 + (Vector3.up * Mathf.Abs(bodyObject.velocity.y)), ForceMode.Force);
+                bodyObject.velocity = new Vector3(bodyObject.velocity.x, 0, bodyObject.velocity.z);
+                bodyObject.AddForce(Vector3.up * 80, ForceMode.Impulse);
+            }
+            
+
+        }
+        
+    }
+
     private void OnTriggerStay(Collider other) {
 
         if (other.gameObject.CompareTag("Player")) {
-            Rigidbody bodyObject = other.gameObject.GetComponent<Rigidbody>();
-            
+            if (other.gameObject.GetComponent<CharacterController>().GetInteractState() == InteractState.Glide) {
+                Rigidbody bodyObject = other.gameObject.GetComponent<Rigidbody>();
+                bodyObject.AddForce(Vector3.up * 100 + (Vector3.up * Mathf.Abs(bodyObject.velocity.y)), ForceMode.Force);
+            }
         }
         
     }
