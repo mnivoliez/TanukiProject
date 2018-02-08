@@ -135,8 +135,10 @@ public class InteractBehavior : MonoBehaviour {
 
     }
 
-    public Capacity DoContinueAbsorption(GameObject absorbableObject) {
+    public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject) {
+        Pair<Capacity, float> pairCapacity;
         Capacity capacity = Capacity.Nothing;
+        float timerCapacity = 0;
         Debug.Log("PAS Coucou");
         if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0) {
 
@@ -156,6 +158,7 @@ public class InteractBehavior : MonoBehaviour {
                 absorbableObject.GetComponent<YokaiController>().Absorbed();
                 gameObject.GetComponent<PlayerCollectableController>().AddYokai();
                 capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
+                timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
                 absorptionTimer = 4f;
                 absorptionGauge = 0;
                 centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
@@ -175,7 +178,9 @@ public class InteractBehavior : MonoBehaviour {
             canvasQTE.SetActive(false);
         }
 
-        return capacity;
+        pairCapacity = new Pair<Capacity, float>(capacity, timerCapacity);
+
+        return pairCapacity;
     }
 
     

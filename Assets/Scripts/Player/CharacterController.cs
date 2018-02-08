@@ -54,6 +54,20 @@ public class Leaf {
     }
 
 }
+
+public class Pair<T, U> {
+    public Pair() {
+    }
+
+    public Pair(T first, U second) {
+        this.First = first;
+        this.Second = second;
+    }
+
+    public T First { get; set; }
+    public U Second { get; set; }
+}
+
 public class CharacterController : MonoBehaviour {
 
     [Header("PLAYER")]
@@ -92,7 +106,9 @@ public class CharacterController : MonoBehaviour {
     private InputController inputController;
 
     // Capacity
-    [SerializeField] private bool hasDoubleJumpCapacity;
+    [SerializeField] private bool hasDoubleJumpCapacityPermanently;
+    [SerializeField] private bool hasDoubleJumpCapacityTemporary;
+    [SerializeField] private float timerCapacity;
 
     //Animation
     private AnimatorController animBody;
@@ -116,6 +132,13 @@ public class CharacterController : MonoBehaviour {
     }
 
     private void Update() {
+        if (timerCapacity > 0) {
+            timerCapacity -= Time.deltaTime;
+            Debug.Log(timerCapacity);
+        } else {
+            StopTemporaryCapacity();
+        }
+
         onGround = IsGrounded();
         previousMovementState = movementState;
         
@@ -182,7 +205,7 @@ public class CharacterController : MonoBehaviour {
 
     void MoveAccordingToInput(InputParams inputParams) {
         //Debug.Log("STATE: " + movementState);
-        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall || movementState == MovementState.Jump && !hasDoubleJumpCapacity)/* ou si maudit et pas en state jump / fall */;
+        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall || (movementState == MovementState.Jump && !hasDoubleJumpCapacityTemporary && !hasDoubleJumpCapacityPermanently))/* ou si maudit et pas en state jump / fall */;
         //Debug.Log("Here the state:" + movementState);
         //JUMP
         if (inputParams.jumpRequest && canJump) {
@@ -449,25 +472,30 @@ public class CharacterController : MonoBehaviour {
             }
 
         }else if (previousInteractState == InteractState.Absorb) {
-            Capacity capacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
-            if (capacity != Capacity.Nothing) {
-                AddPower(capacity);
+            Pair<Capacity, float> pairCapacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
+            if (pairCapacity.First != Capacity.Nothing) {
+                AddCapacity(pairCapacity);
             }
         }
     }
 
-    private void AddPower(Capacity capacity) {
-        switch (capacity) {
-
-            case Capacity.Nothing:
-                break;
+    private void AddCapacity(Pair<Capacity, float> pairCapacity) {
+        switch (pairCapacity.First) {
 
             case Capacity.DoubleJump:
-                hasDoubleJumpCapacity = true;
+                hasDoubleJumpCapacityTemporary = true;
+                
                 break;
 
             case Capacity.Glide:
                 break;
         }
+
+        timerCapacity = pairCapacity.Second;
+    }
+
+    private void StopTemporaryCapacity() {
+        timerCapacity = 0;
+        hasDoubleJumpCapacityTemporary = false;
     }
 }

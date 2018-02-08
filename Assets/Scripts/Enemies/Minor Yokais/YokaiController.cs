@@ -27,6 +27,7 @@ public class YokaiController : MonoBehaviour
     private GameObject knockedParticle;
     [SerializeField]
     private Capacity capacity;
+    [SerializeField] float timerCapacity = 0;
 
 
 
@@ -83,6 +84,10 @@ public class YokaiController : MonoBehaviour
 
     public Capacity GetCapacity() {
         return capacity;
+    }
+
+    public float GetTimerCapacity() {
+        return timerCapacity;
     }
 
     public void LooseHp(float damage)
