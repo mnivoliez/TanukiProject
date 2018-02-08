@@ -236,7 +236,9 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case InteractState.Glide:
-                body.velocity = new Vector3(body.velocity.x, -5f, body.velocity.z);
+                //body.velocity = new Vector3(body.velocity.x, -5f, body.velocity.z);
+                body.AddForce(Vector3.up * 150f, ForceMode.Force);
+
                 interactBehaviorCtrl.DoGlide();
                 
                 break;
@@ -288,7 +290,6 @@ public class CharacterController : MonoBehaviour {
             case InteractState.Inflate:
                 
                 if (previousInteractState != InteractState.Inflate) {
-                    Debug.Log("coucou");
                     interactBehaviorCtrl.DoInflate(true);
                 }
                 
@@ -422,6 +423,8 @@ public class CharacterController : MonoBehaviour {
 
     public bool GetOnGround() { return onGround; }
     public float GetJumpForce() { return jumpForce; }
+
+    public InteractState GetInteractState() { return interactState; }
 
     //public bool TryTakeLeaf() {
     //    if (inputInteractParameters.LeafAvailable) {
