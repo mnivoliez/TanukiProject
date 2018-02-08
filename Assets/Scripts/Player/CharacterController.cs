@@ -29,6 +29,7 @@ struct InputInteractParams {
 public class LeafAlreadyTakenException : System.Exception {
 
 }
+
 public class Leaf {
     public class LeafLock {
         Leaf _parent;
@@ -52,8 +53,8 @@ public class Leaf {
             throw new LeafAlreadyTakenException();
         }
     }
-
 }
+
 public class CharacterController : MonoBehaviour {
 
     [Header("PLAYER")]
@@ -140,7 +141,6 @@ public class CharacterController : MonoBehaviour {
         }
 
         animBody.UpdateState(movementState, speed, moveSpeed);
-
     }
 
     void OnCollisionEnter(Collision coll) {
@@ -154,7 +154,7 @@ public class CharacterController : MonoBehaviour {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-                    if (c.normal.y >= 0.5f && c.normal.y <= 1f) {
+                    if (c.normal.y >= 0.50f && c.normal.y < 1.01f) {
                         _grounds.Add(gO);
                         break;
                     }
@@ -171,7 +171,15 @@ public class CharacterController : MonoBehaviour {
                 _grounds.Remove(gO);
             }
         }
-    }
+	}
+
+	public void StopMeleeAttackState() {
+		interactStateParameter.finishedMeleeAttack = true;
+	}
+
+	public void StopDistantAttackState() {
+		interactStateParameter.finishedDistantAttack = true;
+	}
 
     private bool IsGrounded() {
         return _grounds.Count > 0;
@@ -192,7 +200,6 @@ public class CharacterController : MonoBehaviour {
         inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed;
         inputVelocityAxis.y = body.velocity.y;
 
-
         //AIR CONTROL
         if (!onGround) {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((inputParams.moveX * airControl), inputVelocityAxis.y, (inputParams.moveZ * (airControl * 2)));
@@ -210,14 +217,8 @@ public class CharacterController : MonoBehaviour {
     }
 
     void InteractAccordingToInput(InputParams inputParams) {
-
-       
-
         switch (interactState) {
-
             case InteractState.Nothing:
-
-
                 if (previousInteractState == InteractState.MeleeAttack) {
                     interactBehaviorCtrl.StopMeleeAttack();
                 }
@@ -235,18 +236,21 @@ public class CharacterController : MonoBehaviour {
                 }
                 break;
 
-            case InteractState.Glide:
-                body.velocity = new Vector3(body.velocity.x, -5f, body.velocity.z);
-                interactBehaviorCtrl.DoGlide();
-                
+			case InteractState.Glide:
+				if (IsGrounded ())
+				{
+					interactBehaviorCtrl.StopGlide ();
+				}
+				else
+				{
+					body.velocity = new Vector3 (body.velocity.x, -5f, body.velocity.z);
+					interactBehaviorCtrl.DoGlide ();
+				}
                 break;
 
             case InteractState.MeleeAttack:
-
-
                 if (interactStateParameter.canMeleeAttack) {
                     interactBehaviorCtrl.DoMeleeAttack();
-                    
                 }
                 
                 //if (Input.GetButtonDown("Fire1")) {
@@ -267,26 +271,19 @@ public class CharacterController : MonoBehaviour {
                 //        interactBehaviorCtrl.DoChargedMeleeAttack();
                 //    }
                 //}
-
-
-
                 break;
 
             
             case InteractState.DistantAttack:
-
                 if (interactStateParameter.canDistantAttack) {
                     interactBehaviorCtrl.DoDistantAttack();
                 }
-                
-
                 break;
 
             case InteractState.SpawnLure:
                 break;
 
             case InteractState.Inflate:
-                
                 if (previousInteractState != InteractState.Inflate) {
                     Debug.Log("coucou");
                     interactBehaviorCtrl.DoInflate(true);
@@ -302,15 +299,10 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case InteractState.Absorb:
-
                 GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
-
                 if(nearestObject == null || !nearestObject.CompareTag("Yokai")) {
                     interactStateParameter.yokaiStillInRange = false;
                 }
-                
-
-
                 break;
 
             case InteractState.Carry:
@@ -319,19 +311,17 @@ public class CharacterController : MonoBehaviour {
             case InteractState.Push:
                 break;
         }
-
-
     }
 
 
-    void UpdateMoveStateParameters(InputParams inputParams) {
-        moveStateParameters.velocity = body.velocity;
+	void UpdateMoveStateParameters(InputParams inputParams) {
+		moveStateParameters.velocity = body.velocity;
+		moveStateParameters.position_pivot = body.GetComponent<Collider>().bounds.min;
         moveStateParameters.jumpRequired = inputParams.jumpRequest;
         moveStateParameters.grounded = IsGrounded();
     }
 
     void UpdateInteractStateParameters(InputParams inputParams) {
-
         switch (inputParams.actionRequest) {
             case ActionRequest.Glide:
                 if (movementState == MovementState.Fall) {
@@ -339,12 +329,20 @@ public class CharacterController : MonoBehaviour {
                 }
                 break;
 
-            case ActionRequest.MeleeAttack:
-                interactStateParameter.canMeleeAttack = true;
+			case ActionRequest.MeleeAttack:
+				if (interactState != InteractState.Glide)
+				{
+					interactStateParameter.finishedMeleeAttack = false;
+					interactStateParameter.canMeleeAttack = true;
+				}
                 break;
 
-            case ActionRequest.DistantAttack:
-                interactStateParameter.canDistantAttack = true;
+			case ActionRequest.DistantAttack:
+				if (interactState != InteractState.Glide)
+				{
+					interactStateParameter.finishedDistantAttack = false;
+					interactStateParameter.canDistantAttack = true;
+				}
                 break;
 
             case ActionRequest.SpawnLure:
@@ -352,7 +350,6 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case ActionRequest.Inflate:
-                
                 if (IsGrounded()) interactStateParameter.canInflate = true;
                 break;
 
@@ -361,11 +358,8 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case ActionRequest.ContextualAction:
-
                 GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
-
                 if(nearestObject != null) {
-
                     bool inFrontOfActivableObject = false;
                     bool inFrontOfAbsorbableObject = false;
                     bool inFrontOfPortableObject = false;
@@ -399,14 +393,12 @@ public class CharacterController : MonoBehaviour {
                     }
 
                 }
-
-                
                 break;
 
             case ActionRequest.None:
-                interactStateParameter.canGlide = false;
-                interactStateParameter.canMeleeAttack = false;
-                interactStateParameter.canDistantAttack = false;
+				interactStateParameter.canGlide = false;
+				interactStateParameter.canMeleeAttack = false;
+				interactStateParameter.canDistantAttack = false;
                 interactStateParameter.canSpawnLure = false;
                 interactStateParameter.canInflate = false;
                 interactStateParameter.canActivate = false;

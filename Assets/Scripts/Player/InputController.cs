@@ -38,36 +38,46 @@ public class InputController : MonoBehaviour {
 
     void UpdateInteractInput() {
         int actionRequested = 0;
-        if (Input.GetButton("Jump")) {
-            actionRequested++;
-            inputParams.actionRequest = ActionRequest.Glide;
-        }
-        if (Input.GetButtonDown("Fire1")) {
-            actionRequested++;
-            inputParams.actionRequest = ActionRequest.MeleeAttack;
-        }
-        if (Input.GetButtonDown("Fire2")) {
-            actionRequested++;
-            inputParams.actionRequest = ActionRequest.DistantAttack;
-        }
-        if (Input.GetButtonDown("Lure")) {
-            actionRequested++;
-            inputParams.actionRequest = ActionRequest.SpawnLure;
-        }
-        if (Input.GetButtonDown("Transformation")) {
-            actionRequested++;
-            inputParams.actionRequest = ActionRequest.Inflate;
-        }
-        if (Input.GetButtonDown("Resize")) {
-            actionRequested++;
-            inputParams.actionRequest = ActionRequest.Resize;
-        }
-        if (Input.GetButtonDown("Fire3")) {
-            actionRequested++;
-            inputParams.actionRequest = ActionRequest.ContextualAction;
-        }
+		if (Input.GetButton ("Jump"))
+		{
+			actionRequested++;
+			inputParams.actionRequest = ActionRequest.Glide;
+		}
+		else
+		{
+			if (Input.GetButtonDown ("Fire1"))
+			{
+				actionRequested++;
+				inputParams.actionRequest = ActionRequest.MeleeAttack;
+			}
+			if (Input.GetButtonDown ("Fire2"))
+			{
+				actionRequested++;
+				inputParams.actionRequest = ActionRequest.DistantAttack;
+			}
+			if (Input.GetButtonDown ("Lure"))
+			{
+				actionRequested++;
+				inputParams.actionRequest = ActionRequest.SpawnLure;
+			}
+			if (Input.GetButtonDown ("Transformation"))
+			{
+				actionRequested++;
+				inputParams.actionRequest = ActionRequest.Inflate;
+			}
+			if (Input.GetButtonDown ("Resize"))
+			{
+				actionRequested++;
+				inputParams.actionRequest = ActionRequest.Resize;
+			}
+			if (Input.GetButtonDown ("Fire3"))
+			{
+				actionRequested++;
+				inputParams.actionRequest = ActionRequest.ContextualAction;
+			}
+		}
 
-        if (actionRequested > 1) {
+		if (actionRequested > 1) {
             inputParams.actionRequest = ActionRequest.None;
         }
 

@@ -44,14 +44,10 @@ public class InteractBehavior : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-  
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
         
-
         sakePot.SetActive(false);
-        
-
     }
 	
 	// Update is called once per frame
@@ -73,8 +69,6 @@ public class InteractBehavior : MonoBehaviour {
         leafHead.SetActive(false);
         attackRange.SetActive(true);
         leafHand.SetActive(true);
-        
-
     }
 
     public void StopMeleeAttack() {
@@ -88,17 +82,14 @@ public class InteractBehavior : MonoBehaviour {
         attackRange.SetActive(true);
         leafHead.SetActive(false);
         leafHand.SetActive(true);
-
     }
 
     public void DoDistantAttack() {
-        
         leafHead.SetActive(false);
         GameObject LeafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
         LeafBoomerang.GetComponent<MoveLeaf>().SetSpawnPosition(spawnLeaf);
         LeafBoomerang.GetComponent<MoveLeaf>().SetTargetPosition(rangeMaxLeaf);
         LeafBoomerang.GetComponent<MoveLeaf>().SetDamage(distantDamage);
-
     }
 
     public void StopDistantAttack() {
