@@ -73,13 +73,9 @@ public class PlayerMeleeAttack : MonoBehaviour {
 			timerAttack = 0;
 		}
 
-<<<<<<< refs/remotes/base/master:Assets/Scripts/OldPlayer/PlayerMeleeAttack.cs
 		if ((this.animBody.GetCurrentAnimatorStateInfo(0).IsName("JumpInsantPostAttack") || 
 			this.animBody.GetCurrentAnimatorStateInfo(0).IsName("RunInsantPostAttack") || 
 			this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack")) && leafInHand) {
-=======
-		if ((this.animBody.GetCurrentAnimatorStateInfo(0).IsName("JumpInsantPostAttack") || this.animBody.GetCurrentAnimatorStateInfo(0).IsName("PostAttack")) && leafInHand) {
->>>>>>> clean animator controller and mask animation:Assets/Scripts/Player/PlayerMeleeAttack.cs
 			attackRange.SetActive(false);
 			leafHead.SetActive(true);
 			leafHand.SetActive(false);
