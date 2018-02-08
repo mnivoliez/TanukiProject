@@ -8,9 +8,11 @@ public enum InteractState {
 }
 
 public struct InteractStateParam {
-    public bool canGlide;
-    public bool canMeleeAttack;
-    public bool canDistantAttack;
+	public bool canGlide;
+	public bool canMeleeAttack;
+	public bool finishedMeleeAttack;
+	public bool canDistantAttack;
+	public bool finishedDistantAttack;
     public bool canSpawnLure;
     public bool canInflate;
     public bool canResize;
@@ -29,13 +31,7 @@ public class InteractStateController {
 
             case InteractState.Nothing:
                 newState = ManageNothing(previous, param);
-
-
-
-
                 break;
-
-
 
             case InteractState.Glide:
                 newState = ManageGlide(previous, param);
@@ -45,11 +41,9 @@ public class InteractStateController {
                 newState = ManageMeleeAttack(previous, param);
                 break;
 
-
             case InteractState.DistantAttack:
                 newState = ManageDistantAttack(previous, param);
                 break;
-
 
             case InteractState.SpawnLure:
                 newState = ManageSpawnLure(previous, param);
@@ -94,7 +88,7 @@ public class InteractStateController {
         }
 
         //MeleeAttack
-        if (param.canMeleeAttack) {
+		if (param.canMeleeAttack) {
             newState = InteractState.MeleeAttack;
         }
 
@@ -169,10 +163,9 @@ public class InteractStateController {
 
     InteractState ManageMeleeAttack(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
+
         //NOTHING
-        
-        //DETECTER LA FIN DE L'ANIMATION OU UN AUTRE MOYEN DE DECLENCHER LE RETOUR A L'ETAT NOTHING
-        if (!param.canGlide) {
+		if (param.finishedMeleeAttack) {
             newState = InteractState.Nothing;
         }
         return newState;
@@ -182,7 +175,8 @@ public class InteractStateController {
         InteractState newState = previous;
 
         //NOTHING
-        if (!param.canGlide) {
+		if (param.finishedDistantAttack) {
+			param.finishedDistantAttack = false;
             newState = InteractState.Nothing;
         }
         return newState;
