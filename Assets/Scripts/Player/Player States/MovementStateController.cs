@@ -8,7 +8,8 @@ public enum MovementState {
 }
 
 public struct MovementStateParam {
-    public Vector3 velocity;
+	public Vector3 velocity;
+	public Vector3 position_pivot;
     public bool jumpRequired;
     public bool grounded;
 }
@@ -148,12 +149,20 @@ public class MovementStateController {
         return param.grounded && ((Mathf.Abs(param.velocity.x) + Mathf.Abs(param.velocity.z)) >= 0.1f);
     }
 
-    bool IsGoingUp(MovementStateParam param) {
-        return !param.grounded && param.velocity.y > 0;
-    }
+	float hysteresis_step = 5f;
 
-    bool IsFalling(MovementStateParam param) {
-        return !param.grounded && param.velocity.y < 0;
+    bool IsGoingUp(MovementStateParam param) {
+		return !param.grounded && param.velocity.y > hysteresis_step;
+	}
+
+	bool IsFalling(MovementStateParam param) {
+		RaycastHit hit;
+		bool fall = !param.grounded && !Physics.Raycast (param.position_pivot, Vector3.down, out hit, 0.5f);
+		if (fall)
+		{
+			Debug.Log ("param.position_pivot=" + param.position_pivot);
+		}
+		return fall;
     }
 
 }

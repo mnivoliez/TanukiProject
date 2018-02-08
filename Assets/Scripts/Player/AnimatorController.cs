@@ -12,10 +12,10 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
         animBody = GetComponent<Animator>();
     }
 
-    public void UpdateState(MovementState state, float speed, float speedMultyplier) {
+    public void UpdateState(MovementState state, float speed, float speedMultiplier) {
 
         animBody.SetFloat("Speed", speed);
-        animBody.SetFloat("SpeedMultiplier", speedMultyplier);
+        animBody.SetFloat("SpeedMultiplier", speedMultiplier);
 
         //currentState = state;
         //switch (state) {
@@ -34,25 +34,34 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
     }
 
     public void OnStateEnter(MovementState state) {
-        switch(state) {
+		switch(state) {
 
-            case MovementState.Jump:
-                    animBody.SetBool("isJumping", true); //Change for trigger later
-                break;
-            case MovementState.DoubleJump:
-                    animBody.SetBool("isDoubleJumping", true); //Change for trigger later
-                break;
+			case MovementState.Jump:
+				animBody.SetBool("isInAir", true);
+				animBody.SetTrigger("Jump");
+				break;
+			case MovementState.Fall:
+				animBody.SetBool("isInAir", true);
+				animBody.SetTrigger("Jump");
+				break;
+			case MovementState.DoubleJump:
+				animBody.SetTrigger("DoubleJump");
+				break;
+			case MovementState.Idle:
+				animBody.SetBool("isInAir", false);
+				break;
+			case MovementState.Run:
+				animBody.SetBool("isInAir", false);
+				break;
         }
     }
 
     public void OnStateExit(MovementState state) {
         switch (state) {
             case MovementState.Jump:
-                    animBody.SetBool("isJumping", false); //Change for trigger later
                 break;
 
             case MovementState.DoubleJump:
-                    animBody.SetBool("isDoubleJumping", false); //Change for trigger later
                 break;
         }
     }
@@ -65,11 +74,11 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
                 break;
 
             case InteractState.MeleeAttack:
-                animBody.SetBool("isAttacking", true);
+				animBody.SetTrigger("InstantAttack");
                 break;
 
             case InteractState.DistantAttack:
-                animBody.SetBool("isDistantAttacking", true);
+				animBody.SetTrigger("DistantAttack");
                 break;
 
             case InteractState.SpawnLure:
@@ -97,15 +106,15 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
     public void OnStateExit(InteractState state) {
         switch (state) {
             case InteractState.Glide:
-                animBody.SetBool("isJumping", false);
-                break;
+				animBody.SetBool("isGliding", false);
+				break;
 
             case InteractState.MeleeAttack:
-                animBody.SetBool("isAttacking", false);
+                //animBody.SetBool("isAttacking", false);
                 break;
 
             case InteractState.DistantAttack:
-                animBody.SetBool("isDistantAttacking", false);
+                //animBody.SetBool("isDistantAttacking", false);
                 break;
 
             case InteractState.SpawnLure:
