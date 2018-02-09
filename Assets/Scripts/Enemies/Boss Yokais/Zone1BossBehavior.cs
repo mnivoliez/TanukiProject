@@ -142,26 +142,14 @@ public class Zone1BossBehavior : YokaiController {
 
         endPosition = AllPlatform[currentPlateform].transform.position;
         transform.LookAt(new Vector3 (AllPlatform[currentPlateform].transform.position.x, transform.position.y, AllPlatform[currentPlateform].transform.position.z));
-        //Invoke("GoToNewPlatform", 1f);
         timeStamp = 0;
         timeToTravel = 10f;
-        //Invoke("MoveToPosition", 1f);
         onMovement = true;
         Destroy(Instantiate(knockedParticle, transform.position, Quaternion.identity), 2);
     }
 
-    public void GoToNewPlatform() {
-        Destroy(Instantiate(knockedParticle, transform.position, Quaternion.identity), 2);
-        transform.position = AllPlatform[currentPlateform].transform.position + (Vector3.up * 5);
-    }
-
-    
-
     public void MoveToPosition() {
 
-        
-        
-        
         if(0 < timeToTravel - timeStamp) {
             Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / timeToTravel);
             //Debug.Log("Coucou");
