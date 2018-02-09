@@ -140,7 +140,6 @@ public class CharacterController : MonoBehaviour {
         }
 
         animBody.UpdateState(movementState, speed, moveSpeed);
-
     }
 
     void OnCollisionEnter(Collision coll) {
