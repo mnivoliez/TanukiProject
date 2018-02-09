@@ -24,6 +24,68 @@
 		_Speed 	("Speed", Float)		= 1
 	}
 
+    SubShader {
+        Tags { "RenderType"="Opaque" "Queue"="Geometry+101" }
+		LOD 200
+
+        Stencil {
+            Ref 1
+            Comp equal
+        }
+
+		CGPROGRAM
+
+		#pragma surface surf Standard addshadow
+		#pragma target 3.0
+
+		#include "noiseSimplex.cginc"
+
+		uniform sampler2D
+			_FirstTexture,
+			_SecondTexture
+		;
+
+		uniform fixed4
+			_FirstColor,
+			_SecondColor,
+			_Color
+		;
+
+		uniform half
+			_Freq,
+			_Speed,
+			_Interpolation,
+			_Strength,
+			_Falloff,
+			_Offset
+		;
+
+		struct Input {
+			float2 uv_MainTex;
+			float3 worldPos;
+		};
+
+		void surf(Input IN, inout SurfaceOutputStandard o) {
+
+			float3 wrldPos = IN.worldPos.xyz * _Freq;
+			wrldPos.y += _Time.x * _Speed;
+
+			float ns = snoise(wrldPos);
+
+			float lrp = saturate((ns * _Interpolation) * 1/_Falloff);
+
+			fixed4 tex1 = tex2D(_FirstTexture, IN.uv_MainTex);
+			fixed4 tex2 = tex2D(_SecondTexture, IN.uv_MainTex);
+			o.Albedo = lerp(tex1.rgb * _FirstColor.rgb, tex2.rgb * _SecondColor.rgb, 1-lrp);
+
+			o.Emission = lrp * saturate(1+_Offset) * _Color.rgb * saturate(ns*_Strength*10+_Strength*0.5f * (1/_Falloff));
+			o.Smoothness = 0;
+			o.Metallic = 0;
+
+		}
+		ENDCG
+    }
+
 	SubShader {
 		Tags {"RenderType" = "Opaque"}
 		LOD 200
@@ -35,7 +97,7 @@
 
 		#include "noiseSimplex.cginc"
 
-		uniform sampler2D 
+		uniform sampler2D
 			_FirstTexture,
 			_SecondTexture
 		;
@@ -71,7 +133,7 @@
 			wrldPos.y += _Time.x * _Speed;
 
 			float ns = snoise(wrldPos);
-			
+
 			float lrp = saturate((l + ns * _Interpolation) * 1/_Falloff);
 
 			fixed4 tex1 = tex2D(_FirstTexture, IN.uv_MainTex);
