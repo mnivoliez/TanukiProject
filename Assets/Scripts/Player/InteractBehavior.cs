@@ -7,34 +7,46 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("GLIDE")]
     [Space(8)]
-    [SerializeField] private GameObject ParachuteLeaf;
+    [SerializeField]
+    private GameObject ParachuteLeaf;
 
     [Header("MELEE ATTACK")]
     [Space(8)]
-    [SerializeField] private GameObject leafHead;
+    [SerializeField]
+    private GameObject leafHead;
     [SerializeField] private GameObject leafHand;
     [SerializeField] private GameObject attackRange;
     [SerializeField] private float meleeDamage;
 
     [Header("DISTANT ATTACK")]
     [Space(8)]
-    [SerializeField] private GameObject leafPrefab;
+    [SerializeField]
+    private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private GameObject rangeMaxLeaf;
     [SerializeField] private float distantDamage;
 
     [Header("INFLATE")]
     [Space(8)]
-    [SerializeField] private GameObject normalForm;
+    [SerializeField]
+    private GameObject normalForm;
     [SerializeField] private GameObject inflateForm;
     [SerializeField] private GameObject smokeSpawner;
 
 
     [Header("ABSORB")]
     [Space(8)]
-    [SerializeField] private float absorptionTimer = 4f;
+    [SerializeField]
+    private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
-    
+
+    [Header("LURE")]
+    [Space(8)]
+    [SerializeField]
+    private GameObject lure;
+    [SerializeField]
+    private Transform tanukiPlayer;
+
     //QTE
     private float maxAbsorptionGauge = 4f;
     private float absorptionGauge = 0f;
@@ -43,21 +55,21 @@ public class InteractBehavior : MonoBehaviour {
     public Transform centerButton;
 
     // Use this for initialization
-    void Start () {
-  
+    void Start() {
+
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
-        
+
 
         sakePot.SetActive(false);
-        
+
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    // Update is called once per frame
+    void Update() {
+
+    }
 
     public void DoGlide() {
         leafHead.SetActive(false);
@@ -73,7 +85,7 @@ public class InteractBehavior : MonoBehaviour {
         leafHead.SetActive(false);
         attackRange.SetActive(true);
         leafHand.SetActive(true);
-        
+
 
     }
 
@@ -92,7 +104,7 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void DoDistantAttack() {
-        
+
         leafHead.SetActive(false);
         GameObject LeafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
         LeafBoomerang.GetComponent<MoveLeaf>().SetSpawnPosition(spawnLeaf);
@@ -114,8 +126,7 @@ public class InteractBehavior : MonoBehaviour {
             //inflateForm.GetComponent<Rigidbody>().velocity = Vector3.zero;
             //inflateForm.SetActive(true);
             //normalForm.SetActive(false);
-        }
-        else {
+        } else {
             GameObject smoke = Instantiate(smokeSpawner, gameObject.transform.position, Quaternion.identity);
             Destroy(smoke, 4);
             normalForm.transform.position = inflateForm.transform.position;
@@ -131,7 +142,7 @@ public class InteractBehavior : MonoBehaviour {
 
         canvasQTE.SetActive(true);
         sakePot.SetActive(true);
-        
+
 
     }
 
@@ -154,7 +165,7 @@ public class InteractBehavior : MonoBehaviour {
             if (absorptionGauge > maxAbsorptionGauge) {
                 absorbableObject.GetComponent<YokaiController>().Absorbed();
                 gameObject.GetComponent<PlayerCollectableController>().AddYokai();
-                
+
                 absorptionTimer = 4f;
                 absorptionGauge = 0;
                 centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
@@ -164,9 +175,8 @@ public class InteractBehavior : MonoBehaviour {
 
             }
 
-        }
-        else {
-            
+        } else {
+
             sakePot.SetActive(false);
             absorptionGauge = 0;
             absorptionTimer = 4f;
@@ -177,7 +187,13 @@ public class InteractBehavior : MonoBehaviour {
         }
     }
 
-    
+    public void doSpawnLure() {
+        if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
+            leafHead.SetActive(false);
+            GameObject clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
+            clone.transform.Translate(0, 3, 2);
+        }
+    }
 
 
 }
