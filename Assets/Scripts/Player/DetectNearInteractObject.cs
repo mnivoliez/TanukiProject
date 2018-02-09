@@ -19,8 +19,10 @@ public class DetectNearInteractObject : MonoBehaviour {
 
     void OnTriggerStay(Collider collider) {
 
+        bool needDetectObject = (collider.gameObject.layer == LayerMask.NameToLayer("Catchable") || collider.gameObject.layer == LayerMask.NameToLayer("Activable")
+            || (collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked()));
 
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Catchable") || collider.gameObject.layer == LayerMask.NameToLayer("Activable") || (collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked())) {
+        if (needDetectObject) {
             if (nearestObject == null || (nearestObject.name != null && rangeNearestObject > Vector3.Distance(collider.gameObject.transform.position, transform.position))) {
                 rangeNearestObject = Vector3.Distance(collider.gameObject.transform.position, transform.position);
                 nearestObject = collider.gameObject;
