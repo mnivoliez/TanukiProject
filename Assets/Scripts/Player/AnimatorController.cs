@@ -30,28 +30,31 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
                 
         //        break;
         //}
-        
+		int layer = 1 << 10 + 1 << 8;
     }
 
-    public void OnStateEnter(MovementState state) {
+	public void OnStateEnter(MovementState state) {
 		switch(state) {
-
 			case MovementState.Jump:
 				animBody.SetBool("isInAir", true);
 				animBody.SetTrigger("Jump");
 				break;
 			case MovementState.Fall:
 				animBody.SetBool("isInAir", true);
-				animBody.SetTrigger("Jump");
+				animBody.SetTrigger("Fall");
 				break;
 			case MovementState.DoubleJump:
 				animBody.SetTrigger("DoubleJump");
 				break;
 			case MovementState.Idle:
-				animBody.SetBool("isInAir", false);
+				animBody.SetBool ("isInAir", false);
+				animBody.ResetTrigger ("Fall");
+				animBody.ResetTrigger ("Jump");
 				break;
 			case MovementState.Run:
 				animBody.SetBool("isInAir", false);
+				animBody.ResetTrigger("Fall");
+				animBody.ResetTrigger("Jump");
 				break;
         }
     }
@@ -69,16 +72,18 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
     public void OnStateEnter(InteractState state) {
         switch (state) {
 
-            case InteractState.Glide:
-                animBody.SetBool("isGliding", true);
+			case InteractState.Glide:
+				animBody.SetBool ("isGliding", true);
                 break;
 
             case InteractState.MeleeAttack:
 				animBody.SetTrigger("InstantAttack");
+				animBody.SetLayerWeight (1, 1);
                 break;
 
             case InteractState.DistantAttack:
 				animBody.SetTrigger("DistantAttack");
+				animBody.SetLayerWeight (1, 1);
                 break;
 
             case InteractState.SpawnLure:
@@ -100,6 +105,9 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
             case InteractState.Absorb:
                 animBody.SetBool("isAbsorbing", true);
                 break;
+
+			case InteractState.Nothing:
+				break;
         }
     }
 
