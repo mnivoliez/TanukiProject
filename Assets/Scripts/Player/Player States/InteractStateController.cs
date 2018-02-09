@@ -83,7 +83,7 @@ public class InteractStateController {
         InteractState newState = previous;
 
         //Glide
-        if (param.canGlide) {
+		if (param.canGlide) {
             newState = InteractState.Glide;
         }
 

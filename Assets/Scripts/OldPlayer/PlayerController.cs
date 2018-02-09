@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour {
 			body.velocity = new Vector3(0, jumpForce, 0);
 			isJumping = true;
 			animBody.SetBool("isJumping", true);
-			animBody.SetTrigger("Jump");
+			//animBody.SetTrigger("Jump");
 		}
 		//LAND
 		if (_onGround && body.velocity.y < 0) {
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 		if (!_onGround && !isJumping && body.velocity.y < 0) {
 			isJumping = true;
 			animBody.SetBool("isJumping", true);
-			animBody.SetTrigger("Jump");
+			//animBody.SetTrigger("Jump");
 		}
 
 		//DEATH
