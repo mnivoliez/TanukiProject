@@ -113,19 +113,6 @@ public abstract class YokaiController : MonoBehaviour {
     protected GameObject target;
 
 
-    void Start() {
-        //target = GameObject.FindGameObjectWithTag("Player");
-        //rendererMat = gameObject.GetComponent<Renderer>().material;
-    }
-
-    void Update() {
-
-        if (isAbsorbed) {
-            Die();
-        }
-
-    }
-
     public virtual void LooseHp(float damage) { }
 
     public virtual void BeingHit() { }
@@ -135,6 +122,8 @@ public abstract class YokaiController : MonoBehaviour {
     public virtual void Absorbed() { }
 
     public virtual void Die() { }
+
+    public virtual void Behavior() { }
 
     public bool GetIsKnocked() { return isKnocked; }
 
