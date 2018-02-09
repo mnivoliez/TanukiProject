@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class CameraOrbit : MonoBehaviour {
 
@@ -34,6 +35,8 @@ public class CameraOrbit : MonoBehaviour {
 	private bool inverseCam = false;
 	[SerializeField]
 	private bool scrolEnabled = false;
+	[SerializeField]
+	private int[] ignoredLayers = new int[1];
 
     private bool leftClicked = false;
     private bool rightClicked = false;
@@ -135,7 +138,17 @@ public class CameraOrbit : MonoBehaviour {
 
 		RaycastHit hit;
 
-		if (Physics.Raycast (xFromParent.position, -direction, out hit, cameraDistance * 1.1f))
+		int layerPassed = 0;
+		for (int i = 0; i <= 32; i++)
+		{
+			if (Array.IndexOf (ignoredLayers, i) == -1)
+			{
+				layerPassed += 1 << i;
+			}
+		}
+		layerPassed = 1 << 11;
+
+		if (Physics.Raycast (xFromParent.position, -direction, out hit, cameraDistance * 1.1f, layerPassed))
 		{
 			float dis = Vector3.Distance (player.transform.position, hit.point + direction * step);
 			xFromCamera.localPosition = new Vector3 (0f, 0f, Mathf.Lerp (xFromCamera.localPosition.z, dis * -1f, Time.deltaTime * raycastDampening));

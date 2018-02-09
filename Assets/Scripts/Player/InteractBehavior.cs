@@ -154,9 +154,7 @@ public class InteractBehavior : MonoBehaviour {
                 canvasQTE.SetActive(false);
 
             }
-
-        }
-        else {
+        } else {
             
             sakePot.SetActive(false);
             absorptionGauge = 0;

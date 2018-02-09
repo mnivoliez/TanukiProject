@@ -145,7 +145,7 @@ public class CharacterController : MonoBehaviour {
         if (previousMovementState != movementState)
         {
             animBody.OnStateExit(previousMovementState);
-            animBody.OnStateEnter(movementState);
+			animBody.OnStateEnter(movementState);
         }
 
         if (previousInteractState != interactState)
@@ -384,8 +384,8 @@ public class CharacterController : MonoBehaviour {
 
 
 	void UpdateMoveStateParameters(InputParams inputParams) {
+		moveStateParameters.velocity_previous = moveStateParameters.velocity;
 		moveStateParameters.velocity = body.velocity;
-		moveStateParameters.position_pivot = body.GetComponent<Collider>().bounds.min;
         moveStateParameters.jumpRequired = inputParams.jumpRequest;
         moveStateParameters.grounded = IsGrounded();
     }
@@ -519,9 +519,7 @@ public class CharacterController : MonoBehaviour {
                 interactBehaviorCtrl.DoBeginAbsorption(collid.gameObject);
             }
 
-        }
-        else if (previousInteractState == InteractState.Absorb)
-        {
+        } else if (previousInteractState == InteractState.Absorb) {
             interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
         }
     }
