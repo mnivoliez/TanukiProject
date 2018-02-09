@@ -5,7 +5,7 @@ using UnityEngine;
 public class CorruptionController : MonoBehaviour
 {
 
-    [SerializeField] private bool _hide;
+    [SerializeField] private bool _corruptionHideObject;
     private LanternController _lantern;
 
     private BoxCollider _bbox;
@@ -30,25 +30,31 @@ public class CorruptionController : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        Physics.IgnoreCollision(other, _bbox, _hide);
         if (other.CompareTag("Lantern"))
         {
             _lantern = null;
+        }
+        else
+        {
+            ManageCollision(other);
         }
     }
 
     void OnTriggerStay(Collider other)
     {
-        bool is_affected_by_lantern = _lantern != null && _lantern.isInEffectArea(other.ClosestPoint(_lantern.transform.position));
-        bool shouldNotCollide = is_affected_by_lantern ? !_hide : _hide;
-        Physics.IgnoreCollision(other, _bbox, shouldNotCollide);
+        if (!other.CompareTag("Lantern")) ManageCollision(other);
 
     }
 
     void OnCollisionStay(Collision collision)
     {
-        bool is_affected_by_lantern = _lantern != null && _lantern.isInEffectArea(collision.contacts[0].point);
-        bool shouldNotCollide = is_affected_by_lantern ? !_hide : _hide;
-        Physics.IgnoreCollision(collision.collider, _bbox, true);
+        if (!collision.collider.CompareTag("Lantern")) ManageCollision(collision.collider);
+
+    }
+
+    private void ManageCollision(Collider other)
+    {
+        bool isAffectedByLantern = _lantern != null && _lantern.isInEffectArea(other.ClosestPoint(_lantern.transform.position));
+        Physics.IgnoreCollision(other, _bbox, _corruptionHideObject ? !isAffectedByLantern : isAffectedByLantern);
     }
 }
