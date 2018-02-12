@@ -21,21 +21,24 @@ public class ShadowDirectController : MonoBehaviour {
         minSize = 0.1f;
         if (Physics.Raycast(transform.position, -Vector3.up, out hit, rayCastDistance)) {
             position = new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z);
-            clone = Instantiate(shadowDirect, position, transform.rotation);
+        } else {
+            position = transform.position;
         }
+        clone = Instantiate(shadowDirect, position, transform.rotation);
     }
 
     private void Update() {
         if (Physics.Raycast(transform.position, -Vector3.up, out hit, rayCastDistance)) {
             position = new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z);
-            clone.transform.position = position;
-
+            
             float distance = Vector3.Distance(transform.position, hit.point);
             float size = maxSize * distance / rayCastDistance;
             size = 1f - Mathf.Clamp(size, minSize, maxSize);
             Vector3 scale = new Vector3(maxSize, maxSize, maxSize) * size;
             clone.transform.localScale = scale;
-            //Debug.Log(size);
+        } else {
+            position = transform.position;
         }
+        clone.transform.position = position;
     }
 }
