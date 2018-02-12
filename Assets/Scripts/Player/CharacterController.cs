@@ -60,6 +60,8 @@ public class CharacterController : MonoBehaviour {
     [Space(10)]
     [SerializeField]
     private float moveSpeed = 10f;
+    private float speed = 10f;
+    private float coefInclination;
     [SerializeField] private float airControl = 6f;
     [SerializeField] private float jumpForce = 12f;
     [SerializeField] private GameObject absorbRange;
@@ -127,7 +129,7 @@ public class CharacterController : MonoBehaviour {
         movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
 
-        float speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
+        speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
         if (previousMovementState != movementState) {
             animBody.OnStateExit(previousMovementState);
@@ -163,6 +165,31 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
+    void OnCollisionStay(Collision coll) {
+        GameObject gO = coll.gameObject;
+
+        if (gO.layer == LayerMask.NameToLayer("Ground")) {
+            ContactPoint[] contacts = coll.contacts;
+
+            if (contacts.Length > 0) {
+
+
+                //transform.rotation = Quaternion.Euler(Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up));
+                //Debug.Log("Angle:"+Vector3.Angle(contacts[0].normal, Vector3.up));
+                coefInclination = Vector3.Angle(contacts[0].normal, Vector3.up);
+                //foreach (ContactPoint c in contacts) {
+                //    // c.normal.y = 0 => Vertical
+                //    // c.normal.y = 0.5 => 45°
+                //    // c.normal.y = 1 => Horizontal
+                //    if (c.normal.y >= 0.5f && c.normal.y <= 1f) {
+                //        _grounds.Add(gO);
+                //        break;
+                //    }
+                //}
+            }
+        }
+    }
+
     void OnCollisionExit(Collision coll) {
         if (IsGrounded()) {
             GameObject gO = coll.gameObject;
@@ -178,19 +205,28 @@ public class CharacterController : MonoBehaviour {
     }
 
     void MoveAccordingToInput(InputParams inputParams) {
-        //Debug.Log("STATE: " + movementState);
+
         bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall)/* ou si maudit et pas en state jump / fall */;
-        //Debug.Log("Here the state:" + movementState);
+
         //JUMP
         if (inputParams.jumpRequest && canJump) {
-            body.velocity = new Vector3(0, jumpForce, 0);
+            //body.velocity = new Vector3(0, jumpForce, 0);
+            body.AddForce(Vector3.up * 10 * jumpForce, ForceMode.Impulse);
         }
 
         inputVelocityAxis = new Vector3(inputParams.moveX, body.velocity.y, inputParams.moveZ);
         //Orientation du personnage
         orientationMove = (transform.forward * inputParams.moveZ) + (transform.right * inputParams.moveX);
-        inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed;
-        inputVelocityAxis.y = body.velocity.y;
+
+        //Manage Inclination Ground
+        if (coefInclination <= 45) { 
+            inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + ((inputVelocityAxis.normalized * moveSpeed) * (1 - Mathf.Cos(coefInclination * Mathf.Deg2Rad)));
+            inputVelocityAxis.y = body.velocity.y;
+        }
+        else {
+            //Fall if Ground Inclination > 45 deg
+            inputVelocityAxis.y =  -5f;
+        }
 
 
         //AIR CONTROL
