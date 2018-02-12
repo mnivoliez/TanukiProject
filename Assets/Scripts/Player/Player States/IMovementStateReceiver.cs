@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IMovementStateReceiver {
 
-    void OnStateEnter(MovementState state);
+	void OnStateEnter(MovementState state);
     void OnStateExit(MovementState state);
 }
 

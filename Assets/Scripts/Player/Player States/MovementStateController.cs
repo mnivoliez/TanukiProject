@@ -8,7 +8,8 @@ public enum MovementState {
 }
 
 public struct MovementStateParam {
-    public Vector3 velocity;
+	public Vector3 velocity;
+	public Vector3 velocity_previous;
     public bool jumpRequired;
     public bool grounded;
 }
@@ -72,11 +73,13 @@ public class MovementStateController {
     MovementState ManageFall(MovementState previous, MovementStateParam param) {
         MovementState newState = previous;
         //IDLE
-        if (IsIdle(param)) {
+		if (IsIdle(param)) {
+			Debug.Log ("fall idle");
             newState = MovementState.Idle;
         }
 
-        if (IsRunning(param)) {
+		if (IsRunning(param)) {
+			Debug.Log ("fall run");
             newState = MovementState.Run;
         }
         return newState;
@@ -86,16 +89,19 @@ public class MovementStateController {
     MovementState ManageDoubleJump(MovementState previous, MovementStateParam param) {
         MovementState newState = previous;
         //IDLE
-        if (IsIdle(param)) {
+		if (IsIdle(param)) {
+			Debug.Log ("DoubleJump idle");
             newState = MovementState.Idle;
         }
 
         //FAll
-        if (IsFalling(param)) {
+		if (IsFalling(param)) {
+			Debug.Log ("DoubleJump fall");
             newState = MovementState.Fall;
         }
 
-        if (IsGoingUp(param)) {
+		if (IsGoingUp(param)) {
+			Debug.Log ("DoubleJump DoubleJump");
             newState = MovementState.DoubleJump;
         }
         return newState;
@@ -104,17 +110,20 @@ public class MovementStateController {
     MovementState ManageRun(MovementState previous, MovementStateParam param) {
         MovementState newState = previous;
         //IDLE
-        if (IsIdle(param)) {
+		if (IsIdle(param)) {
+			Debug.Log ("Run idle");
             newState = MovementState.Idle;
         }
 
         //JUMP
-        if (IsGoingUp(param)) {
+		if (IsGoingUp(param)) {
+			Debug.Log ("Run jump");
             newState = MovementState.Jump;
         }
 
         //FAll
-        if (IsFalling(param)) {
+		if (IsFalling(param)) {
+			Debug.Log ("Run fall");
             newState = MovementState.Fall;
         }
         return newState;
@@ -123,37 +132,46 @@ public class MovementStateController {
     MovementState ManageIdle(MovementState previous, MovementStateParam param) {
         MovementState newState = previous;
         //RUN
-        if (IsRunning(param)) {
+		if (IsRunning(param)) {
+			Debug.Log ("Idle run");
             newState = MovementState.Run;
         }
 
         //JUMP
-        if (IsGoingUp(param)) {
+		if (IsGoingUp(param)) {
+			Debug.Log ("Idle jump");
             newState = MovementState.Jump;
         }
 
         //FAll
-        if (IsFalling(param)) {
-            newState = MovementState.Fall;
+		if (IsFalling(param)) {
+			Debug.Log ("Idle fall");
+			newState = MovementState.Fall;
         }
 
         return newState;
     }
 
     bool IsIdle(MovementStateParam param) {
-        return param.grounded && ((Mathf.Abs(param.velocity.x) + Mathf.Abs(param.velocity.z)) < 0.1f);
+		return param.grounded && ((Mathf.Abs(param.velocity.x) + Mathf.Abs(param.velocity.z) + Mathf.Abs(param.velocity.y)) < 0.01f);
     }
 
     bool IsRunning(MovementStateParam param) {
         return param.grounded && ((Mathf.Abs(param.velocity.x) + Mathf.Abs(param.velocity.z)) >= 0.1f);
     }
 
-    bool IsGoingUp(MovementStateParam param) {
-        return !param.grounded && param.velocity.y > 0;
-    }
+	float hysteresis_step = 5f;
 
-    bool IsFalling(MovementStateParam param) {
-        return !param.grounded && param.velocity.y < 0;
+    bool IsGoingUp(MovementStateParam param) {
+		bool fall = !param.grounded && param.velocity.y > hysteresis_step;
+
+		return fall;
+	}
+
+	bool IsFalling(MovementStateParam param) {
+		bool fall = !param.grounded && (param.velocity.y < -hysteresis_step);
+
+		return fall;
     }
 
 }
