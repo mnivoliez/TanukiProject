@@ -121,13 +121,23 @@ public class CharacterController : MonoBehaviour {
 
         InputParams inputParams = inputController.RetrieveUserRequest();
         //deplacements
-        MoveAccordingToInput(inputParams);
-        InteractAccordingToInput(inputParams);
-        previousInteractState = interactState;
-        UpdateMoveStateParameters(inputParams);
-        UpdateInteractStateParameters(inputParams);
+		MoveAccordingToInput(inputParams);
+		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+		//	Debug.Log ("jump1=" + inputParams.jumpRequest + " jumpMV1=" + moveStateParameters.jumpRequired);
+		InteractAccordingToInput(inputParams);
+		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+		//	Debug.Log ("jump2=" + inputParams.jumpRequest + " jumpMV2=" + moveStateParameters.jumpRequired);
+		previousInteractState = interactState;
+		UpdateMoveStateParameters(inputParams);
+		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+		//	Debug.Log ("jump3=" + inputParams.jumpRequest + " jumpMV3=" + moveStateParameters.jumpRequired);
+		UpdateInteractStateParameters(inputParams);
+		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+		//	Debug.Log ("jump4=" + inputParams.jumpRequest + " jumpMV4=" + moveStateParameters.jumpRequired);
 
-        movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
+		movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
+		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+		//	Debug.Log ("jump5=" + inputParams.jumpRequest + " jumpMV5=" + moveStateParameters.jumpRequired);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
@@ -172,20 +182,24 @@ public class CharacterController : MonoBehaviour {
             ContactPoint[] contacts = coll.contacts;
 
             if (contacts.Length > 0) {
-
-
                 //transform.rotation = Quaternion.Euler(Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up));
                 //Debug.Log("Angle:"+Vector3.Angle(contacts[0].normal, Vector3.up));
-                coefInclination = Vector3.Angle(contacts[0].normal, Vector3.up);
-                //foreach (ContactPoint c in contacts) {
-                //    // c.normal.y = 0 => Vertical
-                //    // c.normal.y = 0.5 => 45°
-                //    // c.normal.y = 1 => Horizontal
-                //    if (c.normal.y >= 0.5f && c.normal.y <= 1f) {
-                //        _grounds.Add(gO);
-                //        break;
-                //    }
-                //}
+                //coefInclination = Vector3.Angle(contacts[0].normal, Vector3.up);
+				bool found = false;
+                foreach (ContactPoint c in contacts) {
+                    // c.normal.y = 0 => Vertical
+                    // c.normal.y = 0.5 => 45°
+                    // c.normal.y = 1 => Horizontal
+                    if (c.normal.y >= 0.5f && c.normal.y <= 1f) {
+                        //_grounds.Add(gO);
+						found = true;
+						coefInclination = Vector3.Angle(c.normal, Vector3.up);
+                        break;
+                    }
+                }
+				if (!found) {
+					coefInclination = 0;
+				}
             }
         }
     }
@@ -217,6 +231,8 @@ public class CharacterController : MonoBehaviour {
 
         //JUMP
         if (inputParams.jumpRequest && canJump) {
+			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+			body.velocity = new Vector3 (body.velocity.x, 0.02f, body.velocity.z);
             body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
@@ -224,22 +240,20 @@ public class CharacterController : MonoBehaviour {
         //Orientation du personnage
         orientationMove = (transform.forward * inputParams.moveZ) + (transform.right * inputParams.moveX);
 
-        //Manage Inclination Ground
+		//Manage Inclination Ground
+		Debug.Log("coefInclination=" + coefInclination);
         if (coefInclination <= 45) {
             inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + ((inputVelocityAxis.normalized * moveSpeed) * (1 - Mathf.Cos(coefInclination * Mathf.Deg2Rad)));
             inputVelocityAxis.y = body.velocity.y;
-        }
-        else {
+        } else {
             //Fall if Ground Inclination > 45 deg
             inputVelocityAxis.y = -5f;
         }
 
-
         //AIR CONTROL
         if (!onGround) {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((inputParams.moveX * airControl), inputVelocityAxis.y, (inputParams.moveZ * (airControl * 2)));
-        }
-        else {
+        } else {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * inputVelocityAxis;
         }
 
@@ -276,8 +290,8 @@ public class CharacterController : MonoBehaviour {
             case InteractState.Glide:
                 if (IsGrounded()) {
                     interactBehaviorCtrl.StopGlide();
-                }
-                else {
+                } else {
+					// add a force to counter gravity (glide effect)
                     body.AddForce(Vector3.up * 150f, ForceMode.Force);
                     interactBehaviorCtrl.DoGlide();
                 }
@@ -351,9 +365,25 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
+	float hysteresis_step = 0.01f;
+
+	public bool IsGoingUp(MovementStateParam param) {
+		bool up = !param.grounded && param.velocity.y > hysteresis_step;
+
+		return up;
+	}
+
+	public bool IsFalling(MovementStateParam param) {
+		bool fall = !param.grounded && (param.velocity.y < -hysteresis_step);
+
+		return fall;
+	}
 
     void UpdateMoveStateParameters(InputParams inputParams) {
-        moveStateParameters.velocity_previous = moveStateParameters.velocity;
+		if (!IsGoingUp (moveStateParameters) && !IsFalling (moveStateParameters)) {
+			moveStateParameters.position_before_fall = body.position;
+		}
+		moveStateParameters.position = body.position;
         moveStateParameters.velocity = body.velocity;
         moveStateParameters.jumpRequired = inputParams.jumpRequest;
         moveStateParameters.grounded = IsGrounded();
