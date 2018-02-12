@@ -2,25 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Capacity {
+    Nothing, DoubleJump, Glide
+}
+
 public abstract class YokaiController : MonoBehaviour {
 
-
-    //    private bool isAbsorbed = false;
-    //    private bool isKnocked = false;
-    //    [SerializeField]
-    //    private float speed = 8f;
-    //    [SerializeField]
-    //    private float hp = 3f;
-    //    private float rotationSpeed = 10f;
-    //    private GameObject target;
-    //    [SerializeField]
-    //    private Material knockedTexture;
-    //    [SerializeField]
-    //    private Material normalTexture;
-    //    [SerializeField]
-    //    private GameObject hitParticle;
-    //    [SerializeField]
-    //    private GameObject knockedParticle;
+    private Capacity capacity;
+    [SerializeField] float timerCapacity = 0;
 
 
 
@@ -66,6 +55,14 @@ public abstract class YokaiController : MonoBehaviour {
     //    public bool GetIsKnocked() {
     //        return isKnocked;
     //    }
+
+    public Capacity GetCapacity() {
+        return capacity;
+    }
+
+    public float GetTimerCapacity() {
+        return timerCapacity;
+    }
 
     //    public void LooseHp(float damage) {
     //        hp -= damage;
