@@ -36,7 +36,7 @@ public class CameraOrbit : MonoBehaviour {
 	[SerializeField]
 	private bool scrolEnabled = false;
 	[SerializeField]
-	private int[] ignoredLayers = new int[1];
+	private LayerMask ignoredLayerMask;
 
     private bool leftClicked = false;
     private bool rightClicked = false;
@@ -133,22 +133,15 @@ public class CameraOrbit : MonoBehaviour {
 
 		float step = 0.2f;
 
+		// direction Camera-Pivot(Player)
         Vector3 direction = xFromParent.position - xFromCamera.position;
 		direction = direction.normalized;
 
+		// all layers are = 0xFFFFFFFF => -1
+		int layerAll = -1;
+
 		RaycastHit hit;
-
-		int layerPassed = 0;
-		for (int i = 0; i <= 32; i++)
-		{
-			if (Array.IndexOf (ignoredLayers, i) == -1)
-			{
-				layerPassed += 1 << i;
-			}
-		}
-		layerPassed = 1 << 11;
-
-		if (Physics.Raycast (xFromParent.position, -direction, out hit, cameraDistance * 1.1f, layerPassed))
+		if (Physics.Raycast (xFromParent.position, -direction, out hit, cameraDistance * 1.1f, layerAll - ignoredLayerMask.value))
 		{
 			float dis = Vector3.Distance (player.transform.position, hit.point + direction * step);
 			xFromCamera.localPosition = new Vector3 (0f, 0f, Mathf.Lerp (xFromCamera.localPosition.z, dis * -1f, Time.deltaTime * raycastDampening));
