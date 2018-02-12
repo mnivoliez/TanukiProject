@@ -48,8 +48,8 @@ public class CameraOrbit : MonoBehaviour {
         this.xFromCamera = this.transform;
         this.xFromParent = this.transform.parent;
 		cameraPositionRemember = this.xFromCamera.localPosition;
-
-		player = GameObject.FindGameObjectWithTag ("Player");
+        Cursor.lockState = CursorLockMode.Locked;
+        player = GameObject.FindGameObjectWithTag ("Player");
     }
     private void Update() {
         xFromParent.position = new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z);
