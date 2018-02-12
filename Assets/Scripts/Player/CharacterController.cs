@@ -233,7 +233,6 @@ public class CharacterController : MonoBehaviour
 
     void MoveAccordingToInput(InputParams inputParams)
     {
-
         bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall)/* ou si maudit et pas en state jump / fall */;
 
         //JUMP
