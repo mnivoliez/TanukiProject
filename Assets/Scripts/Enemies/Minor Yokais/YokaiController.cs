@@ -8,9 +8,6 @@ public enum Capacity {
 
 public abstract class YokaiController : MonoBehaviour {
 
-    private Capacity capacity;
-    [SerializeField] float timerCapacity = 0;
-
 
 
     //    void Start() {
@@ -56,14 +53,6 @@ public abstract class YokaiController : MonoBehaviour {
     //        return isKnocked;
     //    }
 
-    public Capacity GetCapacity() {
-        return capacity;
-    }
-
-    public float GetTimerCapacity() {
-        return timerCapacity;
-    }
-
     //    public void LooseHp(float damage) {
     //        hp -= damage;
 
@@ -108,6 +97,8 @@ public abstract class YokaiController : MonoBehaviour {
     protected Material rendererMat;
     protected float rotationSpeed = 10f;
     protected GameObject target;
+    [SerializeField] protected Capacity capacity;
+    [SerializeField] protected float timerCapacity = 0;
 
 
     public virtual void LooseHp(float damage) { }
@@ -121,6 +112,10 @@ public abstract class YokaiController : MonoBehaviour {
     public virtual void Die() { }
 
     public virtual void Behavior() { }
+
+    public Capacity GetCapacity() { return capacity; }
+
+    public float GetTimerCapacity() { return timerCapacity; }
 
     public bool GetIsKnocked() { return isKnocked; }
 

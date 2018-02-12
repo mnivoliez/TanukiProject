@@ -22,6 +22,12 @@ public class Zone1BossBehavior : YokaiController {
     float timeToTravel = 10f;
     float timeStamp = 0;
 
+    [SerializeField] private float damage = 1f;
+    [SerializeField] private float firerate = 5f;
+    private float cooldown = 0;
+    [SerializeField] private GameObject prefabProjectile;
+    [SerializeField] private GameObject spawnProjectile;
+
     void Start () {
         target = GameObject.FindGameObjectWithTag("Player");
         rendererMat = gameObject.GetComponent<Renderer>().material;
@@ -31,11 +37,17 @@ public class Zone1BossBehavior : YokaiController {
 
 	void Update () {
         transform.GetChild(0).transform.LookAt(target.transform);
+        
         if (onMovement) {
             MoveToPosition();
         }
         else {
             transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
+            if(cooldown > firerate) {
+                AttackTarget();
+                cooldown = 0;
+            }
+            
         }
 
         if (isAbsorbed) {
@@ -44,13 +56,14 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
+        cooldown += 0.02f;
         if (Random.Range(0, 100) == 5) {
             Behavior();
         }
     }
 
     public override void LooseHp(float damage){
-        if (onMovement) {
+        if (!onMovement) {
             hp -= damage;
 
             if (hp <= 0) {
@@ -148,5 +161,13 @@ public class Zone1BossBehavior : YokaiController {
         else {
             onMovement = false;
         }
+    }
+
+    public void AttackTarget() {
+
+        GameObject projectile = Instantiate(prefabProjectile, spawnProjectile.transform.position, Quaternion.identity);
+        projectile.transform.LookAt(target.transform);
+        Destroy(projectile, 10f);
+
     }
 }
