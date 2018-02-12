@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 114413189276461600}
   - component: {fileID: 114939442216126860}
   - component: {fileID: 114280008632786526}
+  - component: {fileID: 114108313215235860}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -1553,7 +1554,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1445498394530796}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 95, y: 2, z: -16}
+  m_LocalPosition: {x: -27.902225, y: 0.68, z: 25.680859}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4116831124776206}
@@ -2484,6 +2485,20 @@ MonoBehaviour:
   playerHealthMax: 3
   playerHealthCurrent: 0
   spriteHeart: {fileID: 0}
+--- !u!114 &114108313215235860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1445498394530796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e6677224e49fb94994e4da1125f4772, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowDirect: {fileID: 1809397553112084, guid: 9b7e47d98b0ce194f99c560f2d75c3be,
+    type: 2}
+  rayCastDistance: 40
 --- !u!114 &114170007115717232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2755,6 +2770,8 @@ MonoBehaviour:
     type: 2}
   absorptionTimer: 4
   sakePot: {fileID: 1335623130148652}
+  lure: {fileID: 1205433849735308, guid: a7a714b09336eaf4099c9ee50efc4b13, type: 2}
+  tanukiPlayer: {fileID: 4116831124776206}
   canvasQTE: {fileID: 1246523591146734}
   loadingBar: {fileID: 224821429789007854}
   centerButton: {fileID: 224232964485227772}
