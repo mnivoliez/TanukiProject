@@ -44,7 +44,6 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
-
         if (Random.Range(0, 100) == 5) {
             Behavior();
         }
