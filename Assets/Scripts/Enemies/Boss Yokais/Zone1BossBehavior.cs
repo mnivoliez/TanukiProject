@@ -25,10 +25,8 @@ public class Zone1BossBehavior : YokaiController {
     void Start () {
         target = GameObject.FindGameObjectWithTag("Player");
         rendererMat = gameObject.GetComponent<Renderer>().material;
-        Debug.Log("rendererMat: " + rendererMat);
         hpMax = hp;
         AllPlatform = new GameObject[] { spawnBoss, platform1, platform2, platform3, platform4 };
-        
     }
 
 	void Update () {
@@ -48,7 +46,6 @@ public class Zone1BossBehavior : YokaiController {
     private void FixedUpdate() {
 
         if (Random.Range(0, 100) == 5) {
-            
             Behavior();
         }
     }
@@ -56,29 +53,24 @@ public class Zone1BossBehavior : YokaiController {
     public override void LooseHp(float damage){
         hp -= damage;
 
-        if(hp > hpMax / 2) {
-
-            ChangePlatform(0);
-
-        }
-
-        if (hp <= hpMax / 2) {
-
-            ChangePlatform(1);
-
-        }
-
         if (hp <= 0) {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
-            rendererMat.color = new Color(150f/255f, 40f/255f, 150f/255f);
+            rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
+
+        if (hp <= hpMax / 2 && !isKnocked) {
+            ChangePlatform(1);
+        }
+
+        if (hp > hpMax / 2) {
+            ChangePlatform(0);
+        }        
     }
 
     public override void BeingHit() {
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
         rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
-
     }
 
     public override void EndHit() {
@@ -93,7 +85,6 @@ public class Zone1BossBehavior : YokaiController {
     public override void Die() {
         if (transform.position == target.transform.position) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
-            //target.GetComponent<PlayerAbsorption>().sakePot.SetActive(false);
             Destroy(gameObject);
         }
         else {
@@ -112,9 +103,7 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     public override void Behavior() {
-
         GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
     }
 
     public void ChangePlatform(int numPhase) {
@@ -128,7 +117,6 @@ public class Zone1BossBehavior : YokaiController {
             else {
                 currentPlateform ++;
             }
-            
         }
         else {
             int nextPlatform = Random.Range(0, 5);
@@ -152,14 +140,9 @@ public class Zone1BossBehavior : YokaiController {
 
         if(0 < timeToTravel - timeStamp) {
             Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / timeToTravel);
-            //Debug.Log("Coucou");
-            //currentPos.x += 0 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
             currentPos.y += 20 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
-            //currentPos.z += 0 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
-
             transform.position = currentPos;
             timeStamp += 0.1f;
-
         }
         else {
             onMovement = false;
