@@ -50,21 +50,23 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     public override void LooseHp(float damage){
-        hp -= damage;
+        if (onMovement) {
+            hp -= damage;
 
-        if (hp <= 0) {
-            isKnocked = true;
-            Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
-            rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+            if (hp <= 0) {
+                isKnocked = true;
+                Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
+                rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+            }
+
+            if (hp <= hpMax / 2 && !isKnocked) {
+                ChangePlatform(1);
+            }
+
+            if (hp > hpMax / 2) {
+                ChangePlatform(0);
+            }
         }
-
-        if (hp <= hpMax / 2 && !isKnocked) {
-            ChangePlatform(1);
-        }
-
-        if (hp > hpMax / 2) {
-            ChangePlatform(0);
-        }        
     }
 
     public override void BeingHit() {
