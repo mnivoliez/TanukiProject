@@ -33,8 +33,10 @@ public class LeafAlreadyTakenException : System.Exception
 
 }
 
-public class Leaf {
-    public class LeafLock {
+public class Leaf
+{
+    public class LeafLock
+    {
         Leaf _parent;
         public LeafLock(Leaf parent)
         {
@@ -63,7 +65,8 @@ public class Leaf {
     }
 }
 
-public class CharacterController : MonoBehaviour {
+public class CharacterController : MonoBehaviour
+{
 
     [Header("PLAYER")]
     [Space(10)]
@@ -145,7 +148,7 @@ public class CharacterController : MonoBehaviour {
         if (previousMovementState != movementState)
         {
             animBody.OnStateExit(previousMovementState);
-			animBody.OnStateEnter(movementState);
+            animBody.OnStateEnter(movementState);
         }
 
         if (previousInteractState != interactState)
@@ -172,7 +175,8 @@ public class CharacterController : MonoBehaviour {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-                    if (c.normal.y >= 0.50f && c.normal.y < 1.01f) {
+                    if (c.normal.y >= 0.50f && c.normal.y < 1.01f)
+                    {
                         _grounds.Add(gO);
                         break;
                     }
@@ -220,17 +224,20 @@ public class CharacterController : MonoBehaviour {
                 _grounds.Remove(gO);
             }
         }
-	}
+    }
 
-	public void StopMeleeAttackState() {
-		interactStateParameter.finishedMeleeAttack = true;
-	}
+    public void StopMeleeAttackState()
+    {
+        interactStateParameter.finishedMeleeAttack = true;
+    }
 
-	public void StopDistantAttackState() {
-		interactStateParameter.finishedDistantAttack = true;
-	}
+    public void StopDistantAttackState()
+    {
+        interactStateParameter.finishedDistantAttack = true;
+    }
 
-    private bool IsGrounded() {
+    private bool IsGrounded()
+    {
         return _grounds.Count > 0;
     }
 
@@ -281,10 +288,13 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-    void InteractAccordingToInput(InputParams inputParams) {
-        switch (interactState) {
+    void InteractAccordingToInput(InputParams inputParams)
+    {
+        switch (interactState)
+        {
             case InteractState.Nothing:
-                if (previousInteractState == InteractState.MeleeAttack) {
+                if (previousInteractState == InteractState.MeleeAttack)
+                {
                     interactBehaviorCtrl.StopMeleeAttack();
                 }
 
@@ -304,20 +314,23 @@ public class CharacterController : MonoBehaviour {
                 }
                 break;
 
-				if (IsGrounded ())
-			case InteractState.Glide:
-				{
-					interactBehaviorCtrl.StopGlide ();
-				}
-				else
-				{
-                body.AddForce(Vector3.up * 150f, ForceMode.Force);
-					interactBehaviorCtrl.DoGlide ();
-				}
+
+
+            case InteractState.Glide:
+                if (IsGrounded())
+                {
+                    interactBehaviorCtrl.StopGlide();
+                }
+                else
+                {
+                    body.AddForce(Vector3.up * 150f, ForceMode.Force);
+                    interactBehaviorCtrl.DoGlide();
+                }
                 break;
 
             case InteractState.MeleeAttack:
-                if (interactStateParameter.canMeleeAttack) {
+                if (interactStateParameter.canMeleeAttack)
+                {
                     interactBehaviorCtrl.DoMeleeAttack();
                 }
 
@@ -343,7 +356,8 @@ public class CharacterController : MonoBehaviour {
 
 
             case InteractState.DistantAttack:
-                if (interactStateParameter.canDistantAttack) {
+                if (interactStateParameter.canDistantAttack)
+                {
                     interactBehaviorCtrl.DoDistantAttack();
                 }
                 break;
@@ -369,7 +383,8 @@ public class CharacterController : MonoBehaviour {
 
             case InteractState.Absorb:
                 GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
-                if(nearestObject == null || !nearestObject.CompareTag("Yokai")) {
+                if (nearestObject == null || !nearestObject.CompareTag("Yokai"))
+                {
                     interactStateParameter.yokaiStillInRange = false;
                 }
                 break;
@@ -383,15 +398,18 @@ public class CharacterController : MonoBehaviour {
     }
 
 
-	void UpdateMoveStateParameters(InputParams inputParams) {
-		moveStateParameters.velocity_previous = moveStateParameters.velocity;
-		moveStateParameters.velocity = body.velocity;
+    void UpdateMoveStateParameters(InputParams inputParams)
+    {
+        moveStateParameters.velocity_previous = moveStateParameters.velocity;
+        moveStateParameters.velocity = body.velocity;
         moveStateParameters.jumpRequired = inputParams.jumpRequest;
         moveStateParameters.grounded = IsGrounded();
     }
 
-    void UpdateInteractStateParameters(InputParams inputParams) {
-        switch (inputParams.actionRequest) {
+    void UpdateInteractStateParameters(InputParams inputParams)
+    {
+        switch (inputParams.actionRequest)
+        {
             case ActionRequest.Glide:
                 if (movementState == MovementState.Fall)
                 {
@@ -399,20 +417,20 @@ public class CharacterController : MonoBehaviour {
                 }
                 break;
 
-			case ActionRequest.MeleeAttack:
-				if (interactState != InteractState.Glide)
-				{
-					interactStateParameter.finishedMeleeAttack = false;
-					interactStateParameter.canMeleeAttack = true;
-				}
+            case ActionRequest.MeleeAttack:
+                if (interactState != InteractState.Glide)
+                {
+                    interactStateParameter.finishedMeleeAttack = false;
+                    interactStateParameter.canMeleeAttack = true;
+                }
                 break;
 
-			case ActionRequest.DistantAttack:
-				if (interactState != InteractState.Glide)
-				{
-					interactStateParameter.finishedDistantAttack = false;
-					interactStateParameter.canDistantAttack = true;
-				}
+            case ActionRequest.DistantAttack:
+                if (interactState != InteractState.Glide)
+                {
+                    interactStateParameter.finishedDistantAttack = false;
+                    interactStateParameter.canDistantAttack = true;
+                }
                 break;
 
             case ActionRequest.SpawnLure:
@@ -429,7 +447,8 @@ public class CharacterController : MonoBehaviour {
 
             case ActionRequest.ContextualAction:
                 GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
-                if(nearestObject != null) {
+                if (nearestObject != null)
+                {
                     bool inFrontOfActivableObject = false;
                     bool inFrontOfAbsorbableObject = false;
                     bool inFrontOfPortableObject = false;
@@ -473,9 +492,9 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case ActionRequest.None:
-				interactStateParameter.canGlide = false;
-				interactStateParameter.canMeleeAttack = false;
-				interactStateParameter.canDistantAttack = false;
+                interactStateParameter.canGlide = false;
+                interactStateParameter.canMeleeAttack = false;
+                interactStateParameter.canDistantAttack = false;
                 interactStateParameter.canSpawnLure = false;
                 interactStateParameter.canInflate = false;
                 interactStateParameter.canActivate = false;
@@ -519,7 +538,9 @@ public class CharacterController : MonoBehaviour {
                 interactBehaviorCtrl.DoBeginAbsorption(collid.gameObject);
             }
 
-        } else if (previousInteractState == InteractState.Absorb) {
+        }
+        else if (previousInteractState == InteractState.Absorb)
+        {
             interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
         }
     }
