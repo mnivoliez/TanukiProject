@@ -22,6 +22,16 @@ public class Zone1BossBehavior : YokaiController {
     float timeToTravel = 10f;
     float timeStamp = 0;
 
+    [SerializeField] private float damage = 1f;
+    [SerializeField] private float firerate = 5f;
+    private float cooldownFire = 0;
+    [SerializeField] private GameObject prefabProjectile;
+    [SerializeField] private GameObject spawnProjectile;
+
+    private bool followPlayer = false;
+    private float cooldownPurchase;
+    private float purchaseRate;
+
     void Start () {
         target = GameObject.FindGameObjectWithTag("Player");
         rendererMat = gameObject.GetComponent<Renderer>().material;
@@ -31,11 +41,23 @@ public class Zone1BossBehavior : YokaiController {
 
 	void Update () {
         transform.GetChild(0).transform.LookAt(target.transform);
+        
         if (onMovement) {
             MoveToPosition();
         }
+        else if (followPlayer) {
+            if (cooldownPurchase > purchaseRate) {
+                PurchasePlayer();
+                
+            }
+        }
         else {
             transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
+            if(cooldownFire > firerate) {
+                AttackTarget();
+                cooldownFire = 0;
+            }
+            
         }
 
         if (isAbsorbed) {
@@ -44,13 +66,15 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
+        cooldownFire += 0.02f;
+        if (followPlayer) { cooldownPurchase += 0.02f; }
         if (Random.Range(0, 100) == 5) {
             Behavior();
         }
     }
 
     public override void LooseHp(float damage){
-        if (onMovement) {
+        if (!onMovement) {
             hp -= damage;
 
             if (hp <= 0) {
@@ -70,12 +94,13 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     public override void BeingHit() {
+        Invoke("EndHit", 0.5f);
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
         rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
     }
 
     public override void EndHit() {
-        rendererMat.color = Color.white;
+        if (!isKnocked) rendererMat.color = Color.white;
     }
 
     public override void Absorbed() {
@@ -149,4 +174,42 @@ public class Zone1BossBehavior : YokaiController {
             onMovement = false;
         }
     }
+
+    public void AttackTarget() {
+
+        GameObject projectile = Instantiate(prefabProjectile, spawnProjectile.transform.position, Quaternion.identity);
+        projectile.transform.LookAt(target.transform);
+        Destroy(projectile, 10f);
+
+    }
+    
+    public void PurchasePlayer() {
+
+        if (0 < timeToTravel - timeStamp) {
+            Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / timeToTravel);
+            currentPos.y += 20 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
+            transform.position = currentPos;
+            timeStamp += 0.1f;
+        }
+        else {
+            followPlayer = false;
+            timeStamp = 0;
+            timeToTravel = 10f;
+            cooldownPurchase = 0;
+            
+        }
+        
+
+    }
+
+
+    public void SetFollowPlayer(bool isFollowing) {
+        followPlayer = isFollowing;
+        timeStamp = 0;
+        timeToTravel = 10f;
+        startPosition = transform.position;
+        endPosition = target.transform.position + (Vector3.up*7);
+    }
+
+
 }
