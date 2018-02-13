@@ -130,7 +130,10 @@ public class InteractBehavior : MonoBehaviour {
 
     }
 
-    public void DoContinueAbsorption(GameObject absorbableObject) {
+    public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject) {
+        Pair<Capacity, float> pairCapacity;
+        Capacity capacity = Capacity.Nothing;
+        float timerCapacity = 0;
         Debug.Log("PAS Coucou");
         if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0) {
 
@@ -149,7 +152,8 @@ public class InteractBehavior : MonoBehaviour {
             if (absorptionGauge > maxAbsorptionGauge) {
                 absorbableObject.GetComponent<YokaiController>().Absorbed();
                 gameObject.GetComponent<PlayerCollectableController>().AddYokai();
-
+                capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
+                timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
                 absorptionTimer = 4f;
                 absorptionGauge = 0;
                 centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
@@ -158,8 +162,9 @@ public class InteractBehavior : MonoBehaviour {
                 canvasQTE.SetActive(false);
 
             }
-        } else {
-            
+
+        }
+        else {
             sakePot.SetActive(false);
             absorptionGauge = 0;
             absorptionTimer = 4f;
@@ -167,7 +172,11 @@ public class InteractBehavior : MonoBehaviour {
             centerButton.GetComponent<Image>().color = Color.white;
             canvasQTE.SetActive(false);
         }
-	}
+
+        pairCapacity = new Pair<Capacity, float>(capacity, timerCapacity);
+
+        return pairCapacity;
+    }
 
 	public void doSpawnLure() {
 		if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
