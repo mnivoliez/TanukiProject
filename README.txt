@@ -17,7 +17,18 @@ LUCAS Camille
 VEROT Baptistin
 DORMEGNIE Pierre-François
 DOS SANTOS Emeric
+MATHURE Elric
+LE POIDEVIN Joachim
+BOST Vincent
 
 -Developper:
 OTHENIN Jérémy
 GOMEZ Gwendoline
+NIVOLIEZ Mathieu
+MAI Hien Xhuan
+FIANI Hana
+Yami_nK
+
+-Sound Designer:
+MONTERIGGIONI Victor
+FOUCAUD Christophe
