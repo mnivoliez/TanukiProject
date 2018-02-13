@@ -7,7 +7,9 @@ public class ShadowDirectController : MonoBehaviour {
     [SerializeField]
     private GameObject shadowDirect;
     [SerializeField]
-    private float rayCastDistance = 30.0f;
+	private float rayCastDistance = 30.0f;
+	[SerializeField]
+	private LayerMask ignoredLayerMask;
 
     private GameObject clone;
     private Vector3 position;
@@ -26,7 +28,10 @@ public class ShadowDirectController : MonoBehaviour {
     }
 
     private void Update() {
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, rayCastDistance)) {
+		// all layers are = 0xFFFFFFFF => -1
+		int layerAll = -1;
+
+		if (Physics.Raycast(transform.position, -Vector3.up, out hit, rayCastDistance, layerAll - ignoredLayerMask.value)) {
             position = new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z);
             clone.transform.position = position;
 
