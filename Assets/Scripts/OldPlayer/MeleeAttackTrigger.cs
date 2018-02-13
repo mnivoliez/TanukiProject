@@ -16,19 +16,19 @@ public class MeleeAttackTrigger : MonoBehaviour {
 
     void OnTriggerEnter(Collider collid) {
 
-        if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
-            collid.gameObject.GetComponent<YokaiController>().BeingHit();
-            collid.gameObject.GetComponent<YokaiController>().LooseHp(damage);
+        //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
+        //    collid.gameObject.GetComponent<YokaiController>().BeingHit();
+        //    collid.gameObject.GetComponent<YokaiController>().LooseHp(damage);
 
-        }
+        //}
 
     }
 
     void OnTriggerExit(Collider collid) {
 
-        if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
-            collid.gameObject.GetComponent<YokaiController>().EndHit();
-        }
+        //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
+        //    collid.gameObject.GetComponent<YokaiController>().EndHit();
+        //}
 
     }
 
