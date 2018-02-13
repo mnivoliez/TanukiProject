@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour {
 
     [SerializeField]
-    private int playerHealthMax = 3;
+    private float playerHealthMax = 3.0f;
     [SerializeField]
-    private int playerHealthCurrent;
+    private float playerHealthCurrent;
     [SerializeField]
     private Texture spriteHeart;
 
@@ -27,5 +27,9 @@ public class PlayerHealth : MonoBehaviour {
             GUI.DrawTexture(new Rect(x, 10, 60, 60), spriteHeart, ScaleMode.ScaleToFit);
             x += 70;
         }
+    }
+
+    public void LooseHP(float dame) {
+        playerHealthCurrent = playerHealthCurrent - dame;
     }
 }
