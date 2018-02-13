@@ -7,45 +7,38 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("GLIDE")]
     [Space(8)]
-    [SerializeField]
-    private GameObject ParachuteLeaf;
+    [SerializeField] private GameObject ParachuteLeaf;
 
     [Header("MELEE ATTACK")]
     [Space(8)]
-    [SerializeField]
-    private GameObject leafHead;
+    [SerializeField] private GameObject leafHead;
     [SerializeField] private GameObject leafHand;
     [SerializeField] private GameObject attackRange;
     [SerializeField] private float meleeDamage;
 
     [Header("DISTANT ATTACK")]
     [Space(8)]
-    [SerializeField]
-    private GameObject leafPrefab;
+    [SerializeField] private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private GameObject rangeMaxLeaf;
     [SerializeField] private float distantDamage;
 
     [Header("INFLATE")]
     [Space(8)]
-    [SerializeField]
-    private GameObject normalForm;
+    [SerializeField] private GameObject normalForm;
     [SerializeField] private GameObject inflateForm;
     [SerializeField] private GameObject smokeSpawner;
 
 
     [Header("ABSORB")]
     [Space(8)]
-    [SerializeField]
-    private float absorptionTimer = 4f;
+    [SerializeField] private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
 
     [Header("LURE")]
     [Space(8)]
-    [SerializeField]
-    private GameObject lure;
-    [SerializeField]
-    private Transform tanukiPlayer;
+    [SerializeField] private GameObject lure;
+    [SerializeField] private Transform tanukiPlayer;
 
     //QTE
     private float maxAbsorptionGauge = 4f;
@@ -137,7 +130,10 @@ public class InteractBehavior : MonoBehaviour {
 
     }
 
-    public void DoContinueAbsorption(GameObject absorbableObject) {
+    public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject) {
+        Pair<Capacity, float> pairCapacity;
+        Capacity capacity = Capacity.Nothing;
+        float timerCapacity = 0;
         Debug.Log("PAS Coucou");
         if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0) {
 
@@ -156,7 +152,8 @@ public class InteractBehavior : MonoBehaviour {
             if (absorptionGauge > maxAbsorptionGauge) {
                 absorbableObject.GetComponent<YokaiController>().Absorbed();
                 gameObject.GetComponent<PlayerCollectableController>().AddYokai();
-
+                capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
+                timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
                 absorptionTimer = 4f;
                 absorptionGauge = 0;
                 centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
@@ -165,25 +162,35 @@ public class InteractBehavior : MonoBehaviour {
                 canvasQTE.SetActive(false);
 
             }
-        } else {
-            
+
+        }
+        else {
             sakePot.SetActive(false);
             absorptionGauge = 0;
             absorptionTimer = 4f;
             centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
             centerButton.GetComponent<Image>().color = Color.white;
             canvasQTE.SetActive(false);
-
         }
+
+        pairCapacity = new Pair<Capacity, float>(capacity, timerCapacity);
+
+        return pairCapacity;
     }
 
-    public void doSpawnLure() {
-        if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
-            leafHead.SetActive(false);
-            GameObject clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
-            clone.transform.Translate(0, 3, 2);
-        }
-    }
+	public void doSpawnLure() {
+		if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
+			leafHead.SetActive(false);
+			GameObject clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
+			clone.transform.Translate(0, 3, 2);
 
+			StartCoroutine (destroyLure(clone));
+		}
+	}
 
+	public IEnumerator destroyLure(GameObject Lure) {
+		yield return new WaitForSeconds (10);
+		Destroy (Lure);
+		leafHead.SetActive(true);
+	}
 }
