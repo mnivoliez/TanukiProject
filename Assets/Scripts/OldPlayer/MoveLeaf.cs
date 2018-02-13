@@ -72,19 +72,21 @@ public class MoveLeaf : MonoBehaviour {
 
     void OnTriggerEnter(Collider collid) {
 
-        if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
-            collid.gameObject.GetComponent<YokaiController>().BeingHit();
-            collid.gameObject.GetComponent<YokaiController>().LooseHp(damage);
-            targetPosition = collid.gameObject.transform.position;
-        }
+        //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
+            
+        //    collid.gameObject.GetComponent<YokaiController>().BeingHit();
+        //    collid.gameObject.GetComponent<YokaiController>().LooseHp(damage);
+
+        //    targetPosition = collid.gameObject.transform.position;
+        //}
 
     }
 
     void OnTriggerExit(Collider collid) {
 
-        if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
-            collid.gameObject.GetComponent<YokaiController>().EndHit();
-        }
+        //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
+        //    collid.gameObject.GetComponent<YokaiController>().EndHit();
+        //}
 
     }
 

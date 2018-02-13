@@ -9,8 +9,9 @@ public class BazekoriBehavior : YokaiController {
     Vector3 startPosition;
     Vector3 endPosition;
     Vector3 bending = Vector3.up;
-    float timeToTravel = 10f;
+    float timeToTravel = 3f;
     float timeStamp = 0;
+
 
     void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
@@ -33,8 +34,10 @@ public class BazekoriBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
-        if (Random.Range(0, 100) == 5) {
-            Behavior();
+        if (!followPlayer && !isAbsorbed) {
+            if (Random.Range(0, 100) == 5) {
+                Behavior();
+            }
         }
     }
 
@@ -55,7 +58,7 @@ public class BazekoriBehavior : YokaiController {
     }
 
     public override void EndHit() {
-        rendererMat.color = Color.white;
+        if(!isKnocked) rendererMat.color = Color.white;
     }
 
     public override void Absorbed() {
@@ -87,26 +90,43 @@ public class BazekoriBehavior : YokaiController {
         GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
-    void onTriggerEnter(Collider other) { 
-
-        startPosition = transform.position;
-        endPosition = target.transform.position;
-        timeStamp = 0;
-        timeToTravel = 10f;
-        followPlayer = true;
+    void OnTriggerEnter(Collider other) {
         
+        if (other.gameObject.CompareTag("Leaf") && !isKnocked) {
+            float damage;
+            if (other.gameObject.GetComponent<MoveLeaf>() != null) {
+                damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
+            }
+            else {
+                damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
+            }
+            BeingHit();
+            LooseHp(damage);
+            Invoke("EndHit", 0.5f);
+        }
+
     }
 
     public void MoveToPosition() {
 
         if (0 < timeToTravel - timeStamp) {
             Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / timeToTravel);
-            currentPos.y += 20 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
+            currentPos.y += 1 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
             transform.position = currentPos;
             timeStamp += 0.1f;
         }
         else {
             followPlayer = false;
+            timeStamp = 0;
+            timeToTravel = 3f;
         }
+    }
+
+    public void SetFollowPlayer(bool isFollowing) {
+        followPlayer = isFollowing;
+        timeStamp = 0;
+        timeToTravel = 3f;
+        startPosition = transform.position;
+        endPosition = target.transform.position + (Vector3.up * 2);
     }
 }

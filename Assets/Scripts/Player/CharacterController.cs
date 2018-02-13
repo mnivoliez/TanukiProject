@@ -137,7 +137,7 @@ public class CharacterController : MonoBehaviour {
     private void Update() {
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
-            Debug.Log(timerCapacity);
+            
         } else {
             StopTemporaryCapacity();
         }
