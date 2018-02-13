@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AirStream : MonoBehaviour {
+
+    [SerializeField] private float airForce = 100f;
+
 	void Start () {
 		
 	}
@@ -25,7 +28,7 @@ public class AirStream : MonoBehaviour {
 		if (other.CompareTag("Player")) {
             if (other.GetComponent<CharacterController>().GetInteractState() == InteractState.Glide) {
                 Rigidbody bodyObject = other.GetComponent<Rigidbody>();
-                bodyObject.AddForce(Vector3.up * 200 + (Vector3.up * Mathf.Abs(bodyObject.velocity.y)), ForceMode.Force);
+                bodyObject.AddForce(Vector3.up * airForce + (Vector3.up * Mathf.Abs(bodyObject.velocity.y)), ForceMode.Force);
             }
         }
     }
