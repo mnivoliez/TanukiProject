@@ -7,45 +7,38 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("GLIDE")]
     [Space(8)]
-    [SerializeField]
-    private GameObject ParachuteLeaf;
+    [SerializeField] private GameObject ParachuteLeaf;
 
     [Header("MELEE ATTACK")]
     [Space(8)]
-    [SerializeField]
-    private GameObject leafHead;
+    [SerializeField] private GameObject leafHead;
     [SerializeField] private GameObject leafHand;
     [SerializeField] private GameObject attackRange;
     [SerializeField] private float meleeDamage;
 
     [Header("DISTANT ATTACK")]
     [Space(8)]
-    [SerializeField]
-    private GameObject leafPrefab;
+    [SerializeField] private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private GameObject rangeMaxLeaf;
     [SerializeField] private float distantDamage;
 
     [Header("INFLATE")]
     [Space(8)]
-    [SerializeField]
-    private GameObject normalForm;
+    [SerializeField] private GameObject normalForm;
     [SerializeField] private GameObject inflateForm;
     [SerializeField] private GameObject smokeSpawner;
 
 
     [Header("ABSORB")]
     [Space(8)]
-    [SerializeField]
-    private float absorptionTimer = 4f;
+    [SerializeField] private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
 
     [Header("LURE")]
     [Space(8)]
-    [SerializeField]
-    private GameObject lure;
-    [SerializeField]
-    private Transform tanukiPlayer;
+    [SerializeField] private GameObject lure;
+    [SerializeField] private Transform tanukiPlayer;
 
     //QTE
     private float maxAbsorptionGauge = 4f;
@@ -173,17 +166,22 @@ public class InteractBehavior : MonoBehaviour {
             centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
             centerButton.GetComponent<Image>().color = Color.white;
             canvasQTE.SetActive(false);
-
         }
-    }
+	}
 
-    public void doSpawnLure() {
-        if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
-            leafHead.SetActive(false);
-            GameObject clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
-            clone.transform.Translate(0, 3, 2);
-        }
-    }
+	public void doSpawnLure() {
+		if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
+			leafHead.SetActive(false);
+			GameObject clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
+			clone.transform.Translate(0, 3, 2);
 
+			StartCoroutine (destroyLure(clone));
+		}
+	}
 
+	public IEnumerator destroyLure(GameObject Lure) {
+		yield return new WaitForSeconds (10);
+		Destroy (Lure);
+		leafHead.SetActive(true);
+	}
 }

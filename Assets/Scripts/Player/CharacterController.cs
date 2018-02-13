@@ -227,7 +227,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     void MoveAccordingToInput(InputParams inputParams) {
-        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall)/* ou si maudit et pas en state jump / fall */;
+		bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall)/* ou si maudit et pas en state jump / fall */;
 
         //JUMP
         if (inputParams.jumpRequest && canJump) {
@@ -241,7 +241,6 @@ public class CharacterController : MonoBehaviour {
         orientationMove = (transform.forward * inputParams.moveZ) + (transform.right * inputParams.moveX);
 
 		//Manage Inclination Ground
-		Debug.Log("coefInclination=" + coefInclination);
         if (coefInclination <= 45) {
             inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + ((inputVelocityAxis.normalized * moveSpeed) * (1 - Mathf.Cos(coefInclination * Mathf.Deg2Rad)));
             inputVelocityAxis.y = body.velocity.y;
