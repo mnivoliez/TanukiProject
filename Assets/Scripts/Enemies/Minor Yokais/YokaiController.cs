@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class YokaiController : MonoBehaviour {
-
-
     //    private bool isAbsorbed = false;
     //    private bool isKnocked = false;
     //    [SerializeField]
@@ -99,9 +97,6 @@ public abstract class YokaiController : MonoBehaviour {
     //    }
     //}
 
-
-
-
     protected bool isAbsorbed = false;
     protected bool isKnocked = false;
     [SerializeField] protected float speed = 8f;
@@ -111,7 +106,6 @@ public abstract class YokaiController : MonoBehaviour {
     protected Material rendererMat;
     protected float rotationSpeed = 10f;
     protected GameObject target;
-
 
     public virtual void LooseHp(float damage) { }
 

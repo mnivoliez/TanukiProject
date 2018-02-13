@@ -17,12 +17,8 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     void Update() {
-
-
-
         if (!arrived) {
             MoveTo();
-
             if (transform.position == targetPosition) {
                 arrived = true;
             }
@@ -38,11 +34,7 @@ public class MoveLeaf : MonoBehaviour {
 				Destroy(gameObject);
             }
         }
-
-
-
     }
-
 
     public void MoveTo() {
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
@@ -71,21 +63,17 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider collid) {
-
         if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
             collid.gameObject.GetComponent<YokaiController>().BeingHit();
             collid.gameObject.GetComponent<YokaiController>().LooseHp(damage);
             targetPosition = collid.gameObject.transform.position;
         }
-
     }
 
     void OnTriggerExit(Collider collid) {
-
         if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
             collid.gameObject.GetComponent<YokaiController>().EndHit();
         }
 
     }
-
 }
