@@ -109,8 +109,8 @@ public class CharacterController : MonoBehaviour {
     private InputController inputController;
 
     // Capacity
-    [SerializeField] private bool hasDoubleJumpCapacityPermanently;
-    [SerializeField] private bool hasDoubleJumpCapacityTemporary;
+	[SerializeField] private bool permanentDoubleJumpCapacity;
+	[SerializeField] private bool temporaryDoubleJumpCapacity;
     [SerializeField] private float timerCapacity;
 
     //Animation
@@ -253,7 +253,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     void MoveAccordingToInput(InputParams inputParams) {
-        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall || (movementState == MovementState.Jump && !hasDoubleJumpCapacityTemporary && !hasDoubleJumpCapacityPermanently))/* ou si maudit et pas en state jump / fall */;
+        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall || (movementState == MovementState.Jump && !temporaryDoubleJumpCapacity && !permanentDoubleJumpCapacity))/* ou si maudit et pas en state jump / fall */;
         //JUMP
         if (inputParams.jumpRequest && canJump) {
 			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
@@ -539,7 +539,7 @@ public class CharacterController : MonoBehaviour {
         switch (pairCapacity.First) {
 
             case Capacity.DoubleJump:
-                hasDoubleJumpCapacityTemporary = true;
+                temporaryDoubleJumpCapacity = true;
                 
                 break;
 
@@ -552,6 +552,6 @@ public class CharacterController : MonoBehaviour {
 
     private void StopTemporaryCapacity() {
         timerCapacity = 0;
-        hasDoubleJumpCapacityTemporary = false;
+        temporaryDoubleJumpCapacity = false;
     }
 }
