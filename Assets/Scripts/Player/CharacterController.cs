@@ -80,6 +80,8 @@ public class CharacterController : MonoBehaviour {
     [SerializeField] private float airControl = 6f;
     [SerializeField] private float jumpForce = 120f;
     [SerializeField] private GameObject absorbRange;
+    private GameObject catchableObject;
+    private GameObject objectToCarry;
 
     private List<GameObject> _grounds = new List<GameObject>();
 
@@ -148,16 +150,17 @@ public class CharacterController : MonoBehaviour {
         InputParams inputParams = inputController.RetrieveUserRequest();
         //deplacements
 		MoveAccordingToInput(inputParams);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump1=" + inputParams.jumpRequest + " jumpMV1=" + moveStateParameters.jumpRequired);
-		InteractAccordingToInput(inputParams);
+        //if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+        //	Debug.Log ("jump1=" + inputParams.jumpRequest + " jumpMV1=" + moveStateParameters.jumpRequired);
+        UpdateInteractStateParameters(inputParams);
+        InteractAccordingToInput(inputParams);
 		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
 		//	Debug.Log ("jump2=" + inputParams.jumpRequest + " jumpMV2=" + moveStateParameters.jumpRequired);
 		previousInteractState = interactState;
 		UpdateMoveStateParameters(inputParams);
 		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
 		//	Debug.Log ("jump3=" + inputParams.jumpRequest + " jumpMV3=" + moveStateParameters.jumpRequired);
-		UpdateInteractStateParameters(inputParams);
+		
 		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
 		//	Debug.Log ("jump4=" + inputParams.jumpRequest + " jumpMV4=" + moveStateParameters.jumpRequired);
 
@@ -202,8 +205,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision coll) {
-        GameObject gO = coll.gameObject;
-
+           GameObject gO = coll.gameObject;
         if (gO.layer == LayerMask.NameToLayer("Ground")) {
             ContactPoint[] contacts = coll.contacts;
 
@@ -253,7 +255,9 @@ public class CharacterController : MonoBehaviour {
     }
 
     void MoveAccordingToInput(InputParams inputParams) {
-        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall || (movementState == MovementState.Jump && !temporaryDoubleJumpCapacity && !permanentDoubleJumpCapacity))/* ou si maudit et pas en state jump / fall */;
+        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall ||
+            (movementState == MovementState.Jump && ((!temporaryDoubleJumpCapacity && !permanentDoubleJumpCapacity) ||
+            interactState == InteractState.Carry))); /* ou si maudit et pas en state jump / fall */
         //JUMP
         if (inputParams.jumpRequest && canJump) {
 			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
@@ -307,6 +311,12 @@ public class CharacterController : MonoBehaviour {
                 if (previousInteractState == InteractState.Inflate) {
                     interactBehaviorCtrl.DoInflate(false);
                 }
+
+                if (interactStateParameter.canCarry) {
+
+                    interactBehaviorCtrl.DoCarry(objectToCarry);
+                    catchableObject = objectToCarry;
+                }
                 break;
 
 
@@ -316,8 +326,7 @@ public class CharacterController : MonoBehaviour {
                     interactBehaviorCtrl.StopGlide();
                 } else {
                     // add a force to counter gravity (glide effect)
-                    Debug.Log("Velocity" + body.velocity.y);
-                   
+                                       
                     body.AddForce(Vector3.up * 150f, ForceMode.Force);
                     if (body.velocity.y < -10) {
                         body.velocity = new Vector3(body.velocity.x, -10, body.velocity.z);
@@ -387,6 +396,13 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case InteractState.Carry:
+                if (inputParams.actionRequest == ActionRequest.ContextualAction) {
+                    catchableObject.transform.parent = null;
+                    Rigidbody body = catchableObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
+                    body.useGravity = true;
+                    interactStateParameter.finishedCarry = true;
+                    body.mass = 100;
+                }
                 break;
 
             case InteractState.Push:
@@ -394,7 +410,7 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-	float hysteresis_step = 0.01f;
+    float hysteresis_step = 0.01f;
 
 	public bool IsGoingUp(MovementStateParam param) {
 		bool up = !param.grounded && param.velocity.y > hysteresis_step;
@@ -421,8 +437,10 @@ public class CharacterController : MonoBehaviour {
     void UpdateInteractStateParameters(InputParams inputParams) {
         switch (inputParams.actionRequest) {
             case ActionRequest.Glide:
-                if (movementState == MovementState.Fall) {
+                if (movementState == MovementState.Fall || movementState == MovementState.PushUp) {
                     interactStateParameter.canGlide = true;
+                } else {
+                    interactStateParameter.canGlide = false;
                 }
                 break;
 
@@ -484,6 +502,7 @@ public class CharacterController : MonoBehaviour {
                         }
                         else if (inFrontOfPortableObject) {
                             interactStateParameter.canCarry = true;
+                            objectToCarry = nearestObject;
                         }
                     }
 
@@ -500,6 +519,8 @@ public class CharacterController : MonoBehaviour {
                 interactStateParameter.canAbsorb = false;
                 interactStateParameter.canCarry = false;
                 interactStateParameter.canPush = false;
+                interactStateParameter.finishedCarry = false;
+                nearestObject = null;
                 break;
         }
 
@@ -524,9 +545,16 @@ public class CharacterController : MonoBehaviour {
     //    inputInteractParameters.LeafAvailable = true;
     //}
 
+    void OnTriggerExit(Collider collid) {
+        if (collid.gameObject.CompareTag("AirStreamZone")) {
+            moveStateParameters.inAirStream = false;
+        }
+    }
+
     void OnTriggerStay(Collider collid) {
-
-
+        if (collid.gameObject.CompareTag("AirStreamZone")) {
+            moveStateParameters.inAirStream = true;
+        }
         if (interactState == InteractState.Absorb && previousInteractState != InteractState.Absorb) {
             if (interactStateParameter.canAbsorb) {
                 interactBehaviorCtrl.DoBeginAbsorption(collid.gameObject);
