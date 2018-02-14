@@ -96,5 +96,4 @@ public class InputController : MonoBehaviour {
     public InputParams RetrieveUserRequest() {
         return inputParams;
     }
-
 }
