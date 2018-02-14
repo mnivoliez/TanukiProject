@@ -67,7 +67,7 @@ public class BazekoriBehavior : YokaiController {
     }
 
     public override void Die() {
-        if (transform.position == target.transform.position) {
+        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         }
@@ -79,7 +79,7 @@ public class BazekoriBehavior : YokaiController {
                 transform.localScale -= new Vector3(5f, 5f, 5f);
             }
             speed = speed + 0.2f;
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, (target.transform.position+Vector3.up), speed * Time.deltaTime);
             transform.Rotate(Vector3.right, rotationSpeed);
             transform.Rotate(Vector3.up, rotationSpeed);
             rotationSpeed += 2;
