@@ -202,8 +202,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision coll) {
-        GameObject gO = coll.gameObject;
-
+           GameObject gO = coll.gameObject;
         if (gO.layer == LayerMask.NameToLayer("Ground")) {
             ContactPoint[] contacts = coll.contacts;
 
@@ -316,8 +315,7 @@ public class CharacterController : MonoBehaviour {
                     interactBehaviorCtrl.StopGlide();
                 } else {
                     // add a force to counter gravity (glide effect)
-                    Debug.Log("Velocity" + body.velocity.y);
-                   
+                                       
                     body.AddForce(Vector3.up * 150f, ForceMode.Force);
                     if (body.velocity.y < -10) {
                         body.velocity = new Vector3(body.velocity.x, -10, body.velocity.z);
@@ -394,7 +392,7 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-	float hysteresis_step = 0.01f;
+    float hysteresis_step = 0.01f;
 
 	public bool IsGoingUp(MovementStateParam param) {
 		bool up = !param.grounded && param.velocity.y > hysteresis_step;
@@ -421,8 +419,10 @@ public class CharacterController : MonoBehaviour {
     void UpdateInteractStateParameters(InputParams inputParams) {
         switch (inputParams.actionRequest) {
             case ActionRequest.Glide:
-                if (movementState == MovementState.Fall) {
+                if (movementState == MovementState.Fall || movementState == MovementState.PushUp) {
                     interactStateParameter.canGlide = true;
+                } else {
+                    interactStateParameter.canGlide = false;
                 }
                 break;
 
@@ -524,9 +524,16 @@ public class CharacterController : MonoBehaviour {
     //    inputInteractParameters.LeafAvailable = true;
     //}
 
+    void OnTriggerExit(Collider collid) {
+        if (collid.gameObject.CompareTag("AirStreamZone")) {
+            moveStateParameters.inAirStream = false;
+        }
+    }
+
     void OnTriggerStay(Collider collid) {
-
-
+        if (collid.gameObject.CompareTag("AirStreamZone")) {
+            moveStateParameters.inAirStream = true;
+        }
         if (interactState == InteractState.Absorb && previousInteractState != InteractState.Absorb) {
             if (interactStateParameter.canAbsorb) {
                 interactBehaviorCtrl.DoBeginAbsorption(collid.gameObject);
