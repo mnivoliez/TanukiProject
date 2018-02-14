@@ -256,7 +256,9 @@ public class CharacterController : MonoBehaviour {
     }
 
     void MoveAccordingToInput(InputParams inputParams) {
-        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall || (movementState == MovementState.Jump && !temporaryDoubleJumpCapacity && (!permanentDoubleJumpCapacity || interactState == InteractState.Carry)));    /* ou si maudit et pas en state jump / fall */
+        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall ||
+            (movementState == MovementState.Jump && ((!temporaryDoubleJumpCapacity && !permanentDoubleJumpCapacity) ||
+            interactState == InteractState.Carry))); /* ou si maudit et pas en state jump / fall */
         //JUMP
         if (inputParams.jumpRequest && canJump) {
 			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
