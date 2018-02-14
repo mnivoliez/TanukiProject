@@ -47,11 +47,14 @@ public class InteractBehavior : MonoBehaviour {
     public Transform loadingBar;
     public Transform centerButton;
 
+    //Catchable Object
+    private GameObject catchSlot;
+
     // Use this for initialization
     void Start () {
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
-        
+        catchSlot = GameObject.Find("Catchable Object");
         sakePot.SetActive(false);
     }
 
@@ -193,4 +196,10 @@ public class InteractBehavior : MonoBehaviour {
 		Destroy (Lure);
 		leafHead.SetActive(true);
 	}
+
+    public void DoCarry(GameObject objectToCarry) {
+        objectToCarry.transform.parent = catchSlot.transform;
+        objectToCarry.transform.position = catchSlot.transform.position;
+        Destroy(objectToCarry.GetComponent<Rigidbody>());
+    }
 }
