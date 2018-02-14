@@ -78,7 +78,7 @@ public class CharacterController : MonoBehaviour {
     private float speed = 10f;
     private float coefInclination;
     [SerializeField] private float airControl = 6f;
-    [SerializeField] private float jumpForce = 12f;
+    [SerializeField] private float jumpForce = 120f;
     [SerializeField] private GameObject absorbRange;
 
     private List<GameObject> _grounds = new List<GameObject>();
@@ -315,8 +315,13 @@ public class CharacterController : MonoBehaviour {
                 if (IsGrounded()) {
                     interactBehaviorCtrl.StopGlide();
                 } else {
-					// add a force to counter gravity (glide effect)
+                    // add a force to counter gravity (glide effect)
+                    Debug.Log("Velocity" + body.velocity.y);
+                   
                     body.AddForce(Vector3.up * 150f, ForceMode.Force);
+                    if (body.velocity.y < -10) {
+                        body.velocity = new Vector3(body.velocity.x, -10, body.velocity.z);
+                    }
                     interactBehaviorCtrl.DoGlide();
                 }
                 break;
