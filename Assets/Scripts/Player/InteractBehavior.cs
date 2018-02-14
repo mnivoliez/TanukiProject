@@ -134,7 +134,7 @@ public class InteractBehavior : MonoBehaviour {
         Pair<Capacity, float> pairCapacity;
         Capacity capacity = Capacity.Nothing;
         float timerCapacity = 0;
-        Debug.Log("PAS Coucou");
+
         if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0) {
 
             centerButton.GetComponent<Image>().color = Color.white;
