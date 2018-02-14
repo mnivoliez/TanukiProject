@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public enum MovementState {
-    Idle, Run, Jump, DoubleJump, Fall
+    Idle, Run, Jump, DoubleJump, Fall, PushUp
 }
 
 public struct MovementStateParam {
@@ -12,6 +12,7 @@ public struct MovementStateParam {
 	public Vector3 position;
 	public Vector3 position_before_fall;
     public bool jumpRequired;
+    public bool inAirStream;
     public bool grounded;
 }
 
@@ -45,6 +46,11 @@ public class MovementStateController {
 				//Debug.Log ("GetNewState mvt=Fall");
                 newState = ManageFall(previous, param);
                 break;
+
+			case MovementState.PushUp:
+				//Debug.Log ("GetNewState mvt=Fall");
+                newState = ManagePushUp(previous, param);
+                break;
 			default:
 				//Debug.Log ("GetNewState mvt=Other");
 				break;
@@ -71,7 +77,6 @@ public class MovementStateController {
 				Debug.Log ("Jump Jump");
                 newState = MovementState.Jump;
             }*/
-
         }
 
         //FAll
@@ -95,6 +100,44 @@ public class MovementStateController {
 			//Debug.Log ("fall run");
             newState = MovementState.Run;
         }
+        
+        //DOUBLEJUMP
+        if (IsGoingUp(param) && !param.inAirStream) {
+            //Debug.Log ("fall run");
+            newState = MovementState.DoubleJump;
+        }
+
+        //PUSHUP
+        if (IsGoingUp(param) && param.inAirStream) {
+            //Debug.Log ("fall run");
+            newState = MovementState.PushUp;
+        }
+
+        return newState;
+
+    }
+
+    MovementState ManagePushUp(MovementState previous, MovementStateParam param) {
+		MovementState newState = previous;
+		//Debug.Log ("Fall manage");
+        //IDLE
+		if (IsIdle(param)) {
+			//Debug.Log ("fall idle");
+            newState = MovementState.Idle;
+        }
+
+		//RUN
+		if (IsRunning(param)) {
+			//Debug.Log ("fall run");
+            newState = MovementState.Run;
+        }
+
+        //FALL
+        if (IsFalling(param)) {
+            //Debug.Log ("fall run");
+            newState = MovementState.Fall;
+        }
+
         return newState;
 
     }
