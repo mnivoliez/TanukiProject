@@ -20,6 +20,7 @@ public struct InteractStateParam {
     public bool canAbsorb;
     public bool yokaiStillInRange;
     public bool canCarry;
+    public bool finishedCarry;
     public bool canPush;
 }
 
@@ -228,7 +229,7 @@ public class InteractStateController {
     InteractState ManageCarry(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //NOTHING
-        if (!param.canGlide) {
+        if (param.finishedCarry) {
             newState = InteractState.Nothing;
         }
         return newState;
