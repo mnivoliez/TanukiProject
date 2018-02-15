@@ -71,7 +71,7 @@ public class BazekoriBehavior : YokaiController {
     }
 
     public override void Die() {
-        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5) {
+        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         }
@@ -80,7 +80,7 @@ public class BazekoriBehavior : YokaiController {
                 transform.localScale = Vector3.zero;
             }
             else {
-                transform.localScale -= new Vector3(5f, 5f, 5f);
+                transform.localScale -= new Vector3(0.2f, 0.2f, 0.2f);
             }
             speed = speed + 0.2f;
             transform.position = Vector3.MoveTowards(transform.position, (target.transform.position+Vector3.up), speed * Time.deltaTime);
@@ -95,10 +95,8 @@ public class BazekoriBehavior : YokaiController {
     }
 
     void OnTriggerEnter(Collider other) {
-        Debug.Log("COUCOU !");
 
         if (other.gameObject.CompareTag("Leaf") && !isKnocked) {
-            Debug.Log("TOUCHE !");
             float damage;
             if (other.gameObject.GetComponent<MoveLeaf>() != null) {
                 damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
