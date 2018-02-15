@@ -40,24 +40,26 @@ public class Zone1BossBehavior : YokaiController {
     }
 
 	void Update () {
-        transform.GetChild(0).transform.LookAt(target.transform);
-        
-        if (onMovement) {
-            MoveToPosition();
-        }
-        else if (followPlayer) {
-            if (cooldownPurchase > purchaseRate) {
-                PurchasePlayer();
-                
+        if (!isKnocked) {
+            transform.GetChild(0).transform.LookAt(target.transform);
+
+            if (onMovement) {
+                MoveToPosition();
             }
-        }
-        else {
-            transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
-            if(cooldownFire > firerate) {
-                AttackTarget();
-                cooldownFire = 0;
+            else if (followPlayer) {
+                if (cooldownPurchase > purchaseRate) {
+                    PurchasePlayer();
+
+                }
             }
-            
+            else {
+                transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
+                if (cooldownFire > firerate) {
+                    AttackTarget();
+                    cooldownFire = 0;
+                }
+
+            }
         }
 
         if (isAbsorbed) {
@@ -66,10 +68,12 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
-        cooldownFire += 0.02f;
-        if (followPlayer) { cooldownPurchase += 0.02f; }
-        if (Random.Range(0, 100) == 5) {
-            Behavior();
+        if (!isKnocked) {
+            cooldownFire += 0.02f;
+            if (followPlayer) { cooldownPurchase += 0.02f; }
+            if (Random.Range(0, 100) == 5) {
+                Behavior();
+            }
         }
     }
 
@@ -109,7 +113,7 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     public override void Die() {
-        if (transform.position == target.transform.position) {
+        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         }
@@ -118,10 +122,10 @@ public class Zone1BossBehavior : YokaiController {
                 transform.localScale = Vector3.zero;
             }
             else {
-                transform.localScale -= new Vector3(20f, 20f, 20f);
+                transform.localScale -= new Vector3(1f, 1f, 1f);
             }
             speed = speed + 0.2f;
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, (target.transform.position + Vector3.up), speed * Time.deltaTime);
             transform.Rotate(Vector3.right, rotationSpeed);
             transform.Rotate(Vector3.up, rotationSpeed);
             rotationSpeed += 2;
