@@ -7,6 +7,7 @@ public class Switch1 : MonoBehaviour
 
 
     public GameObject porte;
+    public GameObject other;
 
 
     // Use this for initialization
@@ -19,6 +20,7 @@ public class Switch1 : MonoBehaviour
     {
 
         porte.SetActive(false);
+        other.SetActive(false);
 
     }
 
