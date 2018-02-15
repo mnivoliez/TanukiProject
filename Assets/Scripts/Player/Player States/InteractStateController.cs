@@ -14,6 +14,7 @@ public struct InteractStateParam {
 	public bool canDistantAttack;
 	public bool finishedDistantAttack;
     public bool canSpawnLure;
+    public bool canDestroyLure;
     public bool canInflate;
     public bool canResize;
     public bool canActivate;
@@ -186,9 +187,7 @@ public class InteractStateController {
     InteractState ManageSpawnLure(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //NOTHING
-        if (!param.canGlide) {
-            newState = InteractState.Nothing;
-        }
+        newState = InteractState.Nothing;
         return newState;
     }
 
