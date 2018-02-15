@@ -1989,6 +1989,20 @@ Prefab:
       propertyPath: m_TagString
       value: Yokai
       objectReference: {fileID: 0}
+    - target: {fileID: 23322509216887854, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa,
+        type: 2}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 136122713446417968, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540282424608112, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa, type: 2}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 135124766194098168, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa, type: 2}
@@ -4230,6 +4244,24 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
+--- !u!1 &1886674093 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1540282424608112, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa,
+    type: 2}
+  m_PrefabInternal: {fileID: 830193357}
+--- !u!136 &1886674094
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1886674093}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.7
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1991003463
 GameObject:
   m_ObjectHideFlags: 0
