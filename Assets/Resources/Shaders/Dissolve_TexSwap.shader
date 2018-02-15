@@ -30,6 +30,7 @@
         Tags {"Queue"="AlphaTest" "IgnoreProjector"="True" "RenderType"="TransparentCutout"}
 		//Tags {"Queue"="AlphaTest" "IgnoreProjector"="True" "RenderType"="Transparent"}
         LOD 200
+        Lighting off
 
 		CGPROGRAM
         // Upgrade NOTE: excluded shader from DX11, OpenGL ES 2.0 because it uses unsized arrays
@@ -87,7 +88,7 @@
             fixed4 tex2 = tex2D(_SecondTexture, IN.uv_MainTex);
             o.Albedo = lerp(tex1.rgb * _FirstColor.rgb, tex2.rgb * _SecondColor.rgb, 1-lrp);
             o.Alpha = lerp(tex1.a * _FirstColor.a, tex2.a * _SecondColor.a, 1-lrp);
-            o.Emission = lrp * saturate(1-(l-_Offset)) * _Color.rgb * saturate(ns*_Strength*10+_Strength*0.5f * (1/_Falloff));
+            o.Emission = 0;// lrp * saturate(1 - (l - _Offset)) * _Color.rgb * saturate(ns*_Strength * 10 + _Strength*0.5f * (1 / _Falloff));
             o.Smoothness = 0;
             o.Metallic = 0;
 		}
