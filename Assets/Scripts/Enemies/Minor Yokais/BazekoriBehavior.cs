@@ -34,16 +34,20 @@ public class BazekoriBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
-        if (!followPlayer && !isAbsorbed) {
-            if (Random.Range(0, 100) == 5) {
-                Behavior();
+        if (!isKnocked) {
+            if (!followPlayer) {
+                if (Random.Range(0, 100) == 5) {
+                    Behavior();
+                }
             }
         }
+        
     }
 
     public override void LooseHp(float damage) {
         hp -= damage;
-
+        BeingHit();
+        Invoke("EndHit", 0.3f);
         if (hp <= 0) {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
@@ -91,8 +95,10 @@ public class BazekoriBehavior : YokaiController {
     }
 
     void OnTriggerEnter(Collider other) {
-        
+        Debug.Log("COUCOU !");
+
         if (other.gameObject.CompareTag("Leaf") && !isKnocked) {
+            Debug.Log("TOUCHE !");
             float damage;
             if (other.gameObject.GetComponent<MoveLeaf>() != null) {
                 damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
@@ -100,9 +106,7 @@ public class BazekoriBehavior : YokaiController {
             else {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
-            BeingHit();
             LooseHp(damage);
-            Invoke("EndHit", 0.5f);
         }
 
     }
