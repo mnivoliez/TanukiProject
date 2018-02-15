@@ -60,7 +60,7 @@ public class InteractBehavior : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
+        
     }
 
     public void DoGlide() {
@@ -203,7 +203,12 @@ public class InteractBehavior : MonoBehaviour {
             Destroy(lure);
             leafHead.SetActive(true);
         }
-        
+    }
+
+    public void CheckExistingLure(GameObject lure) {
+        if (lure == null & leafHead.activeSelf == false) {
+            leafHead.SetActive(true);
+        }
     }
 
     public void DoCarry(GameObject objectToCarry) {
