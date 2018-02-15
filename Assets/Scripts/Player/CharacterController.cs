@@ -82,6 +82,7 @@ public class CharacterController : MonoBehaviour {
     [SerializeField] private GameObject absorbRange;
     private GameObject catchableObject;
     private GameObject objectToCarry;
+    private GameObject actualLure;
 
     private List<GameObject> _grounds = new List<GameObject>();
 
@@ -137,6 +138,8 @@ public class CharacterController : MonoBehaviour {
     }
 
     private void Update() {
+        interactBehaviorCtrl.CheckExistingLure(actualLure);
+
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
             
@@ -149,25 +152,17 @@ public class CharacterController : MonoBehaviour {
 
         InputParams inputParams = inputController.RetrieveUserRequest();
         //deplacements
-		MoveAccordingToInput(inputParams);
-        //if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-        //	Debug.Log ("jump1=" + inputParams.jumpRequest + " jumpMV1=" + moveStateParameters.jumpRequired);
-        UpdateInteractStateParameters(inputParams);
-        InteractAccordingToInput(inputParams);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump2=" + inputParams.jumpRequest + " jumpMV2=" + moveStateParameters.jumpRequired);
-		previousInteractState = interactState;
-		UpdateMoveStateParameters(inputParams);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump3=" + inputParams.jumpRequest + " jumpMV3=" + moveStateParameters.jumpRequired);
-		
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump4=" + inputParams.jumpRequest + " jumpMV4=" + moveStateParameters.jumpRequired);
 
-		movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump5=" + inputParams.jumpRequest + " jumpMV5=" + moveStateParameters.jumpRequired);
+        previousInteractState = interactState;
+
+        UpdateMoveStateParameters(inputParams);
+        UpdateInteractStateParameters(inputParams);
+
+        movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
+
+        MoveAccordingToInput(inputParams);
+        InteractAccordingToInput(inputParams);
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
@@ -255,14 +250,19 @@ public class CharacterController : MonoBehaviour {
     }
 
     void MoveAccordingToInput(InputParams inputParams) {
-        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall ||
-            (movementState == MovementState.Jump && ((!temporaryDoubleJumpCapacity && !permanentDoubleJumpCapacity) ||
-            interactState == InteractState.Carry))); /* ou si maudit et pas en state jump / fall */
+        
+        
+        /* ou si maudit et pas en state jump / fall */
         //JUMP
-        if (inputParams.jumpRequest && canJump) {
-			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
-			body.velocity = new Vector3 (body.velocity.x, 0.02f, body.velocity.z);
-            body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        if (inputParams.jumpRequest) {
+            bool canJump = (previousMovementState != MovementState.DoubleJump &&
+            previousMovementState != MovementState.Fall) && (previousMovementState != MovementState.Jump ||
+            (previousMovementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && previousInteractState != InteractState.Carry));
+            if (canJump) {
+                // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+                body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
+                body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
         }
 
         inputVelocityAxis = new Vector3(inputParams.moveX, body.velocity.y, inputParams.moveZ);
@@ -307,16 +307,34 @@ public class CharacterController : MonoBehaviour {
                 if (previousInteractState == InteractState.Glide) {
                     interactBehaviorCtrl.StopGlide();
                 }
+            
+                /*if (interactStateParameter.canGlide) {
+                    interactBehaviorCtrl.StopGlide();
+                }*/
 
                 if (previousInteractState == InteractState.Inflate) {
                     interactBehaviorCtrl.DoInflate(false);
                 }
 
-                if (interactStateParameter.canCarry) {
+                if (interactStateParameter.canDestroyLure) {
+                    interactBehaviorCtrl.DestroyLure(actualLure);
+                    actualLure = null;
+                }
+                
+                if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
+                    interactBehaviorCtrl.StopCarry(catchableObject);
+                }
+
+                /*if (interactStateParameter.canSpawnLure) {
+
+                    actualLure = interactBehaviorCtrl.DoSpawnLure();
+                }*/
+
+                /*if (interactStateParameter.canCarry) {
 
                     interactBehaviorCtrl.DoCarry(objectToCarry);
                     catchableObject = objectToCarry;
-                }
+                }*/
                 break;
 
 
@@ -360,7 +378,6 @@ public class CharacterController : MonoBehaviour {
                 //}
                 break;
 
-
             case InteractState.DistantAttack:
                 if (interactStateParameter.canDistantAttack) {
                     interactBehaviorCtrl.DoDistantAttack();
@@ -368,18 +385,15 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case InteractState.SpawnLure:
-                if (interactStateParameter.canSpawnLure) {
-                    interactBehaviorCtrl.doSpawnLure();
+                if (previousInteractState == InteractState.Nothing) {
+                    actualLure = interactBehaviorCtrl.DoSpawnLure();
                 }
                 break;
 
             case InteractState.Inflate:
-
                 if (previousInteractState != InteractState.Inflate) {
                     interactBehaviorCtrl.DoInflate(true);
                 }
-
-
                 break;
 
             case InteractState.Tiny:
@@ -396,12 +410,9 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case InteractState.Carry:
-                if (inputParams.actionRequest == ActionRequest.ContextualAction) {
-                    catchableObject.transform.parent = null;
-                    Rigidbody body = catchableObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
-                    body.useGravity = true;
-                    interactStateParameter.finishedCarry = true;
-                    body.mass = 100;
+                if (previousInteractState == InteractState.Nothing) {
+                    interactBehaviorCtrl.DoCarry(objectToCarry);
+                    catchableObject = objectToCarry;
                 }
                 break;
 
@@ -459,7 +470,12 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case ActionRequest.SpawnLure:
-                interactStateParameter.canSpawnLure = true;
+                if (actualLure == null) {
+                    interactStateParameter.canSpawnLure = true;
+                } else {
+                    interactStateParameter.canDestroyLure = true;
+                }
+                
                 break;
 
             case ActionRequest.Inflate:
@@ -472,7 +488,10 @@ public class CharacterController : MonoBehaviour {
 
             case ActionRequest.ContextualAction:
                 GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
-                if (nearestObject != null) {
+
+                if(interactState == InteractState.Carry) {
+                    interactStateParameter.finishedCarry = true;
+                } else if (nearestObject != null) {
                     bool inFrontOfActivableObject = false;
                     bool inFrontOfAbsorbableObject = false;
                     bool inFrontOfPortableObject = false;
@@ -505,7 +524,6 @@ public class CharacterController : MonoBehaviour {
                             objectToCarry = nearestObject;
                         }
                     }
-
                 }
                 break;
 
@@ -514,6 +532,7 @@ public class CharacterController : MonoBehaviour {
                 interactStateParameter.canMeleeAttack = false;
                 interactStateParameter.canDistantAttack = false;
                 interactStateParameter.canSpawnLure = false;
+                interactStateParameter.canDestroyLure = false;
                 interactStateParameter.canInflate = false;
                 interactStateParameter.canActivate = false;
                 interactStateParameter.canAbsorb = false;
