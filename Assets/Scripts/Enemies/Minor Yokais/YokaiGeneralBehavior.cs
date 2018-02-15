@@ -37,48 +37,53 @@ public class YokaiGeneralBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
-        if (target != null) {
-            float distance = Vector3.Distance(transform.position, positionOrigin);
-            //come back if Yokai go too far
-            if (distance > distanceLimit) {
-                target = null;
-                comeBack = true;
-            } else {
-                //follow target
-                Vector3 relativePos = target.transform.position - transform.position;
-                Quaternion rotation = Quaternion.LookRotation(relativePos);
-                rotation.x = transform.rotation.x;
-                rotation.z = transform.rotation.z;
-                transform.rotation = rotation;
+        if (!isKnocked) {
 
-                float dis = Vector3.Distance(transform.position, target.transform.position);
-                //go to target
-                if (dis > rangeAttack) {
+            if (target != null) {
+                float distance = Vector3.Distance(transform.position, positionOrigin);
+                //come back if Yokai go too far
+                if (distance > distanceLimit) {
+                    target = null;
+                    comeBack = true;
+                }
+                else {
+                    //follow target
+                    Vector3 relativePos = target.transform.position - transform.position;
+                    Quaternion rotation = Quaternion.LookRotation(relativePos);
+                    rotation.x = transform.rotation.x;
+                    rotation.z = transform.rotation.z;
+                    transform.rotation = rotation;
+
+                    float dis = Vector3.Distance(transform.position, target.transform.position);
+                    //go to target
+                    if (dis > rangeAttack) {
+                        transform.Translate(0, 0, speed * Time.deltaTime);
+                    }
+                }
+
+                if (bodyAttack) {
+                    //attack target with rate
+                    if (Time.time > nextBodyAttack) {
+                        nextBodyAttack = nextBodyAttack + rateBodyAttack;
+                        target.GetComponent<PlayerHealth>().LooseHP(damageBody);
+                    }
+                }
+            }
+            else {
+                //comeback the origine position
+                if ((int)transform.position.x != (int)positionOrigin.x && (int)transform.position.z != (int)positionOrigin.z && comeBack) {
+                    Vector3 relativePos = positionOrigin - transform.position;
+                    Quaternion rotation = Quaternion.LookRotation(relativePos);
+                    rotation.x = transform.rotation.x;
+                    rotation.z = transform.rotation.z;
+                    transform.rotation = rotation;
+
                     transform.Translate(0, 0, speed * Time.deltaTime);
                 }
-            }
-
-            if (bodyAttack) {
-                //attack target with rate
-                if (Time.time > nextBodyAttack) {
-                    nextBodyAttack = nextBodyAttack + rateBodyAttack;
-                    target.GetComponent<PlayerHealth>().LooseHP(damageBody);
-                    Debug.Log("body attack");
+                else {
+                    transform.rotation = rotationOrigin;
+                    comeBack = false;
                 }
-            }
-        } else {
-            //comeback the origine position
-            if((int)transform.position.x != (int)positionOrigin.x && (int)transform.position.z != (int)positionOrigin.z && comeBack) {
-                Vector3 relativePos = positionOrigin - transform.position;
-                Quaternion rotation = Quaternion.LookRotation(relativePos);
-                rotation.x = transform.rotation.x;
-                rotation.z = transform.rotation.z;
-                transform.rotation = rotation;
-
-                transform.Translate(0, 0, speed * Time.deltaTime);
-            } else {
-                transform.rotation = rotationOrigin;
-                comeBack = false;
             }
         }
     }
@@ -96,8 +101,25 @@ public class YokaiGeneralBehavior : YokaiController {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "Player") {
-            target = other.gameObject;
+        if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked) {
+            float damage = 1;
+            if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null) {
+                damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
+            }
+            else if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MeleeAttackTrigger>() != null) {
+                damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
+            }
+            else if (other.gameObject.tag == "Lure") {
+                damage = 1;
+            }
+
+            BeingHit();
+            LooseHp(damage);
+            EndHit();
+        }
+
+        if (other.gameObject.tag == "Lure") {
+            Destroy(other.gameObject);
         }
     }
 
@@ -112,6 +134,7 @@ public class YokaiGeneralBehavior : YokaiController {
         if (hp <= 0) {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
+            target = GameObject.Find("Player");
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
     }
@@ -135,10 +158,13 @@ public class YokaiGeneralBehavior : YokaiController {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         } else {
-            if (transform.localScale.x < 0 && transform.localScale.y < 0 && transform.localScale.z < 0) {
-                transform.localScale = Vector3.zero;
-            } else {
-                transform.localScale -= new Vector3(20f, 20f, 20f);
+            if (transform.localScale.x > 0 && transform.localScale.y > 0 && transform.localScale.z > 0) {
+                Vector3 scale = transform.localScale;
+                scale -= new Vector3(20f, 20f, 20f);
+                if (scale.x < 0 && scale.y < 0 && scale.z < 0) {
+                    scale = Vector3.zero;
+                }
+                transform.localScale = scale;
             }
             speed = speed + 0.2f;
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
@@ -151,6 +177,4 @@ public class YokaiGeneralBehavior : YokaiController {
     public override void Behavior() {
 
     }
-
-
 }
