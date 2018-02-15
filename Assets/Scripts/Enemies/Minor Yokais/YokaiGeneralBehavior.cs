@@ -123,12 +123,6 @@ public class YokaiGeneralBehavior : YokaiController {
         }
     }
 
-    private void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag == "Player" && !comeBack) {
-            target = other.gameObject;
-        }
-    }
-
     public override void LooseHp(float damage) {
         hp = hp - damage;
         if (hp <= 0) {
