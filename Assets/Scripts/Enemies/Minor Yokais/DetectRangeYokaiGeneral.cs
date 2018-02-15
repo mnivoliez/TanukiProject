@@ -21,14 +21,16 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
 	}
 
     private void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag == "Player") {
+        if (other.gameObject.tag == "Player" && !parentBehavior.TooFarAway(other.transform.position)) {
             parentBehavior.SetTarget(other.gameObject);
+            parentBehavior.SetComeBack(false);
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.gameObject.tag == "Player") {
             parentBehavior.SetTarget(null);
+            parentBehavior.SetComeBack(true);
         }
     }
 }

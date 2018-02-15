@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class YokaiGeneralBehavior : YokaiController {
 
@@ -64,12 +62,14 @@ public class YokaiGeneralBehavior : YokaiController {
                 if (bodyAttack) {
                     //attack target with rate
                     if (Time.time > nextBodyAttack) {
+                        target = GameObject.Find("Player");
                         nextBodyAttack = nextBodyAttack + rateBodyAttack;
                         target.GetComponent<PlayerHealth>().LooseHP(damageBody);
                     }
                 }
             }
             else {
+
                 //comeback the origine position
                 if ((int)transform.position.x != (int)positionOrigin.x && (int)transform.position.z != (int)positionOrigin.z && comeBack) {
                     Vector3 relativePos = positionOrigin - transform.position;
@@ -100,7 +100,7 @@ public class YokaiGeneralBehavior : YokaiController {
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
+    void OnTriggerEnter(Collider other) {
         if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked) {
             float damage = 1;
             if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null) {
@@ -171,4 +171,16 @@ public class YokaiGeneralBehavior : YokaiController {
     public override void Behavior() {
 
     }
+
+    public bool TooFarAway(Vector3 position) {
+        bool tooFarAway = false;
+        if (Vector3.Distance(position, positionOrigin) > distanceLimit) {
+            tooFarAway = true;
+        }
+        return tooFarAway;
+    }
+
+    public bool GetComeBack() { return comeBack; }
+
+    public void SetComeBack(bool comeBack) { this.comeBack = comeBack; }
 }
