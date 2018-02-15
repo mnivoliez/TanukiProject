@@ -21,11 +21,9 @@ public class BossBehavior : MonoBehaviour {
     }
 
 	void Update () {
-
         if (isAbsorbed) {
             Die();
         }
-
     }
 
     public void LooseHp(float damage) {
@@ -41,7 +39,7 @@ public class BossBehavior : MonoBehaviour {
     public void BeingHit() {
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
         rendererMat.color = new Color(150, 40, 150);
-
+        
     }
 
     public void EndHit() {
@@ -77,6 +75,4 @@ public class BossBehavior : MonoBehaviour {
     public bool GetIsKnocked() {
         return isKnocked;
     }
-
-
 }

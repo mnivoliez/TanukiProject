@@ -138,6 +138,8 @@ public class CharacterController : MonoBehaviour {
     }
 
     private void Update() {
+        interactBehaviorCtrl.CheckExistingLure(actualLure);
+
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
             
@@ -253,7 +255,6 @@ public class CharacterController : MonoBehaviour {
         /* ou si maudit et pas en state jump / fall */
         //JUMP
         if (inputParams.jumpRequest) {
-            Debug.Log(previousMovementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && previousInteractState != InteractState.Carry);
             bool canJump = (previousMovementState != MovementState.DoubleJump &&
             previousMovementState != MovementState.Fall) && (previousMovementState != MovementState.Jump ||
             (previousMovementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && previousInteractState != InteractState.Carry));
