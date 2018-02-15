@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-struct InputMoveParams {
+struct InputMoveParams
+{
     public bool requestJump;
     public float moveX;
     public float moveZ;
 
 }
 
-struct InputInteractParams {
+struct InputInteractParams
+{
     public bool GlideButton;
     public bool MeleeAttackButton;
     public bool DistantAttackButton;
@@ -26,17 +28,22 @@ struct InputInteractParams {
     public bool portableObject;
 }
 
-public class LeafAlreadyTakenException : System.Exception {
+public class LeafAlreadyTakenException : System.Exception
+{
 
 }
 
-public class Leaf {
-    public class LeafLock {
+public class Leaf
+{
+    public class LeafLock
+    {
         Leaf _parent;
-        public LeafLock(Leaf parent) {
+        public LeafLock(Leaf parent)
+        {
             _parent = parent;
         }
-        public void Released() {
+        public void Released()
+        {
             _parent.leafLock = null;
             _parent = null;
         }
@@ -44,23 +51,29 @@ public class Leaf {
 
     private LeafLock leafLock;
 
-    public LeafLock TakeLeaf() {
-        if (leafLock == null) {
+    public LeafLock TakeLeaf()
+    {
+        if (leafLock == null)
+        {
             leafLock = new LeafLock(this);
             return leafLock;
         }
-        else {
+        else
+        {
             throw new LeafAlreadyTakenException();
         }
     }
 }
 
 
-public class Pair<T, U> {
-    public Pair() {
+public class Pair<T, U>
+{
+    public Pair()
+    {
     }
 
-    public Pair(T first, U second) {
+    public Pair(T first, U second)
+    {
         this.First = first;
         this.Second = second;
     }
@@ -69,7 +82,8 @@ public class Pair<T, U> {
     public U Second { get; set; }
 }
 
-public class CharacterController : MonoBehaviour {
+public class CharacterController : MonoBehaviour
+{
 
     [Header("PLAYER")]
     [Space(10)]
@@ -111,8 +125,8 @@ public class CharacterController : MonoBehaviour {
     private InputController inputController;
 
     // Capacity
-	[SerializeField] private bool permanentDoubleJumpCapacity;
-	[SerializeField] private bool temporaryDoubleJumpCapacity;
+    [SerializeField] private bool permanentDoubleJumpCapacity;
+    [SerializeField] private bool temporaryDoubleJumpCapacity;
     [SerializeField] private float timerCapacity;
 
     //Animation
@@ -121,7 +135,8 @@ public class CharacterController : MonoBehaviour {
 
     private float timerAttack;
 
-    private void Start() {
+    private void Start()
+    {
         movementState = MovementState.Idle;
         previousMovementState = movementState;
         interactState = InteractState.Nothing;
@@ -136,11 +151,15 @@ public class CharacterController : MonoBehaviour {
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
     }
 
-    private void Update() {
-        if (timerCapacity > 0) {
+    private void Update()
+    {
+        if (timerCapacity > 0)
+        {
             timerCapacity -= Time.deltaTime;
-            
-        } else {
+
+        }
+        else
+        {
             StopTemporaryCapacity();
         }
 
@@ -149,34 +168,36 @@ public class CharacterController : MonoBehaviour {
 
         InputParams inputParams = inputController.RetrieveUserRequest();
         //deplacements
-		MoveAccordingToInput(inputParams);
+        MoveAccordingToInput(inputParams);
         //if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
         //	Debug.Log ("jump1=" + inputParams.jumpRequest + " jumpMV1=" + moveStateParameters.jumpRequired);
         UpdateInteractStateParameters(inputParams);
         InteractAccordingToInput(inputParams);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump2=" + inputParams.jumpRequest + " jumpMV2=" + moveStateParameters.jumpRequired);
-		previousInteractState = interactState;
-		UpdateMoveStateParameters(inputParams);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump3=" + inputParams.jumpRequest + " jumpMV3=" + moveStateParameters.jumpRequired);
-		
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump4=" + inputParams.jumpRequest + " jumpMV4=" + moveStateParameters.jumpRequired);
+        //if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+        //	Debug.Log ("jump2=" + inputParams.jumpRequest + " jumpMV2=" + moveStateParameters.jumpRequired);
+        previousInteractState = interactState;
+        UpdateMoveStateParameters(inputParams);
+        //if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+        //	Debug.Log ("jump3=" + inputParams.jumpRequest + " jumpMV3=" + moveStateParameters.jumpRequired);
 
-		movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump5=" + inputParams.jumpRequest + " jumpMV5=" + moveStateParameters.jumpRequired);
+        //if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+        //	Debug.Log ("jump4=" + inputParams.jumpRequest + " jumpMV4=" + moveStateParameters.jumpRequired);
+
+        movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
+        //if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
+        //	Debug.Log ("jump5=" + inputParams.jumpRequest + " jumpMV5=" + moveStateParameters.jumpRequired);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
-        if (previousMovementState != movementState) {
+        if (previousMovementState != movementState)
+        {
             animBody.OnStateExit(previousMovementState);
             animBody.OnStateEnter(movementState);
         }
 
-        if (previousInteractState != interactState) {
+        if (previousInteractState != interactState)
+        {
             animBody.OnStateExit(previousInteractState);
             animBody.OnStateEnter(interactState);
         }
@@ -184,18 +205,23 @@ public class CharacterController : MonoBehaviour {
         animBody.UpdateState(movementState, speed, moveSpeed);
     }
 
-    void OnCollisionEnter(Collision coll) {
+    void OnCollisionEnter(Collision coll)
+    {
         GameObject gO = coll.gameObject;
 
-        if (gO.layer == LayerMask.NameToLayer("Ground")) {
+        if (gO.layer == LayerMask.NameToLayer("Ground"))
+        {
             ContactPoint[] contacts = coll.contacts;
 
-            if (contacts.Length > 0) {
-                foreach (ContactPoint c in contacts) {
+            if (contacts.Length > 0)
+            {
+                foreach (ContactPoint c in contacts)
+                {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-                    if (c.normal.y >= 0.50f && c.normal.y < 1.01f) {
+                    if (c.normal.y >= 0.50f && c.normal.y < 1.01f)
+                    {
                         _grounds.Add(gO);
                         break;
                     }
@@ -204,64 +230,78 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-    void OnCollisionStay(Collision coll) {
-           GameObject gO = coll.gameObject;
-        if (gO.layer == LayerMask.NameToLayer("Ground")) {
+    void OnCollisionStay(Collision coll)
+    {
+        GameObject gO = coll.gameObject;
+        if (gO.layer == LayerMask.NameToLayer("Ground"))
+        {
             ContactPoint[] contacts = coll.contacts;
 
-            if (contacts.Length > 0) {
+            if (contacts.Length > 0)
+            {
                 //transform.rotation = Quaternion.Euler(Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up));
                 //Debug.Log("Angle:"+Vector3.Angle(contacts[0].normal, Vector3.up));
                 //coefInclination = Vector3.Angle(contacts[0].normal, Vector3.up);
-				bool found = false;
-                foreach (ContactPoint c in contacts) {
+                bool found = false;
+                foreach (ContactPoint c in contacts)
+                {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-                    if (c.normal.y >= 0.5f && c.normal.y <= 1f) {
+                    if (c.normal.y >= 0.5f && c.normal.y <= 1f)
+                    {
                         //_grounds.Add(gO);
-						found = true;
-						coefInclination = Vector3.Angle(c.normal, Vector3.up);
+                        found = true;
+                        coefInclination = Vector3.Angle(c.normal, Vector3.up);
                         break;
                     }
                 }
-				if (!found) {
-					coefInclination = 0;
-				}
+                if (!found)
+                {
+                    coefInclination = 0;
+                }
             }
         }
     }
 
-    void OnCollisionExit(Collision coll) {
-        if (IsGrounded()) {
+    void OnCollisionExit(Collision coll)
+    {
+        if (IsGrounded())
+        {
             GameObject gO = coll.gameObject;
 
-            if (_grounds.Contains(gO)) {
+            if (_grounds.Contains(gO))
+            {
                 _grounds.Remove(gO);
             }
         }
     }
 
-    public void StopMeleeAttackState() {
+    public void StopMeleeAttackState()
+    {
         interactStateParameter.finishedMeleeAttack = true;
     }
 
-    public void StopDistantAttackState() {
+    public void StopDistantAttackState()
+    {
         interactStateParameter.finishedDistantAttack = true;
     }
 
-    private bool IsGrounded() {
+    private bool IsGrounded()
+    {
         return _grounds.Count > 0;
     }
 
-    void MoveAccordingToInput(InputParams inputParams) {
+    void MoveAccordingToInput(InputParams inputParams)
+    {
         bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall ||
             (movementState == MovementState.Jump && ((!temporaryDoubleJumpCapacity && !permanentDoubleJumpCapacity) ||
             interactState == InteractState.Carry))); /* ou si maudit et pas en state jump / fall */
         //JUMP
-        if (inputParams.jumpRequest && canJump) {
-			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
-			body.velocity = new Vector3 (body.velocity.x, 0.02f, body.velocity.z);
+        if (inputParams.jumpRequest && canJump)
+        {
+            // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+            body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
             body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
@@ -269,50 +309,64 @@ public class CharacterController : MonoBehaviour {
         //Orientation du personnage
         orientationMove = (transform.forward * inputParams.moveZ) + (transform.right * inputParams.moveX);
 
-		//Manage Inclination Ground
-        if (coefInclination <= 45) {
+        //Manage Inclination Ground
+        if (coefInclination <= 45)
+        {
             inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + ((inputVelocityAxis.normalized * moveSpeed) * (1 - Mathf.Cos(coefInclination * Mathf.Deg2Rad)));
             inputVelocityAxis.y = body.velocity.y;
-        } else {
+        }
+        else
+        {
             //Fall if Ground Inclination > 45 deg
             inputVelocityAxis.y = -5f;
         }
 
         //AIR CONTROL
-        if (!onGround) {
+        if (!onGround)
+        {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((inputParams.moveX * airControl), inputVelocityAxis.y, (inputParams.moveZ * (airControl * 2)));
-        } else {
+        }
+        else
+        {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * inputVelocityAxis;
         }
 
         //Move player on direction based on camera
-        if (inputParams.moveX != 0 || inputParams.moveZ != 0) {
+        if (inputParams.moveX != 0 || inputParams.moveZ != 0)
+        {
             transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
             playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
         }
     }
 
-    void InteractAccordingToInput(InputParams inputParams) {
-        switch (interactState) {
+    void InteractAccordingToInput(InputParams inputParams)
+    {
+        switch (interactState)
+        {
             case InteractState.Nothing:
-                if (previousInteractState == InteractState.MeleeAttack) {
+                if (previousInteractState == InteractState.MeleeAttack)
+                {
                     interactBehaviorCtrl.StopMeleeAttack();
                 }
 
-                if (previousInteractState == InteractState.DistantAttack) {
+                if (previousInteractState == InteractState.DistantAttack)
+                {
                     interactBehaviorCtrl.StopDistantAttack();
                 }
 
-                if (previousInteractState == InteractState.Glide) {
+                if (previousInteractState == InteractState.Glide)
+                {
                     interactBehaviorCtrl.StopGlide();
                 }
 
-                if (previousInteractState == InteractState.Inflate) {
+                if (previousInteractState == InteractState.Inflate)
+                {
                     interactBehaviorCtrl.DoInflate(false);
                 }
 
-                if (interactStateParameter.canCarry) {
+                if (interactStateParameter.canCarry)
+                {
 
                     interactBehaviorCtrl.DoCarry(objectToCarry);
                     catchableObject = objectToCarry;
@@ -322,13 +376,17 @@ public class CharacterController : MonoBehaviour {
 
 
             case InteractState.Glide:
-                if (IsGrounded()) {
+                if (IsGrounded())
+                {
                     interactBehaviorCtrl.StopGlide();
-                } else {
+                }
+                else
+                {
                     // add a force to counter gravity (glide effect)
-                                       
+
                     body.AddForce(Vector3.up * 150f, ForceMode.Force);
-                    if (body.velocity.y < -10) {
+                    if (body.velocity.y < -10)
+                    {
                         body.velocity = new Vector3(body.velocity.x, -10, body.velocity.z);
                     }
                     interactBehaviorCtrl.DoGlide();
@@ -336,7 +394,8 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case InteractState.MeleeAttack:
-                if (interactStateParameter.canMeleeAttack) {
+                if (interactStateParameter.canMeleeAttack)
+                {
                     interactBehaviorCtrl.DoMeleeAttack();
                 }
 
@@ -362,20 +421,23 @@ public class CharacterController : MonoBehaviour {
 
 
             case InteractState.DistantAttack:
-                if (interactStateParameter.canDistantAttack) {
+                if (interactStateParameter.canDistantAttack)
+                {
                     interactBehaviorCtrl.DoDistantAttack();
                 }
                 break;
 
             case InteractState.SpawnLure:
-                if (interactStateParameter.canSpawnLure) {
+                if (interactStateParameter.canSpawnLure)
+                {
                     interactBehaviorCtrl.doSpawnLure();
                 }
                 break;
 
             case InteractState.Inflate:
 
-                if (previousInteractState != InteractState.Inflate) {
+                if (previousInteractState != InteractState.Inflate)
+                {
                     interactBehaviorCtrl.DoInflate(true);
                 }
 
@@ -390,13 +452,15 @@ public class CharacterController : MonoBehaviour {
 
             case InteractState.Absorb:
                 GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
-                if (nearestObject == null || !nearestObject.CompareTag("Yokai")) {
+                if (nearestObject == null || !nearestObject.CompareTag("Yokai"))
+                {
                     interactStateParameter.yokaiStillInRange = false;
                 }
                 break;
 
             case InteractState.Carry:
-                if (inputParams.actionRequest == ActionRequest.ContextualAction) {
+                if (inputParams.actionRequest == ActionRequest.ContextualAction)
+                {
                     catchableObject.transform.parent = null;
                     Rigidbody body = catchableObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
                     body.useGravity = true;
@@ -412,47 +476,58 @@ public class CharacterController : MonoBehaviour {
 
     float hysteresis_step = 0.01f;
 
-	public bool IsGoingUp(MovementStateParam param) {
-		bool up = !param.grounded && param.velocity.y > hysteresis_step;
+    public bool IsGoingUp(MovementStateParam param)
+    {
+        bool up = !param.grounded && param.velocity.y > hysteresis_step;
 
-		return up;
-	}
+        return up;
+    }
 
-	public bool IsFalling(MovementStateParam param) {
-		bool fall = !param.grounded && (param.velocity.y < -hysteresis_step);
+    public bool IsFalling(MovementStateParam param)
+    {
+        bool fall = !param.grounded && (param.velocity.y < -hysteresis_step);
 
-		return fall;
-	}
+        return fall;
+    }
 
-    void UpdateMoveStateParameters(InputParams inputParams) {
-		if (!IsGoingUp (moveStateParameters) && !IsFalling (moveStateParameters)) {
-			moveStateParameters.position_before_fall = body.position;
-		}
-		moveStateParameters.position = body.position;
+    void UpdateMoveStateParameters(InputParams inputParams)
+    {
+        if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters))
+        {
+            moveStateParameters.position_before_fall = body.position;
+        }
+        moveStateParameters.position = body.position;
         moveStateParameters.velocity = body.velocity;
         moveStateParameters.jumpRequired = inputParams.jumpRequest;
         moveStateParameters.grounded = IsGrounded();
     }
 
-    void UpdateInteractStateParameters(InputParams inputParams) {
-        switch (inputParams.actionRequest) {
+    void UpdateInteractStateParameters(InputParams inputParams)
+    {
+        switch (inputParams.actionRequest)
+        {
             case ActionRequest.Glide:
-                if (movementState == MovementState.Fall || movementState == MovementState.PushUp) {
+                if (movementState == MovementState.Fall || movementState == MovementState.PushUp)
+                {
                     interactStateParameter.canGlide = true;
-                } else {
+                }
+                else
+                {
                     interactStateParameter.canGlide = false;
                 }
                 break;
 
             case ActionRequest.MeleeAttack:
-                if (interactState != InteractState.Glide) {
+                if (interactState != InteractState.Glide)
+                {
                     interactStateParameter.finishedMeleeAttack = false;
                     interactStateParameter.canMeleeAttack = true;
                 }
                 break;
 
             case ActionRequest.DistantAttack:
-                if (interactState != InteractState.Glide) {
+                if (interactState != InteractState.Glide)
+                {
                     interactStateParameter.finishedDistantAttack = false;
                     interactStateParameter.canDistantAttack = true;
                 }
@@ -472,20 +547,24 @@ public class CharacterController : MonoBehaviour {
 
             case ActionRequest.ContextualAction:
                 GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
-                if (nearestObject != null) {
+                if (nearestObject != null)
+                {
                     bool inFrontOfActivableObject = false;
                     bool inFrontOfAbsorbableObject = false;
                     bool inFrontOfPortableObject = false;
 
-                    if (nearestObject.CompareTag("Yokai")) {
+                    if (nearestObject.CompareTag("Yokai"))
+                    {
                         inFrontOfAbsorbableObject = true;
                         interactStateParameter.yokaiStillInRange = true;
 
                     }
-                    else if (nearestObject.gameObject.layer == LayerMask.NameToLayer("Catchable")) {
+                    else if (nearestObject.gameObject.layer == LayerMask.NameToLayer("Catchable"))
+                    {
                         inFrontOfPortableObject = true;
                     }
-                    else if (nearestObject.gameObject.layer == LayerMask.NameToLayer("Activable")) {
+                    else if (nearestObject.gameObject.layer == LayerMask.NameToLayer("Activable"))
+                    {
                         inFrontOfActivableObject = true;
                     }
 
@@ -493,14 +572,18 @@ public class CharacterController : MonoBehaviour {
                     interactStateParameter.canAbsorb = false;
                     interactStateParameter.canCarry = false;
 
-                    if (IsGrounded()) {
-                        if (inFrontOfActivableObject) {
+                    if (IsGrounded())
+                    {
+                        if (inFrontOfActivableObject)
+                        {
                             interactStateParameter.canActivate = true;
                         }
-                        else if (inFrontOfAbsorbableObject) {
+                        else if (inFrontOfAbsorbableObject)
+                        {
                             interactStateParameter.canAbsorb = true;
                         }
-                        else if (inFrontOfPortableObject) {
+                        else if (inFrontOfPortableObject)
+                        {
                             interactStateParameter.canCarry = true;
                             objectToCarry = nearestObject;
                         }
@@ -545,35 +628,46 @@ public class CharacterController : MonoBehaviour {
     //    inputInteractParameters.LeafAvailable = true;
     //}
 
-    void OnTriggerExit(Collider collid) {
-        if (collid.gameObject.CompareTag("AirStreamZone")) {
+    void OnTriggerExit(Collider collid)
+    {
+        if (collid.gameObject.CompareTag("AirStreamZone"))
+        {
             moveStateParameters.inAirStream = false;
         }
     }
 
-    void OnTriggerStay(Collider collid) {
-        if (collid.gameObject.CompareTag("AirStreamZone")) {
+    void OnTriggerStay(Collider collid)
+    {
+        if (collid.gameObject.CompareTag("AirStreamZone"))
+        {
             moveStateParameters.inAirStream = true;
         }
-        if (interactState == InteractState.Absorb && previousInteractState != InteractState.Absorb) {
-            if (interactStateParameter.canAbsorb) {
+        if (interactState == InteractState.Absorb && previousInteractState != InteractState.Absorb)
+        {
+            if (interactStateParameter.canAbsorb)
+            {
                 interactBehaviorCtrl.DoBeginAbsorption(collid.gameObject);
             }
 
-        }else if (previousInteractState == InteractState.Absorb) {
+        }
+        else if (previousInteractState == InteractState.Absorb)
+        {
             Pair<Capacity, float> pairCapacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
-            if (pairCapacity.First != Capacity.Nothing) {
+            if (pairCapacity.First != Capacity.Nothing)
+            {
                 AddCapacity(pairCapacity);
             }
         }
     }
 
-    private void AddCapacity(Pair<Capacity, float> pairCapacity) {
-        switch (pairCapacity.First) {
+    private void AddCapacity(Pair<Capacity, float> pairCapacity)
+    {
+        switch (pairCapacity.First)
+        {
 
             case Capacity.DoubleJump:
                 temporaryDoubleJumpCapacity = true;
-                
+
                 break;
 
             case Capacity.Glide:
@@ -583,7 +677,8 @@ public class CharacterController : MonoBehaviour {
         timerCapacity = pairCapacity.Second;
     }
 
-    private void StopTemporaryCapacity() {
+    private void StopTemporaryCapacity()
+    {
         timerCapacity = 0;
         temporaryDoubleJumpCapacity = false;
     }
