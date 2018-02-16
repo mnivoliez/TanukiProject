@@ -206,7 +206,7 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void CheckExistingLure(GameObject lure) {
-        if (lure == null & leafHead.activeSelf == false) {
+        if (lure == null && leafHead.activeSelf == false) {
             leafHead.SetActive(true);
         }
     }
