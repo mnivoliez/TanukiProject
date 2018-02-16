@@ -60,7 +60,7 @@ public class InteractBehavior : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
+        
     }
 
     public void DoGlide() {
@@ -181,25 +181,46 @@ public class InteractBehavior : MonoBehaviour {
         return pairCapacity;
     }
 
-	public void doSpawnLure() {
+	public GameObject DoSpawnLure() {
+        GameObject clone = null;
 		if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
 			leafHead.SetActive(false);
-			GameObject clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
+			clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
 			clone.transform.Translate(0, 3, 2);
-
-			StartCoroutine (destroyLure(clone));
+            Debug.Log("SpawnLure");
+			StartCoroutine (DelayDestroyLure(clone));
 		}
+        return clone;
+    }
+
+	public IEnumerator DelayDestroyLure(GameObject lure) {
+		yield return new WaitForSeconds (10);
+        DestroyLure(lure);
 	}
 
-	public IEnumerator destroyLure(GameObject Lure) {
-		yield return new WaitForSeconds (10);
-		Destroy (Lure);
-		leafHead.SetActive(true);
-	}
+    public void DestroyLure(GameObject lure) {
+        if (lure != null) {
+            Destroy(lure);
+            leafHead.SetActive(true);
+        }
+    }
+
+    public void CheckExistingLure(GameObject lure) {
+        if (lure == null & leafHead.activeSelf == false) {
+            leafHead.SetActive(true);
+        }
+    }
 
     public void DoCarry(GameObject objectToCarry) {
         objectToCarry.transform.parent = catchSlot.transform;
         objectToCarry.transform.position = catchSlot.transform.position;
         Destroy(objectToCarry.GetComponent<Rigidbody>());
+    }
+
+    public void StopCarry(GameObject objectToCarry) {
+        objectToCarry.transform.parent = null;
+        Rigidbody body = objectToCarry.AddComponent(typeof(Rigidbody)) as Rigidbody;
+        body.useGravity = true;
+        body.mass = 100;
     }
 }

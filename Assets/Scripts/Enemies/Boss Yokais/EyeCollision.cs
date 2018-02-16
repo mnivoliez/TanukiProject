@@ -12,7 +12,9 @@ public class EyeCollision : MonoBehaviour {
 	
 
 	void Update () {
-		
+        if (bossBehavior.GetIsKnocked()) {
+            transform.Rotate(Vector3.right * 5);
+        }
 	}
 
     void OnTriggerEnter(Collider collid) {

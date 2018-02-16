@@ -129,5 +129,10 @@ public abstract class YokaiController : MonoBehaviour {
 
     public bool GetIsKnocked() { return isKnocked; }
 
+    public GameObject GetTarget() { return target; }
+
+    public void SetTarget(GameObject target) { this.target = target; }
+
+    public void SetTimerCapacity(float timer) { timerCapacity = timer; }
 }
 
