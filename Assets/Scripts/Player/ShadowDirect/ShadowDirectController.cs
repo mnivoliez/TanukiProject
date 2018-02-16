@@ -11,18 +11,21 @@ public class ShadowDirectController : MonoBehaviour {
 	[SerializeField]
 	private LayerMask ignoredLayerMask;
 
-    private GameObject clone;
-    private Vector3 position;
+	private GameObject clone;
+	private Vector3 position;
+	private Vector3 position_offset = new Vector3(0, 0.1f, 0);
     private float maxSize;
-    private float minSize;
+	private float minSize;
+	// all layers are = 0xFFFFFFFF => -1
+	private int layerAll = -1;
 
     RaycastHit hit;
 
     private void Start() {
         maxSize = 1.0f;
         minSize = 0.1f;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, rayCastDistance)) {
-            position = new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z);
+		if (Physics.Raycast(transform.position + position_offset, -Vector3.up, out hit, rayCastDistance, layerAll - ignoredLayerMask.value)) {
+			position = new Vector3(hit.point.x, hit.point.y + 0.05f, hit.point.z);
         } else {
             position = transform.position;
         }
@@ -30,16 +33,13 @@ public class ShadowDirectController : MonoBehaviour {
     }
 
     private void Update() {
-		// all layers are = 0xFFFFFFFF => -1
-		int layerAll = -1;
-
-		if (Physics.Raycast(transform.position, -Vector3.up, out hit, rayCastDistance, layerAll - ignoredLayerMask.value)) {
-            position = new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z);
+		if (Physics.Raycast(transform.position + position_offset, -Vector3.up, out hit, rayCastDistance, layerAll - ignoredLayerMask.value)) {
+			position = new Vector3(hit.point.x, hit.point.y + 0.05f, hit.point.z);
             
             float distance = Vector3.Distance(transform.position, hit.point);
             float size = maxSize * distance / rayCastDistance;
             size = 1f - Mathf.Clamp(size, minSize, maxSize);
-            Vector3 scale = new Vector3(maxSize, maxSize, maxSize) * size;
+			Vector3 scale = new Vector3 (size, 0.01f, size);
             clone.transform.localScale = scale;
         } else {
             position = transform.position;
