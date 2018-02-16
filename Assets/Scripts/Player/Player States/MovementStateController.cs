@@ -13,46 +13,57 @@ public struct MovementStateParam {
 	public Vector3 position_before_fall;
     public bool jumpRequired;
     public bool inAirStream;
-    public bool grounded;
+	public bool grounded;
+	public float moveX;
+	public float moveZ;
 }
 
 public class MovementStateController {
 
+	private bool debugEnabled = false;
+
+	public void DebugLogLocal(string message) {
+		if (debugEnabled)
+		{
+			Debug.Log (message);
+		}
+	}
+
     public MovementState GetNewState(MovementState previous, MovementStateParam param) {
-		//Debug.Log ("Calling me is: " + new System.Diagnostics.StackFrame(1, true).GetMethod().Name);
+		//DebugLogLocal ("Calling me is: " + new System.Diagnostics.StackFrame(1, true).GetMethod().Name);
 		MovementState newState = previous;
         switch (previous) {
 			case MovementState.Idle:
-				//Debug.Log ("GetNewState mvt=Idle");
+				//DebugLogLocal ("GetNewState mvt=Idle");
                 newState = ManageIdle(previous, param);
                 break;
 
 			case MovementState.Run:
-				//Debug.Log ("GetNewState mvt=Run");
+				//DebugLogLocal ("GetNewState mvt=Run");
                 newState = ManageRun(previous, param);
                 break;
 
 			case MovementState.Jump:
-				//Debug.Log ("GetNewState mvt=Jump");
+				//DebugLogLocal ("GetNewState mvt=Jump");
                 newState = ManageJump(previous, param);
                 break;
 
 			case MovementState.DoubleJump:
-				//Debug.Log ("GetNewState mvt=DoubleJump");
+				//DebugLogLocal ("GetNewState mvt=DoubleJump");
                 newState = ManageDoubleJump(previous, param);
                 break;
 
 			case MovementState.Fall:
-				//Debug.Log ("GetNewState mvt=Fall");
+				//DebugLogLocal ("GetNewState mvt=Fall");
                 newState = ManageFall(previous, param);
                 break;
 
 			case MovementState.PushUp:
-				//Debug.Log ("GetNewState mvt=Fall");
+				//DebugLogLocal ("GetNewState mvt=Fall");
                 newState = ManagePushUp(previous, param);
                 break;
 			default:
-				//Debug.Log ("GetNewState mvt=Other");
+				//DebugLogLocal ("GetNewState mvt=Other");
 				break;
         }
 
@@ -61,22 +72,19 @@ public class MovementStateController {
 
     MovementState ManageJump(MovementState previous, MovementStateParam param) {
 		MovementState newState = previous;
-		//Debug.Log ("Jump manage");
+		//DebugLogLocal ("Jump manage");
         //IDLE
         if (IsIdle(param)) {
             newState = MovementState.Idle;
         }
 
         // STILL MOVING UP
-        if (IsGoingUp(param)) {
-			//Debug.Log ("jump inside=" + param.jumpRequired);
+		if (param.jumpRequired) {
+			//DebugLogLocal ("jump inside=" + param.jumpRequired);
 			if (param.jumpRequired) {
-				//Debug.Log ("Jump DoubleJump");
+				DebugLogLocal ("Jump DoubleJump");
                 newState = MovementState.DoubleJump;
-            } /*else {
-				Debug.Log ("Jump Jump");
-                newState = MovementState.Jump;
-            }*/
+            }
         }
 
         //FAll
@@ -88,28 +96,28 @@ public class MovementStateController {
 
     MovementState ManageFall(MovementState previous, MovementStateParam param) {
 		MovementState newState = previous;
-		//Debug.Log ("Fall manage");
+		DebugLogLocal ("Fall manage");
         //IDLE
 		if (IsIdle(param)) {
-			//Debug.Log ("fall idle");
+			DebugLogLocal ("fall idle");
             newState = MovementState.Idle;
         }
 
 		//RUN
 		if (IsRunning(param)) {
-			//Debug.Log ("fall run");
+			DebugLogLocal ("fall run");
             newState = MovementState.Run;
         }
         
         //DOUBLEJUMP
         if (IsGoingUp(param) && !param.inAirStream) {
-            //Debug.Log ("fall run");
+            DebugLogLocal ("fall run");
             newState = MovementState.DoubleJump;
         }
 
         //PUSHUP
         if (IsGoingUp(param) && param.inAirStream) {
-            //Debug.Log ("fall run");
+            DebugLogLocal ("fall run");
             newState = MovementState.PushUp;
         }
 
@@ -119,22 +127,22 @@ public class MovementStateController {
 
     MovementState ManagePushUp(MovementState previous, MovementStateParam param) {
 		MovementState newState = previous;
-		//Debug.Log ("Fall manage");
+		//DebugLogLocal ("Fall manage");
         //IDLE
 		if (IsIdle(param)) {
-			//Debug.Log ("fall idle");
+			DebugLogLocal ("fall idle");
             newState = MovementState.Idle;
         }
 
 		//RUN
 		if (IsRunning(param)) {
-			//Debug.Log ("fall run");
+			DebugLogLocal ("fall run");
             newState = MovementState.Run;
         }
 
         //FALL
         if (IsFalling(param)) {
-            //Debug.Log ("fall run");
+            DebugLogLocal ("fall run");
             newState = MovementState.Fall;
         }
 
@@ -144,44 +152,39 @@ public class MovementStateController {
 
     MovementState ManageDoubleJump(MovementState previous, MovementStateParam param) {
 		MovementState newState = previous;
-		//Debug.Log ("DoubleJump manage");
+		//DebugLogLocal ("DoubleJump manage");
         //IDLE
 		if (IsIdle(param)) {
-			//Debug.Log ("DoubleJump idle");
+			DebugLogLocal ("DoubleJump idle");
             newState = MovementState.Idle;
         }
 
         //FAll
 		if (IsFalling(param)) {
-			//Debug.Log ("DoubleJump fall");
+			DebugLogLocal ("DoubleJump fall");
             newState = MovementState.Fall;
         }
-
-		/*if (IsGoingUp(param)) {
-			Debug.Log ("DoubleJump DoubleJump");
-            newState = MovementState.DoubleJump;
-        }*/
         return newState;
     }
 
     MovementState ManageRun(MovementState previous, MovementStateParam param) {
 		MovementState newState = previous;
-		//Debug.Log ("Run manage");
+		//DebugLogLocal ("Run manage");
         //IDLE
 		if (IsIdle(param)) {
-			//Debug.Log ("Run idle");
+			DebugLogLocal ("Run idle");
             newState = MovementState.Idle;
         }
 
         //JUMP
-		if (IsGoingUp(param)) {
-			//Debug.Log ("Run jump");
+		if (param.jumpRequired) {
+			DebugLogLocal ("Run jump");
             newState = MovementState.Jump;
         }
 
         //FAll
 		if (IsFalling(param)) {
-			//Debug.Log ("Run fall");
+			DebugLogLocal ("Run fall");
             newState = MovementState.Fall;
         }
         return newState;
@@ -189,22 +192,22 @@ public class MovementStateController {
 
     MovementState ManageIdle(MovementState previous, MovementStateParam param) {
 		MovementState newState = previous;
-		//Debug.Log ("Idle manage");
+		//DebugLogLocal ("Idle manage");
         //RUN
 		if (IsRunning(param)) {
-			//Debug.Log ("Idle run");
+			DebugLogLocal ("Idle run");
             newState = MovementState.Run;
         }
 
         //JUMP
-		if (IsGoingUp(param)) {
-			//Debug.Log ("Idle jump");
+		if (param.jumpRequired) {
+			DebugLogLocal ("Idle jump");
             newState = MovementState.Jump;
         }
 
         //FAll
 		if (IsFalling(param)) {
-			//Debug.Log ("Idle fall");
+			DebugLogLocal ("Idle fall");
 			newState = MovementState.Fall;
         }
 
