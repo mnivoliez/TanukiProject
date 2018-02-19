@@ -77,11 +77,14 @@ public class CharacterController : MonoBehaviour {
     private float moveSpeed = 10f;
     private float speed = 10f;
     private float coefInclination;
-    [SerializeField] private float airControl = 6f;
-    [SerializeField] private float jumpForce = 120f;
+	[SerializeField] private float airControl = 6f;
+	[SerializeField] private float jumpForce = 120f;
+	[SerializeField] private float airStreamForce = 200f;
+	[SerializeField] private float glideCounterForce = 150f;
     [SerializeField] private GameObject absorbRange;
     private GameObject catchableObject;
     private GameObject objectToCarry;
+    private GameObject actualLure;
 
     private List<GameObject> _grounds = new List<GameObject>();
 
@@ -136,10 +139,9 @@ public class CharacterController : MonoBehaviour {
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
-            
         } else {
             StopTemporaryCapacity();
         }
@@ -149,25 +151,17 @@ public class CharacterController : MonoBehaviour {
 
         InputParams inputParams = inputController.RetrieveUserRequest();
         //deplacements
-		MoveAccordingToInput(inputParams);
-        //if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-        //	Debug.Log ("jump1=" + inputParams.jumpRequest + " jumpMV1=" + moveStateParameters.jumpRequired);
-        UpdateInteractStateParameters(inputParams);
-        InteractAccordingToInput(inputParams);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump2=" + inputParams.jumpRequest + " jumpMV2=" + moveStateParameters.jumpRequired);
-		previousInteractState = interactState;
-		UpdateMoveStateParameters(inputParams);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump3=" + inputParams.jumpRequest + " jumpMV3=" + moveStateParameters.jumpRequired);
-		
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump4=" + inputParams.jumpRequest + " jumpMV4=" + moveStateParameters.jumpRequired);
 
-		movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
-		//if(inputParams.jumpRequest || moveStateParameters.jumpRequired)
-		//	Debug.Log ("jump5=" + inputParams.jumpRequest + " jumpMV5=" + moveStateParameters.jumpRequired);
+        previousInteractState = interactState;
+
+		UpdateMoveStateParameters(inputParams);
+		UpdateInteractStateParameters(inputParams);
+
+        movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
+
+        MoveAccordingToInput();
+        InteractAccordingToInput();
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
@@ -218,7 +212,7 @@ public class CharacterController : MonoBehaviour {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-                    if (c.normal.y >= 0.5f && c.normal.y <= 1f) {
+                    if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || !(c.normal == null)) {
                         //_grounds.Add(gO);
 						found = true;
 						coefInclination = Vector3.Angle(c.normal, Vector3.up);
@@ -254,46 +248,61 @@ public class CharacterController : MonoBehaviour {
         return _grounds.Count > 0;
     }
 
-    void MoveAccordingToInput(InputParams inputParams) {
-        bool canJump = !(movementState == MovementState.DoubleJump || movementState == MovementState.Fall ||
-            (movementState == MovementState.Jump && ((!temporaryDoubleJumpCapacity && !permanentDoubleJumpCapacity) ||
-            interactState == InteractState.Carry))); /* ou si maudit et pas en state jump / fall */
+    void MoveAccordingToInput() {
+        /* ou si maudit et pas en state jump / fall */
         //JUMP
-        if (inputParams.jumpRequest && canJump) {
-			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
-			body.velocity = new Vector3 (body.velocity.x, 0.02f, body.velocity.z);
-            body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+		if (/*inputParams.jumpRequest*/moveStateParameters.jumpRequired) {
+            /*bool canJump = (previousMovementState != MovementState.DoubleJump &&
+            previousMovementState != MovementState.Fall) && (previousMovementState != MovementState.Jump ||
+            (previousMovementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+            if (canJump)*/ {
+				Debug.Log ("IMPULSE!!!");
+                // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+                body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
+                body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
         }
 
-        inputVelocityAxis = new Vector3(inputParams.moveX, body.velocity.y, inputParams.moveZ);
+		inputVelocityAxis = new Vector3(moveStateParameters.moveX, body.velocity.y, moveStateParameters.moveZ);
         //Orientation du personnage
-        orientationMove = (transform.forward * inputParams.moveZ) + (transform.right * inputParams.moveX);
+		orientationMove = (transform.forward * moveStateParameters.moveZ) + (transform.right * moveStateParameters.moveX);
 
 		//Manage Inclination Ground
         if (coefInclination <= 45) {
-            inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + ((inputVelocityAxis.normalized * moveSpeed) * (1 - Mathf.Cos(coefInclination * Mathf.Deg2Rad)));
+            //old_version
+            //inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + ((inputVelocityAxis.normalized * moveSpeed) * (1 - Mathf.Cos(coefInclination * Mathf.Deg2Rad)));
+            //Attention, je ne suis pas tres fiers de ce calcul. C'est tres arbitraire et pifo-metrique. Mais camarche plutot bien. Meh.
+            int angle_speed = 2; // Valeur qui va influencer la vitesse engeandree par l'angle d'inclinaison de la plateforme. Plus l'angle est faible (plateforme faiblement inclinee) plus ca ira vite de base. Donc il faut que angle_speed ne soit pas trop eleve.
+            int vertical_speed = 4; // Valeur qui va influencer la vitesse ascendante ou descendante reportee sur le plan horistontal en mode barbare. C'est sans doute la valeur la plus intéressante a tweaker a condition que la vitesse ascendante reste interessante.
+            //Formule gros merdieren approche. Bon courage. PS : inputVelocityAxis.normalized permet de garder la logique d'orientation de la vitesse à appliquer. C'est un vecteur important.
+            inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + angle_speed * moveSpeed * Mathf.Sin(coefInclination * Mathf.Deg2Rad) * inputVelocityAxis.normalized + vertical_speed * inputVelocityAxis.normalized * Mathf.Abs(body.velocity.y);
             inputVelocityAxis.y = body.velocity.y;
-        } else {
+
+            //Debug.Log(" Z Speed " + inputVelocityAxis.z + " Y Speed " + inputVelocityAxis.y);
+            //Debug.Log(" Normalized Normal " + inputVelocityAxis.normalized);
+            //Debug.Log(" Angle " + coefInclination + " Cos Deg2Rad " + Mathf.Cos(coefInclination * Mathf.Deg2Rad));
+        }
+        else {
             //Fall if Ground Inclination > 45 deg
             inputVelocityAxis.y = -5f;
         }
 
         //AIR CONTROL
         if (!onGround) {
-            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((inputParams.moveX * airControl), inputVelocityAxis.y, (inputParams.moveZ * (airControl * 2)));
+			body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((moveStateParameters.moveX * airControl), inputVelocityAxis.y, (moveStateParameters.moveZ * (airControl * 2)));
         } else {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * inputVelocityAxis;
         }
 
         //Move player on direction based on camera
-        if (inputParams.moveX != 0 || inputParams.moveZ != 0) {
+		if (moveStateParameters.moveX != 0 || moveStateParameters.moveZ != 0) {
             transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
             playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
         }
     }
 
-    void InteractAccordingToInput(InputParams inputParams) {
+    void InteractAccordingToInput() {
         switch (interactState) {
             case InteractState.Nothing:
                 if (previousInteractState == InteractState.MeleeAttack) {
@@ -312,10 +321,13 @@ public class CharacterController : MonoBehaviour {
                     interactBehaviorCtrl.DoInflate(false);
                 }
 
-                if (interactStateParameter.canCarry) {
-
-                    interactBehaviorCtrl.DoCarry(objectToCarry);
-                    catchableObject = objectToCarry;
+                if (interactStateParameter.canDestroyLure) {
+                    interactBehaviorCtrl.DestroyLure(actualLure);
+                    actualLure = null;
+                }
+                
+                if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
+                    interactBehaviorCtrl.StopCarry(catchableObject);
                 }
                 break;
 
@@ -327,11 +339,14 @@ public class CharacterController : MonoBehaviour {
                 } else {
                     // add a force to counter gravity (glide effect)
                                        
-                    body.AddForce(Vector3.up * 150f, ForceMode.Force);
+					body.AddForce(Vector3.up * glideCounterForce, ForceMode.Force);
                     if (body.velocity.y < -10) {
                         body.velocity = new Vector3(body.velocity.x, -10, body.velocity.z);
                     }
                     interactBehaviorCtrl.DoGlide();
+					if (interactStateParameter.canAirStream) {
+						body.AddForce (Vector3.up * airStreamForce + (Vector3.up * Mathf.Abs (body.velocity.y)), ForceMode.Force);
+					}
                 }
                 break;
 
@@ -360,7 +375,6 @@ public class CharacterController : MonoBehaviour {
                 //}
                 break;
 
-
             case InteractState.DistantAttack:
                 if (interactStateParameter.canDistantAttack) {
                     interactBehaviorCtrl.DoDistantAttack();
@@ -368,18 +382,15 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case InteractState.SpawnLure:
-                if (interactStateParameter.canSpawnLure) {
-                    interactBehaviorCtrl.doSpawnLure();
+                if (previousInteractState == InteractState.Nothing) {
+                    actualLure = interactBehaviorCtrl.DoSpawnLure();
                 }
                 break;
 
             case InteractState.Inflate:
-
                 if (previousInteractState != InteractState.Inflate) {
                     interactBehaviorCtrl.DoInflate(true);
                 }
-
-
                 break;
 
             case InteractState.Tiny:
@@ -396,12 +407,9 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case InteractState.Carry:
-                if (inputParams.actionRequest == ActionRequest.ContextualAction) {
-                    catchableObject.transform.parent = null;
-                    Rigidbody body = catchableObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
-                    body.useGravity = true;
-                    interactStateParameter.finishedCarry = true;
-                    body.mass = 100;
+                if (previousInteractState == InteractState.Nothing) {
+                    interactBehaviorCtrl.DoCarry(objectToCarry);
+                    catchableObject = objectToCarry;
                 }
                 break;
 
@@ -429,9 +437,23 @@ public class CharacterController : MonoBehaviour {
 			moveStateParameters.position_before_fall = body.position;
 		}
 		moveStateParameters.position = body.position;
-        moveStateParameters.velocity = body.velocity;
-        moveStateParameters.jumpRequired = inputParams.jumpRequest;
-        moveStateParameters.grounded = IsGrounded();
+		moveStateParameters.velocity = body.velocity;
+		moveStateParameters.moveX = inputParams.moveX;
+		moveStateParameters.moveZ = inputParams.moveZ;
+		moveStateParameters.jumpRequired = 
+			inputParams.jumpRequest && 
+			(	movementState == MovementState.Idle ||
+				movementState == MovementState.Run ||
+				(movementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+		moveStateParameters.grounded = IsGrounded();
+		if (inputParams.jumpRequest) {
+			Debug.Log ("movementState=" + movementState);
+			Debug.Log ("interactState=" + interactState);
+			Debug.Log ("IsGrounded=" + IsGrounded());
+			Debug.Log ("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
+		}
+		inputParams.jumpRequest = false;
+		inputController.SetUserRequest (inputParams);
     }
 
     void UpdateInteractStateParameters(InputParams inputParams) {
@@ -459,7 +481,11 @@ public class CharacterController : MonoBehaviour {
                 break;
 
             case ActionRequest.SpawnLure:
-                interactStateParameter.canSpawnLure = true;
+                if (actualLure == null) {
+                    interactStateParameter.canSpawnLure = true;
+                } else {
+                    interactStateParameter.canDestroyLure = true;
+                }
                 break;
 
             case ActionRequest.Inflate:
@@ -472,7 +498,10 @@ public class CharacterController : MonoBehaviour {
 
             case ActionRequest.ContextualAction:
                 GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
-                if (nearestObject != null) {
+
+                if(interactState == InteractState.Carry) {
+                    interactStateParameter.finishedCarry = true;
+                } else if (nearestObject != null) {
                     bool inFrontOfActivableObject = false;
                     bool inFrontOfAbsorbableObject = false;
                     bool inFrontOfPortableObject = false;
@@ -502,28 +531,31 @@ public class CharacterController : MonoBehaviour {
                         }
                         else if (inFrontOfPortableObject) {
                             interactStateParameter.canCarry = true;
-                            objectToCarry = nearestObject;
+							objectToCarry = nearestObject;
+							//reset action so that we cannot catch and decatch due to malsynchronization
+							inputParams.actionRequest = ActionRequest.None;
+							inputController.SetUserRequest (inputParams);
                         }
-                    }
-
+					}
                 }
                 break;
 
-            case ActionRequest.None:
-                interactStateParameter.canGlide = false;
-                interactStateParameter.canMeleeAttack = false;
-                interactStateParameter.canDistantAttack = false;
-                interactStateParameter.canSpawnLure = false;
-                interactStateParameter.canInflate = false;
-                interactStateParameter.canActivate = false;
-                interactStateParameter.canAbsorb = false;
-                interactStateParameter.canCarry = false;
-                interactStateParameter.canPush = false;
-                interactStateParameter.finishedCarry = false;
+			case ActionRequest.None:
+				interactStateParameter.canGlide = false;
+				interactStateParameter.canMeleeAttack = false;
+				interactStateParameter.canDistantAttack = false;
+				interactStateParameter.canSpawnLure = false;
+				interactStateParameter.canDestroyLure = false;
+				interactStateParameter.canInflate = false;
+				interactStateParameter.canActivate = false;
+				interactStateParameter.canAbsorb = false;
+				interactStateParameter.canCarry = false;
+				interactStateParameter.canPush = false;
+				interactStateParameter.finishedCarry = false;
+				interactStateParameter.canAirStream = false;
                 nearestObject = null;
                 break;
-        }
-
+		}
     }
 
 
@@ -543,24 +575,58 @@ public class CharacterController : MonoBehaviour {
 
     //public void ReturnLeaf() {
     //    inputInteractParameters.LeafAvailable = true;
-    //}
+	//}
 
-    void OnTriggerExit(Collider collid) {
-        if (collid.gameObject.CompareTag("AirStreamZone")) {
-            moveStateParameters.inAirStream = false;
-        }
-    }
+	void OnTriggerEnter(Collider collid) {
+		if (collid.gameObject.CompareTag ("AirStreamZone")) {
+			moveStateParameters.inAirStream = true;
+		}
+		if (collid.gameObject.CompareTag ("AirStreamForce") && interactState == InteractState.Glide)
+		{
+			interactStateParameter.canAirStream = true;
+			/*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
+			body.AddForce (Vector3.up * 80, ForceMode.Impulse);*/
+		}
+	}
+
+	void OnTriggerExit(Collider collid) {
+		if (collid.gameObject.CompareTag("AirStreamZone")) {
+			moveStateParameters.inAirStream = false;
+		}
+		if (collid.gameObject.CompareTag ("AirStreamForce")) {
+			interactStateParameter.canAirStream = false;
+		}
+	}
 
     void OnTriggerStay(Collider collid) {
         if (collid.gameObject.CompareTag("AirStreamZone")) {
-            moveStateParameters.inAirStream = true;
-        }
+			if (interactState != InteractState.Glide && previousInteractState == InteractState.Glide)
+			{
+				moveStateParameters.inAirStream = false;
+			}
+			else if (interactState == InteractState.Glide && previousInteractState != InteractState.Glide)
+			{
+				moveStateParameters.inAirStream = true;
+			}
+		}
+		if (collid.gameObject.CompareTag("AirStreamZone")) {
+			if (interactState != InteractState.Glide && previousInteractState == InteractState.Glide)
+			{
+				interactStateParameter.canAirStream = false;
+			}
+			else if (interactState == InteractState.Glide && previousInteractState != InteractState.Glide)
+			{
+				interactStateParameter.canAirStream = true;
+				/*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
+				body.AddForce (Vector3.up * 10, ForceMode.Impulse);*/
+			}
+		}
         if (interactState == InteractState.Absorb && previousInteractState != InteractState.Absorb) {
             if (interactStateParameter.canAbsorb) {
                 interactBehaviorCtrl.DoBeginAbsorption(collid.gameObject);
             }
 
-        }else if (previousInteractState == InteractState.Absorb) {
+        } else if (previousInteractState == InteractState.Absorb) {
             Pair<Capacity, float> pairCapacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
             if (pairCapacity.First != Capacity.Nothing) {
                 AddCapacity(pairCapacity);

@@ -39,6 +39,10 @@ public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovement
 				animBody.SetBool("isInAir", true);
 				animBody.SetTrigger("Jump");
 				break;
+			case MovementState.PushUp:
+				animBody.SetBool ("isInAir", true);
+				animBody.SetTrigger ("Fall");
+				break;
 			case MovementState.Fall:
 				animBody.SetBool("isInAir", true);
 				animBody.SetTrigger("Fall");

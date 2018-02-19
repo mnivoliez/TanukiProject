@@ -16,7 +16,7 @@ public struct InputParams {
         actionRequest = ActionRequest.None;
         jumpRequest = false;
         moveX = 0f;
-        moveZ = 0f;
+		moveZ = 0f;
     }
 }
 
@@ -86,14 +86,18 @@ public class InputController : MonoBehaviour {
 	void UpdateMoveInput() {
 		if (Input.GetButtonDown ("Jump"))
 		{
-			Debug.Log ("JUMP!!!");
+			//Debug.Log ("JUMP!!!");
 		}
         inputParams.jumpRequest = Input.GetButtonDown("Jump");
         inputParams.moveX = Input.GetAxis("Horizontal");
         inputParams.moveZ = Input.GetAxis("Vertical");
-    }
+	}
 
-    public InputParams RetrieveUserRequest() {
-        return inputParams;
-    }
+	public InputParams RetrieveUserRequest() {
+		return inputParams;
+	}
+
+	public void SetUserRequest(InputParams inputParamsNew) {
+		inputParams = inputParamsNew;
+	}
 }

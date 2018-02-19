@@ -27,11 +27,4 @@ public class LureController : MonoBehaviour {
     private void FixedUpdate() {
         body.AddForce(gravity, ForceMode.Acceleration);
     }
-
-    private void OnCollisionEnter(Collision collision) {
-        if(collision.gameObject.tag == "Yokai") {
-            body.AddForce(-gravity * forceRebound, ForceMode.Acceleration);
-            Destroy(collision.gameObject);
-        }
-    }
 }
