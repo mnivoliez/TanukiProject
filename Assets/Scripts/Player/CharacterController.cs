@@ -181,15 +181,19 @@ public class CharacterController : MonoBehaviour {
     void OnCollisionEnter(Collision coll) {
         GameObject gO = coll.gameObject;
 
+		//Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
+		//Debug.Log ("_grounds.count enter=" + _grounds.Count);
         if (gO.layer == LayerMask.NameToLayer("Ground")) {
             ContactPoint[] contacts = coll.contacts;
 
+			//Debug.Log ("contacts.Length=" + contacts.Length);
             if (contacts.Length > 0) {
                 foreach (ContactPoint c in contacts) {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
-                    // c.normal.y = 1 => Horizontal
-                    if (c.normal.y >= 0.50f && c.normal.y < 1.01f) {
+					// c.normal.y = 1 => Horizontal
+					//Debug.Log ("c.normal.y=" + c.normal.y);
+					if (c.normal.y >= 0.50f && c.normal.y < 1.01f && !_grounds.Contains (gO)) {
                         _grounds.Add(gO);
                         break;
                     }
@@ -199,7 +203,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision coll) {
-           GameObject gO = coll.gameObject;
+        GameObject gO = coll.gameObject;
         if (gO.layer == LayerMask.NameToLayer("Ground")) {
             ContactPoint[] contacts = coll.contacts;
 
@@ -212,7 +216,7 @@ public class CharacterController : MonoBehaviour {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-                    if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || !(c.normal == null)) {
+					if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || !(c.normal == null)) {
                         //_grounds.Add(gO);
 						found = true;
 						coefInclination = Vector3.Angle(c.normal, Vector3.up);
@@ -227,12 +231,17 @@ public class CharacterController : MonoBehaviour {
     }
 
     void OnCollisionExit(Collision coll) {
-        if (IsGrounded()) {
-            GameObject gO = coll.gameObject;
-
-            if (_grounds.Contains(gO)) {
-                _grounds.Remove(gO);
-            }
+		if (IsGrounded()) {
+			GameObject gO = coll.gameObject;
+			//Debug.Log ("gO.layer exit=" + LayerMask.LayerToName(gO.layer));
+			if (gO.layer == LayerMask.NameToLayer ("Ground"))
+			{
+				if (_grounds.Contains (gO))
+				{
+					_grounds.Remove (gO);
+				}
+			}
+			//Debug.Log ("_grounds.count exit=" + _grounds.Count);
         }
     }
 
@@ -330,8 +339,6 @@ public class CharacterController : MonoBehaviour {
                     interactBehaviorCtrl.StopCarry(catchableObject);
                 }
                 break;
-
-
 
             case InteractState.Glide:
                 if (IsGrounded()) {
@@ -458,7 +465,7 @@ public class CharacterController : MonoBehaviour {
 
     void UpdateInteractStateParameters(InputParams inputParams) {
         switch (inputParams.actionRequest) {
-            case ActionRequest.Glide:
+			case ActionRequest.Glide:
                 if (movementState == MovementState.Fall || movementState == MovementState.PushUp) {
                     interactStateParameter.canGlide = true;
                 } else {
@@ -579,10 +586,12 @@ public class CharacterController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collid) {
 		if (collid.gameObject.CompareTag ("AirStreamZone")) {
+			Debug.Log ("AirStreamZone enter");
 			moveStateParameters.inAirStream = true;
 		}
 		if (collid.gameObject.CompareTag ("AirStreamForce") && interactState == InteractState.Glide)
 		{
+			Debug.Log ("AirStreamForce enter");
 			interactStateParameter.canAirStream = true;
 			/*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
 			body.AddForce (Vector3.up * 80, ForceMode.Impulse);*/
@@ -591,9 +600,11 @@ public class CharacterController : MonoBehaviour {
 
 	void OnTriggerExit(Collider collid) {
 		if (collid.gameObject.CompareTag("AirStreamZone")) {
+			Debug.Log ("AirStreamZone Exit");
 			moveStateParameters.inAirStream = false;
 		}
 		if (collid.gameObject.CompareTag ("AirStreamForce")) {
+			Debug.Log ("AirStreamForce Exit");
 			interactStateParameter.canAirStream = false;
 		}
 	}

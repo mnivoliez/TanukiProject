@@ -240,6 +240,8 @@ public class MovementStateController {
 			param.velocity.y < -step_velocity &&
 			(Mathf.Abs(param.position_before_fall.y - param.position.y) > step_position || param.jumpRequired);
 
+		//Debug.Log ("param.grounded=" + param.grounded);
+
 		return fall;
     }
 

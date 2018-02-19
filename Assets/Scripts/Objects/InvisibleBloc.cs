@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InvisibleBloc : MonoBehaviour
 {
+	[SerializeField] private ActionLantern lanternAction;
 
     private Collider boxCollider;
     private MeshRenderer meshRenderer;
@@ -13,16 +14,16 @@ public class InvisibleBloc : MonoBehaviour
     {
         boxCollider = transform.parent.GetComponent<Collider>();
         meshRenderer = transform.parent.GetComponent<MeshRenderer>();
-        boxCollider.enabled = false;
-        meshRenderer.enabled = false;
+		boxCollider.enabled = lanternAction.Equals(ActionLantern.Deactivate);
+		meshRenderer.enabled = lanternAction.Equals(ActionLantern.Deactivate);
     }
 
     void OnTriggerStay(Collider collider)
     {
         if (collider.gameObject.tag == "Lantern")
         {
-            boxCollider.enabled = true;
-            meshRenderer.enabled = true;
+			boxCollider.enabled = lanternAction.Equals(ActionLantern.Activate);
+			meshRenderer.enabled = lanternAction.Equals(ActionLantern.Activate);
         }
     }
 
@@ -30,8 +31,8 @@ public class InvisibleBloc : MonoBehaviour
     {
         if (collider.gameObject.tag == "Lantern")
         {
-            boxCollider.enabled = false;
-            meshRenderer.enabled = false;
+			boxCollider.enabled = lanternAction.Equals(ActionLantern.Deactivate);
+			meshRenderer.enabled = lanternAction.Equals(ActionLantern.Deactivate);
         }
     }
 }
