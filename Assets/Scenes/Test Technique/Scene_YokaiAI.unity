@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4822706, g: 0.5094994, b: 0.62844706, a: 1}
+  m_IndirectSpecularColor: {r: 0.48227066, g: 0.5094994, b: 0.6284466, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -315,11 +315,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1377227220088642, guid: 808203ed0a7345544b8b92a494a165d8,
     type: 2}
   m_PrefabInternal: {fileID: 1605910306}
---- !u!4 &254518035 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4995671936828928, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa,
-    type: 2}
-  m_PrefabInternal: {fileID: 830193357}
 --- !u!1 &262120738
 GameObject:
   m_ObjectHideFlags: 0
@@ -1688,59 +1683,6 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
---- !u!1 &702779925
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 702779926}
-  - component: {fileID: 702779927}
-  - component: {fileID: 702779928}
-  m_Layer: 14
-  m_Name: DetectArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &702779926
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 702779925}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 254518035}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &702779927
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 702779925}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 20
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &702779928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 702779925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fafd473ad84025f40aa61d4deffd0f6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!43 &751599733
 Mesh:
   m_ObjectHideFlags: 0
@@ -1985,26 +1927,7 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 1540282424608112, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa, type: 2}
-      propertyPath: m_TagString
-      value: Yokai
-      objectReference: {fileID: 0}
-    - target: {fileID: 23322509216887854, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa,
-        type: 2}
-      propertyPath: m_DynamicOccludee
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 136122713446417968, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1540282424608112, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa, type: 2}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 135124766194098168, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &975998184
@@ -4244,24 +4167,6 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
---- !u!1 &1886674093 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1540282424608112, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa,
-    type: 2}
-  m_PrefabInternal: {fileID: 830193357}
---- !u!136 &1886674094
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1886674093}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.7
-  m_Height: 2.5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1991003463
 GameObject:
   m_ObjectHideFlags: 0
