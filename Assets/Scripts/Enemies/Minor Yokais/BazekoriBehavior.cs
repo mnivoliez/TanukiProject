@@ -9,7 +9,6 @@ public class BazekoriBehavior : YokaiController {
     Vector3 startPosition;
     Vector3 endPosition;
     Vector3 bending = Vector3.up;
-    float timeToTravel = 3f;
     float timeStamp = 0;
 
 
@@ -50,7 +49,10 @@ public class BazekoriBehavior : YokaiController {
         Invoke("EndHit", 0.3f);
         if (hp <= 0) {
             isKnocked = true;
-            Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
+            Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
+            posKnockedParticle.x = transform.position.x;
+            posKnockedParticle.z = transform.position.z;
+            Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
 
@@ -71,7 +73,7 @@ public class BazekoriBehavior : YokaiController {
     }
 
     public override void Die() {
-        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5) {
+        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         }
@@ -80,7 +82,7 @@ public class BazekoriBehavior : YokaiController {
                 transform.localScale = Vector3.zero;
             }
             else {
-                transform.localScale -= new Vector3(5f, 5f, 5f);
+                transform.localScale -= new Vector3(0.2f, 0.2f, 0.2f);
             }
             speed = speed + 0.2f;
             transform.position = Vector3.MoveTowards(transform.position, (target.transform.position+Vector3.up), speed * Time.deltaTime);
@@ -95,10 +97,8 @@ public class BazekoriBehavior : YokaiController {
     }
 
     void OnTriggerEnter(Collider other) {
-        Debug.Log("COUCOU !");
 
         if (other.gameObject.CompareTag("Leaf") && !isKnocked) {
-            Debug.Log("TOUCHE !");
             float damage;
             if (other.gameObject.GetComponent<MoveLeaf>() != null) {
                 damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
@@ -113,23 +113,23 @@ public class BazekoriBehavior : YokaiController {
 
     public void MoveToPosition() {
 
-        if (0 < timeToTravel - timeStamp) {
-            Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / timeToTravel);
-            currentPos.y += 1 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
+        if (0 < speed - timeStamp) {
+            Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / speed);
+            currentPos.y += 1 * Mathf.Sin(Mathf.Clamp01((timeStamp) / speed) * Mathf.PI);
             transform.position = currentPos;
             timeStamp += 0.1f;
         }
         else {
             followPlayer = false;
             timeStamp = 0;
-            timeToTravel = 3f;
+            speed = 3f;
         }
     }
 
     public void SetFollowPlayer(bool isFollowing) {
         followPlayer = isFollowing;
         timeStamp = 0;
-        timeToTravel = 3f;
+        speed = 3f;
         startPosition = transform.position;
         endPosition = target.transform.position + (Vector3.up * 2);
     }

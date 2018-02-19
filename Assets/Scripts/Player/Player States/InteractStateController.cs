@@ -14,6 +14,7 @@ public struct InteractStateParam {
 	public bool canDistantAttack;
 	public bool finishedDistantAttack;
     public bool canSpawnLure;
+	public bool canDestroyLure;
     public bool canInflate;
     public bool canResize;
     public bool canActivate;
@@ -21,7 +22,8 @@ public struct InteractStateParam {
     public bool yokaiStillInRange;
     public bool canCarry;
     public bool finishedCarry;
-    public bool canPush;
+	public bool canPush;
+	public bool canAirStream;
 }
 
 public class InteractStateController {
@@ -156,6 +158,7 @@ public class InteractStateController {
 
         //NOTHING
         if (!param.canGlide) {
+			param.canAirStream = false;
             newState = InteractState.Nothing;
         }
         return newState;
@@ -186,9 +189,7 @@ public class InteractStateController {
     InteractState ManageSpawnLure(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //NOTHING
-        if (!param.canGlide) {
-            newState = InteractState.Nothing;
-        }
+        newState = InteractState.Nothing;
         return newState;
     }
 
