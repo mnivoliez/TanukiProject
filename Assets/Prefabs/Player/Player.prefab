@@ -834,11 +834,11 @@ GameObject:
   - component: {fileID: 114491783787661632}
   m_Layer: 10
   m_Name: AttackRange
-  m_TagString: Untagged
+  m_TagString: Leaf
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1773020806087512
 GameObject:
   m_ObjectHideFlags: 1
@@ -2501,7 +2501,7 @@ MonoBehaviour:
   rayCastDistance: 40
   ignoredLayerMask:
     serializedVersion: 2
-    m_Bits: 15872
+    m_Bits: 65024
 --- !u!114 &114170007115717232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2677,10 +2677,15 @@ MonoBehaviour:
   moveSpeed: 10
   airControl: 6
   jumpForce: 120
+  airStreamForce: 200
+  glideCounterForce: 150
   absorbRange: {fileID: 1331904666855936}
   pivot: {fileID: 0}
   rotateSpeed: 10
   playerModel: {fileID: 1956274163401516}
+  permanentDoubleJumpCapacity: 1
+  temporaryDoubleJumpCapacity: 0
+  timerCapacity: 0
 --- !u!114 &114814930733008570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2766,7 +2771,7 @@ MonoBehaviour:
   spawnLeaf: {fileID: 1936099816914936}
   rangeMaxLeaf: {fileID: 1161203075904736}
   distantDamage: 1
-  normalForm: {fileID: 1127765674376460, guid: f56aa1970afcb584cb81b3a933e591b1, type: 2}
+  normalForm: {fileID: 1445498394530796}
   inflateForm: {fileID: 1377227220088642, guid: 808203ed0a7345544b8b92a494a165d8,
     type: 2}
   smokeSpawner: {fileID: 1611510778676392, guid: 9d3fa92c9a5ef914fa318eefb0924a89,

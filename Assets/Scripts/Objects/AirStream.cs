@@ -14,7 +14,7 @@ public class AirStream : MonoBehaviour {
 		
 	}
 
-    private void OnTriggerEnter(Collider other) {
+    /*private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
             if (other.gameObject.GetComponent<CharacterController>().GetInteractState() == InteractState.Glide) {
                 Rigidbody bodyObject = other.GetComponent<Rigidbody>();
@@ -27,9 +27,9 @@ public class AirStream : MonoBehaviour {
     private void OnTriggerStay(Collider other) {
 		if (other.CompareTag("Player")) {
             if (other.GetComponent<CharacterController>().GetInteractState() == InteractState.Glide) {
-                Rigidbody bodyObject = other.GetComponent<Rigidbody>();
+				Rigidbody bodyObject = other.GetComponent<Rigidbody>();
                 bodyObject.AddForce(Vector3.up * airForce + (Vector3.up * Mathf.Abs(bodyObject.velocity.y)), ForceMode.Force);
             }
         }
-    }
+    }*/
 }
