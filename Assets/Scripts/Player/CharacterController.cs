@@ -139,7 +139,7 @@ public class CharacterController : MonoBehaviour {
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
     }
 
-    private void FixedUpdate() {
+    private void Update() {
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
         } else {
@@ -216,18 +216,19 @@ public class CharacterController : MonoBehaviour {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-					if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || !(c.normal == null)) {
-                        //_grounds.Add(gO);
+					if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || !(c.normal == null))
+					{
+						//_grounds.Add(gO);
 						found = true;
-						coefInclination = Vector3.Angle(c.normal, Vector3.up);
-                        break;
-                    }
+						coefInclination = Vector3.Angle (c.normal, Vector3.up);
+						break;
+					}
                 }
 				if (!found) {
 					coefInclination = 0;
 				}
             }
-        }
+		}
     }
 
     void OnCollisionExit(Collision coll) {
@@ -259,18 +260,13 @@ public class CharacterController : MonoBehaviour {
 
     void MoveAccordingToInput() {
         /* ou si maudit et pas en state jump / fall */
-        //JUMP
-		if (/*inputParams.jumpRequest*/moveStateParameters.jumpRequired) {
-            /*bool canJump = (previousMovementState != MovementState.DoubleJump &&
-            previousMovementState != MovementState.Fall) && (previousMovementState != MovementState.Jump ||
-            (previousMovementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
-            if (canJump)*/ {
-				Debug.Log ("IMPULSE!!!");
-                // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
-                body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
-                body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            }
-        }
+		//JUMP
+		if (moveStateParameters.jumpRequired) {
+			Debug.Log ("IMPULSE!!!");
+			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+			body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
+			body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+		}
 
 		inputVelocityAxis = new Vector3(moveStateParameters.moveX, body.velocity.y, moveStateParameters.moveZ);
         //Orientation du personnage
@@ -353,6 +349,11 @@ public class CharacterController : MonoBehaviour {
                     interactBehaviorCtrl.DoGlide();
 					if (interactStateParameter.canAirStream) {
 						body.AddForce (Vector3.up * airStreamForce + (Vector3.up * Mathf.Abs (body.velocity.y)), ForceMode.Force);
+						if (body.velocity.y > 8.0f) {
+							//Debug.Log ("STOP AIRSTREAM!!!");
+							// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+							body.velocity = new Vector3(body.velocity.x, 8.0f, body.velocity.z);
+						}
 					}
                 }
                 break;
@@ -442,6 +443,10 @@ public class CharacterController : MonoBehaviour {
     void UpdateMoveStateParameters(InputParams inputParams) {
 		if (!IsGoingUp (moveStateParameters) && !IsFalling (moveStateParameters)) {
 			moveStateParameters.position_before_fall = body.position;
+			if (inputParams.jumpRequest)
+			{
+				Debug.Log ("NO JUMP!!! YOU ARE MOVING!");
+			}
 		}
 		moveStateParameters.position = body.position;
 		moveStateParameters.velocity = body.velocity;
@@ -458,9 +463,9 @@ public class CharacterController : MonoBehaviour {
 			Debug.Log ("interactState=" + interactState);
 			Debug.Log ("IsGrounded=" + IsGrounded());
 			Debug.Log ("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
+			inputParams.jumpRequest = false;
+			inputController.SetUserRequest (inputParams);
 		}
-		inputParams.jumpRequest = false;
-		inputController.SetUserRequest (inputParams);
     }
 
     void UpdateInteractStateParameters(InputParams inputParams) {
@@ -603,8 +608,9 @@ public class CharacterController : MonoBehaviour {
 			Debug.Log ("AirStreamZone Exit");
 			moveStateParameters.inAirStream = false;
 		}
+
 		if (collid.gameObject.CompareTag ("AirStreamForce")) {
-			Debug.Log ("AirStreamForce Exit");
+			Debug.Log ("AirStreamForce Exit " + body.velocity.y);
 			interactStateParameter.canAirStream = false;
 		}
 	}
@@ -620,7 +626,7 @@ public class CharacterController : MonoBehaviour {
 				moveStateParameters.inAirStream = true;
 			}
 		}
-		if (collid.gameObject.CompareTag("AirStreamZone")) {
+		if (collid.gameObject.CompareTag("AirStreamForce")) {
 			if (interactState != InteractState.Glide && previousInteractState == InteractState.Glide)
 			{
 				interactStateParameter.canAirStream = false;
