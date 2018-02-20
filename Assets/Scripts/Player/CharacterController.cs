@@ -77,7 +77,7 @@ public class CharacterController : MonoBehaviour {
     private float moveSpeed = 10f;
     private float speed = 10f;
     private float coefInclination;
-	[SerializeField] private float airControl = 6f;
+	[SerializeField] private float airControl = 12f;
 	[SerializeField] private float jumpForce = 120f;
 	[SerializeField] private float airStreamForce = 200f;
 	[SerializeField] private float glideCounterForce = 150f;
@@ -256,7 +256,7 @@ public class CharacterController : MonoBehaviour {
             previousMovementState != MovementState.Fall) && (previousMovementState != MovementState.Jump ||
             (previousMovementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
             if (canJump)*/ {
-				Debug.Log ("IMPULSE!!!");
+				//Debug.Log ("IMPULSE!!!");
                 // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
                 body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
                 body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -289,8 +289,13 @@ public class CharacterController : MonoBehaviour {
 
         //AIR CONTROL
         if (!onGround) {
-			body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((moveStateParameters.moveX * airControl), inputVelocityAxis.y, (moveStateParameters.moveZ * (airControl * 2)));
-        } else {
+            //body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((moveStateParameters.moveX * airControl), inputVelocityAxis.y, (moveStateParameters.moveZ * (airControl)));
+            //float temp_angle = Vector3.Angle(Vector3.right, new Vector3(moveStateParameters.moveX, 0f, moveStateParameters.moveZ));
+            float temp_speed = Mathf.Sqrt(Mathf.Pow(moveStateParameters.moveX, 2) + Mathf.Pow(moveStateParameters.moveZ, 2));
+            Vector3 temp_vect = new Vector3(moveStateParameters.moveX, 0f, moveStateParameters.moveZ);
+            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * temp_vect.normalized * temp_speed * airControl + new Vector3(0f, inputVelocityAxis.y, 0f);
+        }
+        else {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * inputVelocityAxis;
         }
 
@@ -446,12 +451,12 @@ public class CharacterController : MonoBehaviour {
 				movementState == MovementState.Run ||
 				(movementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
 		moveStateParameters.grounded = IsGrounded();
-		if (inputParams.jumpRequest) {
-			Debug.Log ("movementState=" + movementState);
-			Debug.Log ("interactState=" + interactState);
-			Debug.Log ("IsGrounded=" + IsGrounded());
-			Debug.Log ("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
-		}
+		//if (inputParams.jumpRequest) {
+		//	Debug.Log ("movementState=" + movementState);
+		//	Debug.Log ("interactState=" + interactState);
+		//	Debug.Log ("IsGrounded=" + IsGrounded());
+		//	Debug.Log ("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
+		//}
 		inputParams.jumpRequest = false;
 		inputController.SetUserRequest (inputParams);
     }
