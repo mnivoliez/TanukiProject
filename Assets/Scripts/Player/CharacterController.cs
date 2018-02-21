@@ -124,6 +124,8 @@ public class CharacterController : MonoBehaviour {
 
     private float timerAttack;
 
+	//int FPS = 40;
+
     private void Start() {
         movementState = MovementState.Idle;
         previousMovementState = movementState;
@@ -137,7 +139,17 @@ public class CharacterController : MonoBehaviour {
         InteractStateCtrl = new InteractStateController();
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
-    }
+
+		//QualitySettings.vSyncCount = 0;
+		//Application.targetFrameRate = FPS;
+	}
+
+	private void OnGUI()
+	{
+		//GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
+		//FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
+		//Application.targetFrameRate = FPS;
+	}
 
     private void Update() {
         if (timerCapacity > 0) {
@@ -258,7 +270,8 @@ public class CharacterController : MonoBehaviour {
         return _grounds.Count > 0;
     }
 
-    void MoveAccordingToInput() {
+	void MoveAccordingToInput() {
+		body.AddForce(Vector3.down * (220.0f / body.mass + 9.81f) * (40 * Time.deltaTime), ForceMode.Acceleration);
         /* ou si maudit et pas en state jump / fall */
 		//JUMP
 		if (moveStateParameters.jumpRequired) {
@@ -347,13 +360,14 @@ public class CharacterController : MonoBehaviour {
                 } else {
                     // add a force to counter gravity (glide effect)
                                        
-					body.AddForce(Vector3.up * glideCounterForce, ForceMode.Force);
+					//body.AddForce(Vector3.up * glideCounterForce, ForceMode.Force);
+					body.AddForce(Vector3.up * (glideCounterForce / body.mass) * (40 * Time.deltaTime), ForceMode.Acceleration);
                     if (body.velocity.y < -10) {
                         body.velocity = new Vector3(body.velocity.x, -10, body.velocity.z);
                     }
                     interactBehaviorCtrl.DoGlide();
 					if (interactStateParameter.canAirStream) {
-						body.AddForce (Vector3.up * airStreamForce + (Vector3.up * Mathf.Abs (body.velocity.y)), ForceMode.Force);
+						body.AddForce (Vector3.up * (airStreamForce / body.mass) * (40 * Time.deltaTime) + (Vector3.up * Mathf.Abs (body.velocity.y)), ForceMode.Acceleration);
 						if (body.velocity.y > 8.0f) {
 							//Debug.Log ("STOP AIRSTREAM!!!");
 							// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
