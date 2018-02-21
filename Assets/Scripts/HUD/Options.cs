@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // Required when Using UI elements.
+using UnityEngine.Audio; // Required when messing with the MasterVolume
 
 public class Options : MonoBehaviour {
 
@@ -10,10 +11,15 @@ public class Options : MonoBehaviour {
     public int height;
     public int width;
 
+    public AudioMixer audioMixer;
+
+    public void SetVolume (float Volume) {
+        audioMixer.SetFloat("MasterVolume", Volume);
+    }
+
     //Invoked when a submit button is clicked.
-    public string DisplaySize () {
+    public string DisplaySize (int Size_Aspect) {
         //Displays the value of the slider in the console.
-        Size_Aspect = (int)mainSlider.value;
         Debug.Log(Size_Aspect);
 
         switch (Size_Aspect) {
