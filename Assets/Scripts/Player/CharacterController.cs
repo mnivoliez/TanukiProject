@@ -77,7 +77,7 @@ public class CharacterController : MonoBehaviour {
     private float moveSpeed = 10f;
     private float speed = 10f;
     private float coefInclination;
-	[SerializeField] private float airControl = 6f;
+	[SerializeField] private float airControl = 12f;
 	[SerializeField] private float jumpForce = 120f;
 	[SerializeField] private float airStreamForce = 200f;
 	[SerializeField] private float glideCounterForce = 150f;
@@ -139,7 +139,7 @@ public class CharacterController : MonoBehaviour {
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
     }
 
-    private void FixedUpdate() {
+    private void Update() {
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
         } else {
@@ -181,15 +181,19 @@ public class CharacterController : MonoBehaviour {
     void OnCollisionEnter(Collision coll) {
         GameObject gO = coll.gameObject;
 
+		//Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
+		//Debug.Log ("_grounds.count enter=" + _grounds.Count);
         if (gO.layer == LayerMask.NameToLayer("Ground")) {
             ContactPoint[] contacts = coll.contacts;
 
+			//Debug.Log ("contacts.Length=" + contacts.Length);
             if (contacts.Length > 0) {
                 foreach (ContactPoint c in contacts) {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
-                    // c.normal.y = 1 => Horizontal
-                    if (c.normal.y >= 0.50f && c.normal.y < 1.01f) {
+					// c.normal.y = 1 => Horizontal
+					//Debug.Log ("c.normal.y=" + c.normal.y);
+					if (c.normal.y >= 0.50f && c.normal.y < 1.01f && !_grounds.Contains (gO)) {
                         _grounds.Add(gO);
                         break;
                     }
@@ -199,7 +203,7 @@ public class CharacterController : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision coll) {
-           GameObject gO = coll.gameObject;
+        GameObject gO = coll.gameObject;
         if (gO.layer == LayerMask.NameToLayer("Ground")) {
             ContactPoint[] contacts = coll.contacts;
 
@@ -212,27 +216,33 @@ public class CharacterController : MonoBehaviour {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-                    if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || !(c.normal == null)) {
-                        //_grounds.Add(gO);
+					if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || !(c.normal == null))
+					{
+						//_grounds.Add(gO);
 						found = true;
-						coefInclination = Vector3.Angle(c.normal, Vector3.up);
-                        break;
-                    }
+						coefInclination = Vector3.Angle (c.normal, Vector3.up);
+						break;
+					}
                 }
 				if (!found) {
 					coefInclination = 0;
 				}
             }
-        }
+		}
     }
 
     void OnCollisionExit(Collision coll) {
-        if (IsGrounded()) {
-            GameObject gO = coll.gameObject;
-
-            if (_grounds.Contains(gO)) {
-                _grounds.Remove(gO);
-            }
+		if (IsGrounded()) {
+			GameObject gO = coll.gameObject;
+			//Debug.Log ("gO.layer exit=" + LayerMask.LayerToName(gO.layer));
+			if (gO.layer == LayerMask.NameToLayer ("Ground"))
+			{
+				if (_grounds.Contains (gO))
+				{
+					_grounds.Remove (gO);
+				}
+			}
+			//Debug.Log ("_grounds.count exit=" + _grounds.Count);
         }
     }
 
@@ -250,18 +260,13 @@ public class CharacterController : MonoBehaviour {
 
     void MoveAccordingToInput() {
         /* ou si maudit et pas en state jump / fall */
-        //JUMP
-		if (/*inputParams.jumpRequest*/moveStateParameters.jumpRequired) {
-            /*bool canJump = (previousMovementState != MovementState.DoubleJump &&
-            previousMovementState != MovementState.Fall) && (previousMovementState != MovementState.Jump ||
-            (previousMovementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
-            if (canJump)*/ {
-				Debug.Log ("IMPULSE!!!");
-                // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
-                body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
-                body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            }
-        }
+		//JUMP
+		if (moveStateParameters.jumpRequired) {
+			Debug.Log ("IMPULSE!!!");
+			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+			body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
+			body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+		}
 
 		inputVelocityAxis = new Vector3(moveStateParameters.moveX, body.velocity.y, moveStateParameters.moveZ);
         //Orientation du personnage
@@ -289,8 +294,13 @@ public class CharacterController : MonoBehaviour {
 
         //AIR CONTROL
         if (!onGround) {
-			body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((moveStateParameters.moveX * airControl), inputVelocityAxis.y, (moveStateParameters.moveZ * (airControl * 2)));
-        } else {
+            //body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * new Vector3((moveStateParameters.moveX * airControl), inputVelocityAxis.y, (moveStateParameters.moveZ * (airControl)));
+            //float temp_angle = Vector3.Angle(Vector3.right, new Vector3(moveStateParameters.moveX, 0f, moveStateParameters.moveZ));
+            float temp_speed = Mathf.Sqrt(Mathf.Pow(moveStateParameters.moveX, 2) + Mathf.Pow(moveStateParameters.moveZ, 2));
+            Vector3 temp_vect = new Vector3(moveStateParameters.moveX, 0f, moveStateParameters.moveZ);
+            body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * temp_vect.normalized * temp_speed * airControl + new Vector3(0f, inputVelocityAxis.y, 0f);
+        }
+        else {
             body.velocity = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up) * inputVelocityAxis;
         }
 
@@ -331,8 +341,6 @@ public class CharacterController : MonoBehaviour {
                 }
                 break;
 
-
-
             case InteractState.Glide:
                 if (IsGrounded()) {
                     interactBehaviorCtrl.StopGlide();
@@ -346,6 +354,11 @@ public class CharacterController : MonoBehaviour {
                     interactBehaviorCtrl.DoGlide();
 					if (interactStateParameter.canAirStream) {
 						body.AddForce (Vector3.up * airStreamForce + (Vector3.up * Mathf.Abs (body.velocity.y)), ForceMode.Force);
+						if (body.velocity.y > 8.0f) {
+							//Debug.Log ("STOP AIRSTREAM!!!");
+							// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+							body.velocity = new Vector3(body.velocity.x, 8.0f, body.velocity.z);
+						}
 					}
                 }
                 break;
@@ -435,6 +448,10 @@ public class CharacterController : MonoBehaviour {
     void UpdateMoveStateParameters(InputParams inputParams) {
 		if (!IsGoingUp (moveStateParameters) && !IsFalling (moveStateParameters)) {
 			moveStateParameters.position_before_fall = body.position;
+			if (inputParams.jumpRequest)
+			{
+				Debug.Log ("NO JUMP!!! YOU ARE MOVING!");
+			}
 		}
 		moveStateParameters.position = body.position;
 		moveStateParameters.velocity = body.velocity;
@@ -451,14 +468,14 @@ public class CharacterController : MonoBehaviour {
 			Debug.Log ("interactState=" + interactState);
 			Debug.Log ("IsGrounded=" + IsGrounded());
 			Debug.Log ("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
+			inputParams.jumpRequest = false;
+			inputController.SetUserRequest (inputParams);
 		}
-		inputParams.jumpRequest = false;
-		inputController.SetUserRequest (inputParams);
     }
 
     void UpdateInteractStateParameters(InputParams inputParams) {
         switch (inputParams.actionRequest) {
-            case ActionRequest.Glide:
+			case ActionRequest.Glide:
                 if (movementState == MovementState.Fall || movementState == MovementState.PushUp) {
                     interactStateParameter.canGlide = true;
                 } else {
@@ -579,10 +596,12 @@ public class CharacterController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collid) {
 		if (collid.gameObject.CompareTag ("AirStreamZone")) {
+			Debug.Log ("AirStreamZone enter");
 			moveStateParameters.inAirStream = true;
 		}
 		if (collid.gameObject.CompareTag ("AirStreamForce") && interactState == InteractState.Glide)
 		{
+			Debug.Log ("AirStreamForce enter");
 			interactStateParameter.canAirStream = true;
 			/*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
 			body.AddForce (Vector3.up * 80, ForceMode.Impulse);*/
@@ -591,9 +610,12 @@ public class CharacterController : MonoBehaviour {
 
 	void OnTriggerExit(Collider collid) {
 		if (collid.gameObject.CompareTag("AirStreamZone")) {
+			Debug.Log ("AirStreamZone Exit");
 			moveStateParameters.inAirStream = false;
 		}
+
 		if (collid.gameObject.CompareTag ("AirStreamForce")) {
+			Debug.Log ("AirStreamForce Exit " + body.velocity.y);
 			interactStateParameter.canAirStream = false;
 		}
 	}
@@ -609,7 +631,7 @@ public class CharacterController : MonoBehaviour {
 				moveStateParameters.inAirStream = true;
 			}
 		}
-		if (collid.gameObject.CompareTag("AirStreamZone")) {
+		if (collid.gameObject.CompareTag("AirStreamForce")) {
 			if (interactState != InteractState.Glide && previousInteractState == InteractState.Glide)
 			{
 				interactStateParameter.canAirStream = false;
