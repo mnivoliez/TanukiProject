@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public enum InteractState {
-    Nothing, Glide, MeleeAttack, DistantAttack, SpawnLure, Inflate, Tiny, Activate, Absorb, Carry, Push
+    Nothing, Glide, MeleeAttack, DistantAttack, SpawnLure, DestroyLure, Inflate, Tiny, Activate, Absorb, Carry, Push
 }
 
 public struct InteractStateParam {
@@ -50,6 +50,10 @@ public class InteractStateController {
 
             case InteractState.SpawnLure:
                 newState = ManageSpawnLure(previous, param);
+                break;
+
+            case InteractState.DestroyLure:
+                newState = ManageDestroyLure(previous, param);
                 break;
 
             case InteractState.Inflate:
@@ -103,6 +107,10 @@ public class InteractStateController {
         //SpawnLure
         if (param.canSpawnLure) {
             newState = InteractState.SpawnLure;
+        }
+
+        if (param.canDestroyLure) {
+            newState = InteractState.DestroyLure;
         }
 
         //Inflate
@@ -187,9 +195,14 @@ public class InteractStateController {
     }
 
     InteractState ManageSpawnLure(InteractState previous, InteractStateParam param) {
-        InteractState newState = previous;
         //NOTHING
-        newState = InteractState.Nothing;
+        InteractState newState = InteractState.Nothing;
+        return newState;
+    }
+
+    InteractState ManageDestroyLure(InteractState previous, InteractStateParam param) {
+        //NOTHING
+        InteractState newState = InteractState.Nothing;
         return newState;
     }
 

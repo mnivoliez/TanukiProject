@@ -6,6 +6,7 @@ public class YokaiGeneralBehavior : YokaiController {
     private float distanceLimit = 20.0f; //radius of trigger sphere collider
     private Vector3 positionOrigin;
     private Quaternion rotationOrigin;
+    [SerializeField]
     private bool comeBack = false;
 
     [SerializeField]
@@ -36,6 +37,7 @@ public class YokaiGeneralBehavior : YokaiController {
 
     private void FixedUpdate() {
         if (!isKnocked) {
+            
 
             if (target != null) {
                 /*float distance = Vector3.Distance(target.transform.position, positionOrigin);
@@ -112,7 +114,6 @@ public class YokaiGeneralBehavior : YokaiController {
     }
 
     void OnTriggerEnter(Collider other) {
-        Debug.Log(other.gameObject.tag);
         if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked) {
             float damage = 1;
             if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null) {

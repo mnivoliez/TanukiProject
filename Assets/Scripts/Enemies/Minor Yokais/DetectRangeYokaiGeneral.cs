@@ -7,6 +7,7 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
 
     private YokaiGeneralBehavior parentBehavior;
     private Collider areaCollider;
+    [SerializeField]
     private List<GameObject> objectsInArea;
 
 	// Use this for initialization
@@ -24,39 +25,42 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
                 areaCollider.enabled = false;
             }
         } else {
-            //Debug.Log(parentBehavior.name + ": " +objectsInArea.Count);
-            GameObject target = objectsInArea.Where(g => g.tag == "Lure" && !parentBehavior.TooFarAway(g.transform.position)).SingleOrDefault();
-
-            if (target == null) {
-                target = objectsInArea.Where(g => g.tag == "Player" && !parentBehavior.TooFarAway(g.transform.position)).SingleOrDefault();
+            GameObject target = null;
+            string message = "";
+            for (int i = 0; i < objectsInArea.Count; i++) {
+                GameObject obj = objectsInArea[i];
+                if (obj != null) {
+                    message += obj.name + ",";
+                
+                    if (obj.tag == "Lure") {
+                        target = obj;
+                    } else if (obj.tag == "Player" && target == null) {
+                        target = obj;
+                    }
+                } else {
+                    objectsInArea.RemoveAt(i);
+                }
+                
             }
-            
+
             parentBehavior.SetTarget(target);
             parentBehavior.SetComeBack(target == null);
         }
 	}
 
-    /*private void OnTriggerEnter(Collider other) {
-        Debug.Log(other.gameObject.tag + ": " + Vector3.Distance(parentBehavior.PositionOrigin, other.transform.position));
-        if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Lure")) && !objectsInArea.Contains(other.gameObject) && !parentBehavior.TooFarAway(other.transform.position)) {
-            objectsInArea.Add(other.gameObject);
-        }
-
-    }*/
-
     private void OnTriggerStay(Collider other) {
-        
-        if (!objectsInArea.Contains(other.gameObject)) {
-            if (other.gameObject.CompareTag("Lure"))
-                Debug.Log("new object: " + other.gameObject.tag);
-            if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Lure")) && !parentBehavior.TooFarAway(other.transform.position)) {
-                objectsInArea.Add(other.gameObject);
+        if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Lure")))
+        {
+            if (!objectsInArea.Contains(other.gameObject)) {
+                if (!parentBehavior.TooFarAway(other.transform.position)) {
+                    objectsInArea.Add(other.gameObject);
+                }
+            } else {
+                if (parentBehavior.TooFarAway(other.transform.position)) {
+                    objectsInArea.Remove(other.gameObject);
+                }
             }
         }
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        Debug.Log(other.gameObject.tag);
     }
 
     private void OnTriggerExit(Collider other) {
