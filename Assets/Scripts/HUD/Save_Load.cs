@@ -20,7 +20,7 @@ public class Save_Load {
         if (File.Exists(Application.persistentDataPath + "/savedGames.gd")) {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/savedGames.gd", FileMode.Open);
-            Save_Load.savedGames = (List<Game>)bf.Deserialize(file);
+            Save_Load.savedGames = (List<Game>)bf.Deserialize(file); // Check https://unity3d.com/fr/learn/tutorials/topics/scripting/persistence-saving-and-loading-data video at 44:40
             file.Close();
         }
     }
