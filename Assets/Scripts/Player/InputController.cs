@@ -16,13 +16,14 @@ public struct InputParams {
         actionRequest = ActionRequest.None;
         jumpRequest = false;
         moveX = 0f;
-		moveZ = 0f;
+        moveZ = 0f;
     }
 }
 
 public class InputController : MonoBehaviour {
 
     private InputParams inputParams;
+    private bool triggerAxisInUse = false;
 
     // Use this for initialization
     void Start() {
@@ -38,66 +39,63 @@ public class InputController : MonoBehaviour {
 
     void UpdateInteractInput() {
         int actionRequested = 0;
-		if (Input.GetButton ("Jump"))
-		{
-			actionRequested++;
-			inputParams.actionRequest = ActionRequest.Glide;
-		}
-		else
-		{
-			if (Input.GetButtonDown ("Fire1"))
-			{
-				actionRequested++;
-				inputParams.actionRequest = ActionRequest.MeleeAttack;
-			}
-			if (Input.GetButtonDown ("Fire2"))
-			{
-				actionRequested++;
-				inputParams.actionRequest = ActionRequest.DistantAttack;
-			}
-			if (Input.GetButtonDown ("Lure"))
-			{
-				actionRequested++;
-				inputParams.actionRequest = ActionRequest.SpawnLure;
-			}
-			if (Input.GetButtonDown ("Transformation"))
-			{
-				actionRequested++;
-				inputParams.actionRequest = ActionRequest.Inflate;
-			}
-			if (Input.GetButtonDown ("Resize"))
-			{
-				actionRequested++;
-				inputParams.actionRequest = ActionRequest.Resize;
-			}
-			if (Input.GetButtonDown ("Fire3"))
-			{
-				actionRequested++;
-				inputParams.actionRequest = ActionRequest.ContextualAction;
-			}
-		}
+        if (Input.GetButton("Glide") || Input.GetAxisRaw("Glide") == -1) {
+            actionRequested++;
+            inputParams.actionRequest = ActionRequest.Glide;
+        }
+        else {
+            if (Input.GetButtonDown("Fire1")) {
+                actionRequested++;
+                inputParams.actionRequest = ActionRequest.MeleeAttack;
+            }
+            if (Input.GetButtonDown("Fire2")) {
+                actionRequested++;
+                inputParams.actionRequest = ActionRequest.DistantAttack;
+            }
 
-		if (actionRequested > 1) {
+            if(Input.GetAxisRaw("Lure") != 1) { triggerAxisInUse = false; }
+
+            if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1) ) {
+                if (!triggerAxisInUse) {
+                    triggerAxisInUse = true;
+                    actionRequested++;
+                    inputParams.actionRequest = ActionRequest.SpawnLure;
+                }
+            }
+            if (Input.GetButtonDown("Transformation")) {
+                actionRequested++;
+                inputParams.actionRequest = ActionRequest.Inflate;
+            }
+            if (Input.GetButtonDown("Resize")) {
+                actionRequested++;
+                inputParams.actionRequest = ActionRequest.Resize;
+            }
+            if (Input.GetButtonDown("Fire3")) {
+                actionRequested++;
+                inputParams.actionRequest = ActionRequest.ContextualAction;
+            }
+        }
+
+        if (actionRequested > 1) {
             inputParams.actionRequest = ActionRequest.None;
         }
 
     }
 
-	void UpdateMoveInput() {
-		if (Input.GetButtonDown ("Jump"))
-		{
-			Debug.Log ("JUMP!!!");
-		}
+    void UpdateMoveInput() {
+        if (Input.GetButtonDown("Jump")) {
+            Debug.Log("JUMP!!!");
+        }
         inputParams.jumpRequest = Input.GetButtonDown("Jump");
         inputParams.moveX = Input.GetAxis("Horizontal");
         inputParams.moveZ = Input.GetAxis("Vertical");
-	}
+    }
 
-	public InputParams RetrieveUserRequest() {
-		return inputParams;
-	}
+    public InputParams RetrieveUserRequest() {
+        return inputParams;
+    }
 
-	public void SetUserRequest(InputParams inputParamsNew) {
-		inputParams = inputParamsNew;
-	}
+    public void SetUserRequest(InputParams inputParamsNew) {
+        inputParams = inputParamsNew;
+    }
 }
