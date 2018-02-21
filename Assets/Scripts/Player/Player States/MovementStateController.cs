@@ -130,21 +130,27 @@ public class MovementStateController {
 		//DebugLogLocal ("Fall manage");
         //IDLE
 		if (IsIdle(param)) {
-			DebugLogLocal ("fall idle");
+			DebugLogLocal ("pushup idle");
             newState = MovementState.Idle;
         }
 
 		//RUN
 		if (IsRunning(param)) {
-			DebugLogLocal ("fall run");
+			DebugLogLocal ("pushup run");
             newState = MovementState.Run;
-        }
+		}
 
-        //FALL
-        if (IsFalling(param)) {
-            DebugLogLocal ("fall run");
-            newState = MovementState.Fall;
-        }
+		//FALL
+		if (IsFalling(param)) {
+			DebugLogLocal ("pushup fall");
+			newState = MovementState.Fall;
+		}
+
+		//JUMP
+		/*if (IsGoingUp(param) && !param.inAirStream) {
+			DebugLogLocal ("pushup jump");
+			newState = MovementState.Jump;
+		}*/
 
         return newState;
 
@@ -239,6 +245,8 @@ public class MovementStateController {
 			!param.grounded && 
 			param.velocity.y < -step_velocity &&
 			(Mathf.Abs(param.position_before_fall.y - param.position.y) > step_position || param.jumpRequired);
+
+		//Debug.Log ("param.grounded=" + param.grounded);
 
 		return fall;
     }
