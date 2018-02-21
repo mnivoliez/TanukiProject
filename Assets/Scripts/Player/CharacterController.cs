@@ -140,6 +140,8 @@ public class CharacterController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        
+
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
         } else {
@@ -156,6 +158,7 @@ public class CharacterController : MonoBehaviour {
 
 		UpdateMoveStateParameters(inputParams);
 		UpdateInteractStateParameters(inputParams);
+
 
         movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
@@ -326,10 +329,10 @@ public class CharacterController : MonoBehaviour {
                     interactBehaviorCtrl.DoInflate(false);
                 }
 
-                if (interactStateParameter.canDestroyLure) {
+                /*if (interactStateParameter.canDestroyLure) {
                     interactBehaviorCtrl.DestroyLure(actualLure);
                     actualLure = null;
-                }
+                }*/
                 
                 if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
                     interactBehaviorCtrl.StopCarry(catchableObject);
@@ -389,6 +392,13 @@ public class CharacterController : MonoBehaviour {
             case InteractState.SpawnLure:
                 if (previousInteractState == InteractState.Nothing) {
                     actualLure = interactBehaviorCtrl.DoSpawnLure();
+                }
+                break;
+
+            case InteractState.DestroyLure:
+                if (previousInteractState == InteractState.Nothing) {
+                    interactBehaviorCtrl.DestroyLure(actualLure);
+                    actualLure = null;
                 }
                 break;
 
@@ -488,7 +498,7 @@ public class CharacterController : MonoBehaviour {
             case ActionRequest.SpawnLure:
                 if (actualLure == null) {
                     interactStateParameter.canSpawnLure = true;
-                } else {
+                } else if (interactState != InteractState.SpawnLure) {
                     interactStateParameter.canDestroyLure = true;
                 }
                 break;
@@ -538,8 +548,6 @@ public class CharacterController : MonoBehaviour {
                             interactStateParameter.canCarry = true;
 							objectToCarry = nearestObject;
 							//reset action so that we cannot catch and decatch due to malsynchronization
-							inputParams.actionRequest = ActionRequest.None;
-							inputController.SetUserRequest (inputParams);
                         }
 					}
                 }
@@ -560,10 +568,15 @@ public class CharacterController : MonoBehaviour {
 				interactStateParameter.canAirStream = false;
                 nearestObject = null;
                 break;
-		}
+        }
+
+
+        if (inputParams.actionRequest != ActionRequest.Glide) {
+            inputParams.actionRequest = ActionRequest.None;
+            inputController.SetUserRequest(inputParams);
+        }
     }
-
-
+    
 
     public bool GetOnGround() { return onGround; }
     public float GetJumpForce() { return jumpForce; }

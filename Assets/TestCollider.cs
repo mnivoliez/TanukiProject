@@ -15,6 +15,6 @@ public class TestCollider : MonoBehaviour {
 	}
 
     void OnTriggerEnter(Collider collider) {
-        Debug.Log(collider.gameObject.tag);
+        
     }
 }
