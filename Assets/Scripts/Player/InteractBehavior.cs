@@ -116,7 +116,7 @@ public class InteractBehavior : MonoBehaviour {
         } else {
             GameObject smoke = Instantiate(smokeSpawner, gameObject.transform.position, Quaternion.identity);
             Destroy(smoke, 4);
-            normalForm.transform.position = inflateForm.transform.position;
+            //normalForm.transform.position = inflateForm.transform.position;
             //normalForm.SetActive(true);
             //inflateForm.GetComponent<Rigidbody>().velocity = Vector3.zero;
             //inflateForm.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
