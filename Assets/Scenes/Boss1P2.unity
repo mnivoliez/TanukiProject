@@ -1357,12 +1357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15dea528120cb514daf95198f4ae2e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceRebond: 15
---- !u!4 &636995515 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4489630985016570, guid: 8d8cd0b88591eb54cb62e26d09549da6,
-    type: 2}
-  m_PrefabInternal: {fileID: 1699233423}
+  coeffRebond: 200
 --- !u!43 &678624961
 Mesh:
   m_ObjectHideFlags: 0
@@ -1884,7 +1879,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh19126
+  m_Name: pb_Mesh80896
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -2537,7 +2532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15dea528120cb514daf95198f4ae2e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceRebond: 21
+  coeffRebond: 200
 --- !u!43 &1117342480
 Mesh:
   m_ObjectHideFlags: 0
@@ -3332,7 +3327,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 127
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!64 &1546556048
 MeshCollider:
@@ -4384,7 +4379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15dea528120cb514daf95198f4ae2e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceRebond: 21
+  coeffRebond: 200
 --- !u!1001 &1699233423
 Prefab:
   m_ObjectHideFlags: 0
@@ -4999,7 +4994,7 @@ Prefab:
         type: 2}
       propertyPath: pivot
       value: 
-      objectReference: {fileID: 636995515}
+      objectReference: {fileID: 0}
     - target: {fileID: 114304009459580628, guid: f56aa1970afcb584cb81b3a933e591b1,
         type: 2}
       propertyPath: jumpForce
