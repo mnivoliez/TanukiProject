@@ -6,6 +6,7 @@ public class YokaiGeneralBehavior : YokaiController {
     private float distanceLimit = 20.0f; //radius of trigger sphere collider
     private Vector3 positionOrigin;
     private Quaternion rotationOrigin;
+    [SerializeField]
     private bool comeBack = false;
 
     [SerializeField]
@@ -36,15 +37,16 @@ public class YokaiGeneralBehavior : YokaiController {
 
     private void FixedUpdate() {
         if (!isKnocked) {
+            
 
             if (target != null) {
-                float distance = Vector3.Distance(transform.position, positionOrigin);
+                /*float distance = Vector3.Distance(target.transform.position, positionOrigin);
                 //come back if Yokai go too far
                 if (distance > distanceLimit) {
                     target = null;
                     comeBack = true;
                 }
-                else {
+                else {*/
                     //follow target
                     Vector3 relativePos = target.transform.position - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(relativePos);
@@ -57,7 +59,7 @@ public class YokaiGeneralBehavior : YokaiController {
                     if (dis > rangeAttack) {
                         transform.Translate(0, 0, speed * Time.deltaTime);
                     }
-                }
+                //}
 
                 if (bodyAttack) {
                     //attack target with rate
@@ -93,6 +95,17 @@ public class YokaiGeneralBehavior : YokaiController {
             bodyAttack = true;
             Vector3 vectorToCollision = collision.gameObject.transform.position - transform.position;
         }
+
+        if (collision.gameObject.tag == "Lure") {
+            
+            BeingHit();
+            LooseHp(1);
+            EndHit();
+
+            Destroy(collision.gameObject);
+        }
+
+        
     }
     private void OnCollisionExit(Collision collision) {
         if (collision.gameObject.tag == "Player") {
@@ -109,17 +122,10 @@ public class YokaiGeneralBehavior : YokaiController {
             else if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MeleeAttackTrigger>() != null) {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
-            else if (other.gameObject.tag == "Lure") {
-                damage = 1;
-            }
 
             BeingHit();
             LooseHp(damage);
             EndHit();
-        }
-
-        if (other.gameObject.tag == "Lure") {
-            Destroy(other.gameObject);
         }
     }
 
