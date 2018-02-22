@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimatorController :  MonoBehaviour, /*IInterractState,*/ IMovementStateReceiver {
+public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovementStateReceiver {
 
     //Animation
     private Animator animBody;

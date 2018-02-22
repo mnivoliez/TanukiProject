@@ -30,7 +30,7 @@ public class MoveLeaf : MonoBehaviour {
                 arrived = false;
                 currentSpeed = initialSpeed;
 				//GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDistantAttack>().SetLeafIsBack();
-				GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController> ().StopDistantAttackState ();
+				GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController> ().StopDistantAttackState ();
 				Destroy(gameObject);
             }
         }
