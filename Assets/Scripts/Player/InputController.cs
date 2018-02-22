@@ -62,14 +62,14 @@ public class InputController : MonoBehaviour {
                     inputParams.actionRequest = ActionRequest.SpawnLure;
                 }
             }
-            if (Input.GetButtonDown("Transformation")) {
-                actionRequested++;
-                inputParams.actionRequest = ActionRequest.Inflate;
-            }
-            if (Input.GetButtonDown("Resize")) {
-                actionRequested++;
-                inputParams.actionRequest = ActionRequest.Resize;
-            }
+            //if (Input.GetButtonDown("Transformation")) {
+            //    actionRequested++;
+            //    inputParams.actionRequest = ActionRequest.Inflate;
+            //}
+            //if (Input.GetButtonDown("Resize")) {
+            //    actionRequested++;
+            //    inputParams.actionRequest = ActionRequest.Resize;
+            //}
             if (Input.GetButtonDown("Fire3")) {
                 actionRequested++;
                 inputParams.actionRequest = ActionRequest.ContextualAction;
