@@ -5,14 +5,14 @@ using UnityEngine;
 public abstract class State
 {
 
-    protected CharacterController character;
+    protected KodaController character;
 
     public abstract void Tick();
 
     public virtual void OnStateEnter() { }
     public virtual void OnStateExit() { }
 
-    public State(CharacterController character){
+    public State(KodaController character){
         this.character = character;
     }
 }
