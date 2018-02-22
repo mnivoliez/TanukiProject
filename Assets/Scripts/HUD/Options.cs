@@ -8,67 +8,54 @@ public class Options : MonoBehaviour {
 
     public Slider mainSlider;
     public int Size_Aspect;
+    public int Quality;
     public int height;
     public int width;
 
     public AudioMixer audioMixer;
 
+    Resolution[] resolutions;
+    public Dropdown resolutionDropdown;
+
+    public float GammaCorrection;
+
+    private void Start() {
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();
+        List<string> options = new List<string>();
+        int currentResolutionIndex = 0;
+        for (int i = 0; i< resolutions.Length; i++) {
+            string option = resolutions[i].width + " x " + resolutions[i].height;
+            options.Add(option);
+            if(resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height) {
+                currentResolutionIndex = i;
+            }
+        }
+
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
+    }
+
     public void SetVolume (float Volume) {
         audioMixer.SetFloat("MasterVolume", Volume);
     }
 
-    //Invoked when a submit button is clicked.
-    public string DisplaySize (int Size_Aspect) {
-        //Displays the value of the slider in the console.
-        Debug.Log(Size_Aspect);
+    public void DisplaySize (int resolutionIndex) {
 
-        switch (Size_Aspect) {
-            case 0:
-                width = 960;
-                height = 540;
-                break;
-
-            case 1:
-                width = 1024;
-                height = 576;
-                break;
-
-            case 2:
-                width = 1280;
-                height = 720;
-                break;
-
-            case 3:
-                width = 1600;
-                height = 768;
-                break;
-
-            case 4:
-                width = 1440;
-                height = 1080;
-                break;
-
-            case 5:
-                width = 1600;
-                height = 1024;
-                break;
-
-            case 6:
-                width = 1680;
-                height = 1050;
-                break;
-
-            case 7:
-                width = 1920;
-                height = 1080;
-                break;
-        }
-
-        string my_string = width.ToString() + " x " + height.ToString();
-        return my_string;
+        Resolution resolution = resolutions[resolutionIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen, 60);
     }
-    
-    public void SubmitSliderSetting() {
-        Screen.SetResolution(width, height, true, 60);
+
+    public void SetGraphics(int Quality) {
+        QualitySettings.SetQualityLevel(Quality);
+    }
+
+    public void SetFullscreen(bool isckecked) {
+        Screen.fullScreen = isckecked;
+    }
+
+    public void SetGammaLight (float GammaCorrection) {
+        RenderSettings.ambientLight = new Color(GammaCorrection, GammaCorrection, GammaCorrection, 1.0f);
     }
 }
