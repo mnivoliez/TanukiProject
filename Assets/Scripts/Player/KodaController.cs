@@ -151,6 +151,10 @@ public class KodaController : MonoBehaviour {
     }
 
     private void Update() {
+		if (Pause.Paused) {
+			return;
+		}
+
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
         }
