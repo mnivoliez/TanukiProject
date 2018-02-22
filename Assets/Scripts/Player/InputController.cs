@@ -80,6 +80,8 @@ public class InputController : MonoBehaviour {
             inputParams.actionRequest = ActionRequest.None;
         }
 
+
+        //Debug.Log(inputParams.actionRequest);
     }
 
     void UpdateMoveInput() {

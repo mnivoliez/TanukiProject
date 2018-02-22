@@ -107,6 +107,7 @@ public abstract class YokaiController : MonoBehaviour {
     [SerializeField] protected GameObject knockedParticle;
     protected Material rendererMat;
     protected float rotationSpeed = 10f;
+    [SerializeField]
     protected GameObject target;
     [SerializeField] protected Capacity capacity;
     [SerializeField] protected float timerCapacity = 0;

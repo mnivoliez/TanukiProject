@@ -126,11 +126,8 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void DoBeginAbsorption(GameObject absorbableObject) {
-
         canvasQTE.SetActive(true);
         sakePot.SetActive(true);
-
-
     }
 
     public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject) {
@@ -187,14 +184,13 @@ public class InteractBehavior : MonoBehaviour {
 			leafHead.SetActive(false);
 			clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
 			clone.transform.Translate(0, 3, 2);
-            Debug.Log("SpawnLure");
 			StartCoroutine (DelayDestroyLure(clone));
 		}
         return clone;
     }
 
 	public IEnumerator DelayDestroyLure(GameObject lure) {
-		yield return new WaitForSeconds (10);
+        yield return new WaitForSeconds (10);
         DestroyLure(lure);
 	}
 
