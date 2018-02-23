@@ -36,6 +36,13 @@ public class LanternsRenderingController : MonoBehaviour
 
     void UpdateShaderWithLanternsPosition()
     {
+        _positions.Clear();
+        _distances.Clear();
+        foreach (var lantern in _lanterns)
+        {
+            _positions.Add(lantern.transform.position);
+            _distances.Add(5f);
+        }
         Shader.SetGlobalVectorArray("_centers", _positions);
         Shader.SetGlobalFloatArray("_distances", _distances);
         Shader.SetGlobalInt("_numberOfCenters", _positions.Count);
