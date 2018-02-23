@@ -222,7 +222,7 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 float3 dark = dark_color(i, attenuation, lightDirection, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection);
                 float3 light = light_color(i, attenuation, lightDirection, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection);
 
-                float3 color_out = lerp(dark, light, i.lantern_lerp);
+                float3 color_out = lerp(dark, light, t);
                 return fixed4(color_out,1);
             }
 
@@ -431,7 +431,7 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 float3 dark = dark_color(i, attenuation, lightDirection, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection);
                 float3 light = light_color(i, attenuation, lightDirection, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection);
 
-                float3 color_out = lerp(dark, light, i.lantern_lerp);
+                float3 color_out = lerp(dark, light, t);
                 return fixed4(color_out * 1,0);
             }
             ENDCG
