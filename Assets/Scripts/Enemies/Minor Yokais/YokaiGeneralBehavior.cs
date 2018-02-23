@@ -6,8 +6,6 @@ public class YokaiGeneralBehavior : YokaiController {
     private float distanceLimit = 20.0f; //radius of trigger sphere collider
     private Vector3 positionOrigin;
     private Quaternion rotationOrigin;
-    [SerializeField]
-    private bool comeBack = false;
 
     [SerializeField]
     private float damageBody = 1.0f;
@@ -40,13 +38,6 @@ public class YokaiGeneralBehavior : YokaiController {
             
 
             if (target != null) {
-                /*float distance = Vector3.Distance(target.transform.position, positionOrigin);
-                //come back if Yokai go too far
-                if (distance > distanceLimit) {
-                    target = null;
-                    comeBack = true;
-                }
-                else {*/
                     //follow target
                     Vector3 relativePos = target.transform.position - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(relativePos);
@@ -59,7 +50,6 @@ public class YokaiGeneralBehavior : YokaiController {
                     if (dis > rangeAttack) {
                         transform.Translate(0, 0, speed * Time.deltaTime);
                     }
-                //}
 
                 if (bodyAttack) {
                     //attack target with rate
@@ -71,20 +61,17 @@ public class YokaiGeneralBehavior : YokaiController {
                 }
             }
             else {
-
                 //comeback the origine position
-                if ((int)transform.position.x != (int)positionOrigin.x && (int)transform.position.z != (int)positionOrigin.z && comeBack) {
+                if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
                     Vector3 relativePos = positionOrigin - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(relativePos);
                     rotation.x = transform.rotation.x;
                     rotation.z = transform.rotation.z;
                     transform.rotation = rotation;
-
                     transform.Translate(0, 0, speed * Time.deltaTime);
                 }
                 else {
                     transform.rotation = rotationOrigin;
-                    comeBack = false;
                 }
             }
         }
@@ -178,6 +165,14 @@ public class YokaiGeneralBehavior : YokaiController {
 
     }
 
+    public bool TooFarAway() {
+        bool tooFarAway = false;
+        if (Vector3.Distance(transform.position, positionOrigin) > distanceLimit) {
+            tooFarAway = true;
+        }
+        return tooFarAway;
+    }
+
     public bool TooFarAway(Vector3 position) {
         bool tooFarAway = false;
         if (Vector3.Distance(position, positionOrigin) > distanceLimit) {
@@ -185,8 +180,4 @@ public class YokaiGeneralBehavior : YokaiController {
         }
         return tooFarAway;
     }
-
-    public bool GetComeBack() { return comeBack; }
-
-    public void SetComeBack(bool comeBack) { this.comeBack = comeBack; }
 }
