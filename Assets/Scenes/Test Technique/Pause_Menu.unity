@@ -1008,6 +1008,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &465996081 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114589135409025432, guid: 039842b5ee705f54782c9438960ea06f,
+    type: 2}
+  m_PrefabInternal: {fileID: 652082163}
+  m_Script: {fileID: 853051423, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &485027877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1519,7 +1525,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Exit
+  m_Text: Back
 --- !u!222 &615833283
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2175,6 +2181,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 786552699}
+--- !u!114 &795175527 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114329011676189528, guid: cfb2c9679fa503f4ba61b3f8a347b859,
+    type: 2}
+  m_PrefabInternal: {fileID: 210720457}
+  m_Script: {fileID: 853051423, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &856782664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3995,7 +4007,7 @@ GameObject:
   - component: {fileID: 1662642777}
   - component: {fileID: 1662642776}
   m_Layer: 5
-  m_Name: Exit
+  m_Name: Exit Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4897,7 +4909,8 @@ MonoBehaviour:
   height: 0
   width: 0
   audioMixer: {fileID: 0}
-  resolutionDropdown: {fileID: 0}
+  resolutionDropdown: {fileID: 465996081}
+  qualityDropdown: {fileID: 795175527}
   GammaCorrection: 0
 --- !u!114 &1899101262
 MonoBehaviour:
