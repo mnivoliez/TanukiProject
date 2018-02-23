@@ -682,7 +682,8 @@ public class KodaController : MonoBehaviour {
         }
     }
 
-    private void AddCapacity(Pair<Capacity, float> pairCapacity) {
+    //Temporary in public mode for the playtest
+    public void AddCapacity(Pair<Capacity, float> pairCapacity) {
         switch (pairCapacity.First) {
 
             case Capacity.DoubleJump:
