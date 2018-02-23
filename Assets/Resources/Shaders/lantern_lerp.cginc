@@ -3,19 +3,39 @@
 
 #include "noiseSimplex.cginc"
 
+// should return scale between 1 and 0, 1 if close to lantern, 0 otherwise
 float lerp_lantern(float3 vertexPosition, int numberOfLanterns, float4 centers[5], float distances[5],
     half freq, half speed, half interpolation, half strength, half falloff) {
-    float l = distances[0] - length(centers[0].xyz - vertexPosition);
-    for(int index = 1; index < numberOfLanterns; ++index) {
-        float l_temp = distances[index] - length(centers[index].xyz - vertexPosition);
-        //float l_temp = length(centers[index].xyz - vertexPosition) / distances[index];
-        l = max(l, l_temp);
+    float l;
+    bool is_set = false;
+    //float l = distances[0] - length(centers[0].xyz - vertexPosition);
+    //float l = abs(length(centers[0].xyz - vertexPosition)) / distances[0];
+    int index = 0;
+    while(index < numberOfLanterns) {
+        float l_temp = length(centers[index].xyz - vertexPosition) / distances[index];
+        if (is_set) {
+            l = min(l, l_temp);
+        } else {
+            l = l_temp;
+            is_set = true;
+        }
+        ++index;
     }
+
+    l = min(l, 1);
+    l = max(l, 0);
     float3 wrldPos = vertexPosition * freq;
     wrldPos.y += _Time.x * speed;
 
     float ns = snoise(wrldPos);
 
-    return saturate((l + ns * interpolation) * 1/falloff);
+    //float result = saturate((l + ns * interpolation)/falloff);
+    float result;
+    if (is_set) {
+        result = 1 - l;
+    } else {
+        result = 0;
+    }
+    return result;
 }
 #endif
