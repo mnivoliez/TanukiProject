@@ -10,6 +10,8 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
     [SerializeField]
     private List<GameObject> objectsInArea;
 
+    private 
+
 	// Use this for initialization
 	void Start () {
         parentBehavior = GetComponentInParent<YokaiGeneralBehavior>();
@@ -44,7 +46,6 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
             }
 
             parentBehavior.SetTarget(target);
-            parentBehavior.SetComeBack(target == null);
         }
 	}
 
@@ -52,11 +53,11 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
         if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Lure")))
         {
             if (!objectsInArea.Contains(other.gameObject)) {
-                if (!parentBehavior.TooFarAway(other.transform.position)) {
+                if (!parentBehavior.TooFarAway(other.transform.position) && !parentBehavior.TooFarAway()) {
                     objectsInArea.Add(other.gameObject);
                 }
             } else {
-                if (parentBehavior.TooFarAway(other.transform.position)) {
+                if (parentBehavior.TooFarAway(other.transform.position) && parentBehavior.TooFarAway()) {
                     objectsInArea.Remove(other.gameObject);
                 }
             }
