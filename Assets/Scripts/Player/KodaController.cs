@@ -116,7 +116,12 @@ public class KodaController : MonoBehaviour {
     // Capacity
     [SerializeField] private bool permanentDoubleJumpCapacity;
     [SerializeField] private bool temporaryDoubleJumpCapacity;
-    [SerializeField] private float timerCapacity;
+	[SerializeField] private float timerCapacity;
+
+	// Canvas UI
+	[SerializeField] private GameObject CanvasPrefab;
+	[SerializeField] private GameObject SceneTransitionImage;
+	[SerializeField] private GameObject DeathTransitionImage;
 
     //Animation
     private AnimationController animBody;
@@ -141,7 +146,10 @@ public class KodaController : MonoBehaviour {
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
         //QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = FPS;
+		//Application.targetFrameRate = FPS;
+		Instantiate (CanvasPrefab);
+		Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
+		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
     }
 
     private void OnGUI() {
@@ -215,7 +223,24 @@ public class KodaController : MonoBehaviour {
                     }
                 }
             }
-        }
+		}
+		if (gO.layer == LayerMask.NameToLayer("Rock")) {
+			ContactPoint[] contacts = coll.contacts;
+
+			//Debug.Log ("contacts.Length=" + contacts.Length);
+			if (contacts.Length > 0) {
+				foreach (ContactPoint c in contacts) {
+					// c.normal.y = 0 => Vertical
+					// c.normal.y = 0.5 => 45°
+					// c.normal.y = 1 => Horizontal
+					//Debug.Log ("c.normal.y=" + c.normal.y);
+					if (c.normal.y >= 0.95f && c.normal.y < 1.01f && !_grounds.Contains(gO)) {
+						_grounds.Add(gO);
+						break;
+					}
+				}
+			}
+		}
     }
 
     void OnCollisionStay(Collision coll) {
@@ -232,25 +257,53 @@ public class KodaController : MonoBehaviour {
                     // c.normal.y = 0 => Vertical
                     // c.normal.y = 0.5 => 45°
                     // c.normal.y = 1 => Horizontal
-                    if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || !(c.normal == null)) {
+                    /*/
+                    if ((c.normal.y >= 0.5f && c.normal.y <= 1f) || c.normal != null) {
                         //_grounds.Add(gO);
                         found = true;
                         coefInclination = Vector3.Angle(c.normal, Vector3.up);
                         break;
-                    }
+					}
+					/*/
+					if (c.normal != null)
+					{
+						coefInclination = Vector3.Angle (c.normal, Vector3.up);
+					}
+					//*/
                 }
+                /*/
                 if (!found) {
                     coefInclination = 0;
                 }
-            }
-        }
+                //*/
+			}
+		}
+		if (gO.layer == LayerMask.NameToLayer ("Rock"))
+		{
+			ContactPoint[] contacts = coll.contacts;
+
+			if (contacts.Length > 0)
+			{
+				//transform.rotation = Quaternion.Euler(Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up));
+				//Debug.Log("Angle:"+Vector3.Angle(contacts[0].normal, Vector3.up));
+				//coefInclination = Vector3.Angle(contacts[0].normal, Vector3.up);
+				bool found = false;
+				foreach (ContactPoint c in contacts)
+				{
+					if (c.normal != null)
+					{
+						coefInclination = Vector3.Angle (c.normal, Vector3.up);
+					}
+				}
+			}
+		}
     }
 
     void OnCollisionExit(Collision coll) {
         if (IsGrounded()) {
             GameObject gO = coll.gameObject;
             //Debug.Log ("gO.layer exit=" + LayerMask.LayerToName(gO.layer));
-            if (gO.layer == LayerMask.NameToLayer("Ground")) {
+			if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
                 if (_grounds.Contains(gO)) {
                     _grounds.Remove(gO);
                 }
@@ -268,7 +321,7 @@ public class KodaController : MonoBehaviour {
     }
 
     private bool IsGrounded() {
-        coefInclination = 0;
+        //coefInclination = 0;
         return _grounds.Count > 0;
     }
 
@@ -290,23 +343,25 @@ public class KodaController : MonoBehaviour {
         int angle_speed = 2; // Valeur qui va influencer la vitesse engeandree par l'angle d'inclinaison de la plateforme. Plus l'angle est faible (plateforme faiblement inclinee) plus ca ira vite de base. Donc il faut que angle_speed ne soit pas trop eleve.
         int vertical_speed = 4; // Valeur qui va influencer la vitesse ascendante ou descendante reportee sur le plan horistontal en mode barbare. C'est sans doute la valeur la plus intéressante a tweaker a condition que la vitesse ascendante reste interessante.
 
-        //Manage Inclination Ground
-        if (coefInclination <= 45) {
+		//Manage Inclination Ground
+		//Debug.Log(" Angle " + coefInclination + " Cos Deg2Rad " + Mathf.Cos(coefInclination * Mathf.Deg2Rad));
+		inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + angle_speed * moveSpeed * Mathf.Sin(coefInclination * Mathf.Deg2Rad) * inputVelocityAxis.normalized + vertical_speed * inputVelocityAxis.normalized * Mathf.Abs(body.velocity.y);
+		inputVelocityAxis.y = body.velocity.y;
+		if (coefInclination <= 45) {
+			//Debug.Log ("0-45");
             //old_version
             //inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + ((inputVelocityAxis.normalized * moveSpeed) * (1 - Mathf.Cos(coefInclination * Mathf.Deg2Rad)));
             //Attention, je ne suis pas tres fiers de ce calcul. C'est tres arbitraire et pifo-metrique. Mais camarche plutot bien. Meh.
             //Formule gros merdieren approche. Bon courage. PS : inputVelocityAxis.normalized permet de garder la logique d'orientation de la vitesse à appliquer. C'est un vecteur important.
-            inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + angle_speed * moveSpeed * Mathf.Sin(coefInclination * Mathf.Deg2Rad) * inputVelocityAxis.normalized + vertical_speed * inputVelocityAxis.normalized * Mathf.Abs(body.velocity.y);
-            inputVelocityAxis.y = body.velocity.y;
 
             //Debug.Log(" Z Speed " + inputVelocityAxis.z + " Y Speed " + inputVelocityAxis.y);
-            //Debug.Log(" Normalized Normal " + inputVelocityAxis.normalized);
-            //Debug.Log(" Angle " + coefInclination + " Cos Deg2Rad " + Mathf.Cos(coefInclination * Mathf.Deg2Rad));
+			//Debug.Log(" Normalized Normal " + inputVelocityAxis.normalized);
+			//Debug.Log(" Angle " + coefInclination + " Cos Deg2Rad " + Mathf.Cos(coefInclination * Mathf.Deg2Rad));
         }
-        else if (coefInclination > 90) {
-
-            inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + angle_speed * moveSpeed * Mathf.Sin(coefInclination * Mathf.Deg2Rad) * inputVelocityAxis.normalized + vertical_speed * inputVelocityAxis.normalized * Mathf.Abs(body.velocity.y);
-            inputVelocityAxis.y = body.velocity.y;
+		else if (coefInclination >= 91) {
+			//Debug.Log ("90+");
+            //inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + angle_speed * moveSpeed * Mathf.Sin(coefInclination * Mathf.Deg2Rad) * inputVelocityAxis.normalized + vertical_speed * inputVelocityAxis.normalized * Mathf.Abs(body.velocity.y);
+            //inputVelocityAxis.y = body.velocity.y;
 
             if (inputVelocityAxis.y < -10f) {
                 inputVelocityAxis.y = -10f;
@@ -314,8 +369,11 @@ public class KodaController : MonoBehaviour {
 
         }
         else {
-            //Fall if Ground Inclination > 45 deg
-            inputVelocityAxis.y = -5f;
+			//Debug.Log ("45-90");
+			//Fall if Ground Inclination > 45 deg
+			//inputVelocityAxis.x = 0f;
+			inputVelocityAxis.y = -30f;
+			//inputVelocityAxis.z = 0f;
         }
 
         //AIR CONTROL
