@@ -118,11 +118,8 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private bool temporaryDoubleJumpCapacity;
 	[SerializeField] private float timerCapacity;
 
-	// Canvas
+	// Canvas UI
 	[SerializeField] private  GameObject CanvasPrefab;
-
-	// Canvas
-	private GameObject CanvasInstance;
 
     //Animation
     private AnimationController animBody;
@@ -148,7 +145,7 @@ public class KodaController : MonoBehaviour {
 
         //QualitySettings.vSyncCount = 0;
 		//Application.targetFrameRate = FPS;
-		CanvasInstance = Instantiate (CanvasPrefab);
+		Instantiate (CanvasPrefab);
     }
 
     private void OnGUI() {

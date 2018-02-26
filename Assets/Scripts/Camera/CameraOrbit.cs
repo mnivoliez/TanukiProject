@@ -48,7 +48,6 @@ public class CameraOrbit : MonoBehaviour {
         this.xFromCamera = this.transform;
         this.xFromParent = this.transform.parent;
 		cameraPositionRemember = this.xFromCamera.localPosition;
-        Cursor.lockState = CursorLockMode.Locked;
         player = GameObject.FindGameObjectWithTag ("Player");
 		localRotation = new Vector3(player.transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.x + 20);
 		xFromParent.rotation = Quaternion.Euler(localRotation.y, localRotation.x, 0);
