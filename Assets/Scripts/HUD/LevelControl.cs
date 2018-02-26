@@ -6,11 +6,18 @@ using UnityEngine.UI;
 
 public class LevelControl : MonoBehaviour {
 
-    public int index;
-    public string levelName;
+	public string levelName;
+	public GameObject TransitionImage;
 
-    public Image Black;
-    public Animator anim;
+	private Image Black;
+	private Animator anim;
+
+	void Start() {
+		GameObject transitionImageInstance = Instantiate (TransitionImage);
+
+		Black = transitionImageInstance.GetComponent<Image> ();
+		anim = transitionImageInstance.GetComponent<Animator> ();
+	}
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
@@ -21,6 +28,6 @@ public class LevelControl : MonoBehaviour {
     IEnumerator Fading() {
         anim.SetBool("Fade", true);
         yield return new WaitUntil(() => Black.color.a == 1);
-        SceneManager.LoadScene(index);
+		SceneManager.LoadScene(levelName);
     }
 }

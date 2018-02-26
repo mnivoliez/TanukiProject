@@ -2,26 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Teleportation : MonoBehaviour {
 
-    public string nameScene;
+	public string nameScene;
+	public GameObject TransitionImage;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	private Image Black;
+	private Animator anim;
+
+	void Start() {
+		GameObject transitionImageInstance = Instantiate (TransitionImage);
+
+		Black = transitionImageInstance.GetComponent<Image> ();
+		anim = transitionImageInstance.GetComponent<Animator> ();
 	}
 
-    void OnTriggerEnter (Collider col) {
-        Debug.Log("Plopl");
-        if (col.CompareTag("Player")){
-            Debug.Log("Plop 2");
-            SceneManager.LoadScene(nameScene);
-        } 
-    }
+	private void OnTriggerEnter(Collider other) {
+		if (other.CompareTag("Player")) {
+			StartCoroutine(Fading());
+		}
+	}
+
+	IEnumerator Fading() {
+		anim.SetBool("Fade", true);
+		yield return new WaitUntil(() => Black.color.a == 1);
+		SceneManager.LoadScene(nameScene);
+	}
 }
