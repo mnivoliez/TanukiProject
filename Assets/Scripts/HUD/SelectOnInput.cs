@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SelectOnInput : MonoBehaviour {
 
     public EventSystem eventSystem;
     public GameObject selectedObject;
 
-    private bool buttunSelected;
+	private bool buttonSelected;
 
 	// Use this for initialization
 	void Start () {
@@ -17,13 +18,22 @@ public class SelectOnInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetAxisRaw("Vertical") != 0 && buttunSelected == false) {
+		if (Input.GetAxisRaw("Vertical") != 0 && buttonSelected == false) {
             eventSystem.SetSelectedGameObject(selectedObject);
-            buttunSelected = true;
+            buttonSelected = true;
         }
+		/*if (Input.GetButtonDown ("Jump")) {
+			eventSystem.currentSelectedGameObject.GetComponent<Button> ().onClick.Invoke ();
+			//eventSystem.currentSelectedGameObject.GetComponent<Button> ().OnPointerClick ();
+		}*/
 	}
 
     private void OnDisable() {
-        buttunSelected = false;
-    }
+		ButtonDeselected ();
+	}
+
+	public void ButtonDeselected() {
+		eventSystem.SetSelectedGameObject (null);
+		buttonSelected = false;
+	}
 }
