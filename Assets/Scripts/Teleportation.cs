@@ -7,13 +7,12 @@ using UnityEngine.UI;
 public class Teleportation : MonoBehaviour {
 
 	public string nameScene;
-	public GameObject TransitionImage;
 
 	private Image Black;
 	private Animator anim;
 
 	void Start() {
-		GameObject transitionImageInstance = Instantiate (TransitionImage);
+		GameObject transitionImageInstance = GameObject.Find("SceneTransitionImage");
 
 		Black = transitionImageInstance.GetComponent<Image> ();
 		anim = transitionImageInstance.GetComponent<Animator> ();

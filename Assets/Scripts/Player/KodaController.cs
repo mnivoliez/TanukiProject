@@ -119,7 +119,9 @@ public class KodaController : MonoBehaviour {
 	[SerializeField] private float timerCapacity;
 
 	// Canvas UI
-	[SerializeField] private  GameObject CanvasPrefab;
+	[SerializeField] private GameObject CanvasPrefab;
+	[SerializeField] private GameObject SceneTransitionImage;
+	[SerializeField] private GameObject DeathTransitionImage;
 
     //Animation
     private AnimationController animBody;
@@ -146,6 +148,8 @@ public class KodaController : MonoBehaviour {
         //QualitySettings.vSyncCount = 0;
 		//Application.targetFrameRate = FPS;
 		Instantiate (CanvasPrefab);
+		Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
+		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
     }
 
     private void OnGUI() {
