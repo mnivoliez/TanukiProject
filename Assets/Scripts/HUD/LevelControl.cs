@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Teleportation : MonoBehaviour {
+public class LevelControl : MonoBehaviour {
 
-	public string nameScene;
+	public string levelName;
 	public GameObject TransitionImage;
 
 	private Image Black;
@@ -19,15 +19,15 @@ public class Teleportation : MonoBehaviour {
 		anim = transitionImageInstance.GetComponent<Animator> ();
 	}
 
-	private void OnTriggerEnter(Collider other) {
-		if (other.CompareTag("Player")) {
-			StartCoroutine(Fading());
-		}
-	}
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Player")) {
+            StartCoroutine(Fading());
+        }
+    }
 
-	IEnumerator Fading() {
-		anim.SetBool("Fade", true);
-		yield return new WaitUntil(() => Black.color.a == 1);
-		SceneManager.LoadScene(nameScene);
-	}
+    IEnumerator Fading() {
+        anim.SetBool("Fade", true);
+        yield return new WaitUntil(() => Black.color.a == 1);
+		SceneManager.LoadScene(levelName);
+    }
 }
