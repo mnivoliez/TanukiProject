@@ -38,18 +38,18 @@ public class YokaiGeneralBehavior : YokaiController {
             
 
             if (target != null) {
-                    //follow target
-                    Vector3 relativePos = target.transform.position - transform.position;
-                    Quaternion rotation = Quaternion.LookRotation(relativePos);
-                    rotation.x = transform.rotation.x;
-                    rotation.z = transform.rotation.z;
-                    transform.rotation = rotation;
+                //follow target
+                Vector3 relativePos = target.transform.position - transform.position;
+                Quaternion rotation = Quaternion.LookRotation(relativePos);
+                rotation.x = transform.rotation.x;
+                rotation.z = transform.rotation.z;
+                transform.rotation = rotation;
 
-                    float dis = Vector3.Distance(transform.position, target.transform.position);
-                    //go to target
-                    if (dis > rangeAttack) {
-                        transform.Translate(0, 0, speed * Time.deltaTime);
-                    }
+                float dis = Vector3.Distance(transform.position, target.transform.position);
+                //go to target
+                if (dis > rangeAttack) {
+                    transform.Translate(0, 0, speed * Time.deltaTime);
+                }
 
                 if (bodyAttack) {
                     //attack target with rate
