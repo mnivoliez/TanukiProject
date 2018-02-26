@@ -195,12 +195,12 @@ Shader "Custom/Dissolve/TreeCorrupted" {
 
                 // get new value base on lerp between light and dark
                 float t = i.lantern_lerp;
-                float strength = lerp(_LightStrength, _DarkStrength, t);
-                float thickness = lerp(_LightThickness, _DarkThickness, t);
+                float strength = lerp(_DarkStrength, _LightStrength, t);
+                float thickness = lerp(_DarkThickness, _LightThickness, t);
 
-                float shadowEffect = lerp(_LightShadowEffects, _DarkShadowEffects, t);
-                float4 shadowColor = lerp(_LightShadowColor, _DarkShadowColor, t);
-                float shadowSize = lerp(_LightShadowSize, _DarkShadowSize, t);
+                float shadowEffect = lerp(_DarkShadowEffects, _LightShadowEffects, t);
+                float4 shadowColor = lerp(_DarkShadowColor, _LightShadowColor, t);
+                float shadowSize = lerp(_DarkShadowSize, _LightShadowSize, t);
 
                 float3 _DarkBaseTexture01_var = UnpackNormal(tex2D(_DarkBaseTexture01,TRANSFORM_TEX(i.uv0, _DarkBaseTexture01)));
                 float3 _LightNormalMap_var = UnpackNormal(tex2D(_LightNormalMap,TRANSFORM_TEX(i.uv0, _LightNormalMap)));
@@ -404,12 +404,12 @@ Shader "Custom/Dissolve/TreeCorrupted" {
 
                 // get new value base on lerp between light and dark
                 float t = i.lantern_lerp;
-                float strength = lerp(_LightStrength, _DarkStrength, t);
-                float thickness = lerp(_LightThickness, _DarkThickness, t);
+                float strength = lerp(_DarkStrength, _LightStrength, t);
+                float thickness = lerp(_DarkThickness, _LightThickness, t);
 
-                float shadowEffect = lerp(_LightShadowEffects, _DarkShadowEffects, t);
-                float4 shadowColor = lerp(_LightShadowColor, _DarkShadowColor, t);
-                float shadowSize = lerp(_LightShadowSize, _DarkShadowSize, t);
+                float shadowEffect = lerp(_DarkShadowEffects, _LightShadowEffects, t);
+                float4 shadowColor = lerp(_DarkShadowColor, _LightShadowColor, t);
+                float shadowSize = lerp(_DarkShadowSize, _LightShadowSize, t);
 
                 float3 _DarkBaseTexture01_var = UnpackNormal(tex2D(_DarkBaseTexture01,TRANSFORM_TEX(i.uv0, _DarkBaseTexture01)));
                 float3 _LightNormalMap_var = UnpackNormal(tex2D(_LightNormalMap,TRANSFORM_TEX(i.uv0, _LightNormalMap)));
