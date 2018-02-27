@@ -73,8 +73,7 @@ public class KodaController : MonoBehaviour {
 
     [Header("PLAYER")]
     [Space(10)]
-    [SerializeField]
-    private float moveSpeed = 10f;
+    [SerializeField] private float moveSpeed = 10f;
     private float speed = 10f;
     private float coefInclination;
     [SerializeField] private float airControl = 12f;
@@ -119,7 +118,10 @@ public class KodaController : MonoBehaviour {
 	[SerializeField] private float timerCapacity;
 
 	// Canvas UI
-	[SerializeField] private  GameObject CanvasPrefab;
+	[SerializeField] private GameObject CanvasPrefab;
+	[SerializeField] private GameObject SceneTransitionImage;
+	[SerializeField] private GameObject DeathTransitionImage;
+	[SerializeField] private GameObject VictoryTransitionImage;
 
     //Animation
     private AnimationController animBody;
@@ -127,9 +129,22 @@ public class KodaController : MonoBehaviour {
 
     private float timerAttack;
 
+    [Header("SOUND")]
+    [Space(10)]
+    [SerializeField] private AudioClip jumpSound;
+
     //int FPS = 40;
 
+	void Awake() {
+		Instantiate (CanvasPrefab).name = "PauseCanvas";
+		Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
+		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
+		Instantiate (VictoryTransitionImage).name = "VictoryTransitionImage";
+	}
+
     private void Start() {
+		VictorySwitch.Victory = false;
+
         movementState = MovementState.Idle;
         previousMovementState = movementState;
         interactState = InteractState.Nothing;
@@ -145,7 +160,6 @@ public class KodaController : MonoBehaviour {
 
         //QualitySettings.vSyncCount = 0;
 		//Application.targetFrameRate = FPS;
-		Instantiate (CanvasPrefab);
     }
 
     private void OnGUI() {
@@ -329,6 +343,7 @@ public class KodaController : MonoBehaviour {
             Debug.Log("IMPULSE!!!");
             // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
             body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
+            SoundController.instance.PlaySingle(jumpSound);
             body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 

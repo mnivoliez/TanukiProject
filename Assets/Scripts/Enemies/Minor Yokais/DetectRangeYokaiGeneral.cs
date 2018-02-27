@@ -44,7 +44,6 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
             }
 
             parentBehavior.SetTarget(target);
-            parentBehavior.SetComeBack(target == null);
         }
 	}
 
@@ -52,11 +51,11 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
         if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Lure")))
         {
             if (!objectsInArea.Contains(other.gameObject)) {
-                if (!parentBehavior.TooFarAway(other.transform.position)) {
+                if (!parentBehavior.TooFarAway(other.transform.position) && !parentBehavior.TooFarAway()) {
                     objectsInArea.Add(other.gameObject);
                 }
             } else {
-                if (parentBehavior.TooFarAway(other.transform.position)) {
+                if (parentBehavior.TooFarAway(other.transform.position) && parentBehavior.TooFarAway()) {
                     objectsInArea.Remove(other.gameObject);
                 }
             }
