@@ -762,6 +762,7 @@ GameObject:
   - component: {fileID: 114170016597090430}
   - component: {fileID: 114522814334176228}
   - component: {fileID: 114031834199764878}
+  - component: {fileID: 114134060471134224}
   - component: {fileID: 114508930474100518}
   m_Layer: 5
   m_Name: PauseCanvas
@@ -1093,7 +1094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1609994744862548
 GameObject:
   m_ObjectHideFlags: 1
@@ -2291,6 +2292,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Select
+--- !u!114 &114134060471134224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1445621682275490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb9bee9587d20d4392c0f9daeca2f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114140416080807082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3919,7 +3931,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114374814674992182}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114134060471134224}
+        m_MethodName: LoadByIndex
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114498578989110554
@@ -3978,6 +4001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3be274d1a8f1784c9e01f9c541d3d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventSystem: {fileID: 1614010861604282}
 --- !u!114 &114517705061533344
 MonoBehaviour:
   m_ObjectHideFlags: 1
