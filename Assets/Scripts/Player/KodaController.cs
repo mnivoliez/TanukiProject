@@ -73,8 +73,7 @@ public class KodaController : MonoBehaviour {
 
     [Header("PLAYER")]
     [Space(10)]
-    [SerializeField]
-    private float moveSpeed = 10f;
+    [SerializeField] private float moveSpeed = 10f;
     private float speed = 10f;
     private float coefInclination;
     [SerializeField] private float airControl = 12f;
@@ -128,6 +127,10 @@ public class KodaController : MonoBehaviour {
     private InteractBehavior interactBehaviorCtrl;
 
     private float timerAttack;
+
+    [Header("SOUND")]
+    [Space(10)]
+    [SerializeField] private AudioClip jumpSound;
 
     //int FPS = 40;
 
@@ -333,6 +336,7 @@ public class KodaController : MonoBehaviour {
             Debug.Log("IMPULSE!!!");
             // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
             body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
+            SoundController.instance.PlaySingle(jumpSound);
             body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
