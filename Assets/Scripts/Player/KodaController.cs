@@ -121,6 +121,7 @@ public class KodaController : MonoBehaviour {
 	[SerializeField] private GameObject CanvasPrefab;
 	[SerializeField] private GameObject SceneTransitionImage;
 	[SerializeField] private GameObject DeathTransitionImage;
+	[SerializeField] private GameObject VictoryTransitionImage;
 
     //Animation
     private AnimationController animBody;
@@ -135,12 +136,15 @@ public class KodaController : MonoBehaviour {
     //int FPS = 40;
 
 	void Awake() {
-		Instantiate (CanvasPrefab);
+		Instantiate (CanvasPrefab).name = "PauseCanvas";
 		Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
 		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
+		Instantiate (VictoryTransitionImage).name = "VictoryTransitionImage";
 	}
 
     private void Start() {
+		VictorySwitch.Victory = false;
+
         movementState = MovementState.Idle;
         previousMovementState = movementState;
         interactState = InteractState.Nothing;

@@ -21,15 +21,13 @@ public class Pause : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Cancel")){
-            if(Time.timeScale == 1){
-				PauseGame ();
+		if(Input.GetButtonDown("Cancel") && !VictorySwitch.Victory){
+            if(!Paused){
+				PauseGame (true);
                 //showPaused();
             }
-            else if (Time.timeScale == 0) {
-                Debug.Log("high");
+			else if (Paused) {
 				UnpauseGame ();
-                //hidePaused();
             }
         }
 	}
@@ -38,19 +36,24 @@ public class Pause : MonoBehaviour {
 		eventSystem.SetActive (false);
 		Time.timeScale = 1;
 		Paused = false;
+		Cursor.lockState = CursorLockMode.Locked;
+
 		CanvasPause.enabled = false;
 		transform.GetChild(0).gameObject.SetActive(false);
 
-		Cursor.lockState = CursorLockMode.Locked;
 	}
 
-	public void PauseGame() {
+	public void PauseGame(bool showMenu) {
 		eventSystem.SetActive (true);
 		Time.timeScale = 0;
 		Paused = true;
-		CanvasPause.enabled = true;
-		transform.GetChild(0).gameObject.SetActive (true);
-
 		Cursor.lockState = CursorLockMode.None;
+
+		if (showMenu)
+		{
+			CanvasPause.enabled = true;
+			transform.GetChild (0).gameObject.SetActive (true);
+		}
+
 	}
 }
