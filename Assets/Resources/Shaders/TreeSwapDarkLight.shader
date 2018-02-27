@@ -129,56 +129,59 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 return o;
             }
 
-            float3 dark_color(VertexOutput i, float attenuation, float3 lightDirection, float3 normalDirection, float light_power,float shadow_size_attenuation_biggest, float3 viewDirection): COLOR {
+            float3 dark_color(VertexOutput i, float3 normalDirection, float light_power,float shadow_size_attenuation_biggest, float3 viewDirection,
+             float4 shadowColor,float shadowEffect, float light_thickness): COLOR {
                 float4 _AlphaTexture_var = tex2D(_DarkAlphaTexture,TRANSFORM_TEX(i.uv0, _DarkAlphaTexture));
                 float node_8652 = (abs(sin(((i.screenPos.rg+(1.0-max(0,dot(normalDirection, viewDirection))))*_DarkSizeFull))).r*_AlphaTexture_var.a);
                 float node_5833 = 0.0;
-                float node_5452 = (_DarkThickness*light_power);
+                float node_5452 = (light_thickness*light_power);
                 float4 _BaseTexture02_var = tex2D(_DarkBaseTexture02,TRANSFORM_TEX(i.uv0, _DarkBaseTexture02));
 
                 float3 finalColor = saturate(
                     (lerp(_BaseTexture02_var.rgb,
-                    _DarkShadowColor.rgb,
-                    (floor(light_power * _DarkShadowEffects) / (_DarkShadowEffects - 1) * shadow_size_attenuation_biggest)) > 0.5 ?
+                    shadowColor.rgb,
+                    (floor(light_power * shadowEffect) / (shadowEffect - 1) * shadow_size_attenuation_biggest)) > 0.5 ?
                         (1.0-(1.0-2.0*(lerp(_BaseTexture02_var.rgb,
-                            _DarkShadowColor.rgb,
-                            (floor(light_power * _DarkShadowEffects) / (_DarkShadowEffects - 1)*shadow_size_attenuation_biggest))-0.5))
-                            * (1.0-lerp(_DarkGlobalColor
-            .rgb,
-                                _DarkShadowColor.rgb,
+                            shadowColor.rgb,
+                            (floor(light_power * shadowEffect) / (shadowEffect - 1)*shadow_size_attenuation_biggest))-0.5))
+                            * (1.0-lerp(_DarkGlobalColor.rgb,
+                                shadowColor.rgb,
                                 (step(node_8652,smoothstep( node_5833, step(node_5452,node_8652), light_power ))
                                 * shadow_size_attenuation_biggest
                                 * step(node_8652,smoothstep( node_5833, step(node_5452,node_8652), light_power )))))) :
                         (2.0 * lerp(_BaseTexture02_var.rgb,
-                            _DarkShadowColor.rgb,
-                            (floor(light_power * _DarkShadowEffects) / (_DarkShadowEffects - 1)*shadow_size_attenuation_biggest))
-                            * lerp(_DarkGlobalColor
-            .rgb,
-                                _DarkShadowColor.rgb,
+                            shadowColor.rgb,
+                            (floor(light_power * shadowEffect) / (shadowEffect - 1)*shadow_size_attenuation_biggest))
+                            * lerp(_DarkGlobalColor.rgb,
+                                shadowColor.rgb,
                                 (step(node_8652,smoothstep( node_5833, step(node_5452,node_8652), light_power ))
                                 * shadow_size_attenuation_biggest
-                                * step(node_8652,smoothstep( node_5833, step(node_5452,node_8652), light_power ))))) ));
+                                * step(node_8652,smoothstep( node_5833, step(node_5452,node_8652), light_power )))
+                            )
+                        )
+                    ));
 
                 return finalColor;
             }
 
-            float3 light_color(VertexOutput i, float attenuation, float3 lightDirection,float3 normalDirection, float light_power, float shadow_size_attenuation_biggest,float3 viewDirection ): COLOR {
+            float3 light_color(VertexOutput i, float3 normalDirection, float light_power, float shadow_size_attenuation_biggest,float3 viewDirection,
+             float4 shadowColor,float shadowEffect, float light_thickness ): COLOR {
                 float4 _Basetexture_var = tex2D(_LightBasetexture,TRANSFORM_TEX(i.uv0, _LightBasetexture));
 
                 float3 finalColor = saturate(((lerp(_Basetexture_var.rgb,
-                    _LightShadowColor.rgb,
-                    (floor(light_power * _LightShadowEffects) / (_LightShadowEffects - 1)*shadow_size_attenuation_biggest))*_Basetexture_var.a) > 0.5 ?
+                    shadowColor.rgb,
+                    (floor(light_power * shadowEffect) / (shadowEffect - 1)*shadow_size_attenuation_biggest))*_Basetexture_var.a) > 0.5 ?
                         (1.0-(1.0-2.0*((lerp(_Basetexture_var.rgb,
-                            _LightShadowColor.rgb,
-                            (floor(light_power * _LightShadowEffects) / (_LightShadowEffects - 1)*shadow_size_attenuation_biggest))
+                            shadowColor.rgb,
+                            (floor(light_power * shadowEffect) / (shadowEffect - 1)*shadow_size_attenuation_biggest))
                             *_Basetexture_var.a)-0.5))*(1.0-lerp(_LightGlobalcolor.rgb,
-                                _LightShadowColor.rgb,
-                                (shadow_size_attenuation_biggest*(0.0*light_power*_LightThickness)))))
+                                shadowColor.rgb,
+                                (shadow_size_attenuation_biggest*(0.0*light_power*light_thickness)))))
                         : (2.0*(lerp(_Basetexture_var.rgb,
-                            _LightShadowColor.rgb,
-                            (floor(light_power * _LightShadowEffects) / (_LightShadowEffects - 1)*shadow_size_attenuation_biggest))*_Basetexture_var.a)*lerp(_LightGlobalcolor.rgb,
-                                _LightShadowColor.rgb,
-                                (shadow_size_attenuation_biggest*(0.0*light_power*_LightThickness))))));
+                            shadowColor.rgb,
+                            (floor(light_power * shadowEffect) / (shadowEffect - 1)*shadow_size_attenuation_biggest))*_Basetexture_var.a)*lerp(_LightGlobalcolor.rgb,
+                                shadowColor.rgb,
+                                (shadow_size_attenuation_biggest*(0.0*light_power*light_thickness))))));
 
                 return finalColor;
             }
@@ -219,8 +222,8 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 float shadow_size_attenuation_biggest = step(shadowSize,attenuation);
 
 
-                float3 dark = dark_color(i, attenuation, lightDirection, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection);
-                float3 light = light_color(i, attenuation, lightDirection, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection);
+                float3 dark = dark_color(i, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection, shadowColor, shadowEffect, shadowSize);
+                float3 light = light_color(i, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection, shadowColor, shadowEffect, shadowSize);
 
                 float3 color_out = lerp(dark, light, t);
                 return fixed4(color_out,1);
@@ -318,24 +321,25 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 return o;
             }
 
-            float3 dark_color(VertexOutput i, float attenuation, float3 lightDirection,float3 normalDirection, float light_power, float shadow_size_attenuation_biggest,float3 viewDirection): COLOR {
+            float3 dark_color(VertexOutput i, float3 normalDirection, float light_power, float shadow_size_attenuation_biggest,float3 viewDirection,
+             float4 shadowColor,float shadowEffect, float light_thickness): COLOR {
                 ////// Lighting:
                 float4 _AlphaTexture_var = tex2D(_DarkAlphaTexture,TRANSFORM_TEX(i.uv0, _DarkAlphaTexture));
                 float node_8652 = (abs(sin(((i.screenPos.rg+(1.0-max(0,dot(normalDirection, viewDirection))))*_DarkSizeFull))).r*_AlphaTexture_var.a);
                 float node_5833 = 0.0;
-                float node_5452 = (_DarkThickness*light_power);
+                float node_5452 = (light_thickness*light_power);
                 float4 _BaseTexture02_var = tex2D(_DarkBaseTexture02,TRANSFORM_TEX(i.uv0, _DarkBaseTexture02));
                 float3 finalColor =
                 saturate((
                     lerp(_BaseTexture02_var.rgb,
-                        _DarkShadowColor.rgb,
-                        (floor(light_power * _DarkShadowEffects) / (_DarkShadowEffects - 1)*shadow_size_attenuation_biggest)) > 0.5 ?
+                        shadowColor.rgb,
+                        (floor(light_power * shadowEffect) / (shadowEffect - 1)*shadow_size_attenuation_biggest)) > 0.5 ?
                             (1.0-(1.0-2.0*(lerp(_BaseTexture02_var.rgb,
-                                _DarkShadowColor.rgb,
-                                (floor(light_power * _DarkShadowEffects) / (_DarkShadowEffects - 1)
+                                shadowColor.rgb,
+                                (floor(light_power * shadowEffect) / (shadowEffect - 1)
                                 * shadow_size_attenuation_biggest))-0.5))
                                 * (1.0-lerp(_DarkGlobalColor.rgb,
-                                    _DarkShadowColor.rgb,
+                                    shadowColor.rgb,
                                     (step(node_8652, smoothstep( node_5833,
                                         step(node_5452,node_8652),
                                         light_power ))
@@ -344,11 +348,11 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                                         step(node_5452,node_8652),
                                         light_power ))))))
                             : (2.0*lerp(_BaseTexture02_var.rgb,
-                                _DarkShadowColor.rgb,
-                                (floor(light_power * _DarkShadowEffects) / (_DarkShadowEffects - 1)
+                                shadowColor.rgb,
+                                (floor(light_power * shadowEffect) / (shadowEffect - 1)
                                 * shadow_size_attenuation_biggest))
                                 * lerp(_DarkGlobalColor.rgb,
-                                    _DarkShadowColor.rgb,
+                                    shadowColor.rgb,
                                     (step(node_8652,smoothstep( node_5833,
                                         step(node_5452,node_8652),
                                         light_power ))
@@ -359,32 +363,33 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 return finalColor;
             }
 
-            float3 light_color(VertexOutput i, float attenuation, float3 lightDirection,float3 normalDirection, float light_power, float shadow_size_attenuation_biggest,float3 viewDirection): COLOR {
+            float3 light_color(VertexOutput i, float3 normalDirection, float light_power, float shadow_size_attenuation_biggest,float3 viewDirection,
+             float4 shadowColor,float shadowEffect, float light_thickness): COLOR {
                 ////// Lighting:
                 float4 _Basetexture_var = tex2D(_LightBasetexture,TRANSFORM_TEX(i.uv0, _LightBasetexture));
                 float3 finalColor = saturate((
                     (lerp(_Basetexture_var.rgb,
-                        _LightShadowColor.rgb,
-                        (floor(light_power * _LightShadowEffects) / (_LightShadowEffects - 1)
+                        shadowColor.rgb,
+                        (floor(light_power * shadowEffect) / (shadowEffect - 1)
                         * shadow_size_attenuation_biggest))
                         * _Basetexture_var.a) > 0.5 ?
                             (1.0-(1.0-2.0*((lerp(_Basetexture_var.rgb,
-                                _LightShadowColor.rgb,
-                                (floor(light_power * _LightShadowEffects) / (_LightShadowEffects - 1)
+                                shadowColor.rgb,
+                                (floor(light_power * shadowEffect) / (shadowEffect - 1)
                                 * shadow_size_attenuation_biggest))
                                 * _Basetexture_var.a)-0.5))*(1.0-lerp(_LightGlobalcolor.rgb,
-                                    _LightShadowColor.rgb,
-                                    (shadow_size_attenuation_biggest*(0.0*light_power*_LightThickness))
+                                    shadowColor.rgb,
+                                    (shadow_size_attenuation_biggest*(0.0*light_power*light_thickness))
                                 ))
                             ) : (2.0*(lerp(_Basetexture_var.rgb,
-                                _LightShadowColor.rgb,
-                                (floor(light_power * _LightShadowEffects) / (_LightShadowEffects - 1)
+                                shadowColor.rgb,
+                                (floor(light_power * shadowEffect) / (shadowEffect - 1)
                                 * shadow_size_attenuation_biggest))
                                 * _Basetexture_var.a)
                                 * lerp(_LightGlobalcolor.rgb,
-                                    _LightShadowColor.rgb,
+                                    shadowColor.rgb,
                                     (shadow_size_attenuation_biggest
-                                    * (0.0*light_power*_LightThickness)))
+                                    * (0.0*light_power*light_thickness)))
                             )
                     ));
                 return fixed4(finalColor * 1,0);
@@ -428,8 +433,8 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 float shadow_size_attenuation_biggest = step(shadowSize,attenuation);
 
 
-                float3 dark = dark_color(i, attenuation, lightDirection, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection);
-                float3 light = light_color(i, attenuation, lightDirection, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection);
+                float3 dark = dark_color(i, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection, shadowColor, shadowEffect, shadowSize);
+                float3 light = light_color(i, normalDirection, light_power, shadow_size_attenuation_biggest, viewDirection, shadowColor, shadowEffect, shadowSize);
 
                 float3 color_out = lerp(dark, light, t);
                 return fixed4(color_out * 1,0);
