@@ -48,7 +48,6 @@ public class CameraOrbit : MonoBehaviour {
         this.xFromCamera = this.transform;
         this.xFromParent = this.transform.parent;
 		cameraPositionRemember = this.xFromCamera.localPosition;
-        Cursor.lockState = CursorLockMode.Locked;
         player = GameObject.FindGameObjectWithTag ("Player");
 		localRotation = new Vector3(player.transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.x + 20);
 		xFromParent.rotation = Quaternion.Euler(localRotation.y, localRotation.x, 0);
@@ -82,20 +81,18 @@ public class CameraOrbit : MonoBehaviour {
         }*/
 
 		float horizontal;
-		if (Input.GetJoystickNames().Length == 0) {
+		/*if (Input.GetJoystickNames().Length == 0) {
 			horizontal = Input.GetAxis("Mouse X") * mouseSensitivity;
-		}
-		else {
+		} else*/ {
 			horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * mouseSensitivity;
 		}
 
 		localRotation.x += horizontal;
 
 		float vertical;
-		if (Input.GetJoystickNames().Length == 0) {
+		/*if (Input.GetJoystickNames().Length == 0) {
 			vertical = Input.GetAxis("Mouse Y") * mouseSensitivity;
-		}
-		else {
+		} else*/ {
 			vertical = Input.GetAxis("MoveCameraGamepadVertical") * mouseSensitivity;
 		}
 

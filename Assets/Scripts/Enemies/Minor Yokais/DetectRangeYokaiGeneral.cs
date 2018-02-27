@@ -10,8 +10,6 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
     [SerializeField]
     private List<GameObject> objectsInArea;
 
-    private 
-
 	// Use this for initialization
 	void Start () {
         parentBehavior = GetComponentInParent<YokaiGeneralBehavior>();
