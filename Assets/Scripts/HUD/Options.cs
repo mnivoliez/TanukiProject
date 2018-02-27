@@ -16,6 +16,7 @@ public class Options : MonoBehaviour {
 
     Resolution[] resolutions;
     public Dropdown resolutionDropdown;
+    public Dropdown qualityDropdown;
 
     public float GammaCorrection;
 
@@ -35,6 +36,10 @@ public class Options : MonoBehaviour {
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+
+        Quality = QualitySettings.GetQualityLevel();
+        qualityDropdown.value = Quality;
+        qualityDropdown.RefreshShownValue();
     }
 
     public void SetVolume (float Volume) {
