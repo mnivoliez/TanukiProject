@@ -22,6 +22,10 @@ public class SelectOnInput : MonoBehaviour {
             eventSystem.SetSelectedGameObject(selectedObject);
             buttonSelected = true;
         }
+		/*if (Input.GetButtonDown ("Jump")) {
+			eventSystem.currentSelectedGameObject.GetComponent<Button> ().onClick.Invoke ();
+			//eventSystem.currentSelectedGameObject.GetComponent<Button> ().OnPointerClick ();
+		}*/
 	}
 
     private void OnDisable() {
