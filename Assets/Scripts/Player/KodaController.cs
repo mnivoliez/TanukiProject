@@ -131,6 +131,12 @@ public class KodaController : MonoBehaviour {
 
     //int FPS = 40;
 
+	void Awake() {
+		Instantiate (CanvasPrefab);
+		Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
+		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
+	}
+
     private void Start() {
         movementState = MovementState.Idle;
         previousMovementState = movementState;
@@ -147,9 +153,6 @@ public class KodaController : MonoBehaviour {
 
         //QualitySettings.vSyncCount = 0;
 		//Application.targetFrameRate = FPS;
-		Instantiate (CanvasPrefab);
-		Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
-		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
     }
 
     private void OnGUI() {
