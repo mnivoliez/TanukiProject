@@ -4,13 +4,13 @@ Shader "Custom/Dissolve/TreeCorrupted" {
 		[Header(Dark texture)][Space]
 		_DarkSizeFull ("Dark Size Full", Float ) = 120
         _DarkStrength ("Dark Strength", Range(1, 20)) = 1.842003
-        _DarkBaseTexture01 ("Dark Base Texture 01", 2D) = "white" {}
+        _DarkNormalMap ("Dark Normal Map", 2D) = "white" {}
         _DarkShadowSize ("Dark Shadow Size", Range(0, 1)) = 1
         _DarkShadowColor ("Dark Shadow Color", Color) = (0.9632353,0.9561527,0.9561527,1)
         _DarkGlobalColo ("Dark Teinte", Color) = (0.03443987,0.2389416,0.3602941,1)
         _DarkShadowEffects ("Dark Shadow Effects", Range(1, 5)) = 5
         _DarkThickness ("Dark Thickness", Float ) = 0
-        _DarkBaseTexture02 ("Dark Base Texture 02", 2D) = "white" {}
+        _DarkBaseTexture ("Dark Base Texture", 2D) = "white" {}
         _DarkAlphaTexture ("Dark Alpha Texture", 2D) = "white" {}
 
 		[Space(10)][Header(Light texture)][Space]
@@ -78,8 +78,8 @@ Shader "Custom/Dissolve/TreeCorrupted" {
             uniform float4 _DarkGlobalColor;
             uniform float _DarkShadowEffects;
             uniform float _DarkThickness;
-            uniform sampler2D _DarkBaseTexture01; uniform float4 _DarkBaseTexture01_ST;
-            uniform sampler2D _DarkBaseTexture02; uniform float4 _DarkBaseTexture02_ST;
+            uniform sampler2D _DarkNormalMap; uniform float4 _DarkNormalMap_ST;
+            uniform sampler2D _DarkBaseTexture; uniform float4 _DarkBaseTexture_ST;
             uniform sampler2D _DarkAlphaTexture; uniform float4 _DarkAlphaTexture_ST;
 
             uniform half
@@ -135,7 +135,7 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 float node_8652 = (abs(sin(((i.screenPos.rg+(1.0-max(0,dot(normalDirection, viewDirection))))*_DarkSizeFull))).r*_AlphaTexture_var.a);
                 float node_5833 = 0.0;
                 float node_5452 = (light_thickness*light_power);
-                float4 _BaseTexture02_var = tex2D(_DarkBaseTexture02,TRANSFORM_TEX(i.uv0, _DarkBaseTexture02));
+                float4 _BaseTexture02_var = tex2D(_DarkBaseTexture,TRANSFORM_TEX(i.uv0, _DarkBaseTexture));
 
                 float3 finalColor = saturate(
                     (lerp(_BaseTexture02_var.rgb,
@@ -205,11 +205,11 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 float4 shadowColor = lerp(_DarkShadowColor, _LightShadowColor, t);
                 float shadowSize = lerp(_DarkShadowSize, _LightShadowSize, t);
 
-                float3 _DarkBaseTexture01_var = UnpackNormal(tex2D(_DarkBaseTexture01,TRANSFORM_TEX(i.uv0, _DarkBaseTexture01)));
+                float3 _DarkNormalMap_var = UnpackNormal(tex2D(_DarkNormalMap,TRANSFORM_TEX(i.uv0, _DarkNormalMap)));
                 float3 _LightNormalMap_var = UnpackNormal(tex2D(_LightNormalMap,TRANSFORM_TEX(i.uv0, _LightNormalMap)));
 
                 float3 normalLocal = lerp(
-                    _DarkBaseTexture01_var,
+                    _DarkNormalMap_var,
                     _LightNormalMap_var,
                     t
                 );
@@ -265,13 +265,13 @@ Shader "Custom/Dissolve/TreeCorrupted" {
 
             uniform float _DarkSizeFull;
             uniform float _DarkStrength;
-            uniform sampler2D _DarkBaseTexture01; uniform float4 _DarkBaseTexture01_ST;
+            uniform sampler2D _DarkNormalMap; uniform float4 _DarkNormalMap_ST;
             uniform float _DarkShadowSize;
             uniform float4 _DarkShadowColor;
             uniform float4 _DarkGlobalColor;
             uniform float _DarkShadowEffects;
             uniform float _DarkThickness;
-            uniform sampler2D _DarkBaseTexture02; uniform float4 _DarkBaseTexture02_ST;
+            uniform sampler2D _DarkBaseTexture; uniform float4 _DarkBaseTexture_ST;
             uniform sampler2D _DarkAlphaTexture; uniform float4 _DarkAlphaTexture_ST;
 
             uniform half
@@ -328,7 +328,7 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 float node_8652 = (abs(sin(((i.screenPos.rg+(1.0-max(0,dot(normalDirection, viewDirection))))*_DarkSizeFull))).r*_AlphaTexture_var.a);
                 float node_5833 = 0.0;
                 float node_5452 = (light_thickness*light_power);
-                float4 _BaseTexture02_var = tex2D(_DarkBaseTexture02,TRANSFORM_TEX(i.uv0, _DarkBaseTexture02));
+                float4 _BaseTexture02_var = tex2D(_DarkBaseTexture,TRANSFORM_TEX(i.uv0, _DarkBaseTexture));
                 float3 finalColor =
                 saturate((
                     lerp(_BaseTexture02_var.rgb,
@@ -416,11 +416,11 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 float4 shadowColor = lerp(_DarkShadowColor, _LightShadowColor, t);
                 float shadowSize = lerp(_DarkShadowSize, _LightShadowSize, t);
 
-                float3 _DarkBaseTexture01_var = UnpackNormal(tex2D(_DarkBaseTexture01,TRANSFORM_TEX(i.uv0, _DarkBaseTexture01)));
+                float3 _DarkNormalMap_var = UnpackNormal(tex2D(_DarkNormalMap,TRANSFORM_TEX(i.uv0, _DarkNormalMap)));
                 float3 _LightNormalMap_var = UnpackNormal(tex2D(_LightNormalMap,TRANSFORM_TEX(i.uv0, _LightNormalMap)));
 
                 float3 normalLocal = lerp(
-                    _DarkBaseTexture01_var,
+                    _DarkNormalMap_var,
                     _LightNormalMap_var,
                     t
                 );
