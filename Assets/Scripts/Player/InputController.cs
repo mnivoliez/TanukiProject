@@ -44,24 +44,26 @@ public class InputController : MonoBehaviour {
             inputParams.actionRequest = ActionRequest.Glide;
         }
         else {
-            if (Input.GetButtonDown("Fire1")) {
-                actionRequested++;
-                inputParams.actionRequest = ActionRequest.MeleeAttack;
-            }
-            if (Input.GetButtonDown("Fire2")) {
-                actionRequested++;
-                inputParams.actionRequest = ActionRequest.DistantAttack;
-            }
+            //Reactiver apres le playtest !!
+            //if (Input.GetButtonDown("Fire1")) {
+            //    actionRequested++;
+            //    inputParams.actionRequest = ActionRequest.MeleeAttack;
+            //}
+            //if (Input.GetButtonDown("Fire2")) {
+            //    actionRequested++;
+            //    inputParams.actionRequest = ActionRequest.DistantAttack;
+            //}
 
-            if(Input.GetAxisRaw("Lure") != 1) { triggerAxisInUse = false; }
+            //if(Input.GetAxisRaw("Lure") != 1) { triggerAxisInUse = false; }
 
-            if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1) ) {
-                if (!triggerAxisInUse) {
-                    triggerAxisInUse = true;
-                    actionRequested++;
-                    inputParams.actionRequest = ActionRequest.SpawnLure;
-                }
-            }
+            //if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1) ) {
+            //    if (!triggerAxisInUse) {
+            //        triggerAxisInUse = true;
+            //        actionRequested++;
+            //        inputParams.actionRequest = ActionRequest.SpawnLure;
+            //    }
+            //}
+
             //if (Input.GetButtonDown("Transformation")) {
             //    actionRequested++;
             //    inputParams.actionRequest = ActionRequest.Inflate;
