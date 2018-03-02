@@ -439,6 +439,10 @@ public class KodaController : MonoBehaviour {
                     actualLure = null;
                 }
 
+                if (previousInteractState == InteractState.Tiny) {
+                    interactBehaviorCtrl.DoResizeTiny(false);
+                }
+
                 if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
                     interactBehaviorCtrl.StopCarry(catchableObject);
                 }
@@ -512,6 +516,11 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.Tiny:
+
+                if (previousInteractState == InteractState.Nothing) {
+                    interactBehaviorCtrl.DoResizeTiny(true);
+                }
+
                 break;
 
             case InteractState.Activate:
@@ -671,6 +680,7 @@ public class KodaController : MonoBehaviour {
                 interactStateParameter.canSpawnLure = false;
                 interactStateParameter.canDestroyLure = false;
                 interactStateParameter.canInflate = false;
+                interactStateParameter.canResize = false;
                 interactStateParameter.canActivate = false;
                 interactStateParameter.canAbsorb = false;
                 interactStateParameter.canCarry = false;

@@ -68,10 +68,10 @@ public class InputController : MonoBehaviour {
             //    actionRequested++;
             //    inputParams.actionRequest = ActionRequest.Inflate;
             //}
-            //if (Input.GetButtonDown("Resize")) {
-            //    actionRequested++;
-            //    inputParams.actionRequest = ActionRequest.Resize;
-            //}
+            if (Input.GetButtonDown("Resize")) {
+                actionRequested++;
+                inputParams.actionRequest = ActionRequest.Resize;
+            }
             if (Input.GetButtonDown("Fire3")) {
                 actionRequested++;
                 inputParams.actionRequest = ActionRequest.ContextualAction;
