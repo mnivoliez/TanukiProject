@@ -151,4 +151,18 @@ public class CameraOrbit : MonoBehaviour {
 			xFromCamera.localPosition = cameraPositionRemember;
 		}
     }
+
+    public void ResizeDistanceCamera(bool playerIsTiny, float coefResize) {
+        if (playerIsTiny) {
+            minCameraDistance = minCameraDistance / coefResize;
+            maxCameraDistance = maxCameraDistance / coefResize;
+            cameraDistance = cameraDistance / coefResize;
+        }
+        else {
+            minCameraDistance = minCameraDistance * coefResize;
+            maxCameraDistance = maxCameraDistance * coefResize;
+            cameraDistance = cameraDistance * coefResize;
+        }
+
+    }
 }

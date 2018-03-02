@@ -15,7 +15,6 @@ public class HitodamaController : MonoBehaviour {
 
     void Start() {
         rendererHitodama = GetComponent<Renderer>();
-        Debug.Log("Color:" + rendererHitodama.material.color);
     }
 
     void FixedUpdate() {
