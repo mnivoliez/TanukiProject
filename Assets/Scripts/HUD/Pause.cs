@@ -1,34 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Pause : MonoBehaviour {
 
 	public static bool Paused = false;
-	public GameObject CanvasPrefab;
+	public GameObject eventSystem;
 
-	private GameObject CanvasInstance;
+	private Canvas CanvasPause;
 
 	// Use this for initialization
 	void Start () {
         Time.timeScale = 1;
+		CanvasPause = GetComponent<Canvas> ();
+		CanvasPause.enabled = false;
+
+		Cursor.lockState = CursorLockMode.Locked;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Cancel")){
-            if(Time.timeScale == 1){
-                Time.timeScale = 0;
-				Paused = true;
-
+		if(Input.GetButtonDown("Cancel") && !VictorySwitch.Victory){
+            if(!Paused){
+				PauseGame (true);
                 //showPaused();
             }
-            else if (Time.timeScale == 0) {
-                Debug.Log("high");
-                Time.timeScale = 1;
-				Paused = false;
-                //hidePaused();
+			else if (Paused) {
+				UnpauseGame ();
             }
         }
+	}
+
+	public void UnpauseGame() {
+		eventSystem.SetActive (false);
+		Time.timeScale = 1;
+		Paused = false;
+		Cursor.lockState = CursorLockMode.Locked;
+
+		CanvasPause.enabled = false;
+		transform.GetChild(0).gameObject.SetActive(false);
+
+	}
+
+	public void PauseGame(bool showMenu) {
+		eventSystem.SetActive (true);
+		Time.timeScale = 0;
+		Paused = true;
+		Cursor.lockState = CursorLockMode.None;
+
+		if (showMenu)
+		{
+			CanvasPause.enabled = true;
+			transform.GetChild (0).gameObject.SetActive (true);
+		}
+
 	}
 }
