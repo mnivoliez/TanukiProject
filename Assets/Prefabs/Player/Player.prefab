@@ -1632,7 +1632,7 @@ Transform:
   - {fileID: 4116831124776206}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -61.7, z: 0}
 --- !u!4 &4725214603365620
 Transform:
   m_ObjectHideFlags: 1
@@ -2569,7 +2569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shadowDirect: {fileID: 1809397553112084, guid: 9b7e47d98b0ce194f99c560f2d75c3be,
     type: 2}
-  rayCastDistance: 40
+  rayCastDistance: 30
   ignoredLayerMask:
     serializedVersion: 2
     m_Bits: 65024
@@ -2879,26 +2879,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   airControl: 12
-  jumpForce: 130
+  jumpForce: 120
   airStreamForce: 200
   glideCounterForce: 160
   absorbRange: {fileID: 1331904666855936}
   pivot: {fileID: 0}
   rotateSpeed: 10
   playerModel: {fileID: 1956274163401516}
-  permanentDoubleJumpCapacity: 0
+  permanentDoubleJumpCapacity: 1
   temporaryDoubleJumpCapacity: 0
   timerCapacity: 0
   canvasQTE: {fileID: 1949089745060774}
   loadingBar: {fileID: 224066717798767024}
   centerButton: {fileID: 224019091180379084}
-  CanvasPrefab: {fileID: 1445621682275490, guid: 3e3c952fc5fe2794787aaf6521cf1a02,
+  CanvasPrefabPause: {fileID: 1445621682275490, guid: 3e3c952fc5fe2794787aaf6521cf1a02,
+    type: 2}
+  CanvasPrefabMinimap: {fileID: 1052312618471972, guid: 6e08a1d47721e8b409904159023d9e7c,
     type: 2}
   SceneTransitionImage: {fileID: 1759801994861846, guid: 8f8c8691ea4f90145b7090c9c13259ae,
     type: 2}
   DeathTransitionImage: {fileID: 1915411835969860, guid: 13d47a812d7327240b92efd7755f3047,
     type: 2}
   VictoryTransitionImage: {fileID: 1915411835969860, guid: 7538e01559e83fc4f8e674798be9e526,
+    type: 2}
+  CameraMinimap: {fileID: 1175779092906880, guid: cc7474822f8d8ae4a849fad7632e9b7f,
     type: 2}
   jumpSound: {fileID: 8300000, guid: fd41eaabd010da9448a9d7c4e2901f25, type: 3}
 --- !u!114 &114814930733008570
