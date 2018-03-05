@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 75960245587003682}
   - component: {fileID: 114072387758638234}
   - component: {fileID: 114927902929202472}
-  - component: {fileID: 114802245548570272}
+  - component: {fileID: 114140452120384574}
   - component: {fileID: 114413189276461600}
   - component: {fileID: 114939442216126860}
   - component: {fileID: 114280008632786526}
@@ -1626,7 +1626,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1445498394530796}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 48.8, y: 1.265, z: -54.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4116831124776206}
@@ -2573,6 +2573,45 @@ MonoBehaviour:
   ignoredLayerMask:
     serializedVersion: 2
     m_Bits: 65024
+--- !u!114 &114140452120384574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1445498394530796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 406c56c9ae38bb8479d4f9404d918e57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  airControl: 12
+  jumpForce: 120
+  airStreamForce: 200
+  glideCounterForce: 160
+  absorbRange: {fileID: 1331904666855936}
+  pivot: {fileID: 0}
+  rotateSpeed: 10
+  playerModel: {fileID: 1956274163401516}
+  permanentDoubleJumpCapacity: 0
+  temporaryDoubleJumpCapacity: 0
+  timerCapacity: 0
+  canvasQTE: {fileID: 1949089745060774}
+  loadingBar: {fileID: 224821429789007854}
+  centerButton: {fileID: 224232964485227772}
+  CanvasPrefabPause: {fileID: 1445621682275490, guid: 3e3c952fc5fe2794787aaf6521cf1a02,
+    type: 2}
+  CanvasPrefabMinimap: {fileID: 1052312618471972, guid: 6e08a1d47721e8b409904159023d9e7c,
+    type: 2}
+  SceneTransitionImage: {fileID: 1759801994861846, guid: 8f8c8691ea4f90145b7090c9c13259ae,
+    type: 2}
+  DeathTransitionImage: {fileID: 1915411835969860, guid: 13d47a812d7327240b92efd7755f3047,
+    type: 2}
+  VictoryTransitionImage: {fileID: 1915411835969860, guid: 7538e01559e83fc4f8e674798be9e526,
+    type: 2}
+  CameraMinimap: {fileID: 1175779092906880, guid: cc7474822f8d8ae4a849fad7632e9b7f,
+    type: 2}
+  jumpSound: {fileID: 8300000, guid: fd41eaabd010da9448a9d7c4e2901f25, type: 3}
 --- !u!114 &114170007115717232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2866,45 +2905,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: -2, y: 2}
   m_UseGraphicAlpha: 1
---- !u!114 &114802245548570272
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1445498394530796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e8785fde58362145982fffd4b0210a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 10
-  airControl: 12
-  jumpForce: 120
-  airStreamForce: 200
-  glideCounterForce: 160
-  absorbRange: {fileID: 1331904666855936}
-  pivot: {fileID: 0}
-  rotateSpeed: 10
-  playerModel: {fileID: 1956274163401516}
-  permanentDoubleJumpCapacity: 1
-  temporaryDoubleJumpCapacity: 0
-  timerCapacity: 0
-  canvasQTE: {fileID: 1949089745060774}
-  loadingBar: {fileID: 224066717798767024}
-  centerButton: {fileID: 224019091180379084}
-  CanvasPrefabPause: {fileID: 1445621682275490, guid: 3e3c952fc5fe2794787aaf6521cf1a02,
-    type: 2}
-  CanvasPrefabMinimap: {fileID: 1052312618471972, guid: 6e08a1d47721e8b409904159023d9e7c,
-    type: 2}
-  SceneTransitionImage: {fileID: 1759801994861846, guid: 8f8c8691ea4f90145b7090c9c13259ae,
-    type: 2}
-  DeathTransitionImage: {fileID: 1915411835969860, guid: 13d47a812d7327240b92efd7755f3047,
-    type: 2}
-  VictoryTransitionImage: {fileID: 1915411835969860, guid: 7538e01559e83fc4f8e674798be9e526,
-    type: 2}
-  CameraMinimap: {fileID: 1175779092906880, guid: cc7474822f8d8ae4a849fad7632e9b7f,
-    type: 2}
-  jumpSound: {fileID: 8300000, guid: fd41eaabd010da9448a9d7c4e2901f25, type: 3}
 --- !u!114 &114814930733008570
 MonoBehaviour:
   m_ObjectHideFlags: 1
