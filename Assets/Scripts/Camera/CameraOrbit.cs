@@ -88,7 +88,7 @@ public class CameraOrbit : MonoBehaviour {
                 horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * mouseSensitivity;
             }
             else {
-                horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * (mouseSensitivity/4);
+                horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * 2;
             }
 
             
@@ -104,7 +104,7 @@ public class CameraOrbit : MonoBehaviour {
                 vertical = Input.GetAxis("MoveCameraGamepadVertical") * mouseSensitivity;
             }
             else {
-                vertical = Input.GetAxis("MoveCameraGamepadVertical") * (mouseSensitivity/4);
+                vertical = Input.GetAxis("MoveCameraGamepadVertical") * 2;
             }
 
 		}
