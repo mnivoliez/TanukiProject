@@ -10,11 +10,9 @@ public class Minimap : MonoBehaviour {
 
     void Start() {
 
-        MinimapCanvas = GetComponent<Canvas>();
-        //MinimapCanvas.enabled = false;
+        //MinimapCanvas = GetComponent<Canvas>();
 
         player = GameObject.FindGameObjectWithTag("Player");
-        Debug.Log(player.name);
     }
 
     private void LateUpdate() {
@@ -22,10 +20,11 @@ public class Minimap : MonoBehaviour {
         //GameObject player = GameObject.Find("Player");
         //player = GameObject.FindGameObjectsWithTag("Player");
 
+        //MinimapCanvas.enabled = true;
         Vector3 newPosition = player.transform.position;
         newPosition.y = transform.position.y;
         transform.position = newPosition;
 
-        transform.rotation = Quaternion.Euler(90f, player.transform.eulerAngles.y, 0f);
+        transform.rotation = Quaternion.Euler(90f, player.transform.eulerAngles.y, 0f);        
     }
 }

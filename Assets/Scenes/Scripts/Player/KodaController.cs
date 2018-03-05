@@ -147,9 +147,9 @@ public class KodaController : MonoBehaviour {
     //int FPS = 40;
 
 	void Awake() {
-		Instantiate (CanvasPrefabPause).name = "PauseCanvas";
         Instantiate(CanvasPrefabMinimap).name = "MinimapCanvas";
         Instantiate(CameraMinimap).name = "MinimapCamera";
+        Instantiate(CanvasPrefabPause).name = "PauseCanvas";
         Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
 		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
 		Instantiate (VictoryTransitionImage).name = "VictoryTransitionImage";
