@@ -5,11 +5,14 @@ using UnityEngine;
 public class Minimap : MonoBehaviour {
 
     //public Transform player;
-    private Canvas CanvasMinimap;
     private GameObject player;
+    private Canvas MinimapCanvas;
 
     void Start() {
-        CanvasMinimap = GetComponent<Canvas>();
+
+        MinimapCanvas = GetComponent<Canvas>();
+        //MinimapCanvas.enabled = false;
+
         player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log(player.name);
     }

@@ -125,10 +125,14 @@ public class KodaController : MonoBehaviour {
     public Transform centerButton;
 
     // Canvas UI
-    [SerializeField] private GameObject CanvasPrefab;
-	[SerializeField] private GameObject SceneTransitionImage;
+    [SerializeField] private GameObject CanvasPrefabPause;
+    [SerializeField] private GameObject CanvasPrefabMinimap;
+    [SerializeField] private GameObject SceneTransitionImage;
 	[SerializeField] private GameObject DeathTransitionImage;
 	[SerializeField] private GameObject VictoryTransitionImage;
+
+    //Camera Minimap
+    [SerializeField] private GameObject CameraMinimap;
 
     //Animation
     private AnimationController animBody;
@@ -143,8 +147,10 @@ public class KodaController : MonoBehaviour {
     //int FPS = 40;
 
 	void Awake() {
-		Instantiate (CanvasPrefab).name = "PauseCanvas";
-		Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
+		Instantiate (CanvasPrefabPause).name = "PauseCanvas";
+        Instantiate(CanvasPrefabMinimap).name = "MinimapCanvas";
+        Instantiate(CameraMinimap).name = "MinimapCamera";
+        Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
 		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
 		Instantiate (VictoryTransitionImage).name = "VictoryTransitionImage";
 	}
