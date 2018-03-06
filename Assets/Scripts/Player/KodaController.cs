@@ -31,30 +31,40 @@ public class LeafAlreadyTakenException : System.Exception {
 
 }
 
-public class Leaf {
-    public class LeafLock {
-        Leaf _parent;
-        public LeafLock(Leaf parent) {
-            _parent = parent;
-        }
-        public void Release() {
-            _parent.leafLock = null;
-            _parent = null;
-        }
-    }
+public class LeafLock {
+    public bool isUsed;
+    public InteractState parent;
 
-    private LeafLock leafLock;
-
-    public LeafLock TakeLeaf() {
-        if (leafLock == null) {
-            leafLock = new LeafLock(this);
-            return leafLock;
-        }
-        else {
-            throw new LeafAlreadyTakenException();
-        }
+    public LeafLock(bool used, InteractState parentState) {
+        this.isUsed = used;
+        this.parent = parentState;
     }
 }
+
+//public class Leaf {
+//    public class LeafLock {
+//        Leaf _parent;
+//        public LeafLock(Leaf parent) {
+//            _parent = parent;
+//        }
+//        public void Release() {
+//            _parent.leafLock = null;
+//            _parent = null;
+//        }
+//    }
+
+//    private LeafLock leafLock;
+
+//    public LeafLock TakeLeaf() {
+//        if (leafLock == null) {
+//            leafLock = new LeafLock(this);
+//            return leafLock;
+//        }
+//        else {
+//            throw new LeafAlreadyTakenException();
+//        }
+//    }
+//}
 
 
 public class Pair<T, U> {
@@ -144,7 +154,7 @@ public class KodaController : MonoBehaviour {
     [SerializeField]
     private AudioClip jumpSound;
 
-    private bool leafIsLock;
+    private LeafLock leafLock;
 
 
     //int FPS = 40;
@@ -161,6 +171,7 @@ public class KodaController : MonoBehaviour {
     private void Start() {
         VictorySwitch.Victory = false;
 
+        leafLock = new LeafLock(false, InteractState.Nothing);
         movementState = MovementState.Idle;
         previousMovementState = movementState;
         interactState = InteractState.Nothing;
@@ -423,41 +434,48 @@ public class KodaController : MonoBehaviour {
         switch (interactState) {
             case InteractState.Nothing:
 
-                if (leafIsLock) {
+                if (leafLock.isUsed) {
                     if (previousInteractState == InteractState.MeleeAttack) {
                         interactBehaviorCtrl.StopMeleeAttack();
-                        leafIsLock = false;
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
                     }
 
                     if (previousInteractState == InteractState.DistantAttack) {
                         interactBehaviorCtrl.StopDistantAttack();
-                        leafIsLock = false;
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
                     }
 
                     if (previousInteractState == InteractState.Glide) {
                         interactBehaviorCtrl.StopGlide();
-                        leafIsLock = false;
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
                     }
 
                     if (previousInteractState == InteractState.Inflate) {
                         interactBehaviorCtrl.DoInflate(false);
-                        leafIsLock = false;
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
                     }
 
                     if (interactStateParameter.canDestroyLure) {
                         interactBehaviorCtrl.DestroyLure(actualLure);
                         actualLure = null;
-                        leafIsLock = false;
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
                     }
 
                     if (previousInteractState == InteractState.Tiny) {
                         interactBehaviorCtrl.DoResizeTiny(false);
-                        leafIsLock = false;
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
                     }
 
                     if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
                         interactBehaviorCtrl.StopCarry(catchableObject);
-                        leafIsLock = false;
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
                     }
                 }
 
@@ -466,16 +484,17 @@ public class KodaController : MonoBehaviour {
             case InteractState.Glide:
                 if (IsGrounded()) {
                     interactBehaviorCtrl.StopGlide();
-                    leafIsLock = false;
+                    leafLock.isUsed = false;
+                    leafLock.parent = InteractState.Nothing;
                 }
                 else {
-                    if (!leafIsLock) {
+                    if (!leafLock.isUsed || (leafLock.isUsed && leafLock.parent == InteractState.Glide)) {
                         // add a force to counter gravity (glide effect)
 
                         //body.AddForce(Vector3.up * glideCounterForce, ForceMode.Force);
                         body.AddForce(Vector3.up * (glideCounterForce / body.mass) * (40 * Time.deltaTime), ForceMode.Acceleration);
-                        if (body.velocity.y < -10) {
-                            body.velocity = new Vector3(body.velocity.x, -10, body.velocity.z);
+                        if (body.velocity.y < -9) {
+                            body.velocity = new Vector3(body.velocity.x, -9, body.velocity.z);
                         }
                         interactBehaviorCtrl.DoGlide();
                         if (interactStateParameter.canAirStream) {
@@ -486,16 +505,17 @@ public class KodaController : MonoBehaviour {
                                 body.velocity = new Vector3(body.velocity.x, 8.0f, body.velocity.z);
                             }
                         }
-                        leafIsLock = true;
+                        leafLock.isUsed = true;
+                        leafLock.parent = InteractState.Glide;
                     }
                 }
                 break;
 
             case InteractState.MeleeAttack:
 
-                if (interactStateParameter.canMeleeAttack && !leafIsLock) {
+                if (interactStateParameter.canMeleeAttack && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoMeleeAttack();
-                    leafIsLock = true;
+                    leafLock.isUsed = true;
                 }
 
 
@@ -520,31 +540,31 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.DistantAttack:
-                if (interactStateParameter.canDistantAttack && !leafIsLock) {
+                if (interactStateParameter.canDistantAttack && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoDistantAttack();
-                    leafIsLock = true;
+                    leafLock.isUsed = true;
                 }
                 break;
 
             case InteractState.SpawnLure:
-                if (previousInteractState == InteractState.Nothing && !leafIsLock) {
+                if (previousInteractState == InteractState.Nothing && !leafLock.isUsed) {
                     actualLure = interactBehaviorCtrl.DoSpawnLure();
-                    leafIsLock = true;
+                    leafLock.isUsed = true;
                 }
                 break;
 
             case InteractState.Inflate:
-                if (previousInteractState != InteractState.Inflate && !leafIsLock) {
+                if (previousInteractState != InteractState.Inflate && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoInflate(true);
-                    leafIsLock = true;
+                    leafLock.isUsed = true;
                 }
                 break;
 
             case InteractState.Tiny:
 
-                if (previousInteractState == InteractState.Nothing && !leafIsLock) {
+                if (previousInteractState == InteractState.Nothing && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoResizeTiny(true);
-                    leafIsLock = true;
+                    leafLock.isUsed = true;
                 }
 
                 break;
