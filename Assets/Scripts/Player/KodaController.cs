@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 struct InputMoveParams {
     public bool requestJump;
@@ -117,8 +118,14 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private bool temporaryDoubleJumpCapacity;
 	[SerializeField] private float timerCapacity;
 
-	// Canvas UI
-	[SerializeField] private GameObject CanvasPrefab;
+    //QTE
+    private float maxPowerUpGauge = 10f;
+    public GameObject canvasQTE;
+    public Transform loadingBar;
+    public Transform centerButton;
+
+    // Canvas UI
+    [SerializeField] private GameObject CanvasPrefab;
 	[SerializeField] private GameObject SceneTransitionImage;
 	[SerializeField] private GameObject DeathTransitionImage;
 	[SerializeField] private GameObject VictoryTransitionImage;
@@ -175,6 +182,7 @@ public class KodaController : MonoBehaviour {
 
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
+            ProgressTimerCapacity();
         }
         else {
             StopTemporaryCapacity();
@@ -560,10 +568,6 @@ public class KodaController : MonoBehaviour {
                 (movementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest) {
-            Debug.Log("movementState=" + movementState);
-            Debug.Log("interactState=" + interactState);
-            Debug.Log("IsGrounded=" + IsGrounded());
-            Debug.Log("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
             inputParams.jumpRequest = false;
             inputController.SetUserRequest(inputParams);
         }
@@ -757,7 +761,7 @@ public class KodaController : MonoBehaviour {
 
             case Capacity.DoubleJump:
                 temporaryDoubleJumpCapacity = true;
-
+                canvasQTE.SetActive(true);
                 break;
 
             case Capacity.Glide:
@@ -765,10 +769,16 @@ public class KodaController : MonoBehaviour {
         }
 
         timerCapacity = pairCapacity.Second;
+        maxPowerUpGauge = pairCapacity.Second;
     }
 
     private void StopTemporaryCapacity() {
         timerCapacity = 0;
         temporaryDoubleJumpCapacity = false;
+        canvasQTE.SetActive(false);
+    }
+
+    private void ProgressTimerCapacity() {
+        loadingBar.GetComponent<Image>().fillAmount = timerCapacity / maxPowerUpGauge;
     }
 }

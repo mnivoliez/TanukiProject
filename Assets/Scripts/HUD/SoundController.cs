@@ -6,19 +6,28 @@ public class SoundController : MonoBehaviour {
 
     public AudioSource fxSource;
     public AudioSource musicSource;
-    public static SoundController instance = null;
+    public static SoundController instance;
 
     public float lowPitchRange = 0.95f;
     public float highPitchRange = 1.05f;
 
     private void Awake() {
-        if(instance == null) {
-            instance = this;
-        }else if(instance != this) {
+        SoundController[] allInstance;
+        allInstance = (SoundController[])FindObjectsOfType(typeof(SoundController));
+
+        if (allInstance.Length > 1) {
             Destroy(gameObject);
         }
         else {
-            DontDestroyOnLoad(gameObject);
+
+            if (instance == null) {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else if (instance != this) {
+                Destroy(gameObject);
+            }
+           
         }
     }
 
