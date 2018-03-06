@@ -49,18 +49,17 @@ public class Pause : MonoBehaviour {
         OptionsPanel.SetActive(false);
         ExitPanel.SetActive(false);
         Time.timeScale = 1;
-		Paused = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
         CanvasPause.enabled = false;
         transform.GetChild(0).gameObject.SetActive(false);
+        Paused = false;
     }
 
 	public void PauseGame(bool showMenu) {
 		eventSystem.SetActive (true);
         Time.timeScale = 0;
-		Paused = true;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
@@ -70,6 +69,6 @@ public class Pause : MonoBehaviour {
             CanvasPause.enabled = true;
 			transform.GetChild (0).gameObject.SetActive (true);
 		}
-
-	}
+        Paused = true;
+    }
 }
