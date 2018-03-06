@@ -18,28 +18,29 @@ public class CameraOrbit : MonoBehaviour {
     [SerializeField]
     private float scrollSensitivity = 2f;
     [SerializeField]
-	private float orbitDampening = 10f;
-	[SerializeField]
-	private float scrollDampening = 6f;
-	[SerializeField]
-	private float raycastDampening = 200f;
-	[SerializeField]
-	private float minCameraDistance = 7f;
-	[SerializeField]
-	private float maxCameraDistance = 20f;
-	[SerializeField]
-	private float minCameraAngle = -20;
-	[SerializeField]
-	private float maxCameraAngle = 90;
-	[SerializeField]
-	private bool inverseCam = false;
-	[SerializeField]
-	private bool scrolEnabled = false;
-	[SerializeField]
-	private LayerMask ignoredLayerMask;
+    private float orbitDampening = 10f;
+    [SerializeField]
+    private float scrollDampening = 6f;
+    [SerializeField]
+    private float raycastDampening = 200f;
+    [SerializeField]
+    private float minCameraDistance = 7f;
+    [SerializeField]
+    private float maxCameraDistance = 20f;
+    [SerializeField]
+    private float minCameraAngle = -20;
+    [SerializeField]
+    private float maxCameraAngle = 90;
+    [SerializeField]
+    private bool inverseCam = false;
+    [SerializeField]
+    private bool scrolEnabled = false;
+    [SerializeField]
+    private LayerMask ignoredLayerMask;
 
     private bool leftClicked = false;
     private bool rightClicked = false;
+    private bool centerCamera = false;
 
     private Vector3 cameraPositionRemember;
 
@@ -47,10 +48,10 @@ public class CameraOrbit : MonoBehaviour {
     void Start() {
         this.xFromCamera = this.transform;
         this.xFromParent = this.transform.parent;
-		cameraPositionRemember = this.xFromCamera.localPosition;
-        player = GameObject.FindGameObjectWithTag ("Player");
-		localRotation = new Vector3(player.transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.x + 20);
-		xFromParent.rotation = Quaternion.Euler(localRotation.y, localRotation.x, 0);
+        cameraPositionRemember = this.xFromCamera.localPosition;
+        player = GameObject.FindGameObjectWithTag("Player");
+        localRotation = new Vector3(player.transform.GetChild(0).rotation.eulerAngles.y, player.transform.GetChild(0).rotation.eulerAngles.x + 20);
+        xFromParent.rotation = Quaternion.Euler(localRotation.y, localRotation.x, 0);
     }
 
     private void Update() {
@@ -64,105 +65,80 @@ public class CameraOrbit : MonoBehaviour {
         if (Input.GetMouseButtonDown(1)) {
             rightClicked = true;
         }
-		if (Input.GetMouseButtonUp(1)) {
+        if (Input.GetMouseButtonUp(1)) {
             rightClicked = false;
+        }
+        if (Input.GetButtonDown("CenterCamera")) {
+            centerCamera = true;
+        }
+        if (Input.GetButtonUp("CenterCamera")) {
+            centerCamera = false;
+            //localRotation = new Vector3(xFromParent.transform.rotation.eulerAngles.y, xFromParent.transform.rotation.eulerAngles.x);
         }
     }
 
     // LateUpdate is called once per frame, afpter Update() on every game object in the scene
     void LateUpdate() {
         //Rotation of the camera based on Mouse Coordinates
-        /*if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0) {
-            localRotation.x += Input.GetAxis("Mouse X") * mouseSensitivity * -1;
-            localRotation.y += Input.GetAxis("Mouse Y") * mouseSensitivity * -1;
+        float horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * mouseSensitivity;
+        localRotation.x += horizontal;
+        float vertical = Input.GetAxis("MoveCameraGamepadVertical") * mouseSensitivity;
+        if (inverseCam) {
+            localRotation.y += vertical;
+        } else {
+            localRotation.y += vertical * -1;
+        }
+        //Clamp the y rotation to horizon and not flipping over at the top 
+        localRotation.y = Mathf.Clamp(localRotation.y, minCameraAngle, maxCameraAngle);
 
-            //Clamp the y rotation to horizon and not flipping over at the top 
-			localRotation.y = Mathf.Clamp(localRotation.y, minCameraAngle, maxCameraAngle);
-        }*/
-
-		float horizontal;
-		/*if (Input.GetJoystickNames().Length == 0) {
-			horizontal = Input.GetAxis("Mouse X") * mouseSensitivity;
-		} else*/ {
-            if (Application.isEditor) {
-                horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * mouseSensitivity;
-            }
-            else {
-                horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * 2;
-            }
-
-            
-		}
-
-		localRotation.x += horizontal;
-
-		float vertical;
-		/*if (Input.GetJoystickNames().Length == 0) {
-			vertical = Input.GetAxis("Mouse Y") * mouseSensitivity;
-		} else*/ {
-            if (Application.isEditor) {
-                vertical = Input.GetAxis("MoveCameraGamepadVertical") * mouseSensitivity;
-            }
-            else {
-                vertical = Input.GetAxis("MoveCameraGamepadVertical") * 2;
-            }
-
-		}
-
-
-		if (inverseCam) {
-			localRotation.y += vertical;
-		} else {
-			localRotation.y += vertical * -1;
-		}
-		//Clamp the y rotation to horizon and not flipping over at the top 
-		localRotation.y = Mathf.Clamp(localRotation.y, minCameraAngle, maxCameraAngle);
-
-		//Zooming Input from out Mouse Scroll Wheel
-		if (scrolEnabled && Input.GetAxis("Mouse ScrollWheel") != 0f)
-		{
+        //Zooming Input from out Mouse Scroll Wheel
+        if (scrolEnabled && Input.GetAxis("Mouse ScrollWheel") != 0f) {
             float scrollAmount = Input.GetAxis("Mouse ScrollWheel") * mouseSensitivity;
             //Make camera zoom faster the futher away it is from the target
             scrollAmount *= cameraDistance * 0.3f;
             cameraDistance += scrollAmount * -1f;
 
-			//This makes camera go no closer than minCameraDistance and no futher than maxCameraDistance from target;
-			cameraDistance = Mathf.Clamp(cameraDistance, minCameraDistance, maxCameraDistance);
+            //This makes camera go no closer than minCameraDistance and no futher than maxCameraDistance from target;
+            cameraDistance = Mathf.Clamp(cameraDistance, minCameraDistance, maxCameraDistance);
         }
 
-        //Actual Camera Rig Transformations
-        Quaternion QT = Quaternion.Euler(localRotation.y, localRotation.x, 0);
-        xFromParent.rotation = Quaternion.Lerp(xFromParent.rotation, QT, Time.deltaTime * orbitDampening);
-        if (rightClicked)
-		{
+        //center Camera
+        if (centerCamera) {
+            localRotation = new Vector3(player.transform.GetChild(0).rotation.eulerAngles.y, player.transform.GetChild(0).rotation.eulerAngles.x + 20);
+            Quaternion QT = Quaternion.Euler(localRotation.y, localRotation.x, 0);
+            xFromParent.rotation = Quaternion.Lerp(xFromParent.rotation, QT, Time.deltaTime);
+        } else {
+            //Actual Camera Rig Transformations
+            Quaternion QT = Quaternion.Euler(localRotation.y, localRotation.x, 0);
+            xFromParent.rotation = Quaternion.Lerp(xFromParent.rotation, QT, Time.deltaTime * orbitDampening);
+        }
+
+        if (rightClicked) {
             Quaternion rot = Quaternion.identity;
             rot.eulerAngles = new Vector3(player.transform.rotation.eulerAngles.x, xFromParent.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z);
             player.transform.rotation = rot;
         }
-        
+
         if (xFromCamera.localPosition.z != cameraDistance * -1f) {
-			cameraPositionRemember = new Vector3(0f, 0f, Mathf.Lerp(xFromCamera.localPosition.z, cameraDistance * -1f, Time.deltaTime * scrollDampening));
+            cameraPositionRemember = new Vector3(0f, 0f, Mathf.Lerp(xFromCamera.localPosition.z, cameraDistance * -1f, Time.deltaTime * scrollDampening));
         }
 
-		float step = 0.2f;
+        float step = 0.2f;
 
-		// direction Camera-Pivot(Player)
+        // direction Camera-Pivot(Player)
         Vector3 direction = xFromParent.position - xFromCamera.position;
-		direction = direction.normalized;
+        direction = direction.normalized;
 
-		// all layers are = 0xFFFFFFFF => -1
-		int layerAll = -1;
+        // all layers are = 0xFFFFFFFF => -1
+        int layerAll = -1;
 
-		RaycastHit hit;
-		if (Physics.Raycast (xFromParent.position, -direction, out hit, cameraDistance * 1.1f, layerAll - ignoredLayerMask.value))
-		{
-			float dis = Vector3.Distance (player.transform.position, hit.point + direction * step);
-			xFromCamera.localPosition = new Vector3 (0f, 0f, Mathf.Lerp (xFromCamera.localPosition.z, dis * -1f, Time.deltaTime * raycastDampening));
-		}
-		else
-		{
-			xFromCamera.localPosition = cameraPositionRemember;
-		}
+        RaycastHit hit;
+        if (Physics.Raycast(xFromParent.position, -direction, out hit, cameraDistance * 1.1f, layerAll - ignoredLayerMask.value)) {
+            float dis = Vector3.Distance(player.transform.position, hit.point + direction * step);
+            xFromCamera.localPosition = new Vector3(0f, 0f, Mathf.Lerp(xFromCamera.localPosition.z, dis * -1f, Time.deltaTime * raycastDampening) + 0.7f);
+        } else {
+            xFromCamera.localPosition = cameraPositionRemember;
+        }
     }
 
     public void ResizeDistanceCamera(bool playerIsTiny, float coefResize) {
