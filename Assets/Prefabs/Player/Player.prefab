@@ -1625,14 +1625,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1445498394530796}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 48.8, y: 1.265, z: -54.6}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4116831124776206}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -61.7, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4725214603365620
 Transform:
   m_ObjectHideFlags: 1
@@ -2549,13 +2549,16 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1445498394530796}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3adcc70febb357b4e98305430bb12c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealthMax: 3
   playerHealthCurrent: 3
+  respawnPoint: {fileID: 0}
+  deathTransition: {fileID: 1915411835969860, guid: 13d47a812d7327240b92efd7755f3047,
+    type: 2}
 --- !u!114 &114108313215235860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2569,7 +2572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shadowDirect: {fileID: 1809397553112084, guid: 9b7e47d98b0ce194f99c560f2d75c3be,
     type: 2}
-  rayCastDistance: 30
+  rayCastDistance: 40
   ignoredLayerMask:
     serializedVersion: 2
     m_Bits: 65024
