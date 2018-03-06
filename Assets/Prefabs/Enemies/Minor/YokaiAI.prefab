@@ -163,7 +163,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1540282424608112}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.79, y: 2.28, z: -22.58}
+  m_LocalPosition: {x: -4.51, y: 2.28, z: -22.58}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4687181117194416}
@@ -409,12 +409,14 @@ MonoBehaviour:
     type: 2}
   knockedParticle: {fileID: 1117990352001664, guid: 8a7c7c93ab321eb4db975f2acca7f2a9,
     type: 2}
+  target: {fileID: 0}
   capacity: 0
   timerCapacity: 0
-  distanceLimit: 15
+  distanceLimit: 20
   damageBody: 1
   rangeAttack: 4
   rateBodyAttack: 2
+  neighbourDistance: 2
 --- !u!114 &114899031922047538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -426,6 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafd473ad84025f40aa61d4deffd0f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectsInArea: []
 --- !u!135 &135216336727901894
 SphereCollider:
   m_ObjectHideFlags: 1
