@@ -39,10 +39,8 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
                     }
                 } else {
                     objectsInArea.RemoveAt(i);
-                }
-                
+                }  
             }
-
             parentBehavior.SetTarget(target);
         }
 	}

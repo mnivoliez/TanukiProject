@@ -17,6 +17,7 @@ public class Pause : MonoBehaviour {
 		CanvasPause.enabled = false;
 
 		Cursor.lockState = CursorLockMode.Locked;
+		UnpauseGame ();
 	}
 	
 	// Update is called once per frame
@@ -37,10 +38,10 @@ public class Pause : MonoBehaviour {
 		Time.timeScale = 1;
 		Paused = false;
 		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 
 		CanvasPause.enabled = false;
 		transform.GetChild(0).gameObject.SetActive(false);
-
 	}
 
 	public void PauseGame(bool showMenu) {
@@ -48,6 +49,7 @@ public class Pause : MonoBehaviour {
 		Time.timeScale = 0;
 		Paused = true;
 		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
 
 		if (showMenu)
 		{
