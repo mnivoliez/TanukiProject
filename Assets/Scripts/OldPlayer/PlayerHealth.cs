@@ -15,6 +15,10 @@ public class PlayerHealth : MonoBehaviour {
     private Animator animPlayer;
 
     void Start() {
+        if(respawnPoint == null) {
+            respawnPoint = new GameObject();
+            respawnPoint.transform.position = transform.position;
+        }
         animPlayer = gameObject.GetComponent<Animator>();
         GameObject transitionImageInstance = Instantiate(deathTransition);
 
