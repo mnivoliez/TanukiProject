@@ -218,7 +218,7 @@ public class InteractStateController {
     InteractState ManageResize(InteractState previous, InteractStateParam param) {
         InteractState newState = previous;
         //NOTHING
-        if (!param.canGlide) {
+        if (param.canResize) {
             newState = InteractState.Nothing;
         }
         return newState;
