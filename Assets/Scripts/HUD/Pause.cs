@@ -10,13 +10,23 @@ public class Pause : MonoBehaviour {
 
 	private Canvas CanvasPause;
 
-	// Use this for initialization
-	void Start () {
+    private GameObject PausePanel;
+    private GameObject OptionsPanel;
+    private GameObject ExitPanel;
+
+
+    // Use this for initialization
+    void Start () {
         Time.timeScale = 1;
 		CanvasPause = GetComponent<Canvas> ();
-		CanvasPause.enabled = false;
+        CanvasPause.enabled = false;
 
-		Cursor.lockState = CursorLockMode.Locked;
+        PausePanel = eventSystem.transform.Find("Pause Panel").gameObject;
+        OptionsPanel = eventSystem.transform.Find("Options Panel").gameObject;
+        ExitPanel = eventSystem.transform.Find("Exit Panel").gameObject;
+
+
+        Cursor.lockState = CursorLockMode.Locked;
 		UnpauseGame ();
 	}
 	
@@ -34,28 +44,31 @@ public class Pause : MonoBehaviour {
 	}
 
 	public void UnpauseGame() {
-		eventSystem.SetActive (false);
-		Time.timeScale = 1;
-		Paused = false;
+        eventSystem.SetActive (false);
+        PausePanel.SetActive (false);
+        OptionsPanel.SetActive(false);
+        ExitPanel.SetActive(false);
+        Time.timeScale = 1;
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 
-		CanvasPause.enabled = false;
-		transform.GetChild(0).gameObject.SetActive(false);
-	}
+        CanvasPause.enabled = false;
+        transform.GetChild(0).gameObject.SetActive(false);
+        Paused = false;
+    }
 
 	public void PauseGame(bool showMenu) {
 		eventSystem.SetActive (true);
-		Time.timeScale = 0;
-		Paused = true;
+        Time.timeScale = 0;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
 		if (showMenu)
 		{
-			CanvasPause.enabled = true;
+            PausePanel.SetActive(true);
+            CanvasPause.enabled = true;
 			transform.GetChild (0).gameObject.SetActive (true);
 		}
-
-	}
+        Paused = true;
+    }
 }
