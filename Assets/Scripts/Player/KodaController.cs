@@ -621,10 +621,6 @@ public class KodaController : MonoBehaviour {
                 (movementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest) {
-            Debug.Log("movementState=" + movementState);
-            Debug.Log("interactState=" + interactState);
-            Debug.Log("IsGrounded=" + IsGrounded());
-            Debug.Log("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
             inputParams.jumpRequest = false;
             inputController.SetUserRequest(inputParams);
         }
