@@ -29,6 +29,10 @@ public class InteractBehavior : MonoBehaviour {
     [SerializeField] private GameObject inflateForm;
     [SerializeField] private GameObject smokeSpawner;
 
+    [Header("RESIZE")]
+    [Space(8)]
+    [SerializeField] private float coefResize = 4;
+
 
     [Header("ABSORB")]
     [Space(8)]
@@ -123,6 +127,34 @@ public class InteractBehavior : MonoBehaviour {
             //inflateForm.transform.rotation = Quaternion.identity;
             //inflateForm.SetActive(false);
         }
+    }
+
+    public void DoResizeTiny(bool resizeTiny) {
+
+        if (resizeTiny) {
+            GameObject smoke = Instantiate(smokeSpawner, gameObject.transform.position, Quaternion.identity);
+            Destroy(smoke, 4);
+            leafHead.SetActive(false);
+
+            //gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, gameObject.transform.localScale / coefResize , Timestamp/tempMaxResize);
+            gameObject.transform.localScale = gameObject.transform.localScale / coefResize;
+            gameObject.GetComponent<ShadowDirectController>().ResizeShadow(true, coefResize);
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOrbit>().ResizeDistanceCamera(true, coefResize);
+            //ResizeDistanceCamera
+            //GameObject.FindGameObjectWithTag("Hitodama").transform.localScale = GameObject.FindGameObjectWithTag("Hitodama").transform.localScale / coefResize;
+        }
+        else {
+            GameObject smoke = Instantiate(smokeSpawner, gameObject.transform.position, Quaternion.identity);
+            Destroy(smoke, 4);
+            leafHead.SetActive(true);
+
+            //gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, gameObject.transform.localScale * coefResize , Timestamp/tempMaxResize);
+            gameObject.transform.localScale = gameObject.transform.localScale * coefResize;
+            gameObject.GetComponent<ShadowDirectController>().ResizeShadow(false, coefResize);
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOrbit>().ResizeDistanceCamera(false, coefResize);
+            //GameObject.FindGameObjectWithTag("Hitodama").transform.localScale = GameObject.FindGameObjectWithTag("Hitodama").transform.localScale * coefResize;
+        }
+
     }
 
     public void DoBeginAbsorption(GameObject absorbableObject) {
