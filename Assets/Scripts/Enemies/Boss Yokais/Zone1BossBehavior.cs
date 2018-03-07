@@ -22,7 +22,7 @@ public class Zone1BossBehavior : YokaiController {
     float timeToTravel = 10f;
     float timeStamp = 0;
 
-    [SerializeField] private float damage = 1f;
+    [SerializeField] private float projectileDamage = 1f;
     [SerializeField] private float firerate = 5f;
     private float cooldownFire = 0;
     [SerializeField] private GameObject prefabProjectile;
@@ -183,6 +183,7 @@ public class Zone1BossBehavior : YokaiController {
 
         GameObject projectile = Instantiate(prefabProjectile, spawnProjectile.transform.position, Quaternion.identity);
         projectile.transform.LookAt(target.transform);
+        projectile.GetComponent<ProjectileBehavior>().SetDamage(projectileDamage);
         Destroy(projectile, 10f);
 
     }
