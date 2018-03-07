@@ -84,7 +84,14 @@ public class CameraOrbit : MonoBehaviour {
 		/*if (Input.GetJoystickNames().Length == 0) {
 			horizontal = Input.GetAxis("Mouse X") * mouseSensitivity;
 		} else*/ {
-			horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * mouseSensitivity;
+            if (Application.isEditor) {
+                horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * mouseSensitivity;
+            }
+            else {
+                horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * 2;
+            }
+
+            
 		}
 
 		localRotation.x += horizontal;
@@ -93,7 +100,13 @@ public class CameraOrbit : MonoBehaviour {
 		/*if (Input.GetJoystickNames().Length == 0) {
 			vertical = Input.GetAxis("Mouse Y") * mouseSensitivity;
 		} else*/ {
-			vertical = Input.GetAxis("MoveCameraGamepadVertical") * mouseSensitivity;
+            if (Application.isEditor) {
+                vertical = Input.GetAxis("MoveCameraGamepadVertical") * mouseSensitivity;
+            }
+            else {
+                vertical = Input.GetAxis("MoveCameraGamepadVertical") * 2;
+            }
+
 		}
 
 

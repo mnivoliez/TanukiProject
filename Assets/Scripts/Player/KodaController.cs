@@ -31,30 +31,40 @@ public class LeafAlreadyTakenException : System.Exception {
 
 }
 
-public class Leaf {
-    public class LeafLock {
-        Leaf _parent;
-        public LeafLock(Leaf parent) {
-            _parent = parent;
-        }
-        public void Released() {
-            _parent.leafLock = null;
-            _parent = null;
-        }
-    }
+public class LeafLock {
+    public bool isUsed;
+    public InteractState parent;
 
-    private LeafLock leafLock;
-
-    public LeafLock TakeLeaf() {
-        if (leafLock == null) {
-            leafLock = new LeafLock(this);
-            return leafLock;
-        }
-        else {
-            throw new LeafAlreadyTakenException();
-        }
+    public LeafLock(bool used, InteractState parentState) {
+        this.isUsed = used;
+        this.parent = parentState;
     }
 }
+
+//public class Leaf {
+//    public class LeafLock {
+//        Leaf _parent;
+//        public LeafLock(Leaf parent) {
+//            _parent = parent;
+//        }
+//        public void Release() {
+//            _parent.leafLock = null;
+//            _parent = null;
+//        }
+//    }
+
+//    private LeafLock leafLock;
+
+//    public LeafLock TakeLeaf() {
+//        if (leafLock == null) {
+//            leafLock = new LeafLock(this);
+//            return leafLock;
+//        }
+//        else {
+//            throw new LeafAlreadyTakenException();
+//        }
+//    }
+//}
 
 
 public class Pair<T, U> {
@@ -74,7 +84,8 @@ public class KodaController : MonoBehaviour {
 
     [Header("PLAYER")]
     [Space(10)]
-    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField]
+    private float moveSpeed = 10f;
     private float speed = 10f;
     private float coefInclination;
     [SerializeField] private float airControl = 12f;
@@ -116,7 +127,7 @@ public class KodaController : MonoBehaviour {
     // Capacity
     [SerializeField] private bool permanentDoubleJumpCapacity;
     [SerializeField] private bool temporaryDoubleJumpCapacity;
-	[SerializeField] private float timerCapacity;
+    [SerializeField] private float timerCapacity;
 
     //QTE
     private float maxPowerUpGauge = 10f;
@@ -125,10 +136,12 @@ public class KodaController : MonoBehaviour {
     public Transform centerButton;
 
     // Canvas UI
-    [SerializeField] private GameObject CanvasPrefab;
-	[SerializeField] private GameObject SceneTransitionImage;
-	[SerializeField] private GameObject DeathTransitionImage;
-	[SerializeField] private GameObject VictoryTransitionImage;
+    [SerializeField] private GameObject CameraMinimap;
+    [SerializeField] private GameObject CanvasPrefabMinimap;
+    [SerializeField] private GameObject CanvasPrefabPause;
+    [SerializeField] private GameObject SceneTransitionImage;
+    [SerializeField] private GameObject DeathTransitionImage;
+    [SerializeField] private GameObject VictoryTransitionImage;
 
     //Animation
     private AnimationController animBody;
@@ -138,20 +151,27 @@ public class KodaController : MonoBehaviour {
 
     [Header("SOUND")]
     [Space(10)]
-    [SerializeField] private AudioClip jumpSound;
+    [SerializeField]
+    private AudioClip jumpSound;
+
+    private LeafLock leafLock;
+
 
     //int FPS = 40;
 
-	void Awake() {
-		Instantiate (CanvasPrefab).name = "PauseCanvas";
-		Instantiate (SceneTransitionImage).name = "SceneTransitionImage";
-		Instantiate (DeathTransitionImage).name = "DeathTransitionImage";
-		Instantiate (VictoryTransitionImage).name = "VictoryTransitionImage";
-	}
+    void Awake() {
+        Instantiate(CameraMinimap).name = "MinimapCamera";
+        Instantiate(CanvasPrefabMinimap).name = "MinimapCanvas";
+        Instantiate(CanvasPrefabPause).name = "PauseCanvas";
+        Instantiate(SceneTransitionImage).name = "SceneTransitionImage";
+        Instantiate(DeathTransitionImage).name = "DeathTransitionImage";
+        Instantiate(VictoryTransitionImage).name = "VictoryTransitionImage";
+    }
 
     private void Start() {
-		VictorySwitch.Victory = false;
+        VictorySwitch.Victory = false;
 
+        leafLock = new LeafLock(false, InteractState.Nothing);
         movementState = MovementState.Idle;
         previousMovementState = movementState;
         interactState = InteractState.Nothing;
@@ -166,7 +186,7 @@ public class KodaController : MonoBehaviour {
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
         //QualitySettings.vSyncCount = 0;
-		//Application.targetFrameRate = FPS;
+        //Application.targetFrameRate = FPS;
     }
 
     private void OnGUI() {
@@ -176,9 +196,9 @@ public class KodaController : MonoBehaviour {
     }
 
     private void Update() {
-		if (Pause.Paused) {
-			return;
-		}
+        if (Pause.Paused) {
+            return;
+        }
 
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
@@ -241,24 +261,24 @@ public class KodaController : MonoBehaviour {
                     }
                 }
             }
-		}
-		if (gO.layer == LayerMask.NameToLayer("Rock")) {
-			ContactPoint[] contacts = coll.contacts;
+        }
+        if (gO.layer == LayerMask.NameToLayer("Rock")) {
+            ContactPoint[] contacts = coll.contacts;
 
-			//Debug.Log ("contacts.Length=" + contacts.Length);
-			if (contacts.Length > 0) {
-				foreach (ContactPoint c in contacts) {
-					// c.normal.y = 0 => Vertical
-					// c.normal.y = 0.5 => 45°
-					// c.normal.y = 1 => Horizontal
-					//Debug.Log ("c.normal.y=" + c.normal.y);
-					if (c.normal.y >= 0.95f && c.normal.y < 1.01f && !_grounds.Contains(gO)) {
-						_grounds.Add(gO);
-						break;
-					}
-				}
-			}
-		}
+            //Debug.Log ("contacts.Length=" + contacts.Length);
+            if (contacts.Length > 0) {
+                foreach (ContactPoint c in contacts) {
+                    // c.normal.y = 0 => Vertical
+                    // c.normal.y = 0.5 => 45°
+                    // c.normal.y = 1 => Horizontal
+                    //Debug.Log ("c.normal.y=" + c.normal.y);
+                    if (c.normal.y >= 0.95f && c.normal.y < 1.01f && !_grounds.Contains(gO)) {
+                        _grounds.Add(gO);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     void OnCollisionStay(Collision coll) {
@@ -283,45 +303,40 @@ public class KodaController : MonoBehaviour {
                         break;
 					}
 					/*/
-					if (c.normal != null)
-					{
-						coefInclination = Vector3.Angle (c.normal, Vector3.up);
-					}
-					//*/
+                    if (c.normal != null) {
+                        coefInclination = Vector3.Angle(c.normal, Vector3.up);
+                    }
+                    //*/
                 }
                 /*/
                 if (!found) {
                     coefInclination = 0;
                 }
                 //*/
-			}
-		}
-		if (gO.layer == LayerMask.NameToLayer ("Rock"))
-		{
-			ContactPoint[] contacts = coll.contacts;
+            }
+        }
+        if (gO.layer == LayerMask.NameToLayer("Rock")) {
+            ContactPoint[] contacts = coll.contacts;
 
-			if (contacts.Length > 0)
-			{
-				//transform.rotation = Quaternion.Euler(Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up));
-				//Debug.Log("Angle:"+Vector3.Angle(contacts[0].normal, Vector3.up));
-				//coefInclination = Vector3.Angle(contacts[0].normal, Vector3.up);
-				bool found = false;
-				foreach (ContactPoint c in contacts)
-				{
-					if (c.normal != null)
-					{
-						coefInclination = Vector3.Angle (c.normal, Vector3.up);
-					}
-				}
-			}
-		}
+            if (contacts.Length > 0) {
+                //transform.rotation = Quaternion.Euler(Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up), Vector3.Angle(contacts[0].normal, Vector3.up));
+                //Debug.Log("Angle:"+Vector3.Angle(contacts[0].normal, Vector3.up));
+                //coefInclination = Vector3.Angle(contacts[0].normal, Vector3.up);
+                bool found = false;
+                foreach (ContactPoint c in contacts) {
+                    if (c.normal != null) {
+                        coefInclination = Vector3.Angle(c.normal, Vector3.up);
+                    }
+                }
+            }
+        }
     }
 
     void OnCollisionExit(Collision coll) {
         if (IsGrounded()) {
             GameObject gO = coll.gameObject;
             //Debug.Log ("gO.layer exit=" + LayerMask.LayerToName(gO.layer));
-			if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
+            if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
                 if (_grounds.Contains(gO)) {
                     _grounds.Remove(gO);
                 }
@@ -362,23 +377,23 @@ public class KodaController : MonoBehaviour {
         int angle_speed = 2; // Valeur qui va influencer la vitesse engeandree par l'angle d'inclinaison de la plateforme. Plus l'angle est faible (plateforme faiblement inclinee) plus ca ira vite de base. Donc il faut que angle_speed ne soit pas trop eleve.
         int vertical_speed = 4; // Valeur qui va influencer la vitesse ascendante ou descendante reportee sur le plan horistontal en mode barbare. C'est sans doute la valeur la plus intéressante a tweaker a condition que la vitesse ascendante reste interessante.
 
-		//Manage Inclination Ground
-		//Debug.Log(" Angle " + coefInclination + " Cos Deg2Rad " + Mathf.Cos(coefInclination * Mathf.Deg2Rad));
-		inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + angle_speed * moveSpeed * Mathf.Sin(coefInclination * Mathf.Deg2Rad) * inputVelocityAxis.normalized + vertical_speed * inputVelocityAxis.normalized * Mathf.Abs(body.velocity.y);
-		inputVelocityAxis.y = body.velocity.y;
-		if (coefInclination <= 45) {
-			//Debug.Log ("0-45");
+        //Manage Inclination Ground
+        //Debug.Log(" Angle " + coefInclination + " Cos Deg2Rad " + Mathf.Cos(coefInclination * Mathf.Deg2Rad));
+        inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + angle_speed * moveSpeed * Mathf.Sin(coefInclination * Mathf.Deg2Rad) * inputVelocityAxis.normalized + vertical_speed * inputVelocityAxis.normalized * Mathf.Abs(body.velocity.y);
+        inputVelocityAxis.y = body.velocity.y;
+        if (coefInclination <= 45) {
+            //Debug.Log ("0-45");
             //old_version
             //inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + ((inputVelocityAxis.normalized * moveSpeed) * (1 - Mathf.Cos(coefInclination * Mathf.Deg2Rad)));
             //Attention, je ne suis pas tres fiers de ce calcul. C'est tres arbitraire et pifo-metrique. Mais camarche plutot bien. Meh.
             //Formule gros merdieren approche. Bon courage. PS : inputVelocityAxis.normalized permet de garder la logique d'orientation de la vitesse à appliquer. C'est un vecteur important.
 
             //Debug.Log(" Z Speed " + inputVelocityAxis.z + " Y Speed " + inputVelocityAxis.y);
-			//Debug.Log(" Normalized Normal " + inputVelocityAxis.normalized);
-			//Debug.Log(" Angle " + coefInclination + " Cos Deg2Rad " + Mathf.Cos(coefInclination * Mathf.Deg2Rad));
+            //Debug.Log(" Normalized Normal " + inputVelocityAxis.normalized);
+            //Debug.Log(" Angle " + coefInclination + " Cos Deg2Rad " + Mathf.Cos(coefInclination * Mathf.Deg2Rad));
         }
-		else if (coefInclination >= 91) {
-			//Debug.Log ("90+");
+        else if (coefInclination >= 91) {
+            //Debug.Log ("90+");
             //inputVelocityAxis = inputVelocityAxis.normalized * moveSpeed + angle_speed * moveSpeed * Mathf.Sin(coefInclination * Mathf.Deg2Rad) * inputVelocityAxis.normalized + vertical_speed * inputVelocityAxis.normalized * Mathf.Abs(body.velocity.y);
             //inputVelocityAxis.y = body.velocity.y;
 
@@ -388,11 +403,11 @@ public class KodaController : MonoBehaviour {
 
         }
         else {
-			//Debug.Log ("45-90");
-			//Fall if Ground Inclination > 45 deg
-			//inputVelocityAxis.x = 0f;
-			inputVelocityAxis.y = -30f;
-			//inputVelocityAxis.z = 0f;
+            //Debug.Log ("45-90");
+            //Fall if Ground Inclination > 45 deg
+            //inputVelocityAxis.x = 0f;
+            inputVelocityAxis.y = -30f;
+            //inputVelocityAxis.z = 0f;
         }
 
         //AIR CONTROL
@@ -418,64 +433,91 @@ public class KodaController : MonoBehaviour {
     void InteractAccordingToInput() {
         switch (interactState) {
             case InteractState.Nothing:
-                if (previousInteractState == InteractState.MeleeAttack) {
-                    interactBehaviorCtrl.StopMeleeAttack();
+
+                if (leafLock.isUsed) {
+                    if (previousInteractState == InteractState.MeleeAttack) {
+                        interactBehaviorCtrl.StopMeleeAttack();
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
+                    }
+
+                    if (previousInteractState == InteractState.DistantAttack) {
+                        interactBehaviorCtrl.StopDistantAttack();
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
+                    }
+
+                    if (previousInteractState == InteractState.Glide) {
+                        interactBehaviorCtrl.StopGlide();
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
+                    }
+
+                    if (previousInteractState == InteractState.Inflate) {
+                        interactBehaviorCtrl.DoInflate(false);
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
+                    }
+
+                    if (interactStateParameter.canDestroyLure) {
+                        interactBehaviorCtrl.DestroyLure(actualLure);
+                        actualLure = null;
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
+                    }
+
+                    if (previousInteractState == InteractState.Tiny) {
+                        interactBehaviorCtrl.DoResizeTiny(false);
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
+                    }
+
+                    if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
+                        interactBehaviorCtrl.StopCarry(catchableObject);
+                        leafLock.isUsed = false;
+                        leafLock.parent = InteractState.Nothing;
+                    }
                 }
 
-                if (previousInteractState == InteractState.DistantAttack) {
-                    interactBehaviorCtrl.StopDistantAttack();
-                }
-
-                if (previousInteractState == InteractState.Glide) {
-                    interactBehaviorCtrl.StopGlide();
-                }
-
-                if (previousInteractState == InteractState.Inflate) {
-                    interactBehaviorCtrl.DoInflate(false);
-                }
-
-                if (interactStateParameter.canDestroyLure) {
-                    interactBehaviorCtrl.DestroyLure(actualLure);
-                    actualLure = null;
-                }
-
-                if (previousInteractState == InteractState.Tiny) {
-                    interactBehaviorCtrl.DoResizeTiny(false);
-                }
-
-                if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
-                    interactBehaviorCtrl.StopCarry(catchableObject);
-                }
                 break;
 
             case InteractState.Glide:
                 if (IsGrounded()) {
                     interactBehaviorCtrl.StopGlide();
+                    leafLock.isUsed = false;
+                    leafLock.parent = InteractState.Nothing;
                 }
                 else {
-                    // add a force to counter gravity (glide effect)
+                    if (!leafLock.isUsed || (leafLock.isUsed && leafLock.parent == InteractState.Glide)) {
+                        // add a force to counter gravity (glide effect)
 
-                    //body.AddForce(Vector3.up * glideCounterForce, ForceMode.Force);
-                    body.AddForce(Vector3.up * (glideCounterForce / body.mass) * (40 * Time.deltaTime), ForceMode.Acceleration);
-                    if (body.velocity.y < -10) {
-                        body.velocity = new Vector3(body.velocity.x, -10, body.velocity.z);
-                    }
-                    interactBehaviorCtrl.DoGlide();
-                    if (interactStateParameter.canAirStream) {
-                        body.AddForce(Vector3.up * (airStreamForce / body.mass) * (40 * Time.deltaTime) + (Vector3.up * Mathf.Abs(body.velocity.y)), ForceMode.Acceleration);
-                        if (body.velocity.y > 8.0f) {
-                            //Debug.Log ("STOP AIRSTREAM!!!");
-                            // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
-                            body.velocity = new Vector3(body.velocity.x, 8.0f, body.velocity.z);
+                        //body.AddForce(Vector3.up * glideCounterForce, ForceMode.Force);
+                        body.AddForce(Vector3.up * (glideCounterForce / body.mass) * (40 * Time.deltaTime), ForceMode.Acceleration);
+                        if (body.velocity.y < -9) {
+                            body.velocity = new Vector3(body.velocity.x, -9, body.velocity.z);
                         }
+                        interactBehaviorCtrl.DoGlide();
+                        if (interactStateParameter.canAirStream) {
+                            body.AddForce(Vector3.up * (airStreamForce / body.mass) * (40 * Time.deltaTime) + (Vector3.up * Mathf.Abs(body.velocity.y)), ForceMode.Acceleration);
+                            if (body.velocity.y > 8.0f) {
+                                //Debug.Log ("STOP AIRSTREAM!!!");
+                                // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+                                body.velocity = new Vector3(body.velocity.x, 8.0f, body.velocity.z);
+                            }
+                        }
+                        leafLock.isUsed = true;
+                        leafLock.parent = InteractState.Glide;
                     }
                 }
                 break;
 
             case InteractState.MeleeAttack:
-                if (interactStateParameter.canMeleeAttack) {
+
+                if (interactStateParameter.canMeleeAttack && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoMeleeAttack();
+                    leafLock.isUsed = true;
                 }
+
 
                 //if (Input.GetButtonDown("Fire1")) {
                 //    timerAttack = 0;
@@ -498,27 +540,31 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.DistantAttack:
-                if (interactStateParameter.canDistantAttack) {
+                if (interactStateParameter.canDistantAttack && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoDistantAttack();
+                    leafLock.isUsed = true;
                 }
                 break;
 
             case InteractState.SpawnLure:
-                if (previousInteractState == InteractState.Nothing) {
+                if (previousInteractState == InteractState.Nothing && !leafLock.isUsed) {
                     actualLure = interactBehaviorCtrl.DoSpawnLure();
+                    leafLock.isUsed = true;
                 }
                 break;
 
             case InteractState.Inflate:
-                if (previousInteractState != InteractState.Inflate) {
+                if (previousInteractState != InteractState.Inflate && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoInflate(true);
+                    leafLock.isUsed = true;
                 }
                 break;
 
             case InteractState.Tiny:
 
-                if (previousInteractState == InteractState.Nothing) {
+                if (previousInteractState == InteractState.Nothing && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoResizeTiny(true);
+                    leafLock.isUsed = true;
                 }
 
                 break;
