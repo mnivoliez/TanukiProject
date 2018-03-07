@@ -67,10 +67,8 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     IEnumerator Fading() {
-        Debug.Log("COUCOU !");
         anim.SetBool("Fade", true);
         yield return new WaitUntil(() => Black.color.a == 1);
-        Debug.Log("never !");
         anim.SetBool("Fade", false);
         animPlayer.SetBool("isDead", false);
         animPlayer.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
