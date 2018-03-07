@@ -137,7 +137,6 @@ public class KodaController : MonoBehaviour {
 
     // Canvas UI
     [SerializeField] private GameObject CameraMinimap;
-    [SerializeField] private GameObject CanvasPrefabMinimap;
     [SerializeField] private GameObject CanvasPrefabPause;
     [SerializeField] private GameObject SceneTransitionImage;
     [SerializeField] private GameObject DeathTransitionImage;
@@ -161,7 +160,6 @@ public class KodaController : MonoBehaviour {
 
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
-        Instantiate(CanvasPrefabMinimap).name = "MinimapCanvas";
         Instantiate(CanvasPrefabPause).name = "PauseCanvas";
         Instantiate(SceneTransitionImage).name = "SceneTransitionImage";
         Instantiate(DeathTransitionImage).name = "DeathTransitionImage";
