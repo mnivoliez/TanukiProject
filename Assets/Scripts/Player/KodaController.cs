@@ -137,7 +137,6 @@ public class KodaController : MonoBehaviour {
 
     // Canvas UI
     [SerializeField] private GameObject CameraMinimap;
-    [SerializeField] private GameObject CanvasPrefabMinimap;
     [SerializeField] private GameObject CanvasPrefabPause;
     [SerializeField] private GameObject SceneTransitionImage;
     [SerializeField] private GameObject DeathTransitionImage;
@@ -161,7 +160,6 @@ public class KodaController : MonoBehaviour {
 
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
-        Instantiate(CanvasPrefabMinimap).name = "MinimapCanvas";
         Instantiate(CanvasPrefabPause).name = "PauseCanvas";
         Instantiate(SceneTransitionImage).name = "SceneTransitionImage";
         Instantiate(DeathTransitionImage).name = "DeathTransitionImage";
@@ -623,10 +621,6 @@ public class KodaController : MonoBehaviour {
                 (movementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest) {
-            Debug.Log("movementState=" + movementState);
-            Debug.Log("interactState=" + interactState);
-            Debug.Log("IsGrounded=" + IsGrounded());
-            Debug.Log("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
             inputParams.jumpRequest = false;
             inputController.SetUserRequest(inputParams);
         }
