@@ -11,6 +11,7 @@ public class MoveLeaf : MonoBehaviour {
     private GameObject spawnLeaf = null;
     private Vector3 targetPosition = Vector3.zero;
     private bool arrived = false;
+    [SerializeField] private GameObject disparitionEffect;
 
     void Start() {
         currentSpeed = initialSpeed;
@@ -25,14 +26,6 @@ public class MoveLeaf : MonoBehaviour {
         }
         else {
             BackTo();
-            currentSpeed += 0.2f;
-            if (transform.position == spawnLeaf.transform.position) {
-                arrived = false;
-                currentSpeed = initialSpeed;
-				//GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDistantAttack>().SetLeafIsBack();
-				GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController> ().StopDistantAttackState ();
-				Destroy(gameObject);
-            }
         }
     }
 
@@ -42,8 +35,12 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     public void BackTo() {
-        transform.position = Vector3.MoveTowards(transform.position, spawnLeaf.transform.position, currentSpeed * Time.deltaTime);
-        transform.Rotate(Vector3.left, rotationSpeed);
+        arrived = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().StopDistantAttackState();
+        GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
+        FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
+        Destroy(FXDisappear, 2f);
+        Destroy(gameObject);
     }
 
     public void SetSpawnPosition(GameObject spPos) {
