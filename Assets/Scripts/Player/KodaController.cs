@@ -194,8 +194,9 @@ public class KodaController : MonoBehaviour {
 	}*/
 
 	private void FixedUpdate() {
-		ApplyMovement();
+	/*}
 
+	private void Update() {*/
 		if (Pause.Paused) {
 			return;
 		}
@@ -218,6 +219,7 @@ public class KodaController : MonoBehaviour {
         UpdateMoveStateParameters(inputParams);
         UpdateInteractStateParameters(inputParams);
 
+		ApplyMovement();
 		movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
 
