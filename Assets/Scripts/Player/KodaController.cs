@@ -187,20 +187,25 @@ public class KodaController : MonoBehaviour {
 		direction = transform.GetChild (0);
     }
 
-	/*private void OnGUI() {
+    /*private void OnGUI() {
 		GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
 		FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
 		Application.targetFrameRate = FPS;
 	}*/
 
-	private void FixedUpdate() {
-		ApplyMovement();
+    private void FixedUpdate() {
+        if (Pause.Paused) {
+            return;
+        }
+    }
+    private void Update() {
 
-		if (Pause.Paused) {
-			return;
-		}
 
-        if (timerCapacity > 0) {
+        if (Pause.Paused) {
+            return;
+        }
+
+        if (timerCapacity > 0){
             timerCapacity -= Time.deltaTime;
             ProgressTimerCapacity();
         }
@@ -218,7 +223,8 @@ public class KodaController : MonoBehaviour {
         UpdateMoveStateParameters(inputParams);
         UpdateInteractStateParameters(inputParams);
 
-		movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
+        ApplyMovement();
+        movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
 
         MoveAccordingToInput();
@@ -403,7 +409,7 @@ public class KodaController : MonoBehaviour {
 	}
 
 	private void ApplyMovement() {
-		transform.position += inputVelocityAxis * Time.fixedDeltaTime;
+		transform.position += inputVelocityAxis * Time.deltaTime;
 
 		//Orientation du personnage
 		orientationMove = (transform.forward * moveStateParameters.moveZ) + (transform.right * moveStateParameters.moveX);
@@ -411,7 +417,7 @@ public class KodaController : MonoBehaviour {
         if (moveStateParameters.moveX != 0 || moveStateParameters.moveZ != 0) {
             transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
-			playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
+			playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.deltaTime);
         }
     }
 
