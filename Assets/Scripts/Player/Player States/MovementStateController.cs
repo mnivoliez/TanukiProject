@@ -120,10 +120,10 @@ public class MovementStateController {
         }
         
         //DOUBLEJUMP
-        if (IsGoingUp(param) && !param.inAirStream) {
+        /*if (IsGoingUp(param) && !param.inAirStream) {
             DebugLogLocal ("fall doublejump");
             newState = MovementState.DoubleJump;
-        }
+        }*/
 
         //PUSHUP
         if (IsGoingUp(param) && param.inAirStream) {
@@ -169,11 +169,17 @@ public class MovementStateController {
     MovementState ManageDoubleJump(MovementState previous, MovementStateParam param) {
 		MovementState newState = previous;
 		//DebugLogLocal ("DoubleJump manage");
-        //IDLE
+		//IDLE
 		if (IsIdle(param)) {
 			DebugLogLocal ("DoubleJump idle");
-            newState = MovementState.Idle;
-        }
+			newState = MovementState.Idle;
+		}
+
+		//RUN
+		if (IsRunning(param)) {
+			DebugLogLocal ("DoubleJump run");
+			newState = MovementState.Run;
+		}
 
         //FAll
 		if (IsFalling(param)) {

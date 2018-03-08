@@ -187,17 +187,15 @@ public class KodaController : MonoBehaviour {
 		direction = transform.GetChild (0);
     }
 
- //   private void OnGUI() {
- //       GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
- //       FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
-	//	Application.targetFrameRate = FPS;
-	//}
+	/*private void OnGUI() {
+		GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
+		FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
+		Application.targetFrameRate = FPS;
+	}*/
 
 	private void FixedUpdate() {
 		ApplyMovement();
-	}
 
-	private void Update() {
 		if (Pause.Paused) {
 			return;
 		}
@@ -354,6 +352,7 @@ public class KodaController : MonoBehaviour {
 		{
 			Debug.Log ("IMPULSE!!!");
 			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+			transform.position += new Vector3(0, 0.1f, 0);
 			body.velocity = new Vector3 (body.velocity.x, 0.02f, body.velocity.z);
 			try
 			{
@@ -418,7 +417,6 @@ public class KodaController : MonoBehaviour {
 
     void InteractAccordingToInput() {
         switch (interactState) {
-
             case InteractState.Nothing:
                 if (leafLock.isUsed) {
                     if (previousInteractState == InteractState.MeleeAttack) {
@@ -496,7 +494,6 @@ public class KodaController : MonoBehaviour {
                     interactBehaviorCtrl.DoMeleeAttack();
                     leafLock.isUsed = true;
                 }
-
                 break;
 
             case InteractState.DistantAttack:
@@ -505,7 +502,7 @@ public class KodaController : MonoBehaviour {
                     leafLock.isUsed = true;
                 }
                 break;
-                
+
             case InteractState.SpawnLure:
                 if (previousInteractState == InteractState.Nothing && !leafLock.isUsed) {
                     actualLure = interactBehaviorCtrl.DoSpawnLure();
