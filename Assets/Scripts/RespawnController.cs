@@ -5,7 +5,20 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RespawnController : MonoBehaviour {
-    public GameObject respawnPoint;
+    [SerializeField]
+    private GameObject respawnPoint;
+
+    [SerializeField]
+    private float distanceLantern = 10.0f;
+    private GameObject lantern;
+
+    [SerializeField]
+    private float timeDelay = 1.0f;
+
+    private bool isPlayer = false;
+    private GameObject player;
+    private bool playerStop = false;
+    private float timeStop = 0.0f;
 
     private Image Black;
     private Animator anim;
@@ -17,15 +30,47 @@ public class RespawnController : MonoBehaviour {
         anim = transitionImageInstance.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update() {
+    private void FixedUpdate() {
+        lantern = GameObject.FindGameObjectWithTag("Lantern");
+        if (isPlayer) {
+            float distance = distanceLantern + 1.0f;
+            if (lantern != null) {
+                distance = Vector3.Distance(lantern.transform.position, player.transform.position);
+            }
 
+            if (distance > distanceLantern) {
+                player.GetComponent<Animator>().SetBool("isDead", true);
+                StartCoroutine(Fading(player.GetComponent<Animator>()));
+            } else {
+                Vector3 velocity = player.GetComponent<Rigidbody>().velocity;
+                if (velocity.x < 0.01f && velocity.y < 0.01f && velocity.z < 0.01f) {
+                    if (playerStop == false) {
+                        playerStop = true;
+                        timeStop = Time.time;
+                    }
+                } else {
+                    playerStop = false;
+                }
+                if (playerStop && ((Time.time - timeStop) > timeDelay)) {
+                    player.GetComponent<Animator>().SetBool("isDead", true);
+                    StartCoroutine(Fading(player.GetComponent<Animator>()));
+                }
+            }
+        }
     }
 
-    void OnCollisionEnter(Collision col) {
+    void OnCollisionStay(Collision col) {
         if (col.gameObject.CompareTag("Player")) {
-            col.gameObject.GetComponent<Animator>().SetBool("isDead", true);
-            StartCoroutine(Fading(col.gameObject.GetComponent<Animator>()));
+            isPlayer = true;
+            player = col.gameObject;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision) {
+        if (collision.gameObject.CompareTag("Player")) {
+            isPlayer = false;
+            player = null;
+            playerStop = false;
         }
     }
 
