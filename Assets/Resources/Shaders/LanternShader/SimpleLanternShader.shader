@@ -13,7 +13,6 @@ Shader "Custom/Lantern/simpleShader" {
         _MinMetallic    ("Min Metallic",        Range(0,1)) = 0.0
 
         [Space(10)][Header(Dissolve)][Space]
-		//_Color			("Color", 			Color)			= (0,0,1,1)
 		_Interpolation	("Interpolation", 	Range(0,5))		= 2
 		_Strength		("Strength", 		Range(0,1))		= 0.125
 		_Falloff		("Falloff", 		Range(0.1,2))	= 0.1
@@ -34,7 +33,8 @@ Shader "Custom/Lantern/simpleShader" {
 		#pragma surface surf Standard fullforwardshadows alpha:fade
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
-        #include "lantern_lerp.cginc"
+        #include "noiseSimplex.cginc"
+        #include "lantern_utilities.cginc"
 
 
 		sampler2D _MainTex;
@@ -59,11 +59,11 @@ Shader "Custom/Lantern/simpleShader" {
 		uniform half _Interpolation;
 		uniform half _Strength;
 		uniform half _Falloff;
+        uniform half _Offset;
 
         uniform const int _numberOfCenters;
 		uniform float4 _centers[5];
         uniform float _distances[5];
-
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -73,7 +73,7 @@ Shader "Custom/Lantern/simpleShader" {
 		UNITY_INSTANCING_BUFFER_END(Props)
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-            float l = lerp_lantern(IN.worldPos.xyz, _numberOfCenters, _centers, _distances);
+            float l = lanterns_intensity(IN.worldPos, _numberOfCenters, _centers, _distances);
 
 			// Albedo comes from a texture tinted by color
 			fixed4 mainAlbedo = tex2D (_MainTex, IN.uv_MainTex) * _MainColor;
@@ -84,15 +84,16 @@ Shader "Custom/Lantern/simpleShader" {
 
             float ns = snoise(wrldPos);
 
-            float lrp = saturate((l + ns * _Interpolation) /_Falloff);
+            float lrp = saturate((l + ns * sqrt(l) * _Interpolation) * 1 /_Falloff);
 
-            fixed4 c = lerp(mainAlbedo, minAlbedo, 1-lrp);
+            fixed4 c = lerp(mainAlbedo, minAlbedo, lrp);
 			o.Albedo = c.rgb;
 			// Metallic and smoothness come from slider variables
             fixed4 metallic = lerp(_MainMetallic, _MinMetallic, lrp);
 			o.Metallic = metallic;
             fixed4 glossiness = lerp(_MainGlossiness, _MinGlossiness, lrp);
 			o.Smoothness = glossiness;
+            o.Emission = lrp * saturate(1 - (l - _Offset)) * c.rgb * saturate(ns*_Strength * 10 + _Strength*0.5f * (1 / _Falloff));
 			o.Alpha = c.a;
 		}
 		ENDCG
