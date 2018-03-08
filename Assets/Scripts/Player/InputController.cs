@@ -27,23 +27,26 @@ public class InputController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+		inputParams.actionRequest = ActionRequest.None;
         inputParams = new InputParams();
     }
 
     // Update is called once per frame
     void Update() {
-        inputParams.Reset();
+        //inputParams.Reset();
         UpdateMoveInput();
         UpdateInteractInput();
     }
 
     void UpdateInteractInput() {
         int actionRequested = 0;
-        if (Input.GetButton("Glide") || Input.GetAxisRaw("Glide") == -1) {
+		if (Input.GetButton("Glide") || Input.GetAxisRaw("Glide") == -1) {
+			Debug.Log("input controller GLIDE!!!");
             actionRequested++;
             inputParams.actionRequest = ActionRequest.Glide;
         }
-        else {
+		else {
+			inputParams.actionRequest = ActionRequest.None;
             //Reactiver apres le playtest !!
             if (Input.GetButtonDown("Fire1")) {
                 actionRequested++;
@@ -89,8 +92,9 @@ public class InputController : MonoBehaviour {
     void UpdateMoveInput() {
         if (Input.GetButtonDown("Jump")) {
             //Debug.Log("JUMP!!!");
+			inputParams.jumpRequest = true;
         }
-        inputParams.jumpRequest = Input.GetButtonDown("Jump");
+        //inputParams.jumpRequest = Input.GetButtonDown("Jump");
         inputParams.moveX = Input.GetAxis("Horizontal");
         inputParams.moveZ = Input.GetAxis("Vertical");
     }
