@@ -447,6 +447,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1354793673440610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4482390627050012}
+  m_Layer: 10
+  m_Name: Direction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1411715831300966
 GameObject:
   m_ObjectHideFlags: 1
@@ -520,10 +535,9 @@ GameObject:
   - component: {fileID: 33378053321797562}
   - component: {fileID: 95557020187669068}
   - component: {fileID: 54757419264182960}
-  - component: {fileID: 75960245587003682}
   - component: {fileID: 114072387758638234}
   - component: {fileID: 114927902929202472}
-  - component: {fileID: 114140452120384574}
+  - component: {fileID: 114167405134644822}
   - component: {fileID: 114413189276461600}
   - component: {fileID: 114939442216126860}
   - component: {fileID: 114280008632786526}
@@ -1121,21 +1135,21 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1956274163401516}
-  m_LocalRotation: {x: -0, y: 0.03303258, z: -0, w: 0.9994543}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4481019358580742}
   - {fileID: 4385086754223622}
+  - {fileID: 4965676310179598}
   - {fileID: 4975265705104854}
   - {fileID: 4934828192710392}
-  - {fileID: 4965676310179598}
   - {fileID: 224785259239849874}
   - {fileID: 4725214603365620}
   - {fileID: 4633815367208752}
   - {fileID: 224400362593660672}
   m_Father: {fileID: 4725050285864208}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4125088347748076
 Transform:
@@ -1435,6 +1449,19 @@ Transform:
   m_Father: {fileID: 4116831124776206}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4482390627050012
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1354793673440610}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4725050285864208}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4482656440317242
 Transform:
   m_ObjectHideFlags: 1
@@ -1629,6 +1656,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4482390627050012}
   - {fileID: 4116831124776206}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1750,7 +1778,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4116831124776206}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4941490381887208
 Transform:
@@ -1776,7 +1804,7 @@ Transform:
   m_LocalScale: {x: 1.8320003, y: 1.8319991, z: 3.353505}
   m_Children: []
   m_Father: {fileID: 4116831124776206}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4970661495930208
 Transform:
@@ -1803,7 +1831,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4116831124776206}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4982514352980008
 Transform:
@@ -2481,17 +2509,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3255715, y: 1, z: 1.4903107}
   m_Center: {x: -0.0065481663, y: 0, z: 0.24515533}
---- !u!75 &75960245587003682
-ConstantForce:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1445498394530796}
-  m_Enabled: 0
-  m_Force: {x: 0, y: -160, z: 0}
-  m_RelativeForce: {x: 0, y: 0, z: 0}
-  m_Torque: {x: 0, y: 0, z: 0}
-  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!95 &95423481111878590
 Animator:
   serializedVersion: 3
@@ -2576,7 +2593,7 @@ MonoBehaviour:
   ignoredLayerMask:
     serializedVersion: 2
     m_Bits: 65024
---- !u!114 &114140452120384574
+--- !u!114 &114167405134644822
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -2584,35 +2601,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 1445498394530796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 406c56c9ae38bb8479d4f9404d918e57, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e8785fde58362145982fffd4b0210a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  animationMoveSpeed: 10
   airControl: 12
   jumpForce: 120
   airStreamForce: 200
   glideCounterForce: 160
+  slideAngleNormal: 45
+  slideAngleRock: 20
   absorbRange: {fileID: 1331904666855936}
   pivot: {fileID: 0}
   rotateSpeed: 10
-  playerModel: {fileID: 1956274163401516}
+  playerModel: {fileID: 4116831124776206}
+  direction: {fileID: 4482390627050012}
   permanentDoubleJumpCapacity: 0
   temporaryDoubleJumpCapacity: 0
   timerCapacity: 0
   canvasQTE: {fileID: 1949089745060774}
-  loadingBar: {fileID: 224821429789007854}
-  centerButton: {fileID: 224232964485227772}
-  CanvasPrefabPause: {fileID: 1445621682275490, guid: 3e3c952fc5fe2794787aaf6521cf1a02,
+  loadingBar: {fileID: 224066717798767024}
+  centerButton: {fileID: 224019091180379084}
+  CameraMinimap: {fileID: 1175779092906880, guid: cc7474822f8d8ae4a849fad7632e9b7f,
     type: 2}
-  CanvasPrefabMinimap: {fileID: 1052312618471972, guid: 6e08a1d47721e8b409904159023d9e7c,
+  CanvasPrefabPause: {fileID: 1445621682275490, guid: 3e3c952fc5fe2794787aaf6521cf1a02,
     type: 2}
   SceneTransitionImage: {fileID: 1759801994861846, guid: 8f8c8691ea4f90145b7090c9c13259ae,
     type: 2}
   DeathTransitionImage: {fileID: 1915411835969860, guid: 13d47a812d7327240b92efd7755f3047,
     type: 2}
   VictoryTransitionImage: {fileID: 1915411835969860, guid: 7538e01559e83fc4f8e674798be9e526,
-    type: 2}
-  CameraMinimap: {fileID: 1175779092906880, guid: cc7474822f8d8ae4a849fad7632e9b7f,
     type: 2}
   jumpSound: {fileID: 8300000, guid: fd41eaabd010da9448a9d7c4e2901f25, type: 3}
 --- !u!114 &114170007115717232
