@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class Pause : MonoBehaviour {
 
 	public static bool Paused = false;
-	public GameObject eventSystem;
+	//public GameObject eventSystem;
 
 	private Canvas CanvasPause;
 
@@ -21,13 +21,12 @@ public class Pause : MonoBehaviour {
 		CanvasPause = GetComponent<Canvas> ();
         CanvasPause.enabled = false;
 
-        PausePanel = eventSystem.transform.Find("Pause Panel").gameObject;
-        OptionsPanel = eventSystem.transform.Find("Options Panel").gameObject;
-        ExitPanel = eventSystem.transform.Find("Exit Panel").gameObject;
-
+        PausePanel = CanvasPause.transform.GetChild(0).gameObject;
+        OptionsPanel = CanvasPause.transform.GetChild(1).gameObject;
+        ExitPanel = CanvasPause.transform.GetChild(2).gameObject;
 
         Cursor.lockState = CursorLockMode.Locked;
-		UnpauseGame ();
+        UnpauseGame ();
 	}
 	
 	// Update is called once per frame
@@ -44,7 +43,6 @@ public class Pause : MonoBehaviour {
 	}
 
 	public void UnpauseGame() {
-        eventSystem.SetActive (false);
         PausePanel.SetActive (false);
         OptionsPanel.SetActive(false);
         ExitPanel.SetActive(false);
@@ -58,7 +56,6 @@ public class Pause : MonoBehaviour {
     }
 
 	public void PauseGame(bool showMenu) {
-		eventSystem.SetActive (true);
         Time.timeScale = 0;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
