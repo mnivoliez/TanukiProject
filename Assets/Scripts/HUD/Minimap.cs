@@ -9,20 +9,8 @@ public class Minimap : MonoBehaviour {
     private Canvas PauseCanvas;
 
     void Start() {
-
-        MinimapCanvas = GameObject.Find("MinimapCanvas").GetComponent<Canvas>();
-        PauseCanvas = GameObject.Find("PauseCanvas").GetComponent<Canvas>();
         player = GameObject.FindGameObjectWithTag("Player");
-    }
 
-    private void Update() {
-        if(PauseCanvas.transform.GetChild(0).GetChild(0).gameObject.activeSelf) {
-            MinimapCanvas.transform.GetChild(0).gameObject.SetActive(true);
-            MinimapCanvas.sortingOrder = 1;
-        }
-        else {
-            MinimapCanvas.transform.GetChild(0).gameObject.SetActive(false);
-        }
     }
 
     private void LateUpdate() {

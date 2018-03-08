@@ -63,6 +63,7 @@ public class PlayerHealth : MonoBehaviour {
     public void PlayerDie() {
         animPlayer.SetBool("isDead", true);
         StartCoroutine(Fading());
+        gameObject.GetComponent<KodaController>().ResetPlayer();
         playerHealthCurrent = playerHealthMax;
     }
 
