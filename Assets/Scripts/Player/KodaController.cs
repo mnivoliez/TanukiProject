@@ -429,6 +429,7 @@ public class KodaController : MonoBehaviour {
     }
 
     void InteractAccordingToInput() {
+       
         switch (interactState) {
             case InteractState.Nothing:
 
@@ -456,25 +457,17 @@ public class KodaController : MonoBehaviour {
                         leafLock.isUsed = false;
                         leafLock.parent = InteractState.Nothing;
                     }
-
-                    if (interactStateParameter.canDestroyLure) {
-                        interactBehaviorCtrl.DestroyLure(actualLure);
-                        actualLure = null;
-                        leafLock.isUsed = false;
-                        leafLock.parent = InteractState.Nothing;
-                    }
-
+                                        
                     if (previousInteractState == InteractState.Tiny) {
                         interactBehaviorCtrl.DoResizeTiny(false);
                         leafLock.isUsed = false;
                         leafLock.parent = InteractState.Nothing;
                     }
+                }
 
-                    if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
-                        interactBehaviorCtrl.StopCarry(catchableObject);
-                        leafLock.isUsed = false;
-                        leafLock.parent = InteractState.Nothing;
-                    }
+                if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
+                    interactBehaviorCtrl.StopCarry(catchableObject);
+                    leafLock.parent = InteractState.Nothing;
                 }
 
                 break;
@@ -516,25 +509,6 @@ public class KodaController : MonoBehaviour {
                     leafLock.isUsed = true;
                 }
 
-
-                //if (Input.GetButtonDown("Fire1")) {
-                //    timerAttack = 0;
-                //}
-
-                //if (Input.GetButton("Fire1")) {
-                //    timerAttack += Time.deltaTime;
-
-                //}
-
-                //if (Input.GetButtonUp("Fire1")) {
-                //    Debug.Log("Coucou");
-                //    if (timerAttack < 0.3) {
-                //        interactBehaviorCtrl.DoMeleeAttack();
-                //    }
-                //    else if (timerAttack >= 0.3) {
-                //        interactBehaviorCtrl.DoChargedMeleeAttack();
-                //    }
-                //}
                 break;
 
             case InteractState.DistantAttack:
@@ -543,11 +517,20 @@ public class KodaController : MonoBehaviour {
                     leafLock.isUsed = true;
                 }
                 break;
-
+                
             case InteractState.SpawnLure:
                 if (previousInteractState == InteractState.Nothing && !leafLock.isUsed) {
                     actualLure = interactBehaviorCtrl.DoSpawnLure();
                     leafLock.isUsed = true;
+                    leafLock.parent = InteractState.SpawnLure;
+                }
+                break;
+            case InteractState.DestroyLure:
+                if (previousInteractState == InteractState.Nothing && interactStateParameter.canDestroyLure) {
+                    interactBehaviorCtrl.DestroyLure(actualLure);
+                    actualLure = null;
+                    leafLock.isUsed = false;
+                    leafLock.parent = InteractState.Nothing;
                 }
                 break;
 
@@ -629,7 +612,7 @@ public class KodaController : MonoBehaviour {
     void UpdateInteractStateParameters(InputParams inputParams) {
         switch (inputParams.actionRequest) {
             case ActionRequest.Glide:
-                if (movementState == MovementState.Fall || movementState == MovementState.PushUp) {
+                if ((movementState == MovementState.Fall || movementState == MovementState.PushUp) && (!leafLock.isUsed || leafLock.parent == InteractState.Glide)) {
                     interactStateParameter.canGlide = true;
                 }
                 else {
@@ -638,34 +621,35 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.MeleeAttack:
-                if (interactState != InteractState.Glide) {
+                if (interactState != InteractState.Glide && !leafLock.isUsed) {
                     interactStateParameter.finishedMeleeAttack = false;
                     interactStateParameter.canMeleeAttack = true;
                 }
                 break;
 
             case ActionRequest.DistantAttack:
-                if (interactState != InteractState.Glide) {
+                if (interactState != InteractState.Glide && !leafLock.isUsed) {
                     interactStateParameter.finishedDistantAttack = false;
                     interactStateParameter.canDistantAttack = true;
                 }
                 break;
 
             case ActionRequest.SpawnLure:
-                if (actualLure == null) {
+                if (actualLure == null && !leafLock.isUsed) {
                     interactStateParameter.canSpawnLure = true;
                 }
                 else {
+                   
                     interactStateParameter.canDestroyLure = true;
                 }
                 break;
 
             case ActionRequest.Inflate:
-                if (IsGrounded()) interactStateParameter.canInflate = true;
+                if (IsGrounded() && !leafLock.isUsed) interactStateParameter.canInflate = true;
                 break;
 
             case ActionRequest.Resize:
-                if (IsGrounded()) interactStateParameter.canResize = true;
+                if (IsGrounded() && !leafLock.isUsed) interactStateParameter.canResize = true;
                 break;
 
             case ActionRequest.ContextualAction:
