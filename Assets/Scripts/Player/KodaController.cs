@@ -361,7 +361,7 @@ public class KodaController : MonoBehaviour {
         /* ou si maudit et pas en state jump / fall */
         //JUMP
         if (moveStateParameters.jumpRequired) {
-            Debug.Log("IMPULSE!!!");
+            //Debug.Log("IMPULSE!!!");
             // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
             body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
             SoundController.instance.PlaySingle(jumpSound);
@@ -590,7 +590,7 @@ public class KodaController : MonoBehaviour {
         if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters)) {
             moveStateParameters.position_before_fall = body.position;
             if (inputParams.jumpRequest) {
-                Debug.Log("NO JUMP!!! YOU ARE MOVING!");
+                //Debug.Log("NO JUMP!!! YOU ARE MOVING!");
             }
         }
         moveStateParameters.position = body.position;
@@ -737,11 +737,11 @@ public class KodaController : MonoBehaviour {
 
     void OnTriggerEnter(Collider collid) {
         if (collid.gameObject.CompareTag("AirStreamZone")) {
-            Debug.Log("AirStreamZone enter");
+            //Debug.Log("AirStreamZone enter");
             moveStateParameters.inAirStream = true;
         }
         if (collid.gameObject.CompareTag("AirStreamForce") && interactState == InteractState.Glide) {
-            Debug.Log("AirStreamForce enter");
+            //Debug.Log("AirStreamForce enter");
             interactStateParameter.canAirStream = true;
             /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
 			body.AddForce (Vector3.up * 80, ForceMode.Impulse);*/
@@ -750,31 +750,35 @@ public class KodaController : MonoBehaviour {
 
     void OnTriggerExit(Collider collid) {
         if (collid.gameObject.CompareTag("AirStreamZone")) {
-            Debug.Log("AirStreamZone Exit");
+            //Debug.Log("AirStreamZone Exit");
             moveStateParameters.inAirStream = false;
         }
 
         if (collid.gameObject.CompareTag("AirStreamForce")) {
-            Debug.Log("AirStreamForce Exit " + body.velocity.y);
+            //Debug.Log("AirStreamForce Exit " + body.velocity.y);
             interactStateParameter.canAirStream = false;
         }
     }
 
     void OnTriggerStay(Collider collid) {
         if (collid.gameObject.CompareTag("AirStreamZone")) {
-            if (interactState != InteractState.Glide && previousInteractState == InteractState.Glide) {
+            if (interactState != InteractState.Glide ) { //&& previousInteractState == InteractState.Glide
                 moveStateParameters.inAirStream = false;
+                //Debug.Log("In Air Stream ZONE - NO GLIDE");
             }
-            else if (interactState == InteractState.Glide && previousInteractState != InteractState.Glide) {
+            else if (interactState == InteractState.Glide ) { //&& previousInteractState != InteractState.Glide
                 moveStateParameters.inAirStream = true;
+                //Debug.Log("In Air Stream ZONE - GLIDE");
             }
         }
         if (collid.gameObject.CompareTag("AirStreamForce")) {
-            if (interactState != InteractState.Glide && previousInteractState == InteractState.Glide) {
+            if (interactState != InteractState.Glide ) { //&& previousInteractState == InteractState.Glide
                 interactStateParameter.canAirStream = false;
+                //Debug.Log("In Air Stream FORCE - NO GLIDE");
             }
-            else if (interactState == InteractState.Glide && previousInteractState != InteractState.Glide) {
+            else if (interactState == InteractState.Glide ) { //&& previousInteractState != InteractState.Glide
                 interactStateParameter.canAirStream = true;
+                //Debug.Log("In Air Stream FORCE - GLIDE");
                 /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
 				body.AddForce (Vector3.up * 10, ForceMode.Impulse);*/
             }
