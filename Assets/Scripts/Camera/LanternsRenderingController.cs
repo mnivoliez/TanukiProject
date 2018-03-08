@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LanternsRenderingController : MonoBehaviour
 {
-
     private LanternController[] _lanterns;
     private List<Vector4> _positions;
     private List<float> _distances;
