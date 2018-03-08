@@ -187,11 +187,11 @@ public class KodaController : MonoBehaviour {
 		direction = transform.GetChild (0);
     }
 
-    private void OnGUI() {
-        GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
-        FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
-		Application.targetFrameRate = FPS;
-	}
+ //   private void OnGUI() {
+ //       GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
+ //       FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
+	//	Application.targetFrameRate = FPS;
+	//}
 
 	private void FixedUpdate() {
 		ApplyMovement();
@@ -417,10 +417,9 @@ public class KodaController : MonoBehaviour {
     }
 
     void InteractAccordingToInput() {
-       
         switch (interactState) {
-            case InteractState.Nothing:
 
+            case InteractState.Nothing:
                 if (leafLock.isUsed) {
                     if (previousInteractState == InteractState.MeleeAttack) {
                         interactBehaviorCtrl.StopMeleeAttack();
@@ -445,12 +444,13 @@ public class KodaController : MonoBehaviour {
                         leafLock.isUsed = false;
                         leafLock.parent = InteractState.Nothing;
                     }
-                                        
+
                     if (previousInteractState == InteractState.Tiny) {
                         interactBehaviorCtrl.DoResizeTiny(false);
                         leafLock.isUsed = false;
                         leafLock.parent = InteractState.Nothing;
                     }
+
                 }
 
                 if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
@@ -526,6 +526,7 @@ public class KodaController : MonoBehaviour {
                 if (previousInteractState != InteractState.Inflate && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoInflate(true);
                     leafLock.isUsed = true;
+                    leafLock.parent = InteractState.Inflate;
                 }
                 break;
 
@@ -534,6 +535,7 @@ public class KodaController : MonoBehaviour {
                 if (previousInteractState == InteractState.Nothing && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoResizeTiny(true);
                     leafLock.isUsed = true;
+                    leafLock.parent = InteractState.Tiny;
                 }
 
                 break;
@@ -594,10 +596,10 @@ public class KodaController : MonoBehaviour {
                 (movementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest) {
-            Debug.Log("movementState=" + movementState);
-            Debug.Log("interactState=" + interactState);
-            Debug.Log("IsGrounded=" + IsGrounded());
-            Debug.Log("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
+            //Debug.Log("movementState=" + movementState);
+            //Debug.Log("interactState=" + interactState);
+            //Debug.Log("IsGrounded=" + IsGrounded());
+            //Debug.Log("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
             inputParams.jumpRequest = false;
             inputController.SetUserRequest(inputParams);
         }
@@ -639,11 +641,11 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.Inflate:
-                if (IsGrounded() && !leafLock.isUsed) interactStateParameter.canInflate = true;
+                if (IsGrounded() && (!leafLock.isUsed || (leafLock.isUsed && leafLock.parent == InteractState.Inflate))) interactStateParameter.canInflate = true;
                 break;
 
             case ActionRequest.Resize:
-                if (IsGrounded() && !leafLock.isUsed) interactStateParameter.canResize = true;
+                if (IsGrounded() && (!leafLock.isUsed || (leafLock.isUsed && leafLock.parent == InteractState.Tiny))) interactStateParameter.canResize = true;
                 break;
 
             case ActionRequest.ContextualAction:
@@ -811,5 +813,11 @@ public class KodaController : MonoBehaviour {
 
     private void ProgressTimerCapacity() {
         loadingBar.GetComponent<Image>().fillAmount = timerCapacity / maxPowerUpGauge;
+    }
+
+    public void ResetPlayer() {
+        leafLock.isUsed = false;
+        leafLock.parent = InteractState.Nothing;
+        interactBehaviorCtrl.ResetLeaf();
     }
 }
