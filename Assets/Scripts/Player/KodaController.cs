@@ -284,7 +284,6 @@ public class KodaController : MonoBehaviour {
 
     void OnCollisionStay(Collision coll) {
         GameObject gO = coll.gameObject;
-		inclinationNormal = Vector3.zero;
 
 		if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer ("Rock")) {
 			ContactPoint[] contacts = coll.contacts;
@@ -315,7 +314,7 @@ public class KodaController : MonoBehaviour {
 							allowedToWalk = false;
 							inclinationNormal = c.normal;
 						}
-						direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
+						//direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
 						direction.RotateAround (direction.position, Vector3.right, gO.transform.rotation.eulerAngles.x);
 						direction.RotateAround (direction.position, Vector3.forward, gO.transform.rotation.eulerAngles.z);
 					}
@@ -325,7 +324,6 @@ public class KodaController : MonoBehaviour {
     }
 
 	void OnCollisionExit(Collision coll) {
-		inclinationNormal = Vector3.zero;
 		//Debug.Log ("_grounds.count exit=" + _grounds.Count);
         if (IsGrounded()) {
             GameObject gO = coll.gameObject;
@@ -362,7 +360,7 @@ public class KodaController : MonoBehaviour {
 		//Debug.Log("moveStateParameters.jumpRequired2=" + moveStateParameters.jumpRequired);
 		if (moveStateParameters.jumpRequired)
 		{
-			Debug.Log ("IMPULSE!!!");
+			//Debug.Log ("IMPULSE!!!");
 			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
 			transform.position += new Vector3(0, 0.1f, 0);
 			body.velocity = new Vector3 (body.velocity.x, 0.02f, body.velocity.z);
@@ -418,13 +416,18 @@ public class KodaController : MonoBehaviour {
 		transform.position += inputVelocityAxis * Time.deltaTime;
 
 		//Orientation du personnage
-		orientationMove = (transform.forward * moveStateParameters.moveZ) + (transform.right * moveStateParameters.moveX);
+		orientationMove = (direction.forward * moveStateParameters.moveZ) + (direction.right * moveStateParameters.moveX);
         //Move player on direction based on camera
         if (moveStateParameters.moveX != 0 || moveStateParameters.moveZ != 0) {
             transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
-			playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.deltaTime);
-        }
+			playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
+		}
+
+		// reset variables
+		allowedToWalk = true;
+		inclinationNormal = Vector3.zero;
+		direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
     }
 
     void InteractAccordingToInput() {
@@ -501,7 +504,6 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.MeleeAttack:
-
                 if (interactStateParameter.canMeleeAttack && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoMeleeAttack();
                     leafLock.isUsed = true;
@@ -522,6 +524,7 @@ public class KodaController : MonoBehaviour {
                     leafLock.parent = InteractState.SpawnLure;
                 }
                 break;
+
             case InteractState.DestroyLure:
                 if (previousInteractState == InteractState.Nothing && interactStateParameter.canDestroyLure) {
                     interactBehaviorCtrl.DestroyLure(actualLure);
@@ -540,13 +543,11 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.Tiny:
-
                 if (previousInteractState == InteractState.Nothing && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoResizeTiny(true);
                     leafLock.isUsed = true;
                     leafLock.parent = InteractState.Tiny;
                 }
-
                 break;
 
             case InteractState.Activate:
