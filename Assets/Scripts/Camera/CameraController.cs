@@ -2,79 +2,103 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour
+{
+	[SerializeField] private float mouseSensitivity = 4f;
+	[SerializeField] private float scrollSensitivity = 2f;
+	[SerializeField] private float orbitDampening = 10f;
+	[SerializeField] private float scrollDampening = 6f;
+	[SerializeField] private float raycastDampening = 200f;
 
-    public Transform target;
-    public Vector3 offset;
-    public float rotateSpeed;
-    public Transform pivotCam;
-    public float maxViewAngle;
-    public float minViewAngle;
-    public bool useOffsetValues;
-    public bool inverseCam;
+	[SerializeField] private float minCameraDistance = 7f;
+	[SerializeField] private float maxCameraDistance = 20f;
+	[SerializeField] private float defaultCameraDistance = 15f;
 
-    void Start() {
+	[SerializeField] private float minCameraAngle = -20;
+	[SerializeField] private float maxCameraAngle = 75;
+	[SerializeField] private float defaultCameraAngle = 55;
 
-        if (!useOffsetValues) {
-            offset = target.position - transform.position;
-        }
+	[SerializeField] private LayerMask ignoredLayerMask;
 
-        pivotCam.transform.position = target.position;
-        //pivotCam.transform.parent = target;
-        pivotCam.transform.parent = null;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+	private Transform player;
+	private Transform playerTanukiModel;
 
+	private float cameraDistance = 10f;
 
-    void LateUpdate() {
-        pivotCam.transform.position = target.position;
+	private bool leftClicked = false;
+	private bool rightClicked = false;
+	private bool centerCamera = false;
 
-        float horizontal;
-        if (Input.GetJoystickNames().Length == 0) {
-            horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
-        }
-        else {
-            horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * rotateSpeed;
-        }
+	private Vector3 diffPos;
+	private Vector3 diffAngle;
 
-        pivotCam.Rotate(0, horizontal, 0);
+    void Start()
+	{
+		player = GameObject.FindGameObjectWithTag("Player").transform;
+		playerTanukiModel = player.Find ("TanukiPlayer");
 
-        float vertical;
-        if (Input.GetJoystickNames().Length == 0) {
-            vertical = Input.GetAxis("Mouse Y") * rotateSpeed;
-        }
-        else {
-            vertical = Input.GetAxis("MoveCameraGamepadVertical") * rotateSpeed;
-        }
+		transform.position = new Vector3(playerTanukiModel.transform.position.x, playerTanukiModel.transform.position.y, playerTanukiModel.transform.position.z - defaultCameraDistance);
+		transform.rotation = Quaternion.identity;
+		transform.RotateAround (playerTanukiModel.transform.position, playerTanukiModel.transform.right, defaultCameraAngle);
+	}
 
+	private void Update() {
+		if (Pause.Paused) {
+			return;
+		}
+		if (Input.GetMouseButtonDown(0)) {
+			leftClicked = true;
+		}
+		if (Input.GetMouseButtonUp(0)) {
+			leftClicked = false;
+		}
+		if (Input.GetMouseButtonDown(1)) {
+			rightClicked = true;
+		}
+		if (Input.GetMouseButtonUp(1)) {
+			rightClicked = false;
+		}
+		if (Input.GetButtonDown("CenterCamera")) {
+			Debug.Log ("CAMERA CENTER DOWN!!");
+			centerCamera = true;
+		}
+		if (Input.GetButtonDown("CenterCamera")) {
+			Debug.Log ("CAMERA CENTER UP!!");
+			centerCamera = false;
+		}
 
-        if (inverseCam) {
-            pivotCam.Rotate(vertical, 0, 0);
-        }
-        else {
-            pivotCam.Rotate(-vertical, 0, 0);
-        }
+		InputParams inputParams = player.GetComponent<InputController>().RetrieveUserRequest();
+		Vector3 playerPosNoY = playerTanukiModel.position;
+		Vector3 camPosNoY = transform.position;
 
-        float desiredYangle = pivotCam.eulerAngles.y;
-        float desiredXangle = pivotCam.eulerAngles.x;
+		playerPosNoY.y = 0;
+		camPosNoY.y = 0;
 
-        if (pivotCam.rotation.eulerAngles.x > maxViewAngle && pivotCam.rotation.eulerAngles.x < 180f) {
-            pivotCam.rotation = Quaternion.Euler(maxViewAngle, desiredYangle, 0);
-        }
-        if (pivotCam.rotation.eulerAngles.x > 180f && pivotCam.rotation.eulerAngles.x < 360f + minViewAngle) {
-            pivotCam.rotation = Quaternion.Euler(360f + minViewAngle, desiredYangle, 0);
-        }
+		float dist = Vector3.Distance (playerPosNoY, camPosNoY);
 
+		if (dist < maxCameraDistance && dist > minCameraDistance)
+		{
+		}
+		else
+		{
+			if (Mathf.Abs (inputParams.moveZ) > 0.01f)
+			{
+				transform.position = playerTanukiModel.position + diffPos;
+				transform.rotation = Quaternion.Euler (playerTanukiModel.rotation.eulerAngles + diffAngle);
+			}
+		}
 
-        Quaternion camRotation = Quaternion.Euler(desiredXangle, desiredYangle, 0);
-        transform.position = target.position - (camRotation * offset);
+		//Rotation of the camera based on Mouse Coordinates
+		float horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * mouseSensitivity;
+		float vertical = Input.GetAxis("MoveCameraGamepadVertical") * mouseSensitivity;
 
-        //transform.position = target.position - offset;
-        if (transform.position.y < target.position.y) {
-            transform.position = new Vector3(transform.position.x, target.transform.position.y, transform.position.z);
-        }
+		if (Mathf.Abs (horizontal) > 0.01f)
+		{
+			transform.RotateAround(playerTanukiModel.position, Vector3.up, horizontal * Time.deltaTime * orbitDampening);
+		}
+		diffPos = transform.position - playerTanukiModel.position;
+		diffAngle = transform.rotation.eulerAngles - playerTanukiModel.rotation.eulerAngles;
 
-        transform.LookAt(target.position);
-
-    }
+		transform.LookAt (player.position);
+	}
 }
