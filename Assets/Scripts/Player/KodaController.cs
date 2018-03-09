@@ -187,7 +187,7 @@ public class KodaController : MonoBehaviour {
 		direction = transform.GetChild (0);
     }
 
-	/*private void OnGUI() {
+    /*private void OnGUI() {
 		GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
 		FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
 		Application.targetFrameRate = FPS;
@@ -201,7 +201,11 @@ public class KodaController : MonoBehaviour {
 			return;
 		}
 
-        if (timerCapacity > 0) {
+        if (Pause.Paused) {
+            return;
+        }
+
+        if (timerCapacity > 0){
             timerCapacity -= Time.deltaTime;
             ProgressTimerCapacity();
         }
@@ -409,7 +413,7 @@ public class KodaController : MonoBehaviour {
 	}
 
 	private void ApplyMovement() {
-		transform.position += inputVelocityAxis * Time.fixedDeltaTime;
+		transform.position += inputVelocityAxis * Time.deltaTime;
 
 		//Orientation du personnage
 		orientationMove = (direction.forward * moveStateParameters.moveZ) + (direction.right * moveStateParameters.moveX);
