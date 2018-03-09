@@ -108,6 +108,7 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
 
             case InteractState.Absorb:
                 animBody.SetBool("isAbsorbing", true);
+                animBody.SetLayerWeight(1, 1);
                 break;
 
 			case InteractState.Nothing:
