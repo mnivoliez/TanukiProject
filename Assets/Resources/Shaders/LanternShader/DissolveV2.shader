@@ -1,9 +1,8 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-Shader "Custom/Lantern/complexShader" {
-
-    Properties {
-        [Header(First Texture (LIGHT))][Space]
+﻿Shader "Custom/Dissolve/World/DissolveV2"
+{
+	Properties
+	{
+		[Header(First Texture (LIGHT))][Space]
 		[NoScaleOffset]
 		_FirstTexture	("Texture", 		2D)		= "white" {}
 		_FirstLColor	("Color Bright",	Color)	= (1,1,1,1)
@@ -17,10 +16,12 @@ Shader "Custom/Lantern/complexShader" {
 
 		[Space(10)][Header(Dissolve)][Space]
 		_Color			("Color", 			Color)			= (0,0,1,1)
+		_Distance		("Distance", 		Float)			= 10
 		_Interpolation	("Interpolation", 	Range(0,5))		= 2
 		_Strength		("Strength", 		Range(0,1))		= 0.125
 		_Falloff		("Falloff", 		Range(0.1,2))	= 0.1
 		_Offset			("Offset", 			Range(-1,2))	= 0.25
+		_Center			("Center", 			Vector)			= (0,0,0,0)
 
 		[Space(10)][Header(Noise)][Space]
 		_Freq 	("Frequency", Float)	= 0.5
@@ -29,13 +30,15 @@ Shader "Custom/Lantern/complexShader" {
 		[Space(10)][Header(Toon)][Space]
 		_StepCount 	("Step",	Range(0,10))	= 3
 		_Pow	 	("Pow",		Range(0,10))	= 1
-	}
 
-	SubShader {
+	}
+	SubShader
+	{
 		Tags {"RenderType"="Opaque"}
 		LOD 100
 
-		Pass{
+		Pass
+		{
 			Name "ForwardBase"
             Tags {"LightMode"="ForwardBase"}
 
@@ -47,11 +50,10 @@ Shader "Custom/Lantern/complexShader" {
 			#pragma multi_compile_fwdbase_fullshadows
 
 			#define UNITY_PASS_FORWARDBASE
-
+			
 			#include "UnityCG.cginc"
 			#include "UnityLightingCommon.cginc"
 			#include "noiseSimplex.cginc"
-            #include "lantern_utilities.cginc"
 			#include "AutoLight.cginc"
 
 			struct appdata
@@ -70,7 +72,7 @@ Shader "Custom/Lantern/complexShader" {
 				LIGHTING_COORDS(3,4)
 			};
 
-			uniform sampler2D
+			uniform sampler2D 
 				_FirstTexture,
 				_SecondTexture
 			;
@@ -84,8 +86,9 @@ Shader "Custom/Lantern/complexShader" {
 			;
 
 			uniform half
-                _Freq,
+				_Freq,
 				_Speed,
+				_Distance,
 				_Interpolation,
 				_Strength,
 				_Falloff,
@@ -94,10 +97,8 @@ Shader "Custom/Lantern/complexShader" {
 				_Pow
 			;
 
-			uniform const int _numberOfCenters;
-		    uniform float4 _centers[5];
-            uniform float _distances[5];
-
+			uniform float4 _Center;
+			
 			v2f vert (appdata v)
 			{
 				v2f o;
@@ -108,17 +109,17 @@ Shader "Custom/Lantern/complexShader" {
 				TRANSFER_VERTEX_TO_FRAGMENT(o)
 				return o;
 			}
-
+			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				float l = lanterns_intensity(i.posWorld, _numberOfCenters, _centers, _distances);
+				float len = _Distance - length(_Center.xyz - i.posWorld.xyz);
 
 				float3 wrldPos = i.posWorld.xyz * _Freq;
 				wrldPos.y += _Time.x * _Speed;
 
 				float ns = snoise(wrldPos);
-
-				float lrp = 1 - l; //saturate((l + ns * _Interpolation) * 1/_Falloff);
+				
+				float lrp = saturate((len + ns * _Interpolation) * 1/_Falloff);
 
 				fixed4 tex1 = tex2D(_FirstTexture, i.uv0);
 				fixed4 tex2 = tex2D(_SecondTexture, i.uv0);
@@ -131,11 +132,11 @@ Shader "Custom/Lantern/complexShader" {
                 float3 diff = light * lerp(_FirstLColor.rgb,_SecondLColor.rgb, lrp);
                 float3 invDiff = (1.0 - light) * lerp(_FirstDColor.rgb, _SecondDColor.rgb, lrp);
 
-				float4 col = float4(lerp(tex1.rgb, tex2.rgb, lrp) * attenColor, 1.0);
-				float4 emissive = float4(lrp * saturate(1.0-(l-_Offset)) * col.rgb * saturate(ns*_Strength*10+_Strength*0.5f * (1.0/_Falloff)), 1);
+				float4 col = float4(lerp(tex1.rgb, tex2.rgb, 1.0-lrp) * attenColor, 1.0);
+				float4 emissive = float4(lrp * saturate(1.0-(len-_Offset)) * _Color.rgb * saturate(ns*_Strength*10+_Strength*0.5f * (1.0/_Falloff)), 1);
 				col.rgb *= diff + invDiff;
 
-				clip(lerp(tex1.a, tex2.a, lrp)-0.5);
+				clip(lerp(tex1.a, tex2.a, 1.0-lrp)-0.5);
 				return saturate(emissive + col);
 			}
 			ENDCG
@@ -156,11 +157,10 @@ Shader "Custom/Lantern/complexShader" {
             #pragma multi_compile DYNAMICLIGHTMAP_OFF DYNAMICLIGHTMAP_ON
 
 			#define UNITY_PASS_FORWARDADD
-
+			
 			#include "UnityCG.cginc"
 			#include "UnityLightingCommon.cginc"
 			#include "noiseSimplex.cginc"
-            #include "lantern_utilities.cginc"
 			#include "AutoLight.cginc"
 
 			struct appdata
@@ -179,7 +179,7 @@ Shader "Custom/Lantern/complexShader" {
 				LIGHTING_COORDS(3,4)
 			};
 
-			uniform sampler2D
+			uniform sampler2D 
 				_FirstTexture,
 				_SecondTexture
 			;
@@ -195,6 +195,7 @@ Shader "Custom/Lantern/complexShader" {
 			uniform half
 				_Freq,
 				_Speed,
+				_Distance,
 				_Interpolation,
 				_Strength,
 				_Falloff,
@@ -203,10 +204,8 @@ Shader "Custom/Lantern/complexShader" {
 				_Pow
 			;
 
-			uniform const int _numberOfCenters;
-		    uniform float4 _centers[5];
-            uniform float _distances[5];
-
+			uniform float4 _Center;
+			
 			v2f vert (appdata v)
 			{
 				v2f o;
@@ -217,17 +216,17 @@ Shader "Custom/Lantern/complexShader" {
 				TRANSFER_VERTEX_TO_FRAGMENT(o)
 				return o;
 			}
-
+			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				float l = lanterns_intensity(i.posWorld, _numberOfCenters, _centers, _distances);
+				float len = _Distance - length(_Center.xyz - i.posWorld.xyz);
 
 				float3 wrldPos = i.posWorld.xyz * _Freq;
 				wrldPos.y += _Time.x * _Speed;
 
 				float ns = snoise(wrldPos);
-
-				float lrp = saturate((l + ns * _Interpolation) * 1/_Falloff);
+				
+				float lrp = saturate((len + ns * _Interpolation) * 1/_Falloff);
 
 				fixed4 tex1 = tex2D(_FirstTexture, i.uv0);
 				fixed4 tex2 = tex2D(_SecondTexture, i.uv0);
@@ -243,7 +242,7 @@ Shader "Custom/Lantern/complexShader" {
 				float4 col = float4(lerp(tex1.rgb, tex2.rgb, 1.0-lrp) * attenColor, 1.0);
 				col.rgb *= diff + invDiff;
 
-				clip(lerp(tex1.a, tex2.a, lrp)-0.5);
+				clip(lerp(tex1.a, tex2.a, 1.0-lrp)-0.5);
 				return saturate(col);
 			}
 			ENDCG
@@ -275,7 +274,7 @@ Shader "Custom/Lantern/complexShader" {
 				TRANSFER_SHADOW_CASTER(o);
 				return o;
 			}
-
+			
 			float4 frag (v2f i) : COLOR
 			{
 				SHADOW_CASTER_FRAGMENT(i);
