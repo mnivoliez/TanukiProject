@@ -89,11 +89,11 @@ public class InputController : MonoBehaviour {
         //Debug.Log(inputParams.actionRequest);
     }
 
-    void UpdateMoveInput() {
-        if (Input.GetButtonDown("Jump")) {
-            //Debug.Log("JUMP!!!");
+	void UpdateMoveInput() {
+		if (Input.GetButtonDown("Jump")) {
+			//Debug.Log("JUMP!!!");
 			inputParams.jumpRequest = true;
-        }
+		}
         //inputParams.jumpRequest = Input.GetButtonDown("Jump");
         inputParams.moveX = Input.GetAxis("Horizontal");
         inputParams.moveZ = Input.GetAxis("Vertical");
