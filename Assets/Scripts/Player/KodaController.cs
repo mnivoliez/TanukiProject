@@ -211,20 +211,25 @@ public class KodaController : MonoBehaviour {
 
         previousMovementState = movementState;
 
-        InputParams inputParams = inputController.RetrieveUserRequest();
+		InputParams inputParams;
         //deplacements
 
         previousInteractState = interactState;
 
-        UpdateMoveStateParameters(inputParams);
-        UpdateInteractStateParameters(inputParams);
+		// get updated inputParams
+		inputParams = inputController.RetrieveUserRequest();
+		UpdateMoveStateParameters(inputParams);
 
-		ApplyMovement();
+		// get updated inputParams
+		inputParams = inputController.RetrieveUserRequest();
+		UpdateInteractStateParameters(inputParams);
+
 		movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
-        interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
+		interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
 
-        MoveAccordingToInput();
-        InteractAccordingToInput();
+		MoveAccordingToInput();
+		ApplyMovement();
+		InteractAccordingToInput();
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
@@ -350,6 +355,7 @@ public class KodaController : MonoBehaviour {
 		body.AddForce (Vector3.down * (220.0f / body.mass + 9.81f) * (40 * Time.deltaTime), ForceMode.Acceleration);
 		/* ou si maudit et pas en state jump / fall */
 		//JUMP
+		//Debug.Log("moveStateParameters.jumpRequired2=" + moveStateParameters.jumpRequired);
 		if (moveStateParameters.jumpRequired)
 		{
 			Debug.Log ("IMPULSE!!!");
@@ -580,10 +586,6 @@ public class KodaController : MonoBehaviour {
 		{
 			moveStateParameters.position_before_fall = body.position;
 		}
-		else if (inputParams.jumpRequest)
-		{
-			Debug.Log("NO JUMP!!! YOU ARE MOVING!");
-		}
         moveStateParameters.position = body.position;
         moveStateParameters.velocity = body.velocity;
         moveStateParameters.moveX = inputParams.moveX;
@@ -598,15 +600,15 @@ public class KodaController : MonoBehaviour {
             //Debug.Log("movementState=" + movementState);
             //Debug.Log("interactState=" + interactState);
             //Debug.Log("IsGrounded=" + IsGrounded());
-            //Debug.Log("moveStateParameters.jumpRequired=" + moveStateParameters.jumpRequired);
-            inputParams.jumpRequest = false;
-            inputController.SetUserRequest(inputParams);
+			//Debug.Log("moveStateParameters.jumpRequired1=" + moveStateParameters.jumpRequired);
+			inputParams.jumpRequest = false;
+			inputController.SetUserRequest(inputParams);
         }
     }
 
     void UpdateInteractStateParameters(InputParams inputParams) {
         switch (inputParams.actionRequest) {
-            case ActionRequest.Glide:
+			case ActionRequest.Glide:
                 if ((movementState == MovementState.Fall || movementState == MovementState.PushUp) && (!leafLock.isUsed || leafLock.parent == InteractState.Glide)) {
                     interactStateParameter.canGlide = true;
                 }
@@ -685,8 +687,6 @@ public class KodaController : MonoBehaviour {
                             interactStateParameter.canCarry = true;
                             objectToCarry = nearestObject;
                             //reset action so that we cannot catch and decatch due to malsynchronization
-                            inputParams.actionRequest = ActionRequest.None;
-                            inputController.SetUserRequest(inputParams);
                         }
                     }
                 }
@@ -708,7 +708,12 @@ public class KodaController : MonoBehaviour {
                 interactStateParameter.canAirStream = false;
                 nearestObject = null;
                 break;
-        }
+		}
+		if (inputParams.actionRequest != ActionRequest.Glide)
+		{
+			inputParams.actionRequest = ActionRequest.None;
+			inputController.SetUserRequest(inputParams);
+		}
     }
 
 
