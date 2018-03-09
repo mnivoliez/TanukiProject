@@ -14,7 +14,7 @@
         _Strength("Noise Emission Strength", Range(0,2)) = 0.3
     }
  
-        SubShader{
+    SubShader{
         Tags{ "RenderType" = "Opaque" }
         LOD 200
         Cull Off
