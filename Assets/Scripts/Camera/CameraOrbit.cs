@@ -8,7 +8,8 @@ public class CameraOrbit : MonoBehaviour {
     protected Transform xFromCamera;
     protected Transform xFromParent;
 
-    private GameObject player;
+	private GameObject player;
+	private Transform playerTanukiModel;
 
     protected Vector3 localRotation;
     protected float cameraDistance = 10f;
@@ -50,7 +51,8 @@ public class CameraOrbit : MonoBehaviour {
         this.xFromParent = this.transform.parent;
         cameraPositionRemember = this.xFromCamera.localPosition;
         player = GameObject.FindGameObjectWithTag("Player");
-        localRotation = new Vector3(player.transform.GetChild(0).rotation.eulerAngles.y, player.transform.GetChild(0).rotation.eulerAngles.x + 20);
+		playerTanukiModel = player.transform.Find ("TanukiPlayer");
+		localRotation = new Vector3(playerTanukiModel.rotation.eulerAngles.y, playerTanukiModel.rotation.eulerAngles.x + 20);
         xFromParent.rotation = Quaternion.Euler(localRotation.y, localRotation.x, 0);
     }
 
@@ -110,7 +112,7 @@ public class CameraOrbit : MonoBehaviour {
 
         //center Camera
         if (centerCamera) {
-            localRotation = new Vector3(player.transform.GetChild(0).rotation.eulerAngles.y, player.transform.GetChild(0).rotation.eulerAngles.x + 20);
+			localRotation = new Vector3(playerTanukiModel.rotation.eulerAngles.y, playerTanukiModel.rotation.eulerAngles.x + 20);
             Quaternion QT = Quaternion.Euler(localRotation.y, localRotation.x, 0);
             xFromParent.rotation = Quaternion.Lerp(xFromParent.rotation, QT, Time.deltaTime);
         } else {
