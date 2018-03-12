@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class GlobalFlock : MonoBehaviour {
 
     [SerializeField]
@@ -19,22 +20,31 @@ public class GlobalFlock : MonoBehaviour {
 
     private Vector3 positionOrigine;
 
-    private void Start() {
+    private void Update() {
         positionOrigine = transform.position;
         target = positionOrigine;
-        fishList = new List<GameObject>();
-        for (int i = 0; i < amount; i++) {
-            float xRandom = Random.Range(-zoneSize, zoneSize);
-            float yRandom = Random.Range(-zoneSize, zoneSize);
-            float zRandom = Random.Range(-zoneSize, zoneSize);
-            Vector3 position = new Vector3(target.x + xRandom, target.y + yRandom, target.z + zRandom);
-            GameObject obj = Instantiate(fish, position, Quaternion.identity);
-            obj.transform.parent = transform;
-            fishList.Add(obj);
+        if (amount != transform.childCount) {
+            List<GameObject> childs = new List<GameObject>();
+            foreach (Transform child in transform) {
+                childs.Add(child.gameObject);
+            }
+            foreach (GameObject go in childs) {
+                DestroyImmediate(go);
+            }
+            fishList = new List<GameObject>();
+            for (int i = 0; i < amount; i++) {
+                float xRandom = Random.Range(-zoneSize, zoneSize);
+                float yRandom = Random.Range(-zoneSize, zoneSize);
+                float zRandom = Random.Range(-zoneSize, zoneSize);
+                Vector3 position = new Vector3(target.x + xRandom, target.y + yRandom, target.z + zRandom);
+                GameObject obj = Instantiate(fish, position, Quaternion.identity);
+                obj.transform.parent = transform;
+                fishList.Add(obj);
+            }
         }
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (Vector3.Distance(positionOrigine, player.transform.position) < distanceTargetPlayer) {
             target = player.transform.position;

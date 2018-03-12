@@ -37,14 +37,8 @@ public class Flock : MonoBehaviour {
         transform.Translate(0, 0, Time.deltaTime * speed);
     }
 
-    //private void OnCollisionEnter(Collision collision) {
-    //    Vector3 direction = global.target - transform.position;
-    //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
-    //    speed = Random.Range(1.0f, speedOrigine);
-    //}
-
     void applyRules() {
-        List<GameObject> fishList = global.fishList;
+        GameObject[] fishList = GameObject.FindGameObjectsWithTag("Fish");
         Vector3 targetPos = global.target;
 
         Vector3 vcentre = Vector3.zero;
