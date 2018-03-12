@@ -13,6 +13,7 @@ public class GlobalFlock : MonoBehaviour {
     private float distanceTargetPlayer = 5.0f;
 
     public float zoneSize = 5.0f;
+    private float actualZoneSize = 5.0f;
 
     public List<GameObject> fishList;
 
@@ -22,8 +23,8 @@ public class GlobalFlock : MonoBehaviour {
 
     private void Update() {
         positionOrigine = transform.position;
-        target = positionOrigine;
-        if (amount != transform.childCount) {
+        if (amount != transform.childCount || actualZoneSize != zoneSize) {
+            actualZoneSize = zoneSize;
             List<GameObject> childs = new List<GameObject>();
             foreach (Transform child in transform) {
                 childs.Add(child.gameObject);
@@ -36,7 +37,7 @@ public class GlobalFlock : MonoBehaviour {
                 float xRandom = Random.Range(-zoneSize, zoneSize);
                 float yRandom = Random.Range(-zoneSize, zoneSize);
                 float zRandom = Random.Range(-zoneSize, zoneSize);
-                Vector3 position = new Vector3(target.x + xRandom, target.y + yRandom, target.z + zRandom);
+                Vector3 position = new Vector3(positionOrigine.x + xRandom, positionOrigine.y + yRandom, positionOrigine.z + zRandom);
                 GameObject obj = Instantiate(fish, position, Quaternion.identity);
                 obj.transform.parent = transform;
                 fishList.Add(obj);
