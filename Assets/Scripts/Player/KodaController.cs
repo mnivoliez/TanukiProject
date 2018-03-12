@@ -769,6 +769,7 @@ public class KodaController : MonoBehaviour {
             }
             else if (interactState == InteractState.Glide) { //&& previousInteractState != InteractState.Glide
                 interactStateParameter.canAirStream = true;
+                body.velocity = new Vector3(body.velocity.x, 10f, body.velocity.z);
                 //Debug.Log("In Air Stream FORCE - GLIDE");
                 /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
 				body.AddForce (Vector3.up * 10, ForceMode.Impulse);*/
