@@ -38,7 +38,10 @@ public class Flock : MonoBehaviour {
     }
 
     void applyRules() {
-        GameObject[] fishList = GameObject.FindGameObjectsWithTag("Fish");
+        List<GameObject> fishList = new List<GameObject>();
+        foreach(Transform child in transform.parent) {
+            fishList.Add(child.gameObject);
+        }
         Vector3 targetPos = global.target;
 
         Vector3 vcentre = Vector3.zero;
