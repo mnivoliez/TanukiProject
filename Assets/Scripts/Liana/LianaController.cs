@@ -10,21 +10,17 @@ public class LianaController : MonoBehaviour {
     private List<GameObject> leafs;
 
     private void Start() {
-        Vector3 localPosition = new Vector3(0f, 0f, 0f);
-        for(int i = 0; i < leafs.Count; i++) {
-            GameObject obj = Instantiate(leafs[i], Vector3.zero, leafs[i].transform.rotation);
-            obj.transform.parent = transform;
-            obj.transform.localPosition = localPosition;
-            localPosition.y = localPosition.y - step;
-        }
-    }
-
-    private void Update() {
-        Vector3 localPosition = new Vector3(0f, 0f, 0f);
-        Debug.Log(leafs.Count);
+        Vector3 position = transform.position;
+        GameObject obj_old = new GameObject();
+        GameObject obj_new = new GameObject();
         for (int i = 0; i < leafs.Count; i++) {
-            leafs[i].transform.localPosition = localPosition;
-            localPosition.y = localPosition.y - step;
+            obj_old = obj_new;
+            obj_new = Instantiate(leafs[i], position, leafs[i].transform.rotation );
+            obj_new.transform.parent = transform;
+            position.y = position.y - step;
+            if (i != 0) {
+                obj_new.GetComponent<SpringJoint>().connectedBody = obj_old.GetComponent<Rigidbody>();
+            }
         }
     }
 }
