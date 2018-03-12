@@ -119,6 +119,7 @@ public class MovementStateController {
             newState = MovementState.Run;
         }
         
+		// this is done for the bumper even if it looks weird
         //DOUBLEJUMP
         if (IsGoingUp(param) && !param.inAirStream) {
             DebugLogLocal ("fall doublejump");
@@ -169,11 +170,17 @@ public class MovementStateController {
     MovementState ManageDoubleJump(MovementState previous, MovementStateParam param) {
 		MovementState newState = previous;
 		//DebugLogLocal ("DoubleJump manage");
-        //IDLE
+		//IDLE
 		if (IsIdle(param)) {
 			DebugLogLocal ("DoubleJump idle");
-            newState = MovementState.Idle;
-        }
+			newState = MovementState.Idle;
+		}
+
+		//RUN
+		if (IsRunning(param)) {
+			DebugLogLocal ("DoubleJump run");
+			newState = MovementState.Run;
+		}
 
         //FAll
 		if (IsFalling(param)) {
