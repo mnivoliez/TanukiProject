@@ -82,35 +82,37 @@ public class Pair<T, U> {
 public class KodaController : MonoBehaviour {
 
     [Header("PLAYER")]
-	[Space(10)]
-	[SerializeField] private float moveSpeed = 10f;
-	[SerializeField] private float animationMoveSpeed = 10f;
+    [Space(10)]
+    [SerializeField]
+    private float moveSpeed = 10f;
+    [SerializeField] private float animationMoveSpeed = 10f;
     [SerializeField] private float airControl = 12f;
     [SerializeField] private float jumpForce = 120f;
     [SerializeField] private float airStreamForce = 200f;
-	[SerializeField] private float glideCounterForce = 150f;
-	[SerializeField] private float slideAngleNormal = 45f;
-	[SerializeField] private float slideAngleRock = 10f;
+    [SerializeField] private float glideCounterForce = 150f;
+    [SerializeField] private float slideAngleNormal = 45f;
+    [SerializeField] private float slideAngleRock = 10f;
     [SerializeField] private GameObject absorbRange;
 
-	private Vector3 inclinationNormal;
-	private GameObject catchableObject;
+    private Vector3 inclinationNormal;
+    private GameObject catchableObject;
     private GameObject objectToCarry;
-	private GameObject actualLure;
-	private float speed = 10f;
-	private float coefInclination;
+    private GameObject actualLure;
+    private float speed = 10f;
+    private float coefInclination;
     private List<GameObject> _grounds = new List<GameObject>();
 
     //Orientation Camera player
     [Header("CAMERA")]
     [Space(10)]
-	[SerializeField] private Transform pivot;
-	[SerializeField] private float rotateSpeed;
-	[SerializeField] private Transform playerModel;
-	[SerializeField] private Transform direction;
+    [SerializeField]
+    private Transform pivot;
+    [SerializeField] private float rotateSpeed;
+    [SerializeField] private Transform playerModel;
+    [SerializeField] private Transform direction;
 
-	private Vector3 orientationMove;
-	private Vector3 inputVelocityAxis;
+    private Vector3 orientationMove;
+    private Vector3 inputVelocityAxis;
 
     private Rigidbody body;
     private MovementState previousMovementState;
@@ -130,7 +132,7 @@ public class KodaController : MonoBehaviour {
     // Capacity
     [SerializeField] private bool permanentDoubleJumpCapacity;
     [SerializeField] private bool temporaryDoubleJumpCapacity;
-	[SerializeField] private float timerCapacity;
+    [SerializeField] private float timerCapacity;
 
     //QTE
     private float maxPowerUpGauge = 10f;
@@ -141,9 +143,9 @@ public class KodaController : MonoBehaviour {
     // Canvas UI
     [SerializeField] private GameObject CameraMinimap;
     [SerializeField] private GameObject CanvasPrefabPause;
-	[SerializeField] private GameObject SceneTransitionImage;
-	[SerializeField] private GameObject DeathTransitionImage;
-	[SerializeField] private GameObject VictoryTransitionImage;
+    [SerializeField] private GameObject SceneTransitionImage;
+    [SerializeField] private GameObject DeathTransitionImage;
+    [SerializeField] private GameObject VictoryTransitionImage;
 
     //Animation
     private AnimationController animBody;
@@ -153,7 +155,8 @@ public class KodaController : MonoBehaviour {
 
     [Header("SOUND")]
     [Space(10)]
-    [SerializeField] private AudioClip jumpSound;
+    [SerializeField]
+    private AudioClip jumpSound;
 
     private LeafLock leafLock;
 
@@ -184,7 +187,7 @@ public class KodaController : MonoBehaviour {
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
-		direction = transform.GetChild (0);
+        direction = transform.GetChild(0);
     }
 
     /*private void OnGUI() {
@@ -193,19 +196,19 @@ public class KodaController : MonoBehaviour {
 		Application.targetFrameRate = FPS;
 	}*/
 
-	private void FixedUpdate() {
-	/*}
+    private void FixedUpdate() {
+        /*}
 
-	private void Update() {*/
-		if (Pause.Paused) {
-			return;
-		}
+        private void Update() {*/
+        if (Pause.Paused) {
+            return;
+        }
 
         if (Pause.Paused) {
             return;
         }
 
-        if (timerCapacity > 0){
+        if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
             ProgressTimerCapacity();
         }
@@ -215,25 +218,25 @@ public class KodaController : MonoBehaviour {
 
         previousMovementState = movementState;
 
-		InputParams inputParams;
+        InputParams inputParams;
         //deplacements
 
         previousInteractState = interactState;
 
-		// get updated inputParams
-		inputParams = inputController.RetrieveUserRequest();
-		UpdateMoveStateParameters(inputParams);
+        // get updated inputParams
+        inputParams = inputController.RetrieveUserRequest();
+        UpdateMoveStateParameters(inputParams);
 
-		// get updated inputParams
-		inputParams = inputController.RetrieveUserRequest();
-		UpdateInteractStateParameters(inputParams);
+        // get updated inputParams
+        inputParams = inputController.RetrieveUserRequest();
+        UpdateInteractStateParameters(inputParams);
 
-		movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
-		interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
+        movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
+        interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
 
-		MoveAccordingToInput();
-		ApplyMovement();
-		InteractAccordingToInput();
+        MoveAccordingToInput();
+        ApplyMovement();
+        InteractAccordingToInput();
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
@@ -253,81 +256,74 @@ public class KodaController : MonoBehaviour {
     void OnCollisionEnter(Collision coll) {
         GameObject gO = coll.gameObject;
 
-		//Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
-		//Debug.Log ("_grounds.count enter=" + _grounds.Count);
-		if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
-			ContactPoint[] contacts = coll.contacts;
+        //Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
+        //Debug.Log ("_grounds.count enter=" + _grounds.Count);
+        if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
+            ContactPoint[] contacts = coll.contacts;
 
-			//Debug.Log ("contacts.Length=" + contacts.Length);
-			if (contacts.Length > 0) {
-				foreach (ContactPoint c in contacts) {
-					//Debug.Log ("c.normal.y=" + c.normal.y);
-					float slideAngle = 0;
-					if (gO.layer == LayerMask.NameToLayer ("Ground"))
-					{
-						slideAngle = slideAngleNormal;
-					}
-					else if (gO.layer == LayerMask.NameToLayer ("Rock"))
-					{
-						slideAngle = slideAngleRock;
-					}
-					coefInclination = Vector3.Angle (c.normal, Vector3.up);
-					//Debug.Log ("coefInclination=" + coefInclination);
-					if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f && !_grounds.Contains(gO)) {
-						_grounds.Add(gO);
-						break;
-					}
-				}
-			}
-		}
-	}
+            //Debug.Log ("contacts.Length=" + contacts.Length);
+            if (contacts.Length > 0) {
+                foreach (ContactPoint c in contacts) {
+                    //Debug.Log ("c.normal.y=" + c.normal.y);
+                    float slideAngle = 0;
+                    if (gO.layer == LayerMask.NameToLayer("Ground")) {
+                        slideAngle = slideAngleNormal;
+                    }
+                    else if (gO.layer == LayerMask.NameToLayer("Rock")) {
+                        slideAngle = slideAngleRock;
+                    }
+                    coefInclination = Vector3.Angle(c.normal, Vector3.up);
+                    //Debug.Log ("coefInclination=" + coefInclination);
+                    if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f && !_grounds.Contains(gO)) {
+                        _grounds.Add(gO);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     void OnCollisionStay(Collision coll) {
         GameObject gO = coll.gameObject;
 
-		if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer ("Rock")) {
-			ContactPoint[] contacts = coll.contacts;
+        if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
+            ContactPoint[] contacts = coll.contacts;
 
-			if (contacts.Length > 0) {
-				bool found = false;
-				foreach (ContactPoint c in contacts) {
-					if (c.normal != null)
-					{
-						float slideAngle = 0;
-						if (gO.layer == LayerMask.NameToLayer ("Ground"))
-						{
-							slideAngle = slideAngleNormal;
-						}
-						else if (gO.layer == LayerMask.NameToLayer ("Rock"))
-						{
-							slideAngle = slideAngleRock;
-						}
+            if (contacts.Length > 0) {
+                bool found = false;
+                foreach (ContactPoint c in contacts) {
+                    if (c.normal != null) {
+                        float slideAngle = 0;
+                        if (gO.layer == LayerMask.NameToLayer("Ground")) {
+                            slideAngle = slideAngleNormal;
+                        }
+                        else if (gO.layer == LayerMask.NameToLayer("Rock")) {
+                            slideAngle = slideAngleRock;
+                        }
 
-						//Debug.Log ("Ground=" + c.normal + " norm=" + c.normal.y + " name=" + gO.name + " " + Time.time);
-						coefInclination = Vector3.Angle (c.normal, Vector3.up);
-						if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f)
-						{
-							allowedToWalk = true;
-						}
-						else
-						{
-							allowedToWalk = false;
-							inclinationNormal = c.normal;
-						}
-						//direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
-						direction.RotateAround (direction.position, Vector3.right, gO.transform.rotation.eulerAngles.x);
-						direction.RotateAround (direction.position, Vector3.forward, gO.transform.rotation.eulerAngles.z);
-					}
-				}
-			}
-		}
+                        //Debug.Log ("Ground=" + c.normal + " norm=" + c.normal.y + " name=" + gO.name + " " + Time.time);
+                        coefInclination = Vector3.Angle(c.normal, Vector3.up);
+                        if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f) {
+                            allowedToWalk = true;
+                        }
+                        else {
+                            allowedToWalk = false;
+                            inclinationNormal = c.normal;
+                        }
+                        //direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
+                        direction.RotateAround(direction.position, Vector3.right, gO.transform.rotation.eulerAngles.x);
+                        direction.RotateAround(direction.position, Vector3.forward, gO.transform.rotation.eulerAngles.z);
+                    }
+                }
+            }
+        }
     }
 
-	void OnCollisionExit(Collision coll) {
-		//Debug.Log ("_grounds.count exit=" + _grounds.Count);
+    void OnCollisionExit(Collision coll) {
+        //Debug.Log ("_grounds.count exit=" + _grounds.Count);
         if (IsGrounded()) {
             GameObject gO = coll.gameObject;
-			if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
+            if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
                 if (_grounds.Contains(gO)) {
                     _grounds.Remove(gO);
                 }
@@ -349,85 +345,78 @@ public class KodaController : MonoBehaviour {
         return _grounds.Count > 0;
     }
 
-	void MoveAccordingToInput() {
-		if (coefInclination > 29.99f && coefInclination < slideAngleNormal + 0.01f)
-		{
-			body.velocity = new Vector3 (0, body.velocity.y, 0);
-		}
-		body.AddForce (Vector3.down * (220.0f / body.mass + 9.81f) * (40 * Time.deltaTime), ForceMode.Acceleration);
-		/* ou si maudit et pas en state jump / fall */
-		//JUMP
-		//Debug.Log("moveStateParameters.jumpRequired2=" + moveStateParameters.jumpRequired);
-		if (moveStateParameters.jumpRequired)
-		{
-			//Debug.Log ("IMPULSE!!!");
-			// force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
-			transform.position += new Vector3(0, 0.1f, 0);
-			body.velocity = new Vector3 (body.velocity.x, 0.02f, body.velocity.z);
-			try
-			{
-				SoundController.instance.PlaySingle (jumpSound);
-			}
-			catch
-			{
-			}
-			body.AddForce (Vector3.up * jumpForce, ForceMode.Impulse);
-		}
+    void MoveAccordingToInput() {
+        if (coefInclination > 29.99f && coefInclination < slideAngleNormal + 0.01f) {
+            body.velocity = new Vector3(0, body.velocity.y, 0);
+        }
+        body.AddForce(Vector3.down * (220.0f / body.mass + 9.81f) * (40 * Time.deltaTime), ForceMode.Acceleration);
+        /* ou si maudit et pas en state jump / fall */
+        //JUMP
+        //Debug.Log("moveStateParameters.jumpRequired2=" + moveStateParameters.jumpRequired);
+        if (moveStateParameters.jumpRequired) {
+            //Debug.Log ("IMPULSE!!!");
+            // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
+            transform.position += new Vector3(0, 0.1f, 0);
+            body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
+            try {
+                SoundController.instance.PlaySingle(jumpSound);
+            }
+            catch {
+            }
+            body.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
 
-		//Debug.Log ("allowedToWalk=" + allowedToWalk);
-		if (allowedToWalk)
-		{
-			//Debug.Log ("0-45");
-			inputVelocityAxis = 
-				(
-			    moveStateParameters.moveX * direction.right +
-			    moveStateParameters.moveZ * direction.forward
-			).normalized * moveSpeed;
-		}
-		else
-		{
-			//Debug.Log ("45-90");
-			inclinationNormal.y = 0;
-			inclinationNormal.Normalize ();
-			//Debug.Log ("inclinationNormal=" + inclinationNormal);
-			Vector3 forwardNoY = direction.forward;
-			forwardNoY.y = 0;
-			forwardNoY.Normalize ();
-			//Debug.Log ("forwardNoY=" + forwardNoY);
-			Vector3 rightNoY = direction.right;
-			rightNoY.y = 0;
-			rightNoY.Normalize ();
-			//Debug.Log ("rightNoY=" + rightNoY);
-			float scalar = Vector3.Dot (inclinationNormal, (forwardNoY * moveStateParameters.moveZ + rightNoY * moveStateParameters.moveX).normalized);
-			float factor = 1;
-			if (scalar < 0)
-			{
-				factor = 1 + scalar;
-			}
-			inputVelocityAxis = 
-				(
-			    moveStateParameters.moveX * rightNoY +
-			    moveStateParameters.moveZ * forwardNoY
-			).normalized * moveSpeed * factor;
-		}
-	}
+        //Debug.Log ("allowedToWalk=" + allowedToWalk);
+        if (allowedToWalk) {
+            //Debug.Log ("0-45");
+            inputVelocityAxis =
+                (
+                moveStateParameters.moveX * direction.right +
+                moveStateParameters.moveZ * direction.forward
+            ).normalized * moveSpeed;
+        }
+        else {
+            //Debug.Log ("45-90");
+            inclinationNormal.y = 0;
+            inclinationNormal.Normalize();
+            //Debug.Log ("inclinationNormal=" + inclinationNormal);
+            Vector3 forwardNoY = direction.forward;
+            forwardNoY.y = 0;
+            forwardNoY.Normalize();
+            //Debug.Log ("forwardNoY=" + forwardNoY);
+            Vector3 rightNoY = direction.right;
+            rightNoY.y = 0;
+            rightNoY.Normalize();
+            //Debug.Log ("rightNoY=" + rightNoY);
+            float scalar = Vector3.Dot(inclinationNormal, (forwardNoY * moveStateParameters.moveZ + rightNoY * moveStateParameters.moveX).normalized);
+            float factor = 1;
+            if (scalar < 0) {
+                factor = 1 + scalar;
+            }
+            inputVelocityAxis =
+                (
+                moveStateParameters.moveX * rightNoY +
+                moveStateParameters.moveZ * forwardNoY
+            ).normalized * moveSpeed * factor;
+        }
+    }
 
-	private void ApplyMovement() {
-		transform.position += inputVelocityAxis * Time.deltaTime;
+    private void ApplyMovement() {
+        transform.position += inputVelocityAxis * Time.deltaTime;
 
-		//Orientation du personnage
-		orientationMove = (direction.forward * moveStateParameters.moveZ) + (direction.right * moveStateParameters.moveX);
+        //Orientation du personnage
+        orientationMove = (direction.forward * moveStateParameters.moveZ) + (direction.right * moveStateParameters.moveX);
         //Move player on direction based on camera
         if (moveStateParameters.moveX != 0 || moveStateParameters.moveZ != 0) {
             transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
-			playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
-		}
+            playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
+        }
 
-		// reset variables
-		allowedToWalk = true;
-		inclinationNormal = Vector3.zero;
-		direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
+        // reset variables
+        allowedToWalk = true;
+        inclinationNormal = Vector3.zero;
+        direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
     }
 
     void InteractAccordingToInput() {
@@ -587,10 +576,9 @@ public class KodaController : MonoBehaviour {
     }
 
     void UpdateMoveStateParameters(InputParams inputParams) {
-		if (!IsGoingUp (moveStateParameters) && !IsFalling (moveStateParameters))
-		{
-			moveStateParameters.position_before_fall = body.position;
-		}
+        if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters)) {
+            moveStateParameters.position_before_fall = body.position;
+        }
         moveStateParameters.position = body.position;
         moveStateParameters.velocity = body.velocity;
         moveStateParameters.moveX = inputParams.moveX;
@@ -605,15 +593,15 @@ public class KodaController : MonoBehaviour {
             //Debug.Log("movementState=" + movementState);
             //Debug.Log("interactState=" + interactState);
             //Debug.Log("IsGrounded=" + IsGrounded());
-			//Debug.Log("moveStateParameters.jumpRequired1=" + moveStateParameters.jumpRequired);
-			inputParams.jumpRequest = false;
-			inputController.SetUserRequest(inputParams);
+            //Debug.Log("moveStateParameters.jumpRequired1=" + moveStateParameters.jumpRequired);
+            inputParams.jumpRequest = false;
+            inputController.SetUserRequest(inputParams);
         }
     }
 
     void UpdateInteractStateParameters(InputParams inputParams) {
         switch (inputParams.actionRequest) {
-			case ActionRequest.Glide:
+            case ActionRequest.Glide:
                 if ((movementState == MovementState.Fall || movementState == MovementState.PushUp) && (!leafLock.isUsed || leafLock.parent == InteractState.Glide)) {
                     interactStateParameter.canGlide = true;
                 }
@@ -641,7 +629,7 @@ public class KodaController : MonoBehaviour {
                     interactStateParameter.canSpawnLure = true;
                 }
                 else {
-                   
+
                     interactStateParameter.canDestroyLure = true;
                 }
                 break;
@@ -713,12 +701,11 @@ public class KodaController : MonoBehaviour {
                 interactStateParameter.canAirStream = false;
                 nearestObject = null;
                 break;
-		}
-		if (inputParams.actionRequest != ActionRequest.Glide)
-		{
-			inputParams.actionRequest = ActionRequest.None;
-			inputController.SetUserRequest(inputParams);
-		}
+        }
+        if (inputParams.actionRequest != ActionRequest.Glide) {
+            inputParams.actionRequest = ActionRequest.None;
+            inputController.SetUserRequest(inputParams);
+        }
     }
 
 
@@ -766,21 +753,21 @@ public class KodaController : MonoBehaviour {
 
     void OnTriggerStay(Collider collid) {
         if (collid.gameObject.CompareTag("AirStreamZone")) {
-            if (interactState != InteractState.Glide ) { //&& previousInteractState == InteractState.Glide
+            if (interactState != InteractState.Glide) { //&& previousInteractState == InteractState.Glide
                 moveStateParameters.inAirStream = false;
                 //Debug.Log("In Air Stream ZONE - NO GLIDE");
             }
-            else if (interactState == InteractState.Glide ) { //&& previousInteractState != InteractState.Glide
+            else if (interactState == InteractState.Glide) { //&& previousInteractState != InteractState.Glide
                 moveStateParameters.inAirStream = true;
                 //Debug.Log("In Air Stream ZONE - GLIDE");
             }
         }
         if (collid.gameObject.CompareTag("AirStreamForce")) {
-            if (interactState != InteractState.Glide ) { //&& previousInteractState == InteractState.Glide
+            if (interactState != InteractState.Glide) { //&& previousInteractState == InteractState.Glide
                 interactStateParameter.canAirStream = false;
                 //Debug.Log("In Air Stream FORCE - NO GLIDE");
             }
-            else if (interactState == InteractState.Glide ) { //&& previousInteractState != InteractState.Glide
+            else if (interactState == InteractState.Glide) { //&& previousInteractState != InteractState.Glide
                 interactStateParameter.canAirStream = true;
                 //Debug.Log("In Air Stream FORCE - GLIDE");
                 /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);

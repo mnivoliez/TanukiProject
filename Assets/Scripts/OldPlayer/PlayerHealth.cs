@@ -8,6 +8,11 @@ public class PlayerHealth : MonoBehaviour {
     [SerializeField] [Range(3, 7)] private float playerHealthMax = 3.0f;
     [SerializeField] [Range(0, 7)] private float playerHealthCurrent = 3.0f;
 
+    [SerializeField] private float knockBackForce = 50f;
+    [SerializeField] private float invincibleTime = 2f;
+    private float knockBackCounter;
+    private bool isInvincible = false;
+
     [SerializeField] private GameObject respawnPoint;
     [SerializeField] private GameObject deathTransition;
     private Image Black;
@@ -28,6 +33,14 @@ public class PlayerHealth : MonoBehaviour {
 
     void Update() {
 
+        if(knockBackCounter > 0) {
+            knockBackCounter -= Time.deltaTime;
+        }
+        else {
+            isInvincible = false;
+            GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
+
+        }
     }
 
     //void OnGUI() {
@@ -39,10 +52,14 @@ public class PlayerHealth : MonoBehaviour {
     //}
 
     public void LooseHP(float dmg) {
-        playerHealthCurrent = playerHealthCurrent - dmg;
-        if (playerHealthCurrent <= 0) {
-            PlayerDie();
+        if (!isInvincible) {
+            playerHealthCurrent = playerHealthCurrent - dmg;
+            KnockBack();
+            if (playerHealthCurrent <= 0) {
+                PlayerDie();
+            }
         }
+                
     }
 
     public void GainHP(float nbHP) {
@@ -65,6 +82,10 @@ public class PlayerHealth : MonoBehaviour {
         StartCoroutine(Fading());
         gameObject.GetComponent<KodaController>().ResetPlayer();
         playerHealthCurrent = playerHealthMax;
+        knockBackCounter = 0;
+        GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
+        isInvincible = false;
+
     }
 
     IEnumerator Fading() {
@@ -73,5 +94,16 @@ public class PlayerHealth : MonoBehaviour {
         anim.SetBool("Fade", false);
         animPlayer.SetBool("isDead", false);
         animPlayer.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
+    }
+
+    public void KnockBack() {
+        
+        knockBackCounter = invincibleTime;
+        Vector3 knockBackDirection = -transform.forward + Vector3.up;
+        GetComponent<Rigidbody>().AddForce(knockBackForce * knockBackDirection, ForceMode.Impulse);
+        isInvincible = true;
+        GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0.035f);
+        GetComponent<Renderer>().sharedMaterial.SetVector("_color", new Vector3(1,0,1));
+
     }
 }
