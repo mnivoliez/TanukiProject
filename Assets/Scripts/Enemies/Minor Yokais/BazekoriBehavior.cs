@@ -11,11 +11,10 @@ public class BazekoriBehavior : YokaiController {
     Vector3 bending = Vector3.up;
     float timeStamp = 0;
 
-
     void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
         rendererMat = gameObject.GetComponent<Renderer>().material;
-        
+
     }
 
     void Update() {
@@ -40,7 +39,7 @@ public class BazekoriBehavior : YokaiController {
                 }
             }
         }
-        
+
     }
 
     public override void LooseHp(float damage) {
@@ -64,7 +63,7 @@ public class BazekoriBehavior : YokaiController {
     }
 
     public override void EndHit() {
-        if(!isKnocked) rendererMat.color = Color.white;
+        if (!isKnocked) rendererMat.color = Color.white;
     }
 
     public override void Absorbed() {
@@ -85,7 +84,7 @@ public class BazekoriBehavior : YokaiController {
                 transform.localScale -= new Vector3(0.2f, 0.2f, 0.2f);
             }
             speed = speed + 0.2f;
-            transform.position = Vector3.MoveTowards(transform.position, (target.transform.position+Vector3.up), speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, (target.transform.position + Vector3.up), speed * Time.deltaTime);
             transform.Rotate(Vector3.right, rotationSpeed);
             transform.Rotate(Vector3.up, rotationSpeed);
             rotationSpeed += 2;
@@ -110,6 +109,15 @@ public class BazekoriBehavior : YokaiController {
         }
 
     }
+
+    void OnCollisionEnter(Collision col) {
+        if (col.gameObject.CompareTag("Player") && !isKnocked) {
+            col.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
+            Destroy(Instantiate(hitParticle, col.gameObject.transform.position, Quaternion.identity), 1);
+
+        }
+    }
+
 
     public void MoveToPosition() {
 

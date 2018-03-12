@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class HitodamaController : MonoBehaviour {
 
-    public GameObject spawnHitodama;
+    [SerializeField] private GameObject spawnHitodama;
+    [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private float speed = 8;
     [SerializeField] private float initialMinSize = 0.025f;
     private Renderer rendererHitodama;
     [SerializeField] private Color diffEmissionColor = new Color(0.05f, 0.12f, 0.14f);
     [SerializeField] private Color diffColor = new Color(0.11f, 0.14f, 0.14f, 0.05f);
-    [SerializeField] [Range(0,7)] int hpPlayer = 7;
-    [SerializeField] [Range(3, 7)] int hpMaxPlayer = 7;
+    private float hpPlayer = 3;
+    private float hpMaxPlayer = 3;
 
     void Start() {
         rendererHitodama = GetComponent<Renderer>();
-        Debug.Log("Color:" + rendererHitodama.material.color);
     }
 
     void FixedUpdate() {
-
+        hpPlayer = playerHealth.GetHealthCurrent();
+        hpMaxPlayer = playerHealth.GetHealthMax();
         transform.position = Vector3.Lerp(transform.position, spawnHitodama.transform.position, speed * Time.deltaTime);
         PlayerUpdateLife();
     }
