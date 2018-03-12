@@ -12,8 +12,12 @@ public class BounceEffect : MonoBehaviour {
 			Rigidbody Koda = collision.gameObject.GetComponent<Rigidbody> ();
 			//Vector3 Koda_old_velocity = Koda.velocity;
 			ContactPoint contact = collision.contacts [0];
+            Vector3 temp_orientation = - collision.contacts[0].normal.normalized;
+            temp_orientation.x = 0;
+            temp_orientation.y = temp_orientation.y / Mathf.Abs(temp_orientation.y);
+            temp_orientation.z = 0;
 
-			Koda.AddForce (-collision.contacts [0].normal * coeffRebond, ForceMode.Impulse); // 200 = coeffRebond
+			Koda.AddForce (temp_orientation * coeffRebond, ForceMode.Impulse); // 200 = coeffRebond
 		}
 		else if (collision.gameObject.CompareTag ("Lure"))
 		{
