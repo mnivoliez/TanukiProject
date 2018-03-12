@@ -46,7 +46,10 @@ public class InputController : MonoBehaviour {
             inputParams.actionRequest = ActionRequest.Glide;
         }
 		else {
-			inputParams.actionRequest = ActionRequest.None;
+			if (inputParams.actionRequest == ActionRequest.Glide)
+			{
+				inputParams.actionRequest = ActionRequest.None;
+			}
             //Reactiver apres le playtest !!
             if (Input.GetButtonDown("Fire1")) {
                 actionRequested++;
