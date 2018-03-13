@@ -60,24 +60,24 @@ public class InputController : MonoBehaviour {
                 inputParams.actionRequest = ActionRequest.DistantAttack;
             }
 
-            if (Input.GetAxisRaw("Lure") != 1) { triggerAxisInUse = false; }
+            //if (Input.GetAxisRaw("Lure") != 1) { triggerAxisInUse = false; }
 
-            if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1)) {
-                if (!triggerAxisInUse) {
-                    triggerAxisInUse = true;
-                    actionRequested++;
-                    inputParams.actionRequest = ActionRequest.SpawnLure;
-                }
-            }
+            //if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1)) {
+            //    if (!triggerAxisInUse) {
+            //        triggerAxisInUse = true;
+            //        actionRequested++;
+            //        inputParams.actionRequest = ActionRequest.SpawnLure;
+            //    }
+            //}
 
-            if (Input.GetButtonDown("Transformation")) {
-                actionRequested++;
-                inputParams.actionRequest = ActionRequest.Inflate;
-            }
-            if (Input.GetButtonDown("Resize")) {
-                actionRequested++;
-                inputParams.actionRequest = ActionRequest.Resize;
-            }
+            //if (Input.GetButtonDown("Transformation")) {
+            //    actionRequested++;
+            //    inputParams.actionRequest = ActionRequest.Inflate;
+            //}
+            //if (Input.GetButtonDown("Resize")) {
+            //    actionRequested++;
+            //    inputParams.actionRequest = ActionRequest.Resize;
+            //}
             if (Input.GetButtonDown("Fire3")) {
                 actionRequested++;
                 inputParams.actionRequest = ActionRequest.ContextualAction;
