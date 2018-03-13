@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour {
+public class PlayerHealth : MonoBehaviour
+{
 
     [SerializeField] [Range(3, 7)] private float playerHealthMax = 3.0f;
     [SerializeField] [Range(0, 7)] private float playerHealthCurrent = 3.0f;
@@ -14,8 +15,10 @@ public class PlayerHealth : MonoBehaviour {
     private Animator anim;
     private Animator animPlayer;
 
-    void Start() {
-        if(respawnPoint == null) {
+    void Start()
+    {
+        if (respawnPoint == null)
+        {
             respawnPoint = new GameObject();
             respawnPoint.transform.position = transform.position;
         }
@@ -26,7 +29,8 @@ public class PlayerHealth : MonoBehaviour {
         anim = transitionImageInstance.GetComponent<Animator>();
     }
 
-    void Update() {
+    void Update()
+    {
 
     }
 
@@ -38,35 +42,63 @@ public class PlayerHealth : MonoBehaviour {
     //    }
     //}
 
-    public void LooseHP(float dmg) {
+    public void LooseHP(float dmg)
+    {
         playerHealthCurrent = playerHealthCurrent - dmg;
-        if (playerHealthCurrent <= 0) {
+        if (playerHealthCurrent <= 0)
+        {
             PlayerDie();
         }
     }
 
-    public void GainHP(float nbHP) {
+    public void GainHP(float nbHP)
+    {
         playerHealthCurrent = playerHealthCurrent + nbHP;
-        if (playerHealthCurrent > playerHealthMax) {
+        if (playerHealthCurrent > playerHealthMax)
+        {
             playerHealthCurrent = playerHealthMax;
         }
     }
 
-    public float GetHealthCurrent() {
+    public float GetHealthCurrent()
+    {
         return playerHealthCurrent;
     }
 
-    public float GetHealthMax() {
+    public void SetCurrentHealth(float health)
+    {
+        playerHealthCurrent = health;
+    }
+
+    public float GetHealthMax()
+    {
         return playerHealthMax;
     }
 
-    public void PlayerDie() {
+    public void SetHealthMax(float health)
+    {
+        playerHealthMax = health;
+    }
+
+    public void PlayerDie()
+    {
         animPlayer.SetBool("isDead", true);
         StartCoroutine(Fading());
         playerHealthCurrent = playerHealthMax;
     }
 
-    IEnumerator Fading() {
+    public Transform GetRespawnPointPosition()
+    {
+        return respawnPoint.transform;
+    }
+
+    public void SetRespawnPointPosition(Vector3 position)
+    {
+        respawnPoint.transform.position = position;
+    }
+
+    IEnumerator Fading()
+    {
         anim.SetBool("Fade", true);
         yield return new WaitUntil(() => Black.color.a == 1);
         anim.SetBool("Fade", false);
