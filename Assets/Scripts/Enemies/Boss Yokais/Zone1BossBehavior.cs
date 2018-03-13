@@ -32,14 +32,14 @@ public class Zone1BossBehavior : YokaiController {
     private float cooldownPurchase;
     private float purchaseRate;
 
-    void Start () {
+    void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
         rendererMat = gameObject.GetComponent<Renderer>().material;
         hpMax = hp;
         AllPlatform = new GameObject[] { spawnBoss, platform1, platform2, platform3, platform4 };
     }
 
-	void Update () {
+    void Update() {
         if (!isKnocked) {
             transform.GetChild(0).transform.LookAt(target.transform);
 
@@ -55,6 +55,8 @@ public class Zone1BossBehavior : YokaiController {
             else {
                 transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
                 if (cooldownFire > firerate) {
+                    transform.GetChild(0).transform.localScale = new Vector3(1f, 0.1f, 0.5f);
+                    Invoke("OpenEye", 0.2f);
                     AttackTarget();
                     cooldownFire = 0;
                 }
@@ -77,7 +79,7 @@ public class Zone1BossBehavior : YokaiController {
         }
     }
 
-    public override void LooseHp(float damage){
+    public override void LooseHp(float damage) {
         if (!onMovement) {
             hp -= damage;
 
@@ -141,17 +143,17 @@ public class Zone1BossBehavior : YokaiController {
         startPosition = transform.position;
 
         if (numPhase == 0) {
-            if(currentPlateform == 4) {
+            if (currentPlateform == 4) {
                 currentPlateform = 0;
             }
             else {
-                currentPlateform ++;
+                currentPlateform++;
             }
         }
         else {
             int nextPlatform = Random.Range(0, 5);
 
-            while(nextPlatform == currentPlateform) {
+            while (nextPlatform == currentPlateform) {
                 nextPlatform = Random.Range(0, 5);
             }
 
@@ -159,7 +161,7 @@ public class Zone1BossBehavior : YokaiController {
         }
 
         endPosition = AllPlatform[currentPlateform].transform.position;
-        transform.LookAt(new Vector3 (AllPlatform[currentPlateform].transform.position.x, transform.position.y, AllPlatform[currentPlateform].transform.position.z));
+        transform.LookAt(new Vector3(AllPlatform[currentPlateform].transform.position.x, transform.position.y, AllPlatform[currentPlateform].transform.position.z));
         timeStamp = 0;
         timeToTravel = 10f;
         onMovement = true;
@@ -168,7 +170,7 @@ public class Zone1BossBehavior : YokaiController {
 
     public void MoveToPosition() {
 
-        if(0 < timeToTravel - timeStamp) {
+        if (0 < timeToTravel - timeStamp) {
             Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / timeToTravel);
             currentPos.y += 20 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
             transform.position = currentPos;
@@ -187,7 +189,7 @@ public class Zone1BossBehavior : YokaiController {
         Destroy(projectile, 10f);
 
     }
-    
+
     public void PurchasePlayer() {
 
         if (0 < timeToTravel - timeStamp) {
@@ -201,20 +203,20 @@ public class Zone1BossBehavior : YokaiController {
             timeStamp = 0;
             timeToTravel = 10f;
             cooldownPurchase = 0;
-            
+
         }
-        
-
     }
-
 
     public void SetFollowPlayer(bool isFollowing) {
         followPlayer = isFollowing;
         timeStamp = 0;
         timeToTravel = 10f;
         startPosition = transform.position;
-        endPosition = target.transform.position + (Vector3.up*7);
+        endPosition = target.transform.position + (Vector3.up * 7);
     }
 
+    private void OpenEye() {
+        transform.GetChild(0).transform.localScale = Vector3.one;
+    }
 
 }
