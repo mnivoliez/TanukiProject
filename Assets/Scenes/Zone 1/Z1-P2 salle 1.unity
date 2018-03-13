@@ -14306,7 +14306,7 @@ GameObject:
   - component: {fileID: 956823591}
   - component: {fileID: 956823590}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: TP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14323,7 +14323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae194cf66259237409befd65df174fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameScene: 
+  nameScene: SceneTestNPC
 --- !u!65 &956823591
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14354,7 +14354,7 @@ Transform:
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &960788228
 Prefab:
@@ -14635,6 +14635,17 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a95e21316b361044681464f5613ea9f0, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &971124537 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114072387758638234, guid: a95e21316b361044681464f5613ea9f0,
+    type: 2}
+  m_PrefabInternal: {fileID: 971124536}
+  m_Script: {fileID: 11500000, guid: 3adcc70febb357b4e98305430bb12c79, type: 3}
+--- !u!1 &971124538 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1269812155891868, guid: a95e21316b361044681464f5613ea9f0,
+    type: 2}
+  m_PrefabInternal: {fileID: 971124536}
 --- !u!1001 &973308978
 Prefab:
   m_ObjectHideFlags: 0
@@ -20650,6 +20661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coeffRebond: 200
+  bumperSound: {fileID: 0}
 --- !u!65 &1438791300
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21241,6 +21253,58 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: b9330cf2f468c804789e50bb7c58f7df, type: 3}
+--- !u!1001 &1507840838
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 45.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 15.783
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -120.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114145638267293618, guid: 24816ce9644b315449ac2e4c60f7d1e0,
+        type: 2}
+      propertyPath: playerHealth
+      value: 
+      objectReference: {fileID: 971124537}
+    - target: {fileID: 114145638267293618, guid: 24816ce9644b315449ac2e4c60f7d1e0,
+        type: 2}
+      propertyPath: spawnHitodama
+      value: 
+      objectReference: {fileID: 971124538}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1508992804
 Prefab:
   m_ObjectHideFlags: 0
@@ -24385,6 +24449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coeffRebond: 200
+  bumperSound: {fileID: 0}
 --- !u!65 &1815105232
 BoxCollider:
   m_ObjectHideFlags: 0
