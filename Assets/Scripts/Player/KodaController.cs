@@ -254,6 +254,7 @@ public class KodaController : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision coll) {
+
         GameObject gO = coll.gameObject;
 
         //Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
