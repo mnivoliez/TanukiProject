@@ -234,7 +234,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 126
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &124105200
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1342,7 +1342,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 561140900}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &144101681
 Prefab:
@@ -1399,6 +1399,55 @@ Transform:
   m_PrefabParentObject: {fileID: 4504662842871904, guid: 77cc4c8c56d3b624bb9e35df6ccf7e5e,
     type: 2}
   m_PrefabInternal: {fileID: 144101681}
+--- !u!1 &191518775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 191518776}
+  - component: {fileID: 191518778}
+  - component: {fileID: 191518777}
+  m_Layer: 4
+  m_Name: Cube
+  m_TagString: WaterBoss2
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &191518776
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 191518775}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 9.2}
+  m_LocalScale: {x: 30.355865, y: 3.5877771, z: 21.74346}
+  m_Children: []
+  m_Father: {fileID: 984486587}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &191518777
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 191518775}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &191518778
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 191518775}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &196572116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,8 +1574,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 196572116}
   m_LocalRotation: {x: -0, y: -0.08715578, z: -0, w: 0.9961947}
-  m_LocalPosition: {x: 81.11595, y: 22, z: 115.8456}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 81.11595, y: 17.8, z: 115.8456}
+  m_LocalScale: {x: 1, y: 1.2726668, z: 1}
   m_Children: []
   m_Father: {fileID: 1611171546}
   m_RootOrder: 1
@@ -1558,7 +1607,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 197592448}
   m_LocalRotation: {x: -0, y: 0.9799247, z: -0, w: -0.199368}
-  m_LocalPosition: {x: 33, y: -0.12, z: 171}
+  m_LocalPosition: {x: 33, y: 0, z: 171}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2085414576}
@@ -3294,7 +3343,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh16622
+  m_Name: pb_Mesh16466
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -3483,7 +3532,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-354144
+  m_Name: pb_Mesh16426
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -3634,6 +3683,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2085414576}
+  - {fileID: 984486587}
   - {fileID: 124105205}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -4627,6 +4677,104 @@ Transform:
   m_Father: {fileID: 2085414576}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 56, z: 0}
+--- !u!1 &788778718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 788778719}
+  - component: {fileID: 788778721}
+  - component: {fileID: 788778720}
+  m_Layer: 4
+  m_Name: Cube
+  m_TagString: WaterBoss2
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &788778719
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 788778718}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 79.2, y: 0, z: 86.5}
+  m_LocalScale: {x: 30.35587, y: 3.587777, z: 21.74346}
+  m_Children: []
+  m_Father: {fileID: 984486587}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
+--- !u!65 &788778720
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 788778718}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &788778721
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 788778718}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &797373283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 797373284}
+  - component: {fileID: 797373286}
+  - component: {fileID: 797373285}
+  m_Layer: 4
+  m_Name: Cube
+  m_TagString: WaterBoss2
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &797373284
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 797373283}
+  m_LocalRotation: {x: 0, y: 0.97992474, z: -0, w: -0.19936782}
+  m_LocalPosition: {x: 29.2, y: 0, z: 162.2}
+  m_LocalScale: {x: 30.35587, y: 3.587777, z: 21.74346}
+  m_Children: []
+  m_Father: {fileID: 984486587}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 203, z: 0}
+--- !u!65 &797373285
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 797373283}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &797373286
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 797373283}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &836382015
 Prefab:
   m_ObjectHideFlags: 0
@@ -4701,7 +4849,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-115464
+  m_Name: pb_Mesh16294
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -5021,6 +5169,39 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ceb9b7c74d2fd2d40927b9c867a8d5aa, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &984486586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 984486587}
+  m_Layer: 4
+  m_Name: Triggers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &984486587
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 984486586}
+  m_LocalRotation: {x: -0, y: 0.4694715, z: -0, w: 0.8829476}
+  m_LocalPosition: {x: -73, y: 31.5, z: -50}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 191518776}
+  - {fileID: 797373284}
+  - {fileID: 1989083116}
+  - {fileID: 788778719}
+  - {fileID: 1467905731}
+  m_Father: {fileID: 561140900}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1016914687
 Prefab:
   m_ObjectHideFlags: 0
@@ -5268,7 +5449,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-330368
+  m_Name: pb_Mesh16218
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -5467,7 +5648,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh16400
+  m_Name: pb_Mesh16124
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -5796,7 +5977,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-383778
+  m_Name: pb_Mesh16442
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -5921,6 +6102,55 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
+--- !u!1 &1467905730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1467905731}
+  - component: {fileID: 1467905733}
+  - component: {fileID: 1467905732}
+  m_Layer: 4
+  m_Name: Cube
+  m_TagString: WaterBoss2
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1467905731
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1467905730}
+  m_LocalRotation: {x: 0, y: 0.5591929, z: 0, w: 0.8290376}
+  m_LocalPosition: {x: -73.9, y: 0, z: 58.7}
+  m_LocalScale: {x: 30.35587, y: 3.587777, z: 21.74346}
+  m_Children: []
+  m_Father: {fileID: 984486587}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 68, z: 0}
+--- !u!65 &1467905732
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1467905730}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1467905733
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1467905730}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1499514919 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4818047298694508, guid: 8d8cd0b88591eb54cb62e26d09549da6,
@@ -5931,7 +6161,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh16384
+  m_Name: pb_Mesh16098
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -6953,7 +7183,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-366010
+  m_Name: pb_Mesh16244
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -7078,6 +7308,55 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
+--- !u!1 &1989083115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1989083116}
+  - component: {fileID: 1989083118}
+  - component: {fileID: 1989083117}
+  m_Layer: 4
+  m_Name: Cube
+  m_TagString: WaterBoss2
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1989083116
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1989083115}
+  m_LocalRotation: {x: 0, y: 0.9255405, z: 0, w: 0.37864867}
+  m_LocalPosition: {x: -55.1, y: 0, z: 145}
+  m_LocalScale: {x: 30.35587, y: 3.587777, z: 21.74346}
+  m_Children: []
+  m_Father: {fileID: 984486587}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 135.5, z: 0}
+--- !u!65 &1989083117
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1989083115}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1989083118
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1989083115}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &2016067535
 GameObject:
   m_ObjectHideFlags: 0
@@ -8794,6 +9073,7 @@ GameObject:
   - component: {fileID: 2113010831}
   - component: {fileID: 2113010830}
   - component: {fileID: 2113010829}
+  - component: {fileID: 2113010835}
   m_Layer: 8
   m_Name: switchWater
   m_TagString: Untagged
@@ -8913,6 +9193,26 @@ Transform:
   m_Father: {fileID: 1611171546}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2113010835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2113010828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17390acd4f2a6ae419815abb978737de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggersCascade:
+  - {fileID: 191518775}
+  - {fileID: 797373283}
+  - {fileID: 1989083115}
+  - {fileID: 788778718}
+  - {fileID: 1467905730}
+  waterObjects:
+  - {fileID: 2085414575}
+  - {fileID: 124105199}
 --- !u!1 &2132195036
 GameObject:
   m_ObjectHideFlags: 0
@@ -8925,7 +9225,7 @@ GameObject:
   - component: {fileID: 2132195038}
   - component: {fileID: 2132195037}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Boss
   m_TagString: Yokai
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8952,11 +9252,12 @@ MonoBehaviour:
   capacity: 0
   timerCapacity: 0
   damage: 1
-  timeToBump: 3
+  timeToBump: 5
   timeToKnockBack: 3
-  throwRate: 5
+  throwRateP1: 1
+  throwRateP2: 1
   stopRate: 5
-  nbRocksToThrow: 5
+  nbRocksToThrow: 6
   prefabRock: {fileID: 1258659169701658, guid: be07d156447af5446ba246dac83c45d0, type: 2}
 --- !u!54 &2132195038
 Rigidbody:
