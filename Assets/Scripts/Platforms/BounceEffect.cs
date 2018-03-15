@@ -14,7 +14,8 @@ public class BounceEffect : MonoBehaviour {
             ContactPoint contact = collision.contacts[0];
             Vector3 temp_orientation = -collision.contacts[0].normal.normalized;
             temp_orientation.x = 0;
-            temp_orientation.y = temp_orientation.y / Mathf.Abs(temp_orientation.y);
+            //temp_orientation.y = temp_orientation.y / Mathf.Abs(temp_orientation.y);
+			temp_orientation.y = (temp_orientation.y==0)?0:temp_orientation.y / Mathf.Abs(temp_orientation.y);
             temp_orientation.z = 0;
             try {
                 SoundController.instance.PlaySingle(bumperSound);
