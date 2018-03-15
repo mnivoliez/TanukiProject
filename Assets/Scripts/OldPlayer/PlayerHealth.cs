@@ -60,9 +60,10 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public float GetHealthCurrent()
-    {
-        return playerHealthCurrent;
+    public float HealthCurrent {
+        get {
+            return playerHealthCurrent;
+        }
     }
 
     public void SetCurrentHealth(float health)
