@@ -46,7 +46,10 @@ public class InputController : MonoBehaviour {
             inputParams.actionRequest = ActionRequest.Glide;
         }
 		else {
-			inputParams.actionRequest = ActionRequest.None;
+            if(inputParams.actionRequest == ActionRequest.Glide) {
+                inputParams.actionRequest = ActionRequest.None;
+            }
+			
             //Reactiver apres le playtest !!
             if (Input.GetButtonDown("Fire1")) {
                 actionRequested++;
@@ -89,11 +92,11 @@ public class InputController : MonoBehaviour {
         //Debug.Log(inputParams.actionRequest);
     }
 
-    void UpdateMoveInput() {
-        if (Input.GetButtonDown("Jump")) {
-            //Debug.Log("JUMP!!!");
+	void UpdateMoveInput() {
+		if (Input.GetButtonDown("Jump")) {
+			//Debug.Log("JUMP!!!");
 			inputParams.jumpRequest = true;
-        }
+		}
         //inputParams.jumpRequest = Input.GetButtonDown("Jump");
         inputParams.moveX = Input.GetAxis("Horizontal");
         inputParams.moveZ = Input.GetAxis("Vertical");

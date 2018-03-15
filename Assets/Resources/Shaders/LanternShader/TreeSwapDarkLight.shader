@@ -56,7 +56,7 @@ Shader "Custom/Dissolve/TreeCorrupted" {
             #include "AutoLight.cginc"
             #include "Lighting.cginc"
             #include "noiseSimplex.cginc"
-            #include "lantern_lerp.cginc"
+            #include "lantern_utilities.cginc"
             #pragma multi_compile_fwdbase_fullshadows
             #pragma only_renderers d3d9 d3d11 glcore gles n3ds wiiu
             #pragma target 3.0
@@ -123,8 +123,7 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 o.pos = UnityObjectToClipPos( v.vertex );
                 o.screenPos = o.pos;
 
-                o.lantern_lerp = lerp_lantern(o.posWorld.xyz, _numberOfCenters, _centers, _distances,
-                    _Freq, _Speed, _Interpolation, _Strength, _Falloff);
+                o.lantern_lerp = lanterns_intensity(o.posWorld.xyz, _numberOfCenters, _centers, _distances);
                 TRANSFER_VERTEX_TO_FRAGMENT(o)
                 return o;
             }
@@ -249,7 +248,7 @@ Shader "Custom/Dissolve/TreeCorrupted" {
             #include "AutoLight.cginc"
             #include "Lighting.cginc"
             #include "noiseSimplex.cginc"
-            #include "lantern_lerp.cginc"
+            #include "lantern_utilities.cginc"
             #pragma multi_compile_fwdadd_fullshadows
             #pragma only_renderers d3d9 d3d11 glcore gles n3ds wiiu
             #pragma target 3.0
@@ -315,8 +314,7 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 o.pos = UnityObjectToClipPos( v.vertex );
                 o.screenPos = o.pos;
 
-                o.lantern_lerp = lerp_lantern(o.posWorld.xyz, _numberOfCenters, _centers, _distances,
-                    _Freq, _Speed, _Interpolation, _Strength, _Falloff);
+                o.lantern_lerp = lanterns_intensity(o.posWorld.xyz, _numberOfCenters, _centers, _distances);
                 TRANSFER_VERTEX_TO_FRAGMENT(o)
                 return o;
             }
