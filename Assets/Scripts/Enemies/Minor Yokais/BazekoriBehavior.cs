@@ -111,9 +111,10 @@ public class BazekoriBehavior : YokaiController {
     }
 
     void OnCollisionEnter(Collision col) {
-        if (col.gameObject.CompareTag("Player")) {
+        if (col.gameObject.CompareTag("Player") && !isKnocked) {
             col.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
             Destroy(Instantiate(hitParticle, col.gameObject.transform.position, Quaternion.identity), 1);
+
         }
     }
 
