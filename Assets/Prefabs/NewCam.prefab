@@ -45,7 +45,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4782377084119274}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: NewCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,7 +120,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1296387528433126}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -233,14 +233,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: 4
   scrollSensitivity: 2
-  orbitDampening: 30
-  scrollDampening: 10
+  orbitDampening: 10
+  scrollDampening: 30
   raycastDampening: 10
   minCameraDistance: 4
-  maxCameraDistance: 10
+  maxCameraDistance: 15
   defaultCameraDistance: 10
-  minCameraAngle: 5
-  maxCameraAngle: 50
+  minCameraAngle: 10
+  maxCameraAngle: 40
   defaultCameraAngle: 20
   timeToCenter: 0.3
   ignoredLayerMask:
