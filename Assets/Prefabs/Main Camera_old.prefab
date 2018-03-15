@@ -43,7 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4690247991521070}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Main Camera_old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,14 +176,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e65380902c74041a30ba405c948b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  offset: {x: 0, y: -4, z: 8}
-  rotateSpeed: 2
-  pivotCam: {fileID: 4690247991521070}
-  maxViewAngle: 30
-  minViewAngle: -30
-  useOffsetValues: 1
-  inverseCam: 0
+  mouseSensitivity: 4
+  scrollSensitivity: 2
+  orbitDampening: 10
+  scrollDampening: 6
+  raycastDampening: 200
+  minCameraDistance: 7
+  maxCameraDistance: 20
+  defaultCameraDistance: 15
+  minCameraAngle: -20
+  maxCameraAngle: 75
+  defaultCameraAngle: 55
+  timeToCenter: 0
+  ignoredLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &114917812728836838
 MonoBehaviour:
   m_ObjectHideFlags: 1
