@@ -271,7 +271,7 @@ public class KodaController : MonoBehaviour {
 
             //Debug.Log ("contacts.Length=" + contacts.Length);
             if (contacts.Length > 0) {
-                SoundController.instance.PlayKodaSingle(fallSound);
+                
                 timerStepSound = 0.25f;
                 foreach (ContactPoint c in contacts) {
                     //Debug.Log ("c.normal.y=" + c.normal.y);
@@ -289,6 +289,11 @@ public class KodaController : MonoBehaviour {
                         break;
                     }
                 }
+
+                //Uncomment when koda's collider will be change
+                //if(_grounds.Count == 1) {
+                //    SoundController.instance.PlayKodaSingle(fallSound);
+                //}
             }
         }
     }
