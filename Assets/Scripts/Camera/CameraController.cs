@@ -60,6 +60,7 @@ public class CameraController : MonoBehaviour
 
 	private float centerTime = 0;
 	private Vector3 centerCamPos;
+	private Vector3 centerCamDirection;
 	private Quaternion centerCamRot;
 
     void Start()
@@ -125,6 +126,7 @@ public class CameraController : MonoBehaviour
 			if (!centerCamera)
 			{
 				centerTime = Time.time;
+				centerCamDirection = playerTanukiModel.forward;
 				centerCamPos = camBase.position;
 				centerCamRot = camBase.rotation;
 				centerCamera = true;
@@ -149,7 +151,7 @@ public class CameraController : MonoBehaviour
 			if (diffTime < timeToCenter + 0.1f)
 			{
 				Debug.Log ("CAMERA CENTER BEGIN!!");
-				Vector3 resetPos = playerTanukiModel.position + Vector3.up * defaultCameraHeight - playerTanukiModel.forward * defaultCameraDistance;
+				Vector3 resetPos = playerTanukiModel.position + Vector3.up * defaultCameraHeight - centerCamDirection * defaultCameraDistance;
 				camBase.position = Vector3.Lerp (centerCamPos, resetPos, Mathf.Clamp01(diffTime) / timeToCenter);
 				camBase.rotation = Quaternion.Lerp (centerCamRot, Quaternion.identity, Mathf.Clamp01(diffTime) / timeToCenter);
 			}
