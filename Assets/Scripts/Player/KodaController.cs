@@ -105,11 +105,10 @@ public class KodaController : MonoBehaviour {
     //Orientation Camera player
     [Header("CAMERA")]
     [Space(10)]
-    [SerializeField]
-    private Transform pivot;
-    [SerializeField] private float rotateSpeed;
-    [SerializeField] private Transform playerModel;
-    [SerializeField] private Transform direction;
+	//[SerializeField] private Transform pivot;
+	[SerializeField] private float rotateSpeed;
+	[SerializeField] private Transform playerModel;
+	[SerializeField] private Transform direction;
 
     private Vector3 orientationMove;
     private Vector3 inputVelocityAxis;
@@ -196,7 +195,7 @@ public class KodaController : MonoBehaviour {
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
-        direction = transform.GetChild(0);
+		direction = transform.Find("Direction");
     }
 
     /*private void OnGUI() {
@@ -272,7 +271,7 @@ public class KodaController : MonoBehaviour {
 
             //Debug.Log ("contacts.Length=" + contacts.Length);
             if (contacts.Length > 0) {
-                SoundController.instance.PlayKodaSingle(fallSound);
+                
                 timerStepSound = 0.25f;
                 foreach (ContactPoint c in contacts) {
                     //Debug.Log ("c.normal.y=" + c.normal.y);
@@ -290,6 +289,11 @@ public class KodaController : MonoBehaviour {
                         break;
                     }
                 }
+
+                //Uncomment when koda's collider will be change
+                //if(_grounds.Count == 1) {
+                //    SoundController.instance.PlayKodaSingle(fallSound);
+                //}
             }
         }
     }
@@ -424,7 +428,7 @@ public class KodaController : MonoBehaviour {
         orientationMove = (direction.forward * moveStateParameters.moveZ) + (direction.right * moveStateParameters.moveX);
         //Move player on direction based on camera
         if (moveStateParameters.moveX != 0 || moveStateParameters.moveZ != 0) {
-            transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
+            transform.rotation = Quaternion.Euler(0, direction.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
         }
