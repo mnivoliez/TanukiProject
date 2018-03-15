@@ -105,11 +105,10 @@ public class KodaController : MonoBehaviour {
     //Orientation Camera player
     [Header("CAMERA")]
     [Space(10)]
-    [SerializeField]
-    private Transform pivot;
-    [SerializeField] private float rotateSpeed;
-    [SerializeField] private Transform playerModel;
-    [SerializeField] private Transform direction;
+	//[SerializeField] private Transform pivot;
+	[SerializeField] private float rotateSpeed;
+	[SerializeField] private Transform playerModel;
+	[SerializeField] private Transform direction;
 
     private Vector3 orientationMove;
     private Vector3 inputVelocityAxis;
@@ -155,8 +154,16 @@ public class KodaController : MonoBehaviour {
 
     [Header("SOUND")]
     [Space(10)]
-    [SerializeField]
-    private AudioClip jumpSound;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip footStepSound1;
+    [SerializeField] private AudioClip footStepSound2;
+    [SerializeField] private AudioClip footStepSound3;
+    private AudioClip[] allFootStepSound;
+    [SerializeField] private AudioClip fallSound;
+    [SerializeField] private AudioClip glideSound;
+    [SerializeField] private AudioClip pushUpSound;
+    private float timerStepSound;
+
 
     private LeafLock leafLock;
 
@@ -172,6 +179,7 @@ public class KodaController : MonoBehaviour {
 
     private void Start() {
         VictorySwitch.Victory = false;
+        allFootStepSound = new AudioClip[]{ footStepSound1, footStepSound2, footStepSound3 };
 
         leafLock = new LeafLock(false, InteractState.Nothing);
         movementState = MovementState.Idle;
@@ -187,7 +195,7 @@ public class KodaController : MonoBehaviour {
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
-        direction = transform.GetChild(0);
+		direction = transform.Find("Direction");
     }
 
     /*private void OnGUI() {
@@ -263,6 +271,8 @@ public class KodaController : MonoBehaviour {
 
             //Debug.Log ("contacts.Length=" + contacts.Length);
             if (contacts.Length > 0) {
+                
+                timerStepSound = 0.25f;
                 foreach (ContactPoint c in contacts) {
                     //Debug.Log ("c.normal.y=" + c.normal.y);
                     float slideAngle = 0;
@@ -279,6 +289,11 @@ public class KodaController : MonoBehaviour {
                         break;
                     }
                 }
+
+                //Uncomment when koda's collider will be change
+                //if(_grounds.Count == 1) {
+                //    SoundController.instance.PlayKodaSingle(fallSound);
+                //}
             }
         }
     }
@@ -291,6 +306,11 @@ public class KodaController : MonoBehaviour {
 
             if (contacts.Length > 0) {
                 bool found = false;
+                timerStepSound -= Time.deltaTime;
+                if(timerStepSound <= 0 && speed > 0) {
+                    SoundController.instance.RandomizeFX(allFootStepSound);
+                    timerStepSound = 0.25f;
+                }
                 foreach (ContactPoint c in contacts) {
                     if (c.normal != null) {
                         float slideAngle = 0;
@@ -359,7 +379,7 @@ public class KodaController : MonoBehaviour {
             transform.position += new Vector3(0, 0.1f, 0);
             body.velocity = new Vector3(body.velocity.x, 0.02f, body.velocity.z);
             try {
-                SoundController.instance.PlaySingle(jumpSound);
+                SoundController.instance.PlayKodaSingle(jumpSound);
             }
             catch {
             }
@@ -408,7 +428,7 @@ public class KodaController : MonoBehaviour {
         orientationMove = (direction.forward * moveStateParameters.moveZ) + (direction.right * moveStateParameters.moveX);
         //Move player on direction based on camera
         if (moveStateParameters.moveX != 0 || moveStateParameters.moveZ != 0) {
-            transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
+            transform.rotation = Quaternion.Euler(0, direction.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
         }
@@ -485,6 +505,11 @@ public class KodaController : MonoBehaviour {
                                 // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
                                 body.velocity = new Vector3(body.velocity.x, 8.0f, body.velocity.z);
                             }
+                        }
+
+                        if (previousInteractState != InteractState.Glide) {
+                            Debug.Log("SOUND GLIDE !");
+                            SoundController.instance.PlayKodaSingle(glideSound);
                         }
                         leafLock.isUsed = true;
                         leafLock.parent = InteractState.Glide;
@@ -730,8 +755,12 @@ public class KodaController : MonoBehaviour {
         if (collid.gameObject.CompareTag("AirStreamZone")) {
             //Debug.Log("AirStreamZone enter");
             moveStateParameters.inAirStream = true;
+            if (interactState == InteractState.Glide) {
+                SoundController.instance.PlaySingle(pushUpSound);
+            }
         }
         if (collid.gameObject.CompareTag("AirStreamForce") && interactState == InteractState.Glide) {
+           
             //Debug.Log("AirStreamForce enter");
             interactStateParameter.canAirStream = true;
             /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
@@ -742,11 +771,13 @@ public class KodaController : MonoBehaviour {
     void OnTriggerExit(Collider collid) {
         if (collid.gameObject.CompareTag("AirStreamZone")) {
             //Debug.Log("AirStreamZone Exit");
+            SoundController.instance.StopSingle();
             moveStateParameters.inAirStream = false;
         }
 
         if (collid.gameObject.CompareTag("AirStreamForce")) {
             //Debug.Log("AirStreamForce Exit " + body.velocity.y);
+            
             interactStateParameter.canAirStream = false;
         }
     }
@@ -769,6 +800,7 @@ public class KodaController : MonoBehaviour {
             }
             else if (interactState == InteractState.Glide) { //&& previousInteractState != InteractState.Glide
                 interactStateParameter.canAirStream = true;
+                body.velocity = new Vector3(body.velocity.x, 10f, body.velocity.z);
                 //Debug.Log("In Air Stream FORCE - GLIDE");
                 /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
 				body.AddForce (Vector3.up * 10, ForceMode.Impulse);*/
