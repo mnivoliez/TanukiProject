@@ -19,7 +19,7 @@ public class HitodamaController : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        hpPlayer = playerHealth.GetHealthCurrent();
+        hpPlayer = playerHealth.HealthCurrent;
         hpMaxPlayer = playerHealth.GetHealthMax();
         transform.position = Vector3.Lerp(transform.position, spawnHitodama.transform.position, speed * Time.deltaTime);
         PlayerUpdateLife();

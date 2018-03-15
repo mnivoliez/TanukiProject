@@ -48,7 +48,7 @@ public class SaveController : MonoBehaviour
         PlayerHealth koda_health = koda.GetComponent<PlayerHealth>();
 
         PlayerData playerData = new PlayerData();
-        playerData.hp = koda_health.GetHealthCurrent();
+        playerData.hp = koda_health.HealthCurrent;
         playerData.hp_max = koda_health.GetHealthMax();
         playerData.check_point = koda_health.GetRespawnPointPosition();
         playerData.current_scene = SceneManager.GetActiveScene().name;
@@ -91,7 +91,7 @@ public class SaveController : MonoBehaviour
     }
 
 }
-
+/*
 [Serializable]
 class SaveData
 {
@@ -112,4 +112,4 @@ class PlayerData
 class LevelData
 {
     public List<Transform> _enemiesPos;
-}
+}*/
