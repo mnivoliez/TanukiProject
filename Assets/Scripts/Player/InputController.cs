@@ -60,15 +60,15 @@ public class InputController : MonoBehaviour {
                 inputParams.actionRequest = ActionRequest.DistantAttack;
             }
 
-            //if (Input.GetAxisRaw("Lure") != 1) { triggerAxisInUse = false; }
+            if (Input.GetAxisRaw("Lure") != 1) { triggerAxisInUse = false; }
 
-            //if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1)) {
-            //    if (!triggerAxisInUse) {
-            //        triggerAxisInUse = true;
-            //        actionRequested++;
-            //        inputParams.actionRequest = ActionRequest.SpawnLure;
-            //    }
-            //}
+            if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1)) {
+                if (!triggerAxisInUse) {
+                    triggerAxisInUse = true;
+                    actionRequested++;
+                    inputParams.actionRequest = ActionRequest.SpawnLure;
+                }
+            }
 
             //if (Input.GetButtonDown("Transformation")) {
             //    actionRequested++;
