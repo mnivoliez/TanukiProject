@@ -131,6 +131,10 @@ public class KodaController : MonoBehaviour {
     // Capacity
     [SerializeField] private bool permanentDoubleJumpCapacity;
     [SerializeField] private bool temporaryDoubleJumpCapacity;
+    [SerializeField] private bool permanentBallCapacity;
+    [SerializeField] private bool temporaryBallCapacity;
+    [SerializeField] private bool permanentShrinkCapacity;
+    [SerializeField] private bool temporaryShrinkCapacity;
     [SerializeField] private float timerCapacity;
 
     //QTE
@@ -852,4 +856,10 @@ public class KodaController : MonoBehaviour {
         leafLock.parent = InteractState.Nothing;
         interactBehaviorCtrl.ResetLeaf();
     }
+
+    public int GetCaughtYokai() { return 0; } //Work in progress ...
+    public bool GetPowerJump() { return permanentDoubleJumpCapacity; }
+    public bool GetPowerBall() { return permanentBallCapacity; }
+    public bool GetPowerShrink() { return permanentShrinkCapacity; }
+    public Transform GetRespawnPointPosition() { return gameObject.transform; }
 }
