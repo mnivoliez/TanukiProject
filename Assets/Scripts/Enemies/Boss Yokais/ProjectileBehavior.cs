@@ -29,6 +29,9 @@ public class ProjectileBehavior : MonoBehaviour {
             Destroy(Instantiate(hitParticle, other.gameObject.transform.position, Quaternion.identity), 1);
             Destroy(gameObject);
         }
+        else if(other.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            Destroy(gameObject);
+        }
 
     }
 }
