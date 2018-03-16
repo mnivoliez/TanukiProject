@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Zone2BossBehavior : YokaiController {
 
     private GameObject corps;
     private List<GameObject> oreilles;
 
+    //private NavMeshAgent nmAgent;
     private Rigidbody myRigidbody;
     private float nextThrow;
     private Transform spawnRock;
@@ -49,7 +51,8 @@ public class Zone2BossBehavior : YokaiController {
         currentRocksToThrow = nbRocksToThrow;
         spawnRock = transform.Find("SpawnRock");
         corps = transform.Find("corps").gameObject;
-        
+        //nmAgent = GetComponent<NavMeshAgent>();
+
         SetTarget(GameObject.Find("Player"));
         player = target;
         rendererMat = corps.GetComponent<Renderer>().material;
@@ -272,6 +275,7 @@ public class Zone2BossBehavior : YokaiController {
         } else if (collid.gameObject.tag == "WaterBoss2" && phasePattern == 2) {
             BeingHit();
             LooseHp(1);
+            Debug.Log("Water Damage !");
         }
     }
 
@@ -310,6 +314,8 @@ public class Zone2BossBehavior : YokaiController {
 
         float dis = Vector3.Distance(transform.position, target.transform.position);
         transform.Translate(0, 0, speed * Time.deltaTime);
+
+        //nmAgent.SetDestination(target.transform.position);
     }
 
     void KnockBack (Vector3 firstPosition, Vector3 secondPosition) {
