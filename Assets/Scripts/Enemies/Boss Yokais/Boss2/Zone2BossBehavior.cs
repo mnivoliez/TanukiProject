@@ -18,6 +18,7 @@ public class Zone2BossBehavior : YokaiController {
     private List<GameObject> yokais;
     private float hpMax = 10;
     private bool doKnockBack;
+    private bool doYell;
     private float timeStamp;
     private Vector3 startPosition;
     private Vector3 endPosition;
@@ -26,20 +27,19 @@ public class Zone2BossBehavior : YokaiController {
     private SphereCollider myCollider;
     private bool canBump;
     private float delayToBump;
-    private int objectsWaterInContact;
+    private List<GameObject> lanternsInRange;
     private float throwRate;
 
     [SerializeField] private float timeToBump = 3;
     [SerializeField] private float timeToKnockBack;
     [SerializeField] private float throwRateP1 = 6;
     [SerializeField] private float throwRateP2 = 1;
-    [SerializeField] private float stopRate = 5;
     [SerializeField] private int nbRocksToThrow = 5;
     [SerializeField] private GameObject prefabRock;
 
 	// Use this for initialization
 	void Start () {
-        objectsWaterInContact = 0;
+        lanternsInRange = new List<GameObject>();
         canBump = false;
         delayToBump = timeToBump;
         doKnockBack = false;
@@ -97,6 +97,12 @@ public class Zone2BossBehavior : YokaiController {
         }
 
         if (!isKnocked) {
+
+            for (int i = 0; i < lanternsInRange.Count; i++) {
+                if (lanternsInRange[i] == null) {
+                    lanternsInRange.RemoveAt(i);
+                }
+            }
             
             if (interPhase) {
                 if (yokais.Count > 0) {
@@ -120,8 +126,9 @@ public class Zone2BossBehavior : YokaiController {
             } else if (phasePattern == 2) {                                                     //PHASE 2
                 if (doKnockBack) {
                     KnockBack(startPosition, endPosition);
-                }
-                else if (canBump) {
+                } else if (doYell) {
+                    Yell();
+                } else if (canBump) {
                     
                     if (delayToBump > 0) {
                         myRigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
@@ -230,7 +237,12 @@ public class Zone2BossBehavior : YokaiController {
         Vector3 direction = (positionTargetForDirection - gameObject.transform.position).normalized;
         startPosition = target.transform.position;
         endPosition = startPosition + direction * 50;
-        doKnockBack = true;
+        if (phasePattern == 1) {
+            doKnockBack = true;
+        } else if (phasePattern == 2) {
+            doYell = true;
+        }
+        
         timeStamp = 0;
     }
 
@@ -272,13 +284,24 @@ public class Zone2BossBehavior : YokaiController {
                 BeingHit();
                 LooseHp(1);
             }
-        } else if (collid.gameObject.tag == "WaterBoss2" && phasePattern == 2) {
+        } else if (collid.gameObject.tag == "WaterBoss2" && phasePattern == 2 && lanternsInRange.Count > 0) {
             BeingHit();
             LooseHp(1);
             Debug.Log("Water Damage !");
         }
     }
 
+    void OnTriggerStay(Collider collid) {
+        if (collid.gameObject.tag == "Lantern" && !lanternsInRange.Contains(collid.gameObject)) {
+            lanternsInRange.Add(collid.gameObject);
+        }
+    }
+
+    void OnTriggerExit(Collider collid) {
+        if (collid.gameObject.tag == "Lantern" && lanternsInRange.Contains(collid.gameObject)) {
+            lanternsInRange.Remove(collid.gameObject);
+        }
+    }
 
     private bool IsUnderTarget() {
         bool isUnderTarget = false;
@@ -319,7 +342,6 @@ public class Zone2BossBehavior : YokaiController {
     }
 
     void KnockBack (Vector3 firstPosition, Vector3 secondPosition) {
-        
         if (0 < timeToKnockBack - timeStamp) {
             Vector3 currentPos = Vector3.Lerp(firstPosition, secondPosition, (timeStamp) / timeToKnockBack);
             currentPos.y += 10 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToKnockBack) * Mathf.PI);
@@ -330,6 +352,17 @@ public class Zone2BossBehavior : YokaiController {
             stop = true;
             doKnockBack = false;
         }
+    }
+
+    void Yell() {
+
+        GameObject lure = GameObject.FindGameObjectWithTag("Lure");
+        if (lure != null) {
+            Destroy(lure);
+        }
+        stop = false;
+        doYell = false;
+        //KnockBack(startPosition, endPosition);
     }
 
     void OnCollisionEnter (Collision collision) {
