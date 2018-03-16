@@ -13,46 +13,41 @@ public class Game : MonoBehaviour
     public static Game current;
     //public Zone_Level = Zone; // Need to know the current zone the player is. We need a Zone script that handles the state of the zone, the checkpoints, etc ...
     //public Character Koda; // Need to know the state Koda is in : His unlocked powers, HP remaining, current checkpoint unlocked, the amount of Yokai killed, ... Script required !
-    private int slot;
+    private int slot = 0;
     public string scene_path;
+    public GameObject koda;
+    public PlayerHealth koda_health;
+    public KodaController koda_power;
+    PlayerData playerData = new PlayerData();
 
-    void Awake()
-    {
-        scene_path = Application.persistentDataPath + "/savedGames_slot_" + slot + ".gs";
+    void Awake() {
+        scene_path = Application.persistentDataPath + "/savedGames_slot_" + slot.ToString() + ".gs";
 
-        if (current == null)
-        {
+        if (current == null) {
             DontDestroyOnLoad(gameObject);
             //this.scene_save_path = scene_path;
             current = this;
         }
-        else if (current != this)
-        {
+        else if (current != this) {
             //current.scene_save_path = scene_path;
             Destroy(gameObject);
         }
     }
 
-    public Game()
-    {
-        //Zone = new Zone_Level();
-        //Koda = new Player();
-        //Level_Info = new LevelData();
+    private void Start() {
+        koda = GameObject.FindGameObjectWithTag("Player");
+        koda_health = koda.GetComponent<PlayerHealth>();
+        koda_power = koda.GetComponent<KodaController>();
+        my_Game();
     }
 
-    public void CreateSaveData()
+    public void my_Game()
     {
-        GameObject koda = GameObject.FindGameObjectWithTag("Player");
-        PlayerHealth koda_health = koda.GetComponent<PlayerHealth>();
-        KodaController koda_power = koda.GetComponent<KodaController>();
-
-        PlayerData playerData = new PlayerData();
-
-
         playerData.hp_max = koda_health.GetHealthMax();
-        playerData.caught_Yokai = koda_power.GetCaughtYokai();
+        playerData.hp = koda_health.GetHealthCurrent();
+        //playerData.caught_Yokai = koda_power.GetCaughtYokai();
 
-        playerData.check_point = koda.GetRespawnPointPosition();
+        playerData.check_point = koda_power.GetRespawnPointPosition();
         playerData.current_scene = SceneManager.GetActiveScene().name;
 
         playerData.power_jump = koda_power.GetPowerJump();
@@ -75,7 +70,7 @@ class SaveData
     public Dictionary<String, LevelData> _levels;
 }
 
-[Serializable]
+[System.Serializable]
 struct PlayerData
 {
     public float hp;

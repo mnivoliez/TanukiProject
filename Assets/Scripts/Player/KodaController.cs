@@ -832,4 +832,6 @@ public class KodaController : MonoBehaviour {
     { return permanentBallCapacity; }
     public bool GetPowerShrink()
     { return permanentShrinkCapacity; }
+    public Transform GetRespawnPointPosition()
+    { return gameObject.transform;  }
 }
