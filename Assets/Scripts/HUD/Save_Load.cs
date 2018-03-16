@@ -24,6 +24,7 @@ public static class Save_Load {
             FileStream file = File.Open(Application.persistentDataPath + "/savedGames_slot_" + selected_slot.ToString() + ".gs", FileMode.Open);
             Save_Load.savedGames = (Game) bf.Deserialize(file); // Check https://unity3d.com/fr/learn/tutorials/topics/scripting/persistence-saving-and-loading-data video at 44:40
             file.Close();
+            Debug.Log("Game Loaded !");
         }
     }
 }
