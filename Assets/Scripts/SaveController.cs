@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine.SceneManagement;
 
-public class SaveController : MonoBehaviour
+/*public class SaveController : MonoBehaviour
 {
 
     public static SaveController _controller;
