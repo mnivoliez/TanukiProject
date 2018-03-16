@@ -4,23 +4,25 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-public class Save_Load {
+public static class Save_Load {
 
-    public static List<Game> savedGames = new List<Game>(); // Create a list of type "Game" and call it "savedGames" (Needto create a public class Game that will handle the state of the overall game)
+    public static Game savedGames; //= new Game(); // Create a list of type "Game" and call it "savedGames" (Need to create a public class Game that will handle the state of the overall game)
+    public static int selected_slot;
 
     public static void Save() {
-        savedGames.Add(Game.current); // Adds our current game to our list of saved games.
-        BinaryFormatter bf = new BinaryFormatter(); // Willhandle the serialization work.
-        FileStream file = File.Create(Application.persistentDataPath + "/savedGames.gd"); // Pathwway to a new file that we can send data to.
+        //savedGames = Game.current; // Adds our current game to our list of saved games.
+        BinaryFormatter bf = new BinaryFormatter(); // Will handle the serialization work.
+        FileStream file = File.Create(savedGames.scene_path); // Pathwway to a new file that we can send data to.
         bf.Serialize(file, Save_Load.savedGames);
         file.Close();
+        Debug.Log("Game Saved !");
     }
 
     public static void Load() {
-        if (File.Exists(Application.persistentDataPath + "/savedGames.gd")) {
+        if (File.Exists(Application.persistentDataPath + "/savedGames_slot_" + selected_slot.ToString() + ".gs")) {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/savedGames.gd", FileMode.Open);
-            Save_Load.savedGames = (List<Game>)bf.Deserialize(file); // Check https://unity3d.com/fr/learn/tutorials/topics/scripting/persistence-saving-and-loading-data video at 44:40
+            FileStream file = File.Open(Application.persistentDataPath + "/savedGames_slot_" + selected_slot.ToString() + ".gs", FileMode.Open);
+            Save_Load.savedGames = (Game) bf.Deserialize(file); // Check https://unity3d.com/fr/learn/tutorials/topics/scripting/persistence-saving-and-loading-data video at 44:40
             file.Close();
         }
     }
