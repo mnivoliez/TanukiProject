@@ -7,7 +7,8 @@ using System.IO;
 using UnityEngine.SceneManagement;
 
 [System.Serializable] // Tells Unity that this script can be serialized—in other words, that we can save all the variables in this script. MUST BE IN ALL SCRIPTS THAT NEEDS TO BE SAVED !
-public class Game : MonoBehaviour{
+public class Game : MonoBehaviour
+{
 
     public static Game current;
     //public Zone_Level = Zone; // Need to know the current zone the player is. We need a Zone script that handles the state of the zone, the checkpoints, etc ...
@@ -32,32 +33,39 @@ public class Game : MonoBehaviour{
         }
     }
 
-    public Game() {
+    public Game()
+    {
         //Zone = new Zone_Level();
         //Koda = new Player();
         //Level_Info = new LevelData();
     }
 
+    public void CreateSaveData()
+    {
+        GameObject koda = GameObject.FindGameObjectWithTag("Player");
+        PlayerHealth koda_health = koda.GetComponent<PlayerHealth>();
+        KodaController koda_power = koda.GetComponent<KodaController>();
+
+        PlayerData playerData = new PlayerData();
+
+
+        playerData.hp_max = koda_health.GetHealthMax();
+        playerData.caught_Yokai = koda_power.GetCaughtYokai();
+
+        playerData.check_point = koda.GetRespawnPointPosition();
+        playerData.current_scene = SceneManager.GetActiveScene().name;
+
+        playerData.power_jump = koda_power.GetPowerJump();
+        playerData.power_ball = koda_power.GetPowerBall();
+        playerData.power_shrink = koda_power.GetPowerShrink();
+    }
+
 }
 
-public class Player{
+public class Player
+{
 
-    GameObject koda = GameObject.FindGameObjectWithTag("Player");
-    /*PlayerHealth koda_health = koda.GetComponent<PlayerHealth>();
-    KodaController koda_power = koda.GetComponent<KodaController>();*/
 
-    PlayerData playerData = new PlayerData();
-
-    /*
-    playerData.hp_max = koda_health.GetHealthMax();
-    playerData.caught_Yokai = koda_power.GetCaughtYokai();
-    
-    playerData.check_point = koda.GetRespawnPointPosition();
-    playerData.current_scene = SceneManager.GetActiveScene().name;
-
-    playerData.power_jump = koda_power.GetPowerJump();
-    playerData.power_ball = koda_power.GetPowerBall();
-    playerData.power_shrink = koda_power.GetPowerShrink();*/
 }
 
 [Serializable]
@@ -68,7 +76,7 @@ class SaveData
 }
 
 [Serializable]
-class PlayerData
+struct PlayerData
 {
     public float hp;
     public float hp_max;
