@@ -19,7 +19,7 @@ public class Zone1BossBehavior : YokaiController {
     Vector3 startPosition;
     Vector3 endPosition;
     Vector3 bending = Vector3.up;
-    float timeToTravel = 10f;
+    float timeToTravel = 3f;
     float timeStamp = 0;
 
     [SerializeField] private float projectileDamage = 1f;
@@ -27,6 +27,9 @@ public class Zone1BossBehavior : YokaiController {
     private float cooldownFire = 0;
     [SerializeField] private GameObject prefabProjectile;
     [SerializeField] private GameObject spawnProjectile;
+
+    private float invincibleTime = 2f;
+    private bool isInvincible = false;
 
     private bool followPlayer = false;
     private float cooldownPurchase;
@@ -71,22 +74,36 @@ public class Zone1BossBehavior : YokaiController {
 
     private void FixedUpdate() {
         if (!isKnocked) {
-            cooldownFire += 0.02f;
-            if (followPlayer) { cooldownPurchase += 0.02f; }
+            cooldownFire += Time.deltaTime;
+            if (followPlayer) { cooldownPurchase += Time.deltaTime; }
             if (Random.Range(0, 100) == 5) {
                 Behavior();
             }
+            if (invincibleTime > 0) {
+                invincibleTime -= Time.deltaTime;
+            }
+            else {
+                rendererMat.DisableKeyword("_EMISSION");
+                isInvincible = false;
+            }
         }
+        
     }
 
     public override void LooseHp(float damage) {
-        if (!onMovement) {
+        if (!onMovement && !isInvincible) {
             hp -= damage;
-
+           
             if (hp <= 0) {
+                isInvincible = false;
                 isKnocked = true;
                 Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
                 rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+            }
+            else {
+                isInvincible = true;
+                invincibleTime = 3f;
+                rendererMat.EnableKeyword("_EMISSION");
             }
 
             if (hp <= hpMax / 2 && !isKnocked) {
@@ -163,7 +180,7 @@ public class Zone1BossBehavior : YokaiController {
         endPosition = AllPlatform[currentPlateform].transform.position;
         transform.LookAt(new Vector3(AllPlatform[currentPlateform].transform.position.x, transform.position.y, AllPlatform[currentPlateform].transform.position.z));
         timeStamp = 0;
-        timeToTravel = 10f;
+        timeToTravel = 3f;
         onMovement = true;
         Destroy(Instantiate(knockedParticle, transform.position, Quaternion.identity), 2);
     }
@@ -174,7 +191,7 @@ public class Zone1BossBehavior : YokaiController {
             Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / timeToTravel);
             currentPos.y += 20 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
             transform.position = currentPos;
-            timeStamp += 0.1f;
+            timeStamp += Time.deltaTime;
         }
         else {
             onMovement = false;
@@ -196,21 +213,21 @@ public class Zone1BossBehavior : YokaiController {
             Vector3 currentPos = Vector3.Lerp(startPosition, endPosition, (timeStamp) / timeToTravel);
             currentPos.y += 20 * Mathf.Sin(Mathf.Clamp01((timeStamp) / timeToTravel) * Mathf.PI);
             transform.position = currentPos;
-            timeStamp += 0.1f;
+            timeStamp += Time.deltaTime;
         }
         else {
             followPlayer = false;
             timeStamp = 0;
-            timeToTravel = 10f;
+            timeToTravel = 3f;
             cooldownPurchase = 0;
-
+            cooldownFire = 0f;
         }
     }
 
     public void SetFollowPlayer(bool isFollowing) {
         followPlayer = isFollowing;
         timeStamp = 0;
-        timeToTravel = 10f;
+        timeToTravel = 3f;
         startPosition = transform.position;
         endPosition = target.transform.position + (Vector3.up * 7);
     }
