@@ -514,7 +514,6 @@ public class KodaController : MonoBehaviour {
                         }
 
                         if (previousInteractState != InteractState.Glide) {
-                            Debug.Log("SOUND GLIDE !");
                             SoundController.instance.PlayKodaSingle(glideSound);
                         }
                         leafLock.isUsed = true;
