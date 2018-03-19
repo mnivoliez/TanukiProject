@@ -114,6 +114,9 @@ public class YokaiAIv2Controller : YokaiController {
 
     void OnTriggerEnter(Collider other) {
         if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked) {
+            if (comeBack) {
+                comeBack = false;
+            }
             float damage = 1;
             if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null) {
                 damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
