@@ -74,9 +74,9 @@ public class CameraController : MonoBehaviour
 		currentCameraAngle = defaultCameraAngle;
 		currentCameraAngleAxis = playerTanukiModel.right;
 		currentCameraHeight = currentCameraDistance * Mathf.Tan (currentCameraAngle * Mathf.Deg2Rad);
-		Debug.Log ("CAMERA currentCameraDistance=" + currentCameraDistance);
-		Debug.Log ("CAMERA Mathf.Tan (currentCameraAngle)=" + Mathf.Tan (currentCameraAngle * Mathf.Deg2Rad));
-		Debug.Log ("CAMERA currentCameraHeight=" + currentCameraHeight);
+		//Debug.Log ("CAMERA currentCameraDistance=" + currentCameraDistance);
+		//Debug.Log ("CAMERA Mathf.Tan (currentCameraAngle)=" + Mathf.Tan (currentCameraAngle * Mathf.Deg2Rad));
+		//Debug.Log ("CAMERA currentCameraHeight=" + currentCameraHeight);
 
 		// get the height relative to the default distance
 		minCameraHeight = defaultCameraDistance * Mathf.Tan (minCameraAngle * Mathf.Deg2Rad);
