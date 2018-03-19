@@ -1,35 +1,46 @@
-﻿Shader "Custom/Dissolve/WorldBlending"
+﻿Shader "Custom/Lantern/WorldBlending"
 {
 	Properties
 	{
-		[Toggle(ISMASK)] _Mask("Alpha is Mask ?", Float) = 0
+		[KeywordEnum(Simple, Lantern)] _Mode("Blend Mode", Float) = 0
 
-		[Header(First Texture (LIGHT))][Space]
-		[NoScaleOffset]
-		_FirstTexture	("Texture", 		2D)		= "white" {}
-		_FirstLColor	("Color Bright",	Color)	= (1,1,1,1)
-		_FirstDColor	("Color Dim", 		Color)	= (0,0,0,1)
+		[Toggle] 
+		_IsAlpha		("", Float)			= 0
 
-		[Space(10)][Header(Second Texture (DARK))][Space]
-		[NoScaleOffset]
-		_SecondTexture	("Texture", 		2D)		= "white" {}
-		_SecondLColor	("Color Bright", 	Color)	= (1,1,1,1)
-		_SecondDColor	("Color Dim", 		Color)	= (0,0,0,1)
+		_FirstTexture	("", 2D)			= "white" {}
+		_FirstLColor	("", Color)			= (1,1,1,0)
+		_FirstDColor	("", Color)			= (0,0,0,0)
 
-		[Space(10)][Header(Mask)][Space]
-		_MaskTexture	("Mask",	 		2D)		= "white" {}
-		_MaskRColor		("R Color", 		Color)	= (1,1,1,1)
-		_MaskGColor		("G Color", 		Color)	= (0,0,0,1)
+		_SecondTexture	("", 2D)			= "white" {}
+		_SecondLColor	("", Color)			= (1,1,1,0)
+		_SecondDColor	("", Color)			= (0,0,0,0)
 
-		[Space(10)][Header(Toon)][Space]
-		_StepCount 	("Step",	Range(0,10))	= 3
-		_Pow	 	("Pow",		Range(0,10))	= 1
+		[PowerSlider(2.0)] 
+		_SpecIntensity	("", Range(0,30))	= 0
+		[PowerSlider(2.0)] 
+		_SpecPow		("", Range(0.01,20))= 1
+		[PowerSlider(2.0)] 
+		_RimIntensity	("", Range(0,50))	= 0
+		[PowerSlider(2.0)] 
+		_RimPow			("", Range(0.01,20))= 1
+
+		_StepCount		("", Range(0,10))	= 3
+
+		[Toggle] _IsMask("", Float) = 0
+
+		_MaskTexture	("", 2D)			= "white" {}
+		_MaskRColor		("", Color)			= (1,1,1,1)
+		[PowerSlider(3.0)] 
+		_MaskREmi		("", Range(1,5))	= 1
+		_MaskGColor		("", Color)			= (0,0,0,1)
+		[PowerSlider(3.0)] 
+		_MaskGEmi		("", Range(1,5))	= 1
+
 	}
 
 	SubShader
 	{
-		Tags {"Queue"="AlphaTest"
-            "RenderType"="TransparentCutout"}
+		Tags {"Queue"="AlphaTest" "RenderType"="TransparentCutout"}
 
 	    Cull Off
 
@@ -42,16 +53,18 @@
 
 			#pragma vertex vert
 			#pragma fragment frag
-			#pragma multi_compile_fwdbase_fullshadows
-			#pragma shader_feature ISMASK
 			#pragma target 3.0
+			#pragma multi_compile_fwdbase_fullshadows
+			#pragma shader_feature _SIMPLE _LANTERN
+			#pragma shader_feature _ISALPHA_ON
+			#pragma shader_feature _ISMASK_ON
 
 			#define FORWARDBASE_PASS
 			
 			#include "UnityCG.cginc"
 			#include "noiseSimplex.cginc"
 			#include "AutoLight.cginc"
-			#include "worldBlending.cginc"
+			#include "WorldBlending.cginc"
 
 			ENDCG
 		}
@@ -65,19 +78,21 @@
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma target 3.0
 			#pragma multi_compile_fwdadd_fullshadows
-			#pragma shader_feature ISMASK
+			#pragma shader_feature _SIMPLE _LANTERN
+			#pragma shader_feature _ISALPHA_ON
+			#pragma shader_feature _ISMASK_ON
 
 			#define FORWARDADD_PASS
 			
 			#include "UnityCG.cginc"
 			#include "noiseSimplex.cginc"
 			#include "AutoLight.cginc"
-			#include "worldBlending.cginc"
+			#include "WorldBlending.cginc"
 
 			ENDCG
 		}
-
 		Pass
 		{
 			Name "ShadowCaster"
@@ -89,15 +104,17 @@
 			#pragma fragment frag
 			#pragma multi_compile_shadowcaster
 			#pragma fragmentoption ARB_precision_hint_fastest
-			#pragma shader_feature ISMASK
+			#pragma shader_feature _SIMPLE _LANTERN
+			#pragma shader_feature _ISALPHA_ON
 
 			#define SHADOWCASTER_PASS
 
 			#include "UnityCG.cginc"
 			#include "noiseSimplex.cginc"
-			#include "worldBlending.cginc"
+			#include "WorldBlending.cginc"
 
 			ENDCG
 		}
 	}
+	CustomEditor "LanternShaderGUI"
 }
