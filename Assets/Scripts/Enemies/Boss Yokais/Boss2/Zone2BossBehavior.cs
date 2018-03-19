@@ -377,6 +377,4 @@ public class Zone2BossBehavior : YokaiController {
             Destroy(target);
         }
     }
-
-    
 }
