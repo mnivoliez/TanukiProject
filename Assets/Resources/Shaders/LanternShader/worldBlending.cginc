@@ -1,7 +1,7 @@
 struct appdata
 {
 	float4 vertex : POSITION;
-	#if !defined(SHADOWCASTER_PASS) 
+	#if !defined(SHADOWCASTER_PASS)
 		float3 normal : NORMAL;
 	#endif
 	float2 uv : TEXCOORD0;
@@ -9,7 +9,7 @@ struct appdata
 
 struct v2f
 {
-	#if defined(SHADOWCASTER_PASS) 
+	#if defined(SHADOWCASTER_PASS)
 		V2F_SHADOW_CASTER;
 	#else
 		float3 normalDir : TEXCOORD2;
@@ -31,7 +31,7 @@ uniform const int _LanternCount;
 uniform float4 _Centers[5];
 uniform float _Distances[5];
 
-#if !defined(SHADOWCASTER_PASS) 
+#if !defined(SHADOWCASTER_PASS)
 	uniform float4 _LightColor0;
 	uniform sampler2D _MaskTexture;
 	float4 _MaskTexture_ST;
@@ -70,15 +70,26 @@ v2f vert (appdata v)
 
 fixed4 frag (v2f i) : SV_Target
 {
-	float len = _Distances[0] - length(_Centers[0].xyz - i.posWorld.xyz);
+	/*float len = _Distances[0] - length(_Centers[0].xyz - i.posWorld.xyz);
     for(int id = 1; id < _LanternCount; id++) {
         len = max(len, _Distances[id] - length(_Centers[id].xyz - i.posWorld.xyz));
+    }*/
+
+    float intensity = 0.0;
+    for(int id = 0; id < _LanternCount; ++id) {
+        float distance_point_lantern = distance(_Centers[id].xyz, i.posWorld.xyz);
+        float lantern_intensity = 1 - distance_point_lantern / _Distances[id];
+        lantern_intensity = clamp(lantern_intensity, 0, 1);
+        intensity += lantern_intensity;
     }
+
+    // the intensity is between 0 and 1, so clamp
+    float len = clamp(intensity, 0, 1);
 
 	float3 wrldPos = i.posWorld.xyz * _Freq;
 	wrldPos.y += _Time.x * _Speed;
 	float ns = snoise(wrldPos);
-	float lrp = 1.0-saturate(len + ns * _Interpolation);
+	float lrp = 1.0-saturate(len + ns * len * _Interpolation);
 
 	fixed4 tex1 = tex2D(_FirstTexture, i.uv0);
 	fixed4 tex2 = tex2D(_SecondTexture, i.uv0);
@@ -117,4 +128,4 @@ fixed4 frag (v2f i) : SV_Target
 	#else
 		SHADOW_CASTER_FRAGMENT(i);
 	#endif
-}		
+}
