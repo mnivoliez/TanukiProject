@@ -22,7 +22,7 @@ public class YokaiGeneralBehavior : YokaiController {
 
     private Rigidbody body;
 
-    [Header("FLOCKING FISH")]
+    [Header("FLOCKING YOKAI")]
     [Space(8)]
     [SerializeField]
     private float neighbourDistance = 2.0f;
