@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class CheckPoint : MonoBehaviour {
 
-    public Game this_game = new Game();
-
     // Use this for initialization
     void Start () {
 
@@ -21,7 +19,7 @@ public class CheckPoint : MonoBehaviour {
 
         if(other.name == "Player") {
 
-            this.this_game.PreSave_Game_and_Save();
+            Game.PreSave_Game_and_Save();
             //Debug.Log(Application.persistentDataPath);
         }
     }
