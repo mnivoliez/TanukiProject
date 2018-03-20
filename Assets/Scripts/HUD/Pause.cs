@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Pause : MonoBehaviour {
 
@@ -13,6 +14,8 @@ public class Pause : MonoBehaviour {
     private GameObject PausePanel;
     private GameObject OptionsPanel;
     private GameObject ExitPanel;
+
+    public Game this_game = new Game();
 
 
     // Use this for initialization
@@ -67,5 +70,11 @@ public class Pause : MonoBehaviour {
 			transform.GetChild (0).gameObject.SetActive (true);
 		}
         Paused = true;
+    }
+
+    public void Load_Game() {
+
+        this_game.Load_and_Post_Load();
+        UnpauseGame();
     }
 }

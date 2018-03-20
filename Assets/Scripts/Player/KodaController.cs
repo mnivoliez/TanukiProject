@@ -862,4 +862,10 @@ public class KodaController : MonoBehaviour {
     public bool GetPowerBall() { return permanentBallCapacity; }
     public bool GetPowerShrink() { return permanentShrinkCapacity; }
     public Transform GetRespawnPointPosition() { return gameObject.transform; }
+
+    public void SetCaughtYokai(int yokai_caught) { Debug.Log("ARRETEZ DE VOUS BATTEZ ! D:"); } //Work in progress ...
+    public void SetPowerJump(bool has_double_jump) { permanentDoubleJumpCapacity = has_double_jump; }
+    public void SetPowerBall(bool has_power_ball) { permanentBallCapacity = has_power_ball; }
+    public void SetPowerShrink(bool has_power_shrink) { permanentShrinkCapacity = has_power_shrink; }
+    public void SetRespawnPointPosition(float x_pos, float y_pos, float z_pos) { body.position = new Vector3(x_pos, y_pos, z_pos); }
 }
