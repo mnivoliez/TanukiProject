@@ -132,11 +132,9 @@ public class KodaController : MonoBehaviour {
     [Space(10)]
     // Capacity
     [SerializeField] private bool permanentDoubleJumpCapacity;
-    private bool temporaryDoubleJumpCapacity;
     private bool permanentBallCapacity;
-    private bool temporaryBallCapacity;
     private bool permanentShrinkCapacity;
-    private bool temporaryShrinkCapacity;
+    private Capacity temporaryCapacity;
     [SerializeField] private float timerCapacity;
 
     //QTE
@@ -618,7 +616,7 @@ public class KodaController : MonoBehaviour {
             inputParams.jumpRequest &&
             (movementState == MovementState.Idle ||
                 movementState == MovementState.Run ||
-                (movementState == MovementState.Jump && ((temporaryCapacity == Capacity.DoubleJump) || hasPermanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+                (movementState == MovementState.Jump && ((temporaryCapacity == Capacity.DoubleJump) || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest) {
             //Debug.Log("movementState=" + movementState);
