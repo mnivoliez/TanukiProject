@@ -78,11 +78,11 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     public void SetHealthCurrent(float current_hp) {
-        this.playerHealthCurrent = current_hp;
+        playerHealthCurrent = current_hp;
     }
 
     public void SetHealthMax(float current_max_hp) {
-        this.playerHealthMax = current_max_hp;
+        playerHealthMax = current_max_hp;
     }
 
     public void PlayerDie() {
