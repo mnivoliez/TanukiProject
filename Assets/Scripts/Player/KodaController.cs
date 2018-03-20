@@ -268,6 +268,7 @@ public class KodaController : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision coll) {
+
         GameObject gO = coll.gameObject;
 
         //Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
@@ -617,7 +618,7 @@ public class KodaController : MonoBehaviour {
             inputParams.jumpRequest &&
             (movementState == MovementState.Idle ||
                 movementState == MovementState.Run ||
-                (movementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+                (movementState == MovementState.Jump && ((temporaryCapacity == Capacity.DoubleJump) || hasPermanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest) {
             //Debug.Log("movementState=" + movementState);
@@ -827,10 +828,10 @@ public class KodaController : MonoBehaviour {
 
     //Temporary in public mode for the playtest
     public void AddCapacity(Pair<Capacity, float> pairCapacity) {
+        temporaryCapacity = pairCapacity.First;
         switch (pairCapacity.First) {
 
             case Capacity.DoubleJump:
-                temporaryDoubleJumpCapacity = true;
                 canvasQTE.SetActive(true);
                 break;
 
@@ -844,8 +845,13 @@ public class KodaController : MonoBehaviour {
 
     private void StopTemporaryCapacity() {
         timerCapacity = 0;
-        temporaryDoubleJumpCapacity = false;
+        temporaryCapacity = Capacity.Nothing;
         canvasQTE.SetActive(false);
+
+        if (temporaryCapacity == Capacity.Lure) {
+            interactBehaviorCtrl.DestroyLure(actualLure);
+            ResetLeafLock();
+        }
     }
 
     private void ProgressTimerCapacity() {
@@ -853,6 +859,12 @@ public class KodaController : MonoBehaviour {
     }
 
     public void ResetPlayer() {
+        ResetLeafLock();
+        // TODO : reset temporary capacity
+    }
+
+    public void ResetLeafLock() {
+        Debug.Log("reset leaf lock");
         leafLock.isUsed = false;
         leafLock.parent = InteractState.Nothing;
         interactBehaviorCtrl.ResetLeaf();
