@@ -10,6 +10,8 @@ public class LureController : MonoBehaviour {
     private float gravityGlobal = 9.81f;
     [SerializeField]
     private float forceRebound = 2.0f;
+    [SerializeField]
+    private int health = 3;
 
     private Vector3 gravity;
 
@@ -26,5 +28,20 @@ public class LureController : MonoBehaviour {
 
     private void FixedUpdate() {
         body.AddForce(gravity * (40 * Time.deltaTime), ForceMode.Acceleration);
+    }
+
+    private void BeingHit() {
+        health--;
+        Debug.Log(health);
+        if (health <= 0) {
+            Destroy(gameObject);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+        }
+    }
+
+    void OnCollisionEnter(Collision collider) {
+        if (collider.gameObject.tag == "Yokai") {
+            BeingHit();
+        }
     }
 }
