@@ -58,7 +58,10 @@ public class YokaiGeneralBehavior : YokaiController {
                     float dis = Vector3.Distance(transform.position, target.transform.position);
                     //go to target
                     if (dis > rangeAttack) {
-                        transform.Translate(0, 0, speed * Time.deltaTime);
+                        Vector3 normalize = relativePos.normalized;
+                        body.velocity = normalize * speed;
+                    } else {
+                        body.velocity = Vector3.zero;
                     }
                 }
 
