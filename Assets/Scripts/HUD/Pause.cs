@@ -15,8 +15,6 @@ public class Pause : MonoBehaviour {
     private GameObject OptionsPanel;
     private GameObject ExitPanel;
 
-    public Game this_game = new Game();
-
 
     // Use this for initialization
     void Start () {
@@ -73,8 +71,7 @@ public class Pause : MonoBehaviour {
     }
 
     public void Load_Game() {
-
-        this_game.Load_and_Post_Load();
         UnpauseGame();
+        Game.Load_and_Post_Load();
     }
 }
