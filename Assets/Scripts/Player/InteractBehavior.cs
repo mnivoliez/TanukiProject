@@ -218,15 +218,9 @@ public class InteractBehavior : MonoBehaviour {
 			leafHead.SetActive(false);
 			clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
 			clone.transform.Translate(0, 3, 2);
-			StartCoroutine (DelayDestroyLure(clone));
 		}
         return clone;
     }
-
-	public IEnumerator DelayDestroyLure(GameObject lure) {
-        yield return new WaitForSeconds (10);
-        DestroyLure(lure);
-	}
 
     public void DestroyLure(GameObject lure) {
         if (lure != null) {
@@ -257,8 +251,8 @@ public class InteractBehavior : MonoBehaviour {
     public void ResetLeaf() {
         leafHead.SetActive(true);
         leafHand.SetActive(false);
-        leafHead.SetActive(false);
         sakePot.SetActive(false);
         ParachuteLeaf.SetActive(false);
+        Debug.Log("leaf on head !!");
     }
 }
