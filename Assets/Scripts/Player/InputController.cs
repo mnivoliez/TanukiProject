@@ -41,7 +41,7 @@ public class InputController : MonoBehaviour {
     void UpdateInteractInput() {
         int actionRequested = 0;
 		if (Input.GetButton("Glide") || Input.GetAxisRaw("Glide") == -1) {
-			Debug.Log("input controller GLIDE!!!");
+			//Debug.Log("input controller GLIDE!!!");
             actionRequested++;
             inputParams.actionRequest = ActionRequest.Glide;
         }
