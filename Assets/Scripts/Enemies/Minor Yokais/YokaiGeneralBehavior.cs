@@ -22,7 +22,7 @@ public class YokaiGeneralBehavior : YokaiController {
 
     private Rigidbody body;
 
-    [Header("FLOCKING FISH")]
+    [Header("FLOCKING YOKAI")]
     [Space(8)]
     [SerializeField]
     private float neighbourDistance = 2.0f;
@@ -95,12 +95,16 @@ public class YokaiGeneralBehavior : YokaiController {
             Vector3 vectorToCollision = collision.gameObject.transform.position - transform.position;
         }
 
+        
         if (collision.gameObject.tag == "Lure") {
-            BeingHit();
-            LooseHp(1);
-            EndHit();
 
-            Destroy(collision.gameObject);
+            if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
+                BeingHit();
+                LooseHp(1);
+                EndHit();
+                Destroy(collision.gameObject);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+            }
         }
 
 
