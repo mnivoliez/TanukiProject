@@ -817,7 +817,7 @@ public class KodaController : MonoBehaviour {
             }
 
         }
-        else if (previousInteractState == InteractState.Absorb) {
+        else if (previousInteractState == InteractState.Absorb && collid.CompareTag("Yokai")) {
             Pair<Capacity, float> pairCapacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
             if (pairCapacity.First != Capacity.Nothing) {
                 AddCapacity(pairCapacity);
