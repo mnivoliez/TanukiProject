@@ -55,7 +55,7 @@ public class InteractBehavior : MonoBehaviour
     //QTE
     private float maxAbsorptionGauge = 4f;
     private float absorptionGauge = 0f;
-
+    private GameObject absorptionTarget;
     public GameObject canvasQTE;
     public Transform loadingBar;
     public Transform centerButton;
@@ -214,33 +214,50 @@ public class InteractBehavior : MonoBehaviour
 
             if (absorptionGauge > maxAbsorptionGauge)
             {
-                absorbableObject.GetComponent<YokaiController>().Absorbed();
-                gameObject.GetComponent<PlayerCollectableController>().AddYokai();
-                capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
-                timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
-                absorptionTimer = 4f;
-                absorptionGauge = 0;
-                centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
-                centerButton.GetComponent<Image>().color = Color.white;
-                sakePot.SetActive(false);
-                canvasQTE.SetActive(false);
-
+                AbsorbeYokai(absorbableObject);
+                DeactivateAbsorptionQTE();
+                ResetAbsorptionGauge();
             }
 
         }
         else
         {
-            sakePot.SetActive(false);
-            absorptionGauge = 0;
-            absorptionTimer = 4f;
-            centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
-            centerButton.GetComponent<Image>().color = Color.white;
-            canvasQTE.SetActive(false);
+            DeactivateAbsorptionQTE();
+            ResetAbsorptionGauge();
         }
 
         pairCapacity = new Pair<Capacity, float>(capacity, timerCapacity);
 
         return pairCapacity;
+    }
+
+    private void ResetAbsorptionGauge()
+    {
+        absorptionGauge = 0;
+        absorptionTimer = 4f;
+        centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
+        centerButton.GetComponent<Image>().color = Color.white;
+    }
+
+    private void ActivateAbsorptionQTE()
+    {
+        canvasQTE.SetActive(true);
+        sakePot.SetActive(true);
+    }
+
+    private void DeactivateAbsorptionQTE()
+    {
+        sakePot.SetActive(false);
+        canvasQTE.SetActive(false);
+    }
+
+    private Pair<Capacity, float> AbsorbeYokai(GameObject absorbableObject)
+    {
+        absorbableObject.GetComponent<YokaiController>().Absorbed();
+        gameObject.GetComponent<PlayerCollectableController>().AddYokai();
+        Capacity capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
+        float timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
+        return new Pair<Capacity, float>(capacity, timerCapacity);
     }
 
     public GameObject DoSpawnLure()
