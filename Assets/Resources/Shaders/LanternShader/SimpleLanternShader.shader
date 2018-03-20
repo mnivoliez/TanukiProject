@@ -61,9 +61,9 @@ Shader "Custom/Lantern/simpleShader" {
 		uniform half _Falloff;
         uniform half _Offset;
 
-        uniform const int _numberOfCenters;
-		uniform float4 _centers[5];
-        uniform float _distances[5];
+        uniform const int _LanternCount;
+		uniform float4 _Centers[5];
+        uniform float _Distances[5];
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -73,7 +73,7 @@ Shader "Custom/Lantern/simpleShader" {
 		UNITY_INSTANCING_BUFFER_END(Props)
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-            float l = lanterns_intensity(IN.worldPos, _numberOfCenters, _centers, _distances);
+            float l = lanterns_intensity(IN.worldPos, _LanternCount, _Centers, _Distances);
 
 			// Albedo comes from a texture tinted by color
 			fixed4 mainAlbedo = tex2D (_MainTex, IN.uv_MainTex) * _MainColor;

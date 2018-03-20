@@ -2,91 +2,72 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum LanternEffect
-{
+enum LanternEffect {
     Appear,
     Disappear
 }
-public class CorruptionController : MonoBehaviour
-{
+public class CorruptionController : MonoBehaviour {
 
     [SerializeField] private LanternEffect _lanternEffect;
     private List<LanternController> _lanterns;
 
     private BoxCollider _bbox;
 
-    void Start()
-    {
+    void Start() {
         _lanterns = new List<LanternController>();
-        foreach (BoxCollider box in GetComponents<BoxCollider>())
-        {
+        foreach (BoxCollider box in GetComponents<BoxCollider>()) {
             if (!box.isTrigger) _bbox = box;
         };
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Lantern"))
-        {
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Lantern")) {
             _lanterns.Add(other.gameObject.GetComponent<LanternController>());
         }
     }
 
 
 
-    void OnTriggerExit(Collider other)
-    {
+    void OnTriggerExit(Collider other) {
 
-        if (other.CompareTag("Lantern"))
-        {
+        if (other.CompareTag("Lantern")) {
             _lanterns.Remove(other.gameObject.GetComponent<LanternController>());
         }
-        else
-        {
+        else {
             ManageCollision(other);
         }
     }
 
-    void OnTriggerStay(Collider other)
-    {
+    void OnTriggerStay(Collider other) {
 
-        if (!other.CompareTag("Lantern"))
-        {
+        if (!other.CompareTag("Lantern")) {
             ManageCollision(other);
         }
     }
 
-    void OnCollisionStay(Collision collision)
-    {
-        if (!collision.collider.CompareTag("Lantern"))
-        {
+    void OnCollisionStay(Collision collision) {
+        if (!collision.collider.CompareTag("Lantern")) {
             ManageCollision(collision.collider);
         }
     }
 
-    private void ManageCollision(Collider other)
-    {
+    private void ManageCollision(Collider other) {
         bool isInLanternRange = CheckIfInLanternRange(other);
-        switch (_lanternEffect)
-        {
+        switch (_lanternEffect) {
             case LanternEffect.Appear:
-                if (isInLanternRange)
-                {
+                if (isInLanternRange) {
                     MakeAppearForCollider(other);
                 }
-                else
-                {
+                else {
                     MakeDisappearForCollider(other);
                 }
                 break;
             case LanternEffect.Disappear:
-                if (isInLanternRange)
-                {
+                if (isInLanternRange) {
                     MakeDisappearForCollider(other);
 
                 }
-                else
-                {
+                else {
                     MakeAppearForCollider(other);
 
                 }
@@ -95,25 +76,21 @@ public class CorruptionController : MonoBehaviour
 
     }
 
-    private bool CheckIfInLanternRange(Collider other)
-    {
+    private bool CheckIfInLanternRange(Collider other) {
         bool isInLanternRange = false;
         var iter = _lanterns.GetEnumerator();
-        while (iter.MoveNext() && !isInLanternRange)
-        {
+        while (iter.MoveNext() && !isInLanternRange) {
             isInLanternRange = iter.Current.isInEffectArea(other.ClosestPoint(iter.Current.transform.position));
         }
 
         return isInLanternRange;
     }
 
-    private void MakeDisappearForCollider(Collider other)
-    {
+    private void MakeDisappearForCollider(Collider other) {
         Physics.IgnoreCollision(other, _bbox, true);
     }
 
-    private void MakeAppearForCollider(Collider other)
-    {
+    private void MakeAppearForCollider(Collider other) {
         Physics.IgnoreCollision(other, _bbox, false);
     }
 }
