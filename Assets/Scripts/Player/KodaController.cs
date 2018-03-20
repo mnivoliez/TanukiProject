@@ -128,9 +128,15 @@ public class KodaController : MonoBehaviour {
 
     private InputController inputController;
 
+    [Header("CAPACITY")]
+    [Space(10)]
     // Capacity
     [SerializeField] private bool permanentDoubleJumpCapacity;
-    [SerializeField] private bool temporaryDoubleJumpCapacity;
+    private bool temporaryDoubleJumpCapacity;
+    private bool permanentBallCapacity;
+    private bool temporaryBallCapacity;
+    private bool permanentShrinkCapacity;
+    private bool temporaryShrinkCapacity;
     [SerializeField] private float timerCapacity;
 
     //QTE
@@ -508,7 +514,6 @@ public class KodaController : MonoBehaviour {
                         }
 
                         if (previousInteractState != InteractState.Glide) {
-                            Debug.Log("SOUND GLIDE !");
                             SoundController.instance.PlayKodaSingle(glideSound);
                         }
                         leafLock.isUsed = true;
@@ -852,4 +857,10 @@ public class KodaController : MonoBehaviour {
         leafLock.parent = InteractState.Nothing;
         interactBehaviorCtrl.ResetLeaf();
     }
+
+    public int GetCaughtYokai() { return 0; } //Work in progress ...
+    public bool GetPowerJump() { return permanentDoubleJumpCapacity; }
+    public bool GetPowerBall() { return permanentBallCapacity; }
+    public bool GetPowerShrink() { return permanentShrinkCapacity; }
+    public Transform GetRespawnPointPosition() { return gameObject.transform; }
 }
