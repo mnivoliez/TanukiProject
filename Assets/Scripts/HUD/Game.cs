@@ -7,16 +7,16 @@ using System.IO;
 using UnityEngine.SceneManagement;
 
 
-public class Game {
+public static class Game {
 
-    public GameObject koda;
-    public PlayerHealth koda_health;
-    public KodaController koda_power;
+    public static GameObject koda;
+    public static PlayerHealth koda_health;
+    public static KodaController koda_power;
 
-    public int selected_slot = 0;
-    public string scene_path;
+    public static int selected_slot = 0;
+    public static string scene_path;
 
-    public PlayerData playerData = new PlayerData();
+    public static PlayerData playerData;
 
     /*public static Game current;
 
@@ -40,75 +40,75 @@ public class Game {
         this.koda_power = koda.GetComponent<KodaController>();
     }*/
 
-    public void PreSave_Game_and_Save() {
+    public static void PreSave_Game_and_Save() {
         //////////////////////////////////////////////////////////
-        this.koda = GameObject.FindGameObjectWithTag("Player");
-        this.koda_health = koda.GetComponent<PlayerHealth>();
-        this.koda_power = koda.GetComponent<KodaController>();
+        koda = GameObject.FindGameObjectWithTag("Player");
+        koda_health = koda.GetComponent<PlayerHealth>();
+        koda_power = koda.GetComponent<KodaController>();
         //////////////////////////////////////////////////////////
 
-        this.playerData.hp_max = koda_health.GetHealthMax();
-        this.playerData.hp = koda_health.GetHealthCurrent();
+        playerData.hp_max = koda_health.GetHealthMax();
+        playerData.hp = koda_health.GetHealthCurrent();
 
         //playerData.caught_Yokai = koda_power.GetCaughtYokai();
 
         Transform check_point = koda_power.GetRespawnPointPosition();
-        this.playerData.check_point_x = check_point.position.x;
-        this.playerData.check_point_y = check_point.position.y;
-        this.playerData.check_point_z = check_point.position.z;
+        playerData.check_point_x = check_point.position.x;
+        playerData.check_point_y = check_point.position.y;
+        playerData.check_point_z = check_point.position.z;
 
-        this.playerData.current_scene = SceneManager.GetActiveScene().name;
+        playerData.current_scene = SceneManager.GetActiveScene().name;
 
-        this.playerData.power_jump = koda_power.GetPowerJump();
-        this.playerData.power_ball = koda_power.GetPowerBall();
-        this.playerData.power_shrink = koda_power.GetPowerShrink();
+        playerData.power_jump = koda_power.GetPowerJump();
+        playerData.power_ball = koda_power.GetPowerBall();
+        playerData.power_shrink = koda_power.GetPowerShrink();
 
-        this.playerData.selected_slot = this.selected_slot;
+        playerData.selected_slot = selected_slot;
 
-        this.scene_path = Application.persistentDataPath + "/savedGames_slot_" + this.playerData.selected_slot.ToString() + ".gs";
+        scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
 
-        this.Save();
+        Save();
     }
 
-    public void Save() {
+    public static void Save() {
         BinaryFormatter bf = new BinaryFormatter(); // Will handle the serialization work.
-        FileStream file = File.Create(this.scene_path); // Pathwway to a new file that we can send data to.
-        bf.Serialize(file, this.playerData);
+        FileStream file = File.Create(scene_path); // Pathwway to a new file that we can send data to.
+        bf.Serialize(file, playerData);
         file.Close();
         Debug.Log("Game Saved !");
     }
 
-    public void Load() {
+    public static void Load() {
         if (File.Exists(Application.persistentDataPath + "/savedGames_slot_" + selected_slot.ToString() + ".gs")) {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/savedGames_slot_" + selected_slot.ToString() + ".gs", FileMode.Open);
-            this.playerData = (PlayerData)bf.Deserialize(file); // Check https://unity3d.com/fr/learn/tutorials/topics/scripting/persistence-saving-and-loading-data video at 44:40
+            playerData = (PlayerData)bf.Deserialize(file); // Check https://unity3d.com/fr/learn/tutorials/topics/scripting/persistence-saving-and-loading-data video at 44:40
             file.Close();
         }
     }
 
-    public void Load_and_Post_Load() {
+    public static void Load_and_Post_Load() {
         //////////////////////////////////////////////////////////
-        this.koda = GameObject.FindGameObjectWithTag("Player");
-        this.koda_health = koda.GetComponent<PlayerHealth>();
-        this.koda_power = koda.GetComponent<KodaController>();
+        koda = GameObject.FindGameObjectWithTag("Player");
+        koda_health = koda.GetComponent<PlayerHealth>();
+        koda_power = koda.GetComponent<KodaController>();
         //////////////////////////////////////////////////////////
-        this.Load();
+        Load();
 
-        this.koda_health.SetHealthCurrent(this.playerData.hp);
-        this.koda_health.SetHealthCurrent(this.playerData.hp_max);
+        koda_health.SetHealthCurrent(playerData.hp);
+        koda_health.SetHealthMax(playerData.hp_max);
 
         //koda_power.SetCaughtYokai(this.playerData.caught_yokai);
 
-        this.koda_power.SetRespawnPointPosition(this.playerData.check_point_x, this.playerData.check_point_y, this.playerData.check_point_z);
+        koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
 
         //SceneManager.SetActiveScene(this.playerData.current_scene); //Marche pas encore lol !
 
-        this.koda_power.SetPowerJump(this.playerData.power_jump);
-        this.koda_power.SetPowerBall(this.playerData.power_ball);
-        this.koda_power.SetPowerShrink(this.playerData.power_shrink);
+        koda_power.SetPowerJump(playerData.power_jump);
+        koda_power.SetPowerBall(playerData.power_ball);
+        koda_power.SetPowerShrink(playerData.power_shrink);
 
-        this.selected_slot = this.playerData.selected_slot;
+        selected_slot = playerData.selected_slot;
 
         Debug.Log("Game Loaded !");
     }
@@ -116,7 +116,7 @@ public class Game {
 }
 
 [Serializable] // Tells Unity that this script can be serialized—in other words, that we can save all the variables in this script. MUST BE IN ALL SCRIPTS THAT NEEDS TO BE SAVED !
-public class PlayerData {
+public struct PlayerData {
     public float hp;
     public float hp_max;
     public int caught_yokai;
