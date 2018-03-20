@@ -11,11 +11,11 @@ public class CorruptionController : MonoBehaviour {
     [SerializeField] private LanternEffect _lanternEffect;
     private List<LanternController> _lanterns;
 
-    private BoxCollider _bbox;
+    private Collider _bbox;
 
     void Start() {
         _lanterns = new List<LanternController>();
-        foreach (BoxCollider box in GetComponents<BoxCollider>()) {
+        foreach (Collider box in GetComponents<Collider>()) {
             if (!box.isTrigger) _bbox = box;
         };
     }
@@ -33,22 +33,23 @@ public class CorruptionController : MonoBehaviour {
         if (other.CompareTag("Lantern")) {
             _lanterns.Remove(other.gameObject.GetComponent<LanternController>());
         }
-        else {
+        //else {
             ManageCollision(other);
-        }
+        //}
+
     }
 
     void OnTriggerStay(Collider other) {
 
-        if (!other.CompareTag("Lantern")) {
+        //if (!other.CompareTag("Lantern")) {
             ManageCollision(other);
-        }
+        //}
     }
 
     void OnCollisionStay(Collision collision) {
-        if (!collision.collider.CompareTag("Lantern")) {
+        //if (!collision.collider.CompareTag("Lantern")) {
             ManageCollision(collision.collider);
-        }
+        //}
     }
 
     private void ManageCollision(Collider other) {
