@@ -11,8 +11,7 @@ public class DetectRange : MonoBehaviour {
         collidTrigger = GetComponent<Collider>();
         InvokeRepeating("ActivateCollider", 1f, 1f);
     }
-
-
+    
     void Update() {
         if (bazekoriBehavior.GetIsKnocked()){
             CancelInvoke();
@@ -24,6 +23,7 @@ public class DetectRange : MonoBehaviour {
         collidTrigger.enabled = true;
         Invoke("DesactivateCollider", 0.2f);
     }
+
     void DesactivateCollider() {
         collidTrigger.enabled = false;
     }

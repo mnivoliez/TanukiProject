@@ -18,15 +18,20 @@ public class LanternController : MonoBehaviour {
 
     private Vector3 pointRespawnLantern;
 
+    private SphereCollider _bbox;
+
     private void Awake() {
         _light = GetComponent<Light>();
         if (transform.parent == null) {
             _range = _min_radius;
             _light.intensity = _min_intensity;
-        } else {
+        }
+        else {
             _range = _max_radius;
             _light.intensity = _max_intensity;
         }
+        _bbox = GetComponent<SphereCollider>();
+        _bbox.radius = _range;
     }
 
     private void Start() {
@@ -37,11 +42,13 @@ public class LanternController : MonoBehaviour {
         if (transform.parent == null) {
             _range = _min_radius;
             _light.intensity = _min_intensity;
-        } else {
+        }
+        else {
             _range = _max_radius;
             _light.intensity = _max_intensity;
         }
         _light.range = _range;
+        _bbox.radius = _range - 0.5f;
     }
 
     private void OnCollisionEnter(Collision collision) {

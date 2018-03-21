@@ -132,11 +132,9 @@ public class KodaController : MonoBehaviour {
     [Space(10)]
     // Capacity
     [SerializeField] private bool permanentDoubleJumpCapacity;
-    private bool temporaryDoubleJumpCapacity;
     private bool permanentBallCapacity;
-    private bool temporaryBallCapacity;
     private bool permanentShrinkCapacity;
-    private bool temporaryShrinkCapacity;
+    private Capacity temporaryCapacity;
     [SerializeField] private float timerCapacity;
 
     //QTE
@@ -268,6 +266,7 @@ public class KodaController : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision coll) {
+
         GameObject gO = coll.gameObject;
 
         //Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
@@ -617,7 +616,7 @@ public class KodaController : MonoBehaviour {
             inputParams.jumpRequest &&
             (movementState == MovementState.Idle ||
                 movementState == MovementState.Run ||
-                (movementState == MovementState.Jump && (temporaryDoubleJumpCapacity || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+                (movementState == MovementState.Jump && ((temporaryCapacity == Capacity.DoubleJump) || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest) {
             //Debug.Log("movementState=" + movementState);
@@ -817,7 +816,7 @@ public class KodaController : MonoBehaviour {
             }
 
         }
-        else if (previousInteractState == InteractState.Absorb) {
+        else if (previousInteractState == InteractState.Absorb && collid.CompareTag("Yokai")) {
             Pair<Capacity, float> pairCapacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
             if (pairCapacity.First != Capacity.Nothing) {
                 AddCapacity(pairCapacity);
@@ -827,10 +826,10 @@ public class KodaController : MonoBehaviour {
 
     //Temporary in public mode for the playtest
     public void AddCapacity(Pair<Capacity, float> pairCapacity) {
+        temporaryCapacity = pairCapacity.First;
         switch (pairCapacity.First) {
 
             case Capacity.DoubleJump:
-                temporaryDoubleJumpCapacity = true;
                 canvasQTE.SetActive(true);
                 break;
 
@@ -844,8 +843,13 @@ public class KodaController : MonoBehaviour {
 
     private void StopTemporaryCapacity() {
         timerCapacity = 0;
-        temporaryDoubleJumpCapacity = false;
+        temporaryCapacity = Capacity.Nothing;
         canvasQTE.SetActive(false);
+
+        if (temporaryCapacity == Capacity.Lure) {
+            interactBehaviorCtrl.DestroyLure(actualLure);
+            ResetLeafLock();
+        }
     }
 
     private void ProgressTimerCapacity() {
@@ -853,6 +857,12 @@ public class KodaController : MonoBehaviour {
     }
 
     public void ResetPlayer() {
+        ResetLeafLock();
+        // TODO : reset temporary capacity
+    }
+
+    public void ResetLeafLock() {
+        Debug.Log("reset leaf lock");
         leafLock.isUsed = false;
         leafLock.parent = InteractState.Nothing;
         interactBehaviorCtrl.ResetLeaf();
@@ -863,4 +873,10 @@ public class KodaController : MonoBehaviour {
     public bool GetPowerBall() { return permanentBallCapacity; }
     public bool GetPowerShrink() { return permanentShrinkCapacity; }
     public Transform GetRespawnPointPosition() { return gameObject.transform; }
+
+    public void SetCaughtYokai(int yokai_caught) { Debug.Log("ARRETEZ DE VOUS BATTEZ ! D:"); } //Work in progress ...
+    public void SetPowerJump(bool has_double_jump) { permanentDoubleJumpCapacity = has_double_jump; }
+    public void SetPowerBall(bool has_power_ball) { permanentBallCapacity = has_power_ball; }
+    public void SetPowerShrink(bool has_power_shrink) { permanentShrinkCapacity = has_power_shrink; }
+    public void SetRespawnPointPosition(float x_pos, float y_pos, float z_pos) { body.position = new Vector3(x_pos, y_pos, z_pos); }
 }
