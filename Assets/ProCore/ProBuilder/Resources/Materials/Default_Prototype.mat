@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Default_Prototype
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 8c920067c14e54d488a67c9d725b113d, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
@@ -18,6 +18,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Base:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseBump:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -54,7 +58,15 @@ Material:
         m_Texture: {fileID: 2800000, guid: 72ffed2c2e630a14196d01c8a6fbb227, type: 3}
         m_Scale: {x: 0.0675, y: 0.0675}
         m_Offset: {x: -0.24, y: 0.25}
+    - _MainTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -95,17 +107,17 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: 60401b1a0f962e64ca532b51ee771968, type: 3}
+        m_Scale: {x: 0.0675, y: 0.0675}
+        m_Offset: {x: -0.24, y: 0.25}
     - _Texture2Bump:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture3:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: cf55f4ca8669a7247b9bafeb415d3ef0, type: 3}
+        m_Scale: {x: 0.0675, y: 0.0675}
+        m_Offset: {x: -0.24, y: 0.25}
     - _Texture3Bump:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -147,7 +159,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EmissionScaleUI: 0
-    - _Gloss: 1
+    - _Gloss: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.48
     - _GlossyReflections: 1
