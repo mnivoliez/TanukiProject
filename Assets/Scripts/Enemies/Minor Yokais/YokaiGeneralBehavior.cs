@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class YokaiGeneralBehavior : YokaiController {
+public class YokaiGeneralBehavior : YokaiController
+{
 
     [SerializeField]
     private float distanceLimit = 20.0f;
@@ -29,26 +30,33 @@ public class YokaiGeneralBehavior : YokaiController {
 
     private GameObject[] yokaiList;
 
-    void Start() {
+    void Start()
+    {
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
 
         body = gameObject.GetComponent<Rigidbody>();
     }
 
-    void Update() {
-        if (isAbsorbed) {
+    void Update()
+    {
+        if (isAbsorbed)
+        {
             Die();
         }
         yokaiList = GameObject.FindGameObjectsWithTag("Yokai");
     }
 
-    private void FixedUpdate() {
-        if (!isKnocked) {
-            if (target != null) {
+    private void FixedUpdate()
+    {
+        if (!isKnocked)
+        {
+            if (target != null)
+            {
                 //follow target
                 bool rel = applyRules(); //flocking fish
-                if (!rel) {
+                if (!rel)
+                {
                     Vector3 relativePos = target.transform.position - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(relativePos);
                     rotation.x = transform.rotation.x;
@@ -57,45 +65,58 @@ public class YokaiGeneralBehavior : YokaiController {
 
                     float dis = Vector3.Distance(transform.position, target.transform.position);
                     //go to target
-                    if (dis > rangeAttack) {
+                    if (dis > rangeAttack)
+                    {
                         Vector3 normalize = relativePos.normalized;
                         body.velocity = normalize * speed;
-                    } else {
+                    }
+                    else
+                    {
                         body.velocity = Vector3.zero;
                     }
                 }
 
-                if (bodyAttack) {
+                if (bodyAttack)
+                {
                     //attack target with rate
-                    if (Time.time > nextBodyAttack) {
+                    if (Time.time > nextBodyAttack)
+                    {
                         target = GameObject.Find("Player");
                         nextBodyAttack = nextBodyAttack + rateBodyAttack;
                         target.GetComponent<PlayerHealth>().LooseHP(damageBody);
                     }
                 }
-            } else {
+            }
+            else
+            {
                 //comeback the origine position
-                if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
+                if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z)
+                {
                     Vector3 relativePos = positionOrigin - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(relativePos);
                     rotation.x = transform.rotation.x;
                     rotation.z = transform.rotation.z;
                     transform.rotation = rotation;
                     transform.Translate(0, 0, speed * Time.deltaTime);
-                } else {
+                }
+                else
+                {
                     transform.rotation = rotationOrigin;
                 }
             }
         }
     }
 
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == "Player") {
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
             bodyAttack = true;
             Vector3 vectorToCollision = collision.gameObject.transform.position - transform.position;
         }
 
-        if (collision.gameObject.tag == "Lure") {
+        if (collision.gameObject.tag == "Lure")
+        {
             BeingHit();
             LooseHp(1);
             EndHit();
@@ -105,18 +126,25 @@ public class YokaiGeneralBehavior : YokaiController {
 
 
     }
-    private void OnCollisionExit(Collision collision) {
-        if (collision.gameObject.tag == "Player") {
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
             bodyAttack = false;
         }
     }
 
-    void OnTriggerEnter(Collider other) {
-        if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked) {
+    void OnTriggerEnter(Collider other)
+    {
+        if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked)
+        {
             float damage = 1;
-            if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null) {
+            if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null)
+            {
                 damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
-            } else if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MeleeAttackTrigger>() != null) {
+            }
+            else if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MeleeAttackTrigger>() != null)
+            {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
@@ -126,9 +154,11 @@ public class YokaiGeneralBehavior : YokaiController {
         }
     }
 
-    public override void LooseHp(float damage) {
+    public override void LooseHp(float damage)
+    {
         hp = hp - damage;
-        if (hp <= 0) {
+        if (hp <= 0)
+        {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             target = GameObject.Find("Player");
@@ -136,29 +166,38 @@ public class YokaiGeneralBehavior : YokaiController {
         }
     }
 
-    public override void BeingHit() {
+    public override void BeingHit()
+    {
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
         //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
     }
 
-    public override void EndHit() {
+    public override void EndHit()
+    {
         //rendererMat.color = Color.white;
     }
 
-    public override void Absorbed() {
+    public override void Absorbed()
+    {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
     }
 
-    public override void Die() {
-        if (transform.position == target.transform.position) {
+    public override void Die()
+    {
+        if (Vector3.Distance(transform.position, target.transform.position) < 0.5)
+        {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
-        } else {
-            if (transform.localScale.x > 0 && transform.localScale.y > 0 && transform.localScale.z > 0) {
+        }
+        else
+        {
+            if (transform.localScale.x > 0 && transform.localScale.y > 0 && transform.localScale.z > 0)
+            {
                 Vector3 scale = transform.localScale;
                 scale -= new Vector3(20f, 20f, 20f);
-                if (scale.x < 0 && scale.y < 0 && scale.z < 0) {
+                if (scale.x < 0 && scale.y < 0 && scale.z < 0)
+                {
                     scale = Vector3.zero;
                 }
                 transform.localScale = scale;
@@ -171,27 +210,33 @@ public class YokaiGeneralBehavior : YokaiController {
         }
     }
 
-    public override void Behavior() {
+    public override void Behavior()
+    {
 
     }
 
-    public bool TooFarAway() {
+    public bool TooFarAway()
+    {
         bool tooFarAway = false;
-        if (Vector3.Distance(transform.position, positionOrigin) > distanceLimit) {
+        if (Vector3.Distance(transform.position, positionOrigin) > distanceLimit)
+        {
             tooFarAway = true;
         }
         return tooFarAway;
     }
 
-    public bool TooFarAway(Vector3 position) {
+    public bool TooFarAway(Vector3 position)
+    {
         bool tooFarAway = false;
-        if (Vector3.Distance(position, positionOrigin) > distanceLimit) {
+        if (Vector3.Distance(position, positionOrigin) > distanceLimit)
+        {
             tooFarAway = true;
         }
         return tooFarAway;
     }
 
-    private bool applyRules() {
+    private bool applyRules()
+    {
         bool rel = false;
 
         Vector3 tarPos = target.transform.position;
@@ -204,13 +249,17 @@ public class YokaiGeneralBehavior : YokaiController {
         float groupSpeed = 0.1f;
         int groupSize = 0;
 
-        foreach (GameObject yokai in yokaiList) {
-            if (yokai != gameObject) {
+        foreach (GameObject yokai in yokaiList)
+        {
+            if (yokai != gameObject)
+            {
                 distance = Vector3.Distance(yokai.transform.position, transform.position);
-                if (distance < neighbourDistance) {
+                if (distance < neighbourDistance)
+                {
                     vcentre = vcentre + yokai.transform.position;
                     groupSize++;
-                    if (distance < 0.5f) {
+                    if (distance < 0.5f)
+                    {
                         vavoid = vavoid + (transform.position - yokai.transform.position);
                     }
                     YokaiGeneralBehavior anotherYokai = yokai.GetComponent<YokaiGeneralBehavior>();
@@ -218,13 +267,15 @@ public class YokaiGeneralBehavior : YokaiController {
                 }
             }
         }
-        if (groupSize > 0) {
+        if (groupSize > 0)
+        {
             rel = true;
             vcentre = vcentre / groupSize + (tarPos - transform.position);
             float speedPlus = groupSpeed / groupSize;
             Vector3 direction = transform.position - (vcentre + vavoid);
             direction.y = 0;
-            if (direction != Vector3.zero) {
+            if (direction != Vector3.zero)
+            {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
                 transform.Translate(0, 0, speedPlus * Time.deltaTime);
             }
