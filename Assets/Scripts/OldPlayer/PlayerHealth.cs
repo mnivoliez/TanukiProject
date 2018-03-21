@@ -77,6 +77,14 @@ public class PlayerHealth : MonoBehaviour {
         return playerHealthMax;
     }
 
+    public void SetHealthCurrent(float current_hp) {
+        playerHealthCurrent = current_hp;
+    }
+
+    public void SetHealthMax(float current_max_hp) {
+        playerHealthMax = current_max_hp;
+    }
+
     public void PlayerDie() {
         animPlayer.SetBool("isDead", true);
         StartCoroutine(Fading());
