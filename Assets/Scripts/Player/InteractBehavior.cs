@@ -190,7 +190,7 @@ public class InteractBehavior : MonoBehaviour
         sakePot.SetActive(true);
     }
 
-    public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject)
+    public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject, InputController input)
     {
         Pair<Capacity, float> pairCapacity;
         Capacity capacity = Capacity.Nothing;
@@ -202,12 +202,14 @@ public class InteractBehavior : MonoBehaviour
             centerButton.GetComponent<Image>().color = Color.white;
             absorptionTimer -= 0.03f;
             absorptionGauge -= 0.01f;
-            if (Input.GetButtonDown("Fire3"))
+            InputParams inputParams = input.RetrieveUserRequest();
+            if (inputParams.contextualButtonPressed)
             {
                 centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
                 centerButton.GetComponent<Image>().color = Color.grey;
                 absorptionGauge += 1;
-
+                inputParams.contextualButtonPressed = false;
+                input.SetUserRequest(inputParams);
             }
 
             loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
