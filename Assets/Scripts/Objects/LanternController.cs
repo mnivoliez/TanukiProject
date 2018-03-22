@@ -55,7 +55,7 @@ public class LanternController : MonoBehaviour {
         //layer 4 = water
         if (collision.gameObject.layer == 4) {
             GameObject air = Instantiate(airLantern, transform.position, Quaternion.identity);
-            air.GetComponent<AirLanternController>().setPointRespawnLantern(pointRespawnLantern);
+            air.GetComponent<RespawnLanternController>().setPointRespawnLantern(pointRespawnLantern);
             Destroy(gameObject, timeDestroy);
         }
     }
