@@ -32,6 +32,7 @@ public class RespawnController : MonoBehaviour {
 
                 if (distance > distanceLantern) {
                     player.GetComponent<PlayerHealth>().PlayerDie();
+                    isPlayer = false;
                 } else {
                     Vector3 velocity = player.GetComponent<Rigidbody>().velocity;
                     if (velocity.x < 0.01f && velocity.y < 0.01f && velocity.z < 0.01f) {
@@ -44,6 +45,7 @@ public class RespawnController : MonoBehaviour {
                     }
                     if (playerStop && ((Time.time - timeStop) > timeDelay)) {
                         player.GetComponent<PlayerHealth>().PlayerDie();
+                        isPlayer = false;
                     }
                 }
             }
