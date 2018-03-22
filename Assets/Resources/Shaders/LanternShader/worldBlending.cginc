@@ -169,7 +169,7 @@ half4 frag (v2f i) : SV_Target
 		#if defined(_LANTERN)
 			emissive += (stepDiff * diffCol.rgb * lerp(_FirstLColor.rgb*_FirstLColor.a, _SecondLColor.rgb*_SecondLColor.a, lrp)*5.0)
 				   + (1-stepDiff) * diffCol.rgb * lerp(_FirstDColor.rgb*_FirstDColor.a, _SecondDColor.rgb*_SecondDColor.a, lrp)*5.0;
-			emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*5.0);
+			emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*100.0);
 		    #if defined(_ISMASK_ON)
 				emissive += lerp(rMask * _MaskRColor.rgb * (_MaskREmi-1), gMask * _MaskGColor.rgb * (_MaskGEmi-1), lrp)*5.0;
 			#endif
