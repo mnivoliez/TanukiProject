@@ -231,11 +231,6 @@ public class KodaController : MonoBehaviour
             return;
         }
 
-        if (Pause.Paused)
-        {
-            return;
-        }
-
         if (timerCapacity > 0)
         {
             timerCapacity -= Time.deltaTime;
@@ -283,6 +278,7 @@ public class KodaController : MonoBehaviour
         }
 
         animBody.UpdateState(movementState, speed, animationMoveSpeed);
+        //ResetInteractStateParameter();
     }
 
     void OnCollisionEnter(Collision coll) {
@@ -814,19 +810,7 @@ public class KodaController : MonoBehaviour
                 break;
 
             case ActionRequest.None:
-                interactStateParameter.canGlide = false;
-                interactStateParameter.canMeleeAttack = false;
-                interactStateParameter.canDistantAttack = false;
-                interactStateParameter.canSpawnLure = false;
-                interactStateParameter.canDestroyLure = false;
-                interactStateParameter.canInflate = false;
-                interactStateParameter.canResize = false;
-                interactStateParameter.canActivate = false;
-                interactStateParameter.canAbsorb = false;
-                interactStateParameter.canCarry = false;
-                interactStateParameter.canPush = false;
-                interactStateParameter.finishedCarry = false;
-                interactStateParameter.canAirStream = false;
+                ResetInteractStateParameter();
                 nearestObject = null;
                 break;
         }
@@ -837,6 +821,22 @@ public class KodaController : MonoBehaviour
         }
     }
 
+    private void ResetInteractStateParameter()
+    {
+        interactStateParameter.canGlide = false;
+        interactStateParameter.canMeleeAttack = false;
+        interactStateParameter.canDistantAttack = false;
+        interactStateParameter.canSpawnLure = false;
+        interactStateParameter.canDestroyLure = false;
+        interactStateParameter.canInflate = false;
+        interactStateParameter.canResize = false;
+        interactStateParameter.canActivate = false;
+        interactStateParameter.canAbsorb = false;
+        interactStateParameter.canCarry = false;
+        interactStateParameter.canPush = false;
+        interactStateParameter.finishedCarry = false;
+        interactStateParameter.canAirStream = false;
+    }
 
 
     public float GetJumpForce() { return jumpForce; }
@@ -908,7 +908,7 @@ public class KodaController : MonoBehaviour
                 //Debug.Log("In Air Stream ZONE - GLIDE");
             }
         }
-        if (collid.gameObject.CompareTag("AirStreamForce"))
+        else if (collid.gameObject.CompareTag("AirStreamForce"))
         {
             if (interactState != InteractState.Glide)
             { //&& previousInteractState == InteractState.Glide
@@ -924,7 +924,7 @@ public class KodaController : MonoBehaviour
 				body.AddForce (Vector3.up * 10, ForceMode.Impulse);*/
             }
         }
-        if (collid.CompareTag("Yokai"))
+        else if (collid.CompareTag("Yokai"))
         {
             if (interactState == InteractState.Absorb && previousInteractState != InteractState.Absorb)
             {
@@ -936,11 +936,12 @@ public class KodaController : MonoBehaviour
             }
             else if (previousInteractState == InteractState.Absorb)
             {
-                Pair<Capacity, float> pairCapacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject);
+                Pair<Capacity, float> pairCapacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject, inputController);
                 if (pairCapacity.First != Capacity.Nothing)
                 {
                     AddCapacity(pairCapacity);
                 }
+
             }
         }
     }
