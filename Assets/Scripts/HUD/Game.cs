@@ -88,29 +88,37 @@ public static class Game {
     }
 
     public static void Load_and_Post_Load() {
-        //////////////////////////////////////////////////////////
-        koda = GameObject.FindGameObjectWithTag("Player");
-        koda_health = koda.GetComponent<PlayerHealth>();
-        koda_power = koda.GetComponent<KodaController>();
-        //////////////////////////////////////////////////////////
-        Load();
+        if (SceneManager.GetActiveScene().name == playerData.current_scene) {
+            //////////////////////////////////////////////////////////
+            koda = GameObject.FindGameObjectWithTag("Player");
+            koda_health = koda.GetComponent<PlayerHealth>();
+            koda_power = koda.GetComponent<KodaController>();
+            //////////////////////////////////////////////////////////
+            Load();
 
-        koda_health.SetHealthCurrent(playerData.hp);
-        koda_health.SetHealthMax(playerData.hp_max);
+            koda_health.SetHealthCurrent(playerData.hp);
+            koda_health.SetHealthMax(playerData.hp_max);
 
-        //koda_power.SetCaughtYokai(this.playerData.caught_yokai);
+            //koda_power.SetCaughtYokai(playerData.caught_yokai);
 
-        koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
+            koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
 
-        //SceneManager.SetActiveScene(this.playerData.current_scene); //Marche pas encore lol !
+            //SceneManager.SetActiveScene(playerData.current_scene); //Marche pas encore lol !
 
-        koda_power.SetPowerJump(playerData.power_jump);
-        koda_power.SetPowerBall(playerData.power_ball);
-        koda_power.SetPowerShrink(playerData.power_shrink);
+            koda_power.SetPowerJump(playerData.power_jump);
+            koda_power.SetPowerBall(playerData.power_ball);
+            koda_power.SetPowerShrink(playerData.power_shrink);
 
-        selected_slot = playerData.selected_slot;
+            selected_slot = playerData.selected_slot;
 
-        Debug.Log("Game Loaded !");
+            Debug.Log("Game Loaded !");
+        }
+
+        else {
+            //SceneManager.LoadScene(playerData.current_scene);
+            //Load_and_Post_Load();
+            Debug.Log("Bon ! C'est pas la bonne scene ... Mais c'est pas grave ... J'ai tout prévu : Ce joli message. Bisous !");
+        }
     }
 
 }
