@@ -7,8 +7,8 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: M_Item_Switch
-  m_Shader: {fileID: 4800000, guid: ab5340c2aa9b29f4689a70c5776348c2, type: 3}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 4800000, guid: 19581300d12b17b4a8c5d85646a80c8d, type: 3}
+  m_ShaderKeywords: _MODE_SIMPLE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -58,12 +58,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FirstTexture:
+        m_Texture: {fileID: 2800000, guid: cefe6231039b9bb4480522919bb55678, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _LeavesTextures:
         m_Texture: {fileID: 2800000, guid: cefe6231039b9bb4480522919bb55678, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 77ffc5930e0beac45a704c66257c066d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTexture:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -79,6 +87,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SecondTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -104,16 +116,25 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _IsAlpha: 0
+    - _IsMask: 0
+    - _MaskGEmi: 1
+    - _MaskREmi: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _RimIntensity: 0
+    - _RimPow: 1
     - _ShadowEffects: 4.23
     - _ShadowSize: 0.037
     - _SizeFull: 120
     - _SmoothnessTextureChannel: 0
+    - _SpecIntensity: 0
+    - _SpecPow: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StepCount: 4.25
     - _Strength: 2.1
     - _Textureintensity: 0.898
     - _Thickness: 0
@@ -125,6 +146,12 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FirstDColor: {r: 0.5177336, g: 0.689685, b: 0.9264706, a: 0}
+    - _FirstLColor: {r: 0.7867647, g: 0.9823529, b: 1, a: 0.584}
     - _Globalcolor: {r: 0.32363755, g: 0.49892455, b: 0.60294116, a: 1}
+    - _MaskGColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MaskRColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SecondDColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SecondLColor: {r: 1, g: 1, b: 1, a: 0}
     - _ShadowColor: {r: 0.8014706, g: 0.9260648, b: 1, a: 1}
     - _Teinte: {r: 0.27357268, g: 0.5264261, b: 0.6764706, a: 1}
