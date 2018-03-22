@@ -653,7 +653,7 @@ public class KodaController : MonoBehaviour {
                 }
                 break;
 
-            case ActionRequest.SpawnLure:
+            /*case ActionRequest.SpawnLure:
                 if (actualLure == null && !leafLock.isUsed) {
                     interactStateParameter.canSpawnLure = true;
                 }
@@ -661,7 +661,7 @@ public class KodaController : MonoBehaviour {
 
                     interactStateParameter.canDestroyLure = true;
                 }
-                break;
+                break;*/
 
             case ActionRequest.Inflate:
                 if (IsGrounded() && (!leafLock.isUsed || (leafLock.isUsed && leafLock.parent == InteractState.Inflate))) interactStateParameter.canInflate = true;
