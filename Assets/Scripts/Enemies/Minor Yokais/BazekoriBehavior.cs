@@ -5,7 +5,7 @@ using UnityEngine;
 public class BazekoriBehavior : YokaiController {
 
     [SerializeField] private float jumpForce = 300f;
-    [SerializeField] private float attackRate = 0.5f;
+    [SerializeField] private float attackRate = 0.2f;
     bool followPlayer = false;
     Vector3 startPosition;
     Vector3 endPosition;
@@ -131,14 +131,12 @@ public class BazekoriBehavior : YokaiController {
         else {
             followPlayer = false;
             timeStamp = 0;
-            attackRate = 0.5f;
         }
     }
 
     public void SetFollowPlayer(bool isFollowing) {
         followPlayer = isFollowing;
         timeStamp = 0;
-        attackRate = 0.5f;
         startPosition = transform.position;
         endPosition = target.transform.position + (Vector3.up * 2);
     }
