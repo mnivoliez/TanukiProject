@@ -151,7 +151,7 @@ v2f vert (appdata v)
 #endif
 
 
-fixed4 frag (v2f i) : SV_Target
+half4 frag (v2f i) : SV_Target
 {
 	#if defined(_LANTERN)
 		float len = -100;
@@ -203,13 +203,13 @@ fixed4 frag (v2f i) : SV_Target
 	    float3 indirectDiff = ShadeSH9(float4(i.normalDir, 1));
 		float3 emissive = 0;
 		#if defined(_LANTERN)
-			emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*5.0);
-			emissive += lerp((tex1+invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a, (tex2+invEdgeIntensity) * _SecondFoamColor*_SecondFoamColor.a, lrp) *5.0;
+			emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*100.0);
+			emissive += lerp((tex1+invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a, (tex2+invEdgeIntensity) * _SecondFoamColor*_SecondFoamColor.a, lrp) *100.0;
 		#else
-			emissive += (tex1 + invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a*5.0;
+			emissive += (tex1 + invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a*100.0;
 		#endif
-		return fixed4((directDiff + indirectDiff) * diffCol + emissive, opacity);
+		return half4((directDiff + indirectDiff) * diffCol + emissive, opacity);
 	#else
-		return fixed4(directDiff * diffCol, opacity);
+		return half4(directDiff * diffCol, opacity);
 	#endif
 }
