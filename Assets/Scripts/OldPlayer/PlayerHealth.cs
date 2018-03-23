@@ -86,13 +86,11 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     public void PlayerDie() {
-        Debug.Log("Player is dead !");
         animPlayer.SetBool("isDead", true);
         StartCoroutine(Fading());
         gameObject.GetComponent<KodaController>().ResetPlayer();
         knockBackCounter = 0;
         GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
-        Debug.Log("Player is Alive !");
     }
 
     IEnumerator Fading() {
