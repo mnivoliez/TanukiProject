@@ -143,9 +143,8 @@ public class KodaController : MonoBehaviour
     // Capacity
     [SerializeField] private bool hasPermanentDoubleJumpCapacity;
     [SerializeField] private bool hasPermanentLureCapacity;
-    private bool permanentBallCapacity;
-    private bool permanentShrinkCapacity;
-    private bool temporaryShrinkCapacity;
+    private bool hasPermanentBallCapacity;
+    private bool hasPermanentShrinkCapacity;
     [SerializeField] private Capacity temporaryCapacity;
     [SerializeField] private float timerCapacity;
 
@@ -1015,15 +1014,15 @@ public class KodaController : MonoBehaviour
         interactBehaviorCtrl.ResetLeaf();
     }
 
-    public bool GetPowerJump() { return permanentDoubleJumpCapacity; }
-    public bool GetPowerLure() { return permanentLureCapacity; }
-    public bool GetPowerBall() { return permanentBallCapacity; }
-    public bool GetPowerShrink() { return permanentShrinkCapacity; }
+    public bool GetPowerJump() { return hasPermanentDoubleJumpCapacity; }
+    public bool GetPowerLure() { return hasPermanentLureCapacity; }
+    public bool GetPowerBall() { return hasPermanentBallCapacity; }
+    public bool GetPowerShrink() { return hasPermanentShrinkCapacity; }
     public Transform GetRespawnPointPosition() { return gameObject.transform; }
 
-    public void SetPowerJump(bool has_double_jump) { permanentDoubleJumpCapacity = has_double_jump; }
-    public void SetPowerLure(bool has_lure) { permanentLureCapacity = has_lure; }
-    public void SetPowerBall(bool has_power_ball) { permanentBallCapacity = has_power_ball; }
-    public void SetPowerShrink(bool has_power_shrink) { permanentShrinkCapacity = has_power_shrink; }
+    public void SetPowerJump(bool has_double_jump) { hasPermanentDoubleJumpCapacity = has_double_jump; }
+    public void SetPowerLure(bool has_lure) { hasPermanentLureCapacity = has_lure; }
+    public void SetPowerBall(bool has_power_ball) { hasPermanentBallCapacity = has_power_ball; }
+    public void SetPowerShrink(bool has_power_shrink) { hasPermanentShrinkCapacity = has_power_shrink; }
     public void SetRespawnPointPosition(float x_pos, float y_pos, float z_pos) { body.position = new Vector3(x_pos, y_pos, z_pos); }
 }
