@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Dissolve_WorldBlending_Lantern02
   m_Shader: {fileID: 4800000, guid: 19581300d12b17b4a8c5d85646a80c8d, type: 3}
-  m_ShaderKeywords: _LANTERN _MODE_LANTERN
+  m_ShaderKeywords: _ISMASK_ON _LANTERN _MODE_LANTERN
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -23,8 +23,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 69cd24f9b72881a459ba1e2b1948aa97, type: 3}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _SecondTexture:
         m_Texture: {fileID: 2800000, guid: 1cc7a6696b2d19741a799c34012b7dbe, type: 3}
@@ -32,19 +32,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _IsAlpha: 0
-    - _IsMask: 0
+    - _IsMask: 1
     - _MaskGEmi: 1
     - _MaskREmi: 1
     - _Mode: 1
-    - _RimIntensity: 0
+    - _RimIntensity: 0.7
     - _RimPow: 1
     - _SpecIntensity: 0
     - _SpecPow: 1
-    - _StepCount: 3
+    - _StepCount: 3.91
     m_Colors:
-    - _FirstDColor: {r: 0, g: 0, b: 0, a: 0}
-    - _FirstLColor: {r: 1, g: 1, b: 1, a: 0}
-    - _MaskGColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MaskRColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SecondDColor: {r: 0.99264705, g: 0, b: 0, a: 0}
-    - _SecondLColor: {r: 0.007352948, g: 0.000054065848, b: 0.000054065848, a: 0}
+    - _FirstDColor: {r: 0, g: 0.21475658, b: 0.25735295, a: 0}
+    - _FirstLColor: {r: 0.9558824, g: 0.49199829, b: 0.9238904, a: 0}
+    - _MaskGColor: {r: 0.33823532, g: 0.14673443, b: 0.21408992, a: 1}
+    - _MaskRColor: {r: 1, g: 1, b: 1, a: 0}
+    - _SecondDColor: {r: 0.60294116, g: 0, b: 0, a: 0}
+    - _SecondLColor: {r: 0.63235295, g: 0.31617647, b: 0.31617647, a: 0}
