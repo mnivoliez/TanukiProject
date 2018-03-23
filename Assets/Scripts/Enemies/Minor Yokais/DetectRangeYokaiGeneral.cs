@@ -5,14 +5,14 @@ using System.Linq;
 
 public class DetectRangeYokaiGeneral : MonoBehaviour {
 
-    private YokaiGeneralBehavior parentBehavior;
+    private YokaiController parentBehavior;
     private Collider areaCollider;
     [SerializeField]
     private List<GameObject> objectsInArea;
 
 	// Use this for initialization
 	void Start () {
-        parentBehavior = GetComponentInParent<YokaiGeneralBehavior>();
+        parentBehavior = GetComponentInParent<YokaiController>();
         areaCollider = GetComponent<Collider>();
         objectsInArea = new List<GameObject>();
 
