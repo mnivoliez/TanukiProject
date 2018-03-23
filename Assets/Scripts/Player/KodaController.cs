@@ -111,6 +111,8 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private Transform playerModel;
     [SerializeField] private Transform direction;
 
+	private float angle;
+
     private Vector3 orientationMove;
     private Vector3 inputVelocityAxis;
 
@@ -247,10 +249,10 @@ public class KodaController : MonoBehaviour {
 
         if (previousInteractState != interactState) {
             animBody.OnStateExit(previousInteractState);
-            animBody.OnStateEnter(interactState);
+            animBody.OnStateEnter(interactState);	
         }
 
-        animBody.UpdateState(movementState, speed, animationMoveSpeed);
+		animBody.UpdateState(movementState, speed, animationMoveSpeed, angle/90, body.velocity.y/10);
     }
 
     void OnCollisionEnter(Collision coll) {
@@ -369,11 +371,11 @@ public class KodaController : MonoBehaviour {
         //Debug.Log ("allowedToWalk=" + allowedToWalk);
         if (allowedToWalk) {
             //Debug.Log ("0-45");
-            inputVelocityAxis =
-                (
-                moveStateParameters.moveX * direction.right +
-                moveStateParameters.moveZ * direction.forward
-            ).normalized * moveSpeed;
+			inputVelocityAxis = (moveStateParameters.moveX * direction.right +
+								 moveStateParameters.moveZ * direction.forward);
+			if (inputVelocityAxis.magnitude > 1)
+				inputVelocityAxis = inputVelocityAxis.normalized;
+			inputVelocityAxis *= moveSpeed;
         }
         else {
             //Debug.Log ("45-90");
@@ -393,11 +395,8 @@ public class KodaController : MonoBehaviour {
             if (scalar < 0) {
                 factor = 1 + scalar;
             }
-            inputVelocityAxis =
-                (
-                moveStateParameters.moveX * rightNoY +
-                moveStateParameters.moveZ * forwardNoY
-            ).normalized * moveSpeed * factor;
+            inputVelocityAxis = (moveStateParameters.moveX * rightNoY +
+                				 moveStateParameters.moveZ * forwardNoY).normalized * moveSpeed * factor;
         }
     }
 
@@ -410,6 +409,13 @@ public class KodaController : MonoBehaviour {
         if (moveStateParameters.moveX != 0 || moveStateParameters.moveZ != 0) {
             transform.rotation = Quaternion.Euler(0, pivot.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
+
+			angle = newRotation.eulerAngles.y - playerModel.rotation.eulerAngles.y;
+			if (angle > 180)
+				angle -= 360;
+			else if (angle < -180)
+				angle += 360;
+
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
         }
 
@@ -579,6 +585,9 @@ public class KodaController : MonoBehaviour {
         if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters)) {
             moveStateParameters.position_before_fall = body.position;
         }
+
+		permanentDoubleJumpCapacity = true;
+		//TODO remove temp double jump
         moveStateParameters.position = body.position;
         moveStateParameters.velocity = body.velocity;
         moveStateParameters.moveX = inputParams.moveX;
