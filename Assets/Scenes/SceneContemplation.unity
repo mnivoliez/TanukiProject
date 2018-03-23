@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.32097158, g: 0.65029633, b: 0.7783202, a: 1}
+  m_IndirectSpecularColor: {r: 0.083029374, g: 0.37697574, b: 0.57050353, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -10184,6 +10184,21 @@ Prefab:
     - target: {fileID: 4932080817516006, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5, type: 2}
       propertyPath: m_LocalScale.z
       value: 2.000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 108002874602030598, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: m_Intensity
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 108002874602030598, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 135806279425577154, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: m_Radius
+      value: 9.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5, type: 2}
@@ -121327,6 +121342,21 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 108002874602030598, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: m_Intensity
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 108002874602030598, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 135806279425577154, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: m_Radius
+      value: 9.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5, type: 2}
   m_IsPrefabParent: 0
@@ -157290,7 +157320,13 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 15.6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 20994551394719208, guid: 8d8cd0b88591eb54cb62e26d09549da6,
+        type: 2}
+      propertyPath: near clip plane
+      value: 0.1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 92743925315978842, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1500529984
