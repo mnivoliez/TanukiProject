@@ -95,8 +95,16 @@ public static class Game {
         else {
             //SceneManager.LoadScene(playerData.current_scene);
             //Load_and_Post_Load();
-            Debug.Log("Bon ! C'est pas la bonne scene ... Mais c'est pas grave ... J'ai tout prévu : Ce joli message. Bisous !");
+            Debug.Log("Trying to load a scene that is not supposed to exist in this game.");
         }
+    }
+
+    public static void Load_From_Main_Menue() {
+        /*
+         SceneManager.LoadScene(playerData.current_scene);
+         Load_and_Post_Load()
+         */
+        Debug.Log("Will load ... Soon™.");
     }
 
     public static void Update_Game() {
