@@ -131,12 +131,14 @@ public class KodaController : MonoBehaviour {
     [Header("CAPACITY")]
     [Space(10)]
     // Capacity
-    [SerializeField] private bool permanentDoubleJumpCapacity;
+    [SerializeField] private bool hasPermanentDoubleJumpCapacity;
+    [SerializeField] private bool hasPermanentLureCapacity;
     private bool temporaryDoubleJumpCapacity;
     private bool permanentBallCapacity;
     private bool temporaryBallCapacity;
     private bool permanentShrinkCapacity;
     private bool temporaryShrinkCapacity;
+    [SerializeField] private Capacity temporaryCapacity;
     [SerializeField] private float timerCapacity;
 
     //QTE
@@ -656,7 +658,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.SpawnLure:
-                if (actualLure == null && !leafLock.isUsed) {
+                if (actualLure == null && !leafLock.isUsed && (hasPermanentLureCapacity || temporaryCapacity == Capacity.Lure)) {
                     interactStateParameter.canSpawnLure = true;
                 }
                 else {
@@ -845,13 +847,16 @@ public class KodaController : MonoBehaviour {
 
     private void StopTemporaryCapacity() {
         timerCapacity = 0;
-        temporaryCapacity = Capacity.Nothing;
-        canvasQTE.SetActive(false);
 
         if (temporaryCapacity == Capacity.Lure) {
             interactBehaviorCtrl.DestroyLure(actualLure);
             ResetLeafLock();
         }
+
+        temporaryCapacity = Capacity.Nothing;
+        canvasQTE.SetActive(false);
+
+        
     }
 
     private void ProgressTimerCapacity() {
@@ -871,7 +876,8 @@ public class KodaController : MonoBehaviour {
     }
 
     public int GetCaughtYokai() { return 0; } //Work in progress ...
-    public bool GetPowerJump() { return permanentDoubleJumpCapacity; }
+    public bool GetPowerJump() { return hasPermanentDoubleJumpCapacity; }
+    public bool GetPowerLure() { return hasPermanentLureCapacity; }
     public bool GetPowerBall() { return permanentBallCapacity; }
     public bool GetPowerShrink() { return permanentShrinkCapacity; }
     public Transform GetRespawnPointPosition() { return gameObject.transform; }
