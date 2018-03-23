@@ -17,7 +17,12 @@ public class LanternController : MonoBehaviour {
     [SerializeField]
     private float timeDestroy = 2.0f;
 
-    private Vector3 pointRespawnLantern;
+    private Vector3 positionOrigin;
+    private Quaternion rotationOrigin;
+    private bool destroy = false;
+    private float timeToDestroy = 0f;
+
+    private Rigidbody lanternBody;
 
     private SphereCollider _bbox;
 
@@ -36,7 +41,8 @@ public class LanternController : MonoBehaviour {
     }
 
     private void Start() {
-        pointRespawnLantern = transform.position;
+        positionOrigin = transform.position;
+        rotationOrigin = transform.rotation;
     }
 
     private void Update() {
@@ -52,12 +58,25 @@ public class LanternController : MonoBehaviour {
         _bbox.radius = _range - 0.5f;
     }
 
+    private void FixedUpdate() {
+        if (destroy) {
+            if((Time.time - timeDestroy) > timeToDestroy) {
+                lanternBody = GetComponent<Rigidbody>();
+                lanternBody.velocity = Vector3.zero;
+                transform.position = positionOrigin;
+                transform.rotation = rotationOrigin;
+                destroy = false;
+                gameObject.layer = LayerMask.NameToLayer("Catchable");
+            }
+        }
+    }
+
     private void OnCollisionEnter(Collision collision) {
-        //layer 4 = water
-        if (collision.gameObject.layer == 4) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water")) {
             GameObject air = Instantiate(airLantern, transform.position, Quaternion.identity);
-            air.GetComponent<RespawnLanternController>().setPointRespawnLantern(pointRespawnLantern);
-            Destroy(gameObject, timeDestroy);
+            gameObject.layer = 0;
+            destroy = true;
+            timeToDestroy = Time.time;
         }
     }
 
