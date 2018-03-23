@@ -252,8 +252,11 @@ public class InteractBehavior : MonoBehaviour
     private Pair<Capacity, float> AbsorbeYokai(GameObject absorbableObject)
     {
         absorbableObject.GetComponent<YokaiController>().Absorbed();
-        gameObject.GetComponent<PlayerCollectableController>().AddYokai();
+
         Capacity capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
+        if (capacity == Capacity.Nothing) {
+            gameObject.GetComponent<PlayerCollectableController>().AddYokai();
+        }
         float timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
         return new Pair<Capacity, float>(capacity, timerCapacity);
     }
