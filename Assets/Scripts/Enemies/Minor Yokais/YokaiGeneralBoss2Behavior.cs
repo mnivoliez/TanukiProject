@@ -3,34 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SesshoSekiBehavior : YokaiController {
+public class YokaiGeneralBoss2Behavior : YokaiController {
     
     private Quaternion rotationOrigin;
+    
+    [SerializeField]
+    private float rangeAttack = 4.0f;
+
+    [SerializeField]
+    private float rateBodyAttack = 2.0f;
+    private float nextBodyAttack = 0.0f;
+
+    [SerializeField] private GameObject boss;
+    private float rayon;
 
     private bool bodyAttack = false;
 
+    private float currentSpeed;
+
     private Rigidbody body;
 
-    private Vector3 positionTarget;
-    private bool positionTargetSet;
-    private Vector3 positionToGo;
-    private bool positionToGoSet;
-    private bool prepare;
-    private bool search;
-    private float nextAction;
-
-    [SerializeField] private float durationOfPreparation = 2;
-    [SerializeField] private float durationOfResearch = 2;
-
-
     void Start() {
-        prepare = true;
+        currentSpeed = speed;
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
+        Vector3 vectBossYokai = transform.position - boss.transform.position;
+        rayon = vectBossYokai.magnitude;
         body = gameObject.GetComponent<Rigidbody>();
-        nextAction = 0;
-        positionTargetSet = false;
-        rendererMat = GetComponent<Renderer>().material;
     }
 
     void Update() {
@@ -42,73 +41,57 @@ public class SesshoSekiBehavior : YokaiController {
     private void FixedUpdate() {
         if (!isKnocked) {
             if (target != null) {
-                if (prepare) {
-                    Debug.Log("prepare: " + target.name);
-                    if (Time.time < nextAction || !positionTargetSet) {
-                        if (!positionTargetSet) {
-                            body.velocity = Vector3.zero;
-                            transform.rotation = Quaternion.identity;
-                            positionTarget = target.transform.position;
-                            transform.LookAt(target.transform);
-                            rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
-                            positionTargetSet = true;
-                            nextAction = Time.time + durationOfPreparation;
-                        }
-                    } else if (Time.time >= nextAction) {
-                        prepare = false;
-                        positionTargetSet = false;
-                    }
-                } else if (search) {
-                    Debug.Log("search");
-                    body.velocity = Vector3.zero;
-                    transform.rotation = Quaternion.identity;
-                    if (Time.time < nextAction) {
-                        rendererMat.color = new Color(40f / 255f, 150f / 255f, 150f / 255f);
+
+                Vector3 relativePos = new Vector3();
+                Vector3 positionToGo = new Vector3();
+
+                if (target.tag == "Lure") {
+                    currentSpeed = speed / 2;
+                    relativePos = target.transform.position - transform.position;
+                    positionToGo = target.transform.position;
+
+                } else if (target.tag == "Player") {
+                    currentSpeed = speed;
+                    Vector3 vectBossPlayer = target.transform.position - boss.transform.position;
+                    if (vectBossPlayer.magnitude > rayon) {
+                        positionToGo = boss.transform.position + rayon * vectBossPlayer.normalized;
                     } else {
-                        search = false;
-                        prepare = true;
-                        positionToGoSet = false;
-                    }
-
-                } else {
-                    Debug.Log("go to target");
-                    Vector3 relativePos = new Vector3();
-
-                    if (!positionToGoSet) {
-                        relativePos = (positionTarget - transform.position) * 1.5f;
-                        positionToGo = transform.position + relativePos;
-                        rendererMat.color = new Color(150f / 255f, 150f / 255f, 40f / 255f);
-                        positionToGoSet = true;
-                    }
-
-                    relativePos = positionToGo - transform.position;
-                    relativePos.y = 0;
-
-                    Vector3 lookAtTarget = positionToGo - transform.position;
-                    Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
-                    rotation.x = transform.rotation.x;
-                    rotation.z = transform.rotation.z;
-                    transform.rotation = rotation;
-                    
-                    if ((int)positionToGo.x != (int)transform.position.x || (int)positionToGo.z != (int)transform.position.z) {
-                        Vector3 normalize = relativePos.normalized;
-                        body.velocity = normalize * speed;
-                    }
-                    else {
-                        search = true;
-                        nextAction = durationOfResearch + Time.time;
+                        positionToGo = target.transform.position + new Vector3(target.transform.rotation.x, target.transform.rotation.y, target.transform.rotation.z) * 2;
                     }
                 }
+
+                relativePos = positionToGo - transform.position;
+
+                Vector3 lookAtTarget = target.transform.position - transform.position;
+                Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
+                rotation.x = transform.rotation.x;
+                rotation.z = transform.rotation.z;
+                transform.rotation = rotation;
+
+                //go to target
+                //if (Math.Round(positionToGo.x, 1) != Math.Round(transform.position.x, 1) || Math.Round(positionToGo.y, 1) != Math.Round(transform.position.y, 2) || Math.Round(positionToGo.z, 2) != Math.Round(transform.position.z, 2)) {
+                if ((int)positionToGo.x != (int)transform.position.x || Math.Round(positionToGo.y, 1) != Math.Round(transform.position.y, 1) || (int)positionToGo.z != (int)transform.position.z) {
+                    Vector3 normalize = relativePos.normalized;
+                    body.velocity = normalize * currentSpeed;
+                    currentSpeed = speed;
+                }
+                else {
+                    body.velocity = Vector3.zero;
+                    currentSpeed = speed;
+                }
+
                 
+                if (bodyAttack) {
+                    //attack target with rate
+                    if (Time.time > nextBodyAttack) {
+                        target = GameObject.Find("Player");
+                        nextBodyAttack = nextBodyAttack + rateBodyAttack;
+                        target.GetComponent<PlayerHealth>().LooseHP(damage);
+                    }
+                }
             }
             else {
                 //comeback the origine position
-                Debug.Log("comeBack");
-                prepare = true;
-                search = false;
-                positionTargetSet = false;
-                positionToGoSet = false;
-                rendererMat.color = Color.white;
                 if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.y != (int)positionOrigin.y || (int)transform.position.z != (int)positionOrigin.z) {
                     Vector3 relativePos = positionOrigin - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(relativePos);
@@ -116,7 +99,7 @@ public class SesshoSekiBehavior : YokaiController {
                     rotation.z = transform.rotation.z;
                     transform.rotation = rotation;
                     Vector3 normalize = relativePos.normalized;
-                    body.velocity = normalize * speed;
+                    body.velocity = normalize * speed / 4;
                 }
                 else {
                     transform.rotation = rotationOrigin;
@@ -151,7 +134,7 @@ public class SesshoSekiBehavior : YokaiController {
         }
     }
 
-    void OnTriggerEnter(Collider other) {
+    /*void OnTriggerEnter(Collider other) {
         if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked) {
             float damage = 1;
             if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null) {
@@ -165,7 +148,7 @@ public class SesshoSekiBehavior : YokaiController {
             LooseHp(damage);
             EndHit();
         }
-    }
+    }*/
 
     public override void LooseHp(float damage) {
         hp = hp - damage;
