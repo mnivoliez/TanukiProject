@@ -7,16 +7,23 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
     //Animation
     private Animator animBody;
 
+	private float prevVel = 0;
+
     // Use this for initialization
     void Start () {
         animBody = GetComponent<Animator>();
     }
 
-    public void UpdateState(MovementState state, float speed, float speedMultiplier) {
+	public void UpdateState(MovementState state, float speed, float speedMultiplier, float lateralBend, float verticalSpeed) {
 
         animBody.SetFloat("Speed", speed);
-        animBody.SetFloat("SpeedMultiplier", speedMultiplier);
+        //animBody.SetFloat("SpeedMultiplier", speedMultiplier);
 
+		animBody.SetFloat("LateralBend", lateralBend);
+		animBody.SetFloat("VerticalSpeed", verticalSpeed);
+
+		animBody.SetFloat ("prevVertVel", prevVel);
+		prevVel = verticalSpeed;
         //currentState = state;
         //switch (state) {
 
@@ -35,27 +42,27 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
 
 	public void OnStateEnter(MovementState state) {
 		switch(state) {
-			case MovementState.Jump:
+		case MovementState.Jump:
 				animBody.SetBool("isInAir", true);
 				animBody.SetTrigger("Jump");
 				break;
-			case MovementState.PushUp:
+		case MovementState.PushUp:
 				animBody.SetBool ("isInAir", true);
 				animBody.SetTrigger ("Fall");
 				break;
-			case MovementState.Fall:
+		case MovementState.Fall:
 				animBody.SetBool("isInAir", true);
 				animBody.SetTrigger("Fall");
 				break;
 			case MovementState.DoubleJump:
 				animBody.SetTrigger("DoubleJump");
 				break;
-			case MovementState.Idle:
-				animBody.SetBool ("isInAir", false);
+		case MovementState.Idle:
+			animBody.SetBool ("isInAir", false);
 				animBody.ResetTrigger ("Fall");
 				animBody.ResetTrigger ("Jump");
 				break;
-			case MovementState.Run:
+		case MovementState.Run:
 				animBody.SetBool("isInAir", false);
 				animBody.ResetTrigger("Fall");
 				animBody.ResetTrigger("Jump");
