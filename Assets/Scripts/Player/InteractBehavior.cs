@@ -309,6 +309,5 @@ public class InteractBehavior : MonoBehaviour
         leafHand.SetActive(false);
         sakePot.SetActive(false);
         ParachuteLeaf.SetActive(false);
-        Debug.Log("leaf on head !!");
     }
 }
