@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class DetectRangeYokaiGeneral : MonoBehaviour {
+public class DetectRangeYokaiGeneralBoss2 : MonoBehaviour {
 
     private YokaiController parentBehavior;
     private Collider areaCollider;

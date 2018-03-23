@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class YokaiGeneralBehavior : YokaiController
-{
-
-    [SerializeField]
-    private float distanceLimit = 20.0f;
-    private Vector3 positionOrigin;
+public class YokaiGeneralBehavior : YokaiController {
+    
     private Quaternion rotationOrigin;
 
     [SerializeField]
@@ -126,13 +122,10 @@ public class YokaiGeneralBehavior : YokaiController
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
             }
         }
-
-
     }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
+
+    private void OnCollisionExit(Collision collision) {
+        if (collision.gameObject.tag == "Player") {
             bodyAttack = false;
         }
     }
@@ -218,28 +211,7 @@ public class YokaiGeneralBehavior : YokaiController
 
     }
 
-    public bool TooFarAway()
-    {
-        bool tooFarAway = false;
-        if (Vector3.Distance(transform.position, positionOrigin) > distanceLimit)
-        {
-            tooFarAway = true;
-        }
-        return tooFarAway;
-    }
-
-    public bool TooFarAway(Vector3 position)
-    {
-        bool tooFarAway = false;
-        if (Vector3.Distance(position, positionOrigin) > distanceLimit)
-        {
-            tooFarAway = true;
-        }
-        return tooFarAway;
-    }
-
-    private bool applyRules()
-    {
+    private bool applyRules() {
         bool rel = false;
 
         Vector3 tarPos = target.transform.position;
