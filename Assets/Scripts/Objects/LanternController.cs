@@ -65,6 +65,7 @@ public class LanternController : MonoBehaviour {
                 transform.rotation = rotationOrigin;
                 shallRespawn = false;
                 gameObject.layer = LayerMask.NameToLayer("Catchable");
+                GetComponent<BoxCollider>().enabled = true;
             }
         }
     }
@@ -75,6 +76,7 @@ public class LanternController : MonoBehaviour {
             gameObject.layer = 0;
             shallRespawn = true;
             elaspTimeBeforeRespawn = Time.time;
+            GetComponent<BoxCollider>().enabled = false ;
         }
     }
 
