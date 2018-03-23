@@ -132,11 +132,12 @@ public class KodaController : MonoBehaviour {
     [Header("CAPACITY")]
     [Space(10)]
     // Capacity
-    [SerializeField]
-    private bool permanentDoubleJumpCapacity;
+    [SerializeField] private bool hasPermanentDoubleJumpCapacity;
+    [SerializeField] private bool hasPermanentLureCapacity;
     private bool permanentBallCapacity;
     private bool permanentShrinkCapacity;
-    private Capacity temporaryCapacity;
+    private bool temporaryShrinkCapacity;
+    [SerializeField] private Capacity temporaryCapacity;
     [SerializeField] private float timerCapacity;
 
     //QTE
@@ -616,7 +617,7 @@ public class KodaController : MonoBehaviour {
             inputParams.jumpRequest &&
             (movementState == MovementState.Idle ||
                 movementState == MovementState.Run ||
-                (movementState == MovementState.Jump && ((temporaryCapacity == Capacity.DoubleJump) || permanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+                (movementState == MovementState.Jump && ((temporaryCapacity == Capacity.DoubleJump) || hasPermanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest) {
             //Debug.Log("movementState=" + movementState);
@@ -653,15 +654,15 @@ public class KodaController : MonoBehaviour {
                 }
                 break;
 
-            /*case ActionRequest.SpawnLure:
-                if (actualLure == null && !leafLock.isUsed) {
+            case ActionRequest.SpawnLure:
+                if (actualLure == null && !leafLock.isUsed && (hasPermanentLureCapacity || temporaryCapacity == Capacity.Lure)) {
                     interactStateParameter.canSpawnLure = true;
                 }
                 else {
 
                     interactStateParameter.canDestroyLure = true;
                 }
-                break;*/
+                break;
 
             case ActionRequest.Inflate:
                 if (IsGrounded() && (!leafLock.isUsed || (leafLock.isUsed && leafLock.parent == InteractState.Inflate))) interactStateParameter.canInflate = true;
@@ -849,13 +850,16 @@ public class KodaController : MonoBehaviour {
 
     private void StopTemporaryCapacity() {
         timerCapacity = 0;
-        temporaryCapacity = Capacity.Nothing;
-        canvasQTE.SetActive(false);
 
         if (temporaryCapacity == Capacity.Lure) {
             interactBehaviorCtrl.DestroyLure(actualLure);
             ResetLeafLock();
         }
+
+        temporaryCapacity = Capacity.Nothing;
+        canvasQTE.SetActive(false);
+
+        
     }
 
     private void ProgressTimerCapacity() {
@@ -874,13 +878,14 @@ public class KodaController : MonoBehaviour {
     }
 
     public int GetCaughtYokai() { return 0; } //Work in progress ...
-    public bool GetPowerJump() { return permanentDoubleJumpCapacity; }
+    public bool GetPowerJump() { return hasPermanentDoubleJumpCapacity; }
+    public bool GetPowerLure() { return hasPermanentLureCapacity; }
     public bool GetPowerBall() { return permanentBallCapacity; }
     public bool GetPowerShrink() { return permanentShrinkCapacity; }
     public Transform GetRespawnPointPosition() { return gameObject.transform; }
 
     public void SetCaughtYokai(int yokai_caught) { Debug.Log("ARRETEZ DE VOUS BATTEZ ! D:"); } //Work in progress ...
-    public void SetPowerJump(bool has_double_jump) { permanentDoubleJumpCapacity = has_double_jump; }
+    public void SetPowerJump(bool has_double_jump) { hasPermanentDoubleJumpCapacity = has_double_jump; }
     public void SetPowerBall(bool has_power_ball) { permanentBallCapacity = has_power_ball; }
     public void SetPowerShrink(bool has_power_shrink) { permanentShrinkCapacity = has_power_shrink; }
     public void SetRespawnPointPosition(float x_pos, float y_pos, float z_pos) { body.position = new Vector3(x_pos, y_pos, z_pos); }
