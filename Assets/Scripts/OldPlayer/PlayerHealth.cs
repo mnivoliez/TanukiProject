@@ -96,6 +96,8 @@ public class PlayerHealth : MonoBehaviour {
     IEnumerator Fading() {
         anim.SetBool("Fade", true);
         yield return new WaitUntil(() => Black.color.a == 1);
+        gameObject.transform.rotation = new Quaternion (0,0,0,0);
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
         anim.SetBool("Fade", false);
         animPlayer.SetBool("isDead", false);
         animPlayer.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
