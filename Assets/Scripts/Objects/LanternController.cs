@@ -21,6 +21,13 @@ public class LanternController : MonoBehaviour
     private bool shallRespawn;
     private Transform origin;
 
+    private Vector3 positionOrigin;
+    private Quaternion rotationOrigin;
+    private bool destroy = false;
+    private float timeToDestroy = 0f;
+
+    private Rigidbody lanternBody;
+
     private SphereCollider _bbox;
 
     private void Awake()
@@ -40,11 +47,9 @@ public class LanternController : MonoBehaviour
         _bbox.radius = _range;
     }
 
-    private void Start()
-    {
-        origin = transform;
-        elaspTimeBeforeRespawn = 0f;
-        shallRespawn = false;
+    private void Start() {
+        positionOrigin = transform.position;
+        rotationOrigin = transform.rotation;
     }
 
     private void Update()
@@ -63,28 +68,25 @@ public class LanternController : MonoBehaviour
         _bbox.radius = _range - 0.5f;
     }
 
-    void FixedUpdate()
-    {
-        if (shallRespawn)
-        {
-            elaspTimeBeforeRespawn += Time.fixedDeltaTime;
-            if (elaspTimeBeforeRespawn >= timeoutRespawn)
-            {
-                transform.position = origin.position;
-                transform.rotation = origin.rotation;
-                shallRespawn = false;
-                elaspTimeBeforeRespawn = 0f;
+    private void FixedUpdate() {
+        if (destroy) {
+            if((Time.time - timeDestroy) > timeToDestroy) {
+                lanternBody = GetComponent<Rigidbody>();
+                lanternBody.velocity = Vector3.zero;
+                transform.position = positionOrigin;
+                transform.rotation = rotationOrigin;
+                destroy = false;
+                gameObject.layer = LayerMask.NameToLayer("Catchable");
             }
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        //layer 4 = water
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water")) {
             GameObject air = Instantiate(airLantern, transform.position, Quaternion.identity);
-            shallRespawn = true;
+            gameObject.layer = 0;
+            destroy = true;
+            timeToDestroy = Time.time;
         }
     }
 
