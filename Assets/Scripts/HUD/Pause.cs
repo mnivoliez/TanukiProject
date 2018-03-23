@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Pause : MonoBehaviour {
 
@@ -67,5 +68,10 @@ public class Pause : MonoBehaviour {
 			transform.GetChild (0).gameObject.SetActive (true);
 		}
         Paused = true;
+    }
+
+    public void Load_Game() {
+        UnpauseGame();
+        Game.Load_and_Post_Load();
     }
 }

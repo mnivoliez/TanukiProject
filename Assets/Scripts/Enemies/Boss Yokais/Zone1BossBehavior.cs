@@ -14,6 +14,9 @@ public class Zone1BossBehavior : YokaiController {
     private float hpMax;
     private int phasePattern = 0;
     private int currentPlateform = 0;
+    private bool changingPhase = false;
+    [SerializeField] private GameObject arenaPhase1;
+    [SerializeField] private GameObject arenaPhase2;
 
     bool onMovement = false;
     Vector3 startPosition;
@@ -91,7 +94,7 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     public override void LooseHp(float damage) {
-        if (!onMovement && !isInvincible) {
+        if (!onMovement || !isInvincible) {
             hp -= damage;
            
             if (hp <= 0) {
@@ -107,6 +110,15 @@ public class Zone1BossBehavior : YokaiController {
             }
 
             if (hp <= hpMax / 2 && !isKnocked) {
+                if (!changingPhase) {
+                    GameObject smokeParticleTransition = Instantiate(knockedParticle, arenaPhase1.transform.position, Quaternion.identity);
+                    smokeParticleTransition.transform.GetChild(0).localScale = new Vector3(200f, 200f, 200f);
+                    Destroy(smokeParticleTransition, 3f);
+                    arenaPhase1.SetActive(false);
+                    arenaPhase2.SetActive(true);
+                    changingPhase = true;
+                }
+                
                 ChangePlatform(1);
             }
 
@@ -182,6 +194,8 @@ public class Zone1BossBehavior : YokaiController {
         timeStamp = 0;
         timeToTravel = 3f;
         onMovement = true;
+        GetComponent<Collider>().enabled = false;
+        transform.GetChild(0).GetComponent<Collider>().enabled = false;
         Destroy(Instantiate(knockedParticle, transform.position, Quaternion.identity), 2);
     }
 
@@ -194,6 +208,8 @@ public class Zone1BossBehavior : YokaiController {
             timeStamp += Time.deltaTime;
         }
         else {
+            GetComponent<Collider>().enabled = true;
+            transform.GetChild(0).GetComponent<Collider>().enabled = true;
             onMovement = false;
         }
     }
@@ -201,7 +217,8 @@ public class Zone1BossBehavior : YokaiController {
     public void AttackTarget() {
 
         GameObject projectile = Instantiate(prefabProjectile, spawnProjectile.transform.position, Quaternion.identity);
-        projectile.transform.LookAt(target.transform);
+        Vector3 targetPos = new Vector3(target.transform.position.x, target.transform.position.y+1, target.transform.position.z);
+        projectile.transform.LookAt(targetPos);
         projectile.GetComponent<ProjectileBehavior>().SetDamage(projectileDamage);
         Destroy(projectile, 10f);
 
