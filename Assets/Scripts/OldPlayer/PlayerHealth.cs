@@ -89,11 +89,8 @@ public class PlayerHealth : MonoBehaviour {
         animPlayer.SetBool("isDead", true);
         StartCoroutine(Fading());
         gameObject.GetComponent<KodaController>().ResetPlayer();
-        playerHealthCurrent = playerHealthMax;
         knockBackCounter = 0;
         GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
-        isInvincible = false;
-
     }
 
     IEnumerator Fading() {
@@ -102,6 +99,8 @@ public class PlayerHealth : MonoBehaviour {
         anim.SetBool("Fade", false);
         animPlayer.SetBool("isDead", false);
         animPlayer.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
+        playerHealthCurrent = playerHealthMax;
+        isInvincible = false;
     }
 
     public void KnockBack() {
