@@ -77,22 +77,6 @@ public class PlayerHealth : MonoBehaviour {
         return playerHealthMax;
     }
 
-    public void SetHealthCurrent(float current_hp) {
-        playerHealthCurrent = current_hp;
-    }
-
-    public void SetHealthMax(float current_max_hp) {
-        playerHealthMax = current_max_hp;
-    }
-
-    public void PlayerDie() {
-        animPlayer.SetBool("isDead", true);
-        StartCoroutine(Fading());
-        gameObject.GetComponent<KodaController>().ResetPlayer();
-        knockBackCounter = 0;
-        GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
-    }
-
     IEnumerator Fading() {
         anim.SetBool("Fade", true);
         yield return new WaitUntil(() => Black.color.a == 1);
@@ -112,5 +96,19 @@ public class PlayerHealth : MonoBehaviour {
         GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0.035f);
         GetComponent<Renderer>().sharedMaterial.SetVector("_color", new Vector3(1,0,1));
 
+    }
+
+    public void SetHealthCurrent(float current_hp) {
+        playerHealthCurrent = current_hp;
+    }
+    public void SetHealthMax(float current_max_hp) {
+        playerHealthMax = current_max_hp;
+    }
+    public void PlayerDie() {
+        animPlayer.SetBool("isDead", true);
+        StartCoroutine(Fading());
+        gameObject.GetComponent<KodaController>().ResetPlayer();
+        knockBackCounter = 0;
+        GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
     }
 }
