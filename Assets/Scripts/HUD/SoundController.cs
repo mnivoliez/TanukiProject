@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SoundController : MonoBehaviour {
 
-    public AudioSource fxSource;
+    public AudioSource fxKodaSource;
+    public AudioSource fxOtherSource;
     public AudioSource musicSource;
     public static SoundController instance;
 
@@ -31,18 +32,27 @@ public class SoundController : MonoBehaviour {
         }
     }
 
+    public void PlayKodaSingle(AudioClip clip) {
+        fxKodaSource.clip = clip;
+        fxKodaSource.Play();
+    }
+
     public void PlaySingle(AudioClip clip) {
-        fxSource.clip = clip;
-        fxSource.Play();
+        fxOtherSource.clip = clip;
+        fxOtherSource.Play();
+    }
+
+    public void StopSingle() {
+        fxOtherSource.Stop();
     }
 
     public void RandomizeFX(params AudioClip [] clips) {
         int randomIndex = Random.Range(0, clips.Length);
         float randomPitch = Random.Range(lowPitchRange, highPitchRange);
 
-        fxSource.pitch = randomPitch;
-        fxSource.clip = clips[randomIndex];
-        fxSource.Play();
+        fxKodaSource.pitch = randomPitch;
+        fxKodaSource.clip = clips[randomIndex];
+        fxKodaSource.Play();
     }
 
     public void PlayMusic(AudioClip musicClip, bool loop) {

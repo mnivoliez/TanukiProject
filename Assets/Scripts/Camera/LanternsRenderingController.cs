@@ -2,32 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class LanternsRenderingController : MonoBehaviour
 {
-    private LanternController[] _lanterns;
-    private List<Vector4> _positions;
-    private List<float> _distances;
+    private List<LanternController> lanterns;
+    private List<Vector4> positions;
+    private List<float> distances;
+
+    [Header("Dissolve")]
+    [Space(10)]
+    public Color dissoColor;
+    [Range(0, 5)]
+    public float interpolation;
+    [Range(0, 5)]
+    public float offset;
+    [Range(0, 1)]
+    public float frequency;
+    [Range(0, 5)]
+    public float speed;
     private bool _isDirty;
 
     // If changed, restart unity to it to be effective.
     private const int MAX_NUMBER_OF_LANTERNS = 5;
     void Awake()
     {
-        List<LanternController> temp = new List<LanternController>();
+        lanterns = new List<LanternController>();
+        positions = new List<Vector4>();
+        distances = new List<float>();
         foreach (GameObject l in GameObject.FindGameObjectsWithTag("Lantern"))
         {
-            temp.Add(l.GetComponent<LanternController>());
+            lanterns.Add(l.GetComponent<LanternController>());
         }
-        _lanterns = temp.ToArray();
-        _positions = new List<Vector4>(5);
-        _distances = new List<float>(5);
-        Shader.SetGlobalVectorArray("_centers", new Vector4[MAX_NUMBER_OF_LANTERNS]);
-        Shader.SetGlobalFloatArray("_distances", new float[MAX_NUMBER_OF_LANTERNS]);
-        foreach (var lantern in _lanterns)
-        {
-            _positions.Add(lantern.transform.position);
-            _distances.Add(lantern.GetRadiusEffect());
-        }
+
+        Shader.SetGlobalVectorArray("_Centers", new Vector4[MAX_NUMBER_OF_LANTERNS]);
+        Shader.SetGlobalFloatArray("_Distances", new float[MAX_NUMBER_OF_LANTERNS]);
+
         UpdateShaderWithLanternsPosition();
         _isDirty = false;
     }
@@ -35,21 +44,40 @@ public class LanternsRenderingController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateShaderWithLanternsPosition();
+        int i = 0;
+        while (!_isDirty && i < lanterns.Count)
+        {
+            _isDirty = !lanterns[i].transform.position.Equals(positions[i]);
+            ++i;
+        }
+
+        if (_isDirty)
+        {
+            UpdateShaderWithLanternsPosition();
+            _isDirty = false;
+        }
+
     }
 
     void UpdateShaderWithLanternsPosition()
     {
-        _positions.Clear();
-        _distances.Clear();
-        foreach (var lantern in _lanterns)
+        positions.Clear();
+        distances.Clear();
+        foreach (var lantern in lanterns)
         {
-            _positions.Add(lantern.transform.position);
-            _distances.Add(lantern.GetRadiusEffect());
+            positions.Add(lantern.transform.position);
+            distances.Add(lantern.GetRadiusEffect());
         }
-        Shader.SetGlobalVectorArray("_centers", _positions);
-        Shader.SetGlobalFloatArray("_distances", _distances);
-        Shader.SetGlobalInt("_numberOfCenters", _positions.Count);
+
+        Shader.SetGlobalColor("_ColorDisso", dissoColor);
+        Shader.SetGlobalFloat("_Interpolation", interpolation);
+        Shader.SetGlobalFloat("_Offset", offset);
+        Shader.SetGlobalFloat("_Freq", frequency);
+        Shader.SetGlobalFloat("_Speed", speed);
+
+        Shader.SetGlobalInt("_LanternCount", lanterns.Count);
+        Shader.SetGlobalFloatArray("_Distances", distances);
+        Shader.SetGlobalVectorArray("_Centers", positions);
 
     }
 }

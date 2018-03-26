@@ -2,60 +2,74 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActionRequest {
+public enum ActionRequest
+{
     Glide, MeleeAttack, DistantAttack, SpawnLure, Inflate, Resize, ContextualAction, None
 }
 
-public struct InputParams {
+public struct InputParams
+{
     public ActionRequest actionRequest;
+    public bool contextualButtonPressed;
     public bool jumpRequest;
     public float moveX;
     public float moveZ;
 
-    public void Reset() {
+    public void Reset()
+    {
         actionRequest = ActionRequest.None;
+        contextualButtonPressed = false;
         jumpRequest = false;
         moveX = 0f;
         moveZ = 0f;
     }
 }
 
-public class InputController : MonoBehaviour {
+public class InputController : MonoBehaviour
+{
 
     private InputParams inputParams;
     private bool triggerAxisInUse = false;
 
     // Use this for initialization
-    void Start() {
-		inputParams.actionRequest = ActionRequest.None;
+    void Start()
+    {
+        inputParams.actionRequest = ActionRequest.None;
         inputParams = new InputParams();
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         //inputParams.Reset();
         UpdateMoveInput();
         UpdateInteractInput();
     }
 
-    void UpdateInteractInput() {
+    void UpdateInteractInput()
+    {
         int actionRequested = 0;
-		if (Input.GetButton("Glide") || Input.GetAxisRaw("Glide") == -1) {
-			Debug.Log("input controller GLIDE!!!");
+        if (Input.GetButton("Glide") || Input.GetAxisRaw("Glide") == -1)
+        {
+            //Debug.Log("input controller GLIDE!!!");
             actionRequested++;
             inputParams.actionRequest = ActionRequest.Glide;
         }
-		else {
-            if(inputParams.actionRequest == ActionRequest.Glide) {
+        else
+        {
+            if (inputParams.actionRequest == ActionRequest.Glide)
+            {
                 inputParams.actionRequest = ActionRequest.None;
             }
-			
+
             //Reactiver apres le playtest !!
-            if (Input.GetButtonDown("Fire1")) {
+            if (Input.GetButtonDown("Fire1"))
+            {
                 actionRequested++;
                 inputParams.actionRequest = ActionRequest.MeleeAttack;
             }
-            if (Input.GetButtonDown("Fire2")) {
+            if (Input.GetButtonDown("Fire2"))
+            {
                 actionRequested++;
                 inputParams.actionRequest = ActionRequest.DistantAttack;
             }
@@ -70,21 +84,24 @@ public class InputController : MonoBehaviour {
                 }
             }
 
-            if (Input.GetButtonDown("Transformation")) {
-                actionRequested++;
-                inputParams.actionRequest = ActionRequest.Inflate;
-            }
-            if (Input.GetButtonDown("Resize")) {
-                actionRequested++;
-                inputParams.actionRequest = ActionRequest.Resize;
-            }
-            if (Input.GetButtonDown("Fire3")) {
+            //if (Input.GetButtonDown("Transformation")) {
+            //    actionRequested++;
+            //    inputParams.actionRequest = ActionRequest.Inflate;
+            //}
+            //if (Input.GetButtonDown("Resize")) {
+            //    actionRequested++;
+            //    inputParams.actionRequest = ActionRequest.Resize;
+            //}
+            if (Input.GetButtonDown("Fire3"))
+            {
                 actionRequested++;
                 inputParams.actionRequest = ActionRequest.ContextualAction;
+                inputParams.contextualButtonPressed = true;
             }
         }
 
-        if (actionRequested > 1) {
+        if (actionRequested > 1)
+        {
             inputParams.actionRequest = ActionRequest.None;
         }
 
@@ -92,21 +109,25 @@ public class InputController : MonoBehaviour {
         //Debug.Log(inputParams.actionRequest);
     }
 
-	void UpdateMoveInput() {
-		if (Input.GetButtonDown("Jump")) {
-			//Debug.Log("JUMP!!!");
-			inputParams.jumpRequest = true;
-		}
+    void UpdateMoveInput()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            //Debug.Log("JUMP!!!");
+            inputParams.jumpRequest = true;
+        }
         //inputParams.jumpRequest = Input.GetButtonDown("Jump");
         inputParams.moveX = Input.GetAxis("Horizontal");
         inputParams.moveZ = Input.GetAxis("Vertical");
     }
 
-    public InputParams RetrieveUserRequest() {
+    public InputParams RetrieveUserRequest()
+    {
         return inputParams;
     }
 
-    public void SetUserRequest(InputParams inputParamsNew) {
+    public void SetUserRequest(InputParams inputParamsNew)
+    {
         inputParams = inputParamsNew;
     }
 }
