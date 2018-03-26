@@ -3,50 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InteractBehavior : MonoBehaviour {
+public class InteractBehavior : MonoBehaviour
+{
 
     [Header("GLIDE")]
     [Space(8)]
-    [SerializeField] private GameObject ParachuteLeaf;
+    [SerializeField]
+    private GameObject ParachuteLeaf;
 
     [Header("MELEE ATTACK")]
     [Space(8)]
-    [SerializeField] private GameObject leafHead;
+    [SerializeField]
+    private GameObject leafHead;
     [SerializeField] private GameObject leafHand;
     [SerializeField] private GameObject attackRange;
     [SerializeField] private float meleeDamage;
 
     [Header("DISTANT ATTACK")]
     [Space(8)]
-    [SerializeField] private GameObject leafPrefab;
+    [SerializeField]
+    private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private GameObject rangeMaxLeaf;
     [SerializeField] private float distantDamage;
 
     [Header("INFLATE")]
     [Space(8)]
-    [SerializeField] private GameObject normalForm;
+    [SerializeField]
+    private GameObject normalForm;
     [SerializeField] private GameObject inflateForm;
     [SerializeField] private GameObject smokeSpawner;
 
     [Header("RESIZE")]
     [Space(8)]
-    [SerializeField] private float coefResize = 4;
+    [SerializeField]
+    private float coefResize = 4;
 
 
     [Header("ABSORB")]
     [Space(8)]
-    [SerializeField] private float absorptionTimer = 4f;
+    [SerializeField]
+    private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
 
     [Header("LURE")]
     [Space(8)]
-    [SerializeField] private GameObject lure;
+    [SerializeField]
+    private GameObject lure;
     [SerializeField] private Transform tanukiPlayer;
 
     //QTE
     private float maxAbsorptionGauge = 4f;
     private float absorptionGauge = 0f;
+    private GameObject absorptionTarget;
     public GameObject canvasQTE;
     public Transform loadingBar;
     public Transform centerButton;
@@ -55,7 +64,8 @@ public class InteractBehavior : MonoBehaviour {
     private GameObject catchSlot;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
         catchSlot = GameObject.Find("Catchable Object");
@@ -63,40 +73,47 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
-        
+    void Update()
+    {
+
     }
 
-    public void DoGlide() {
+    public void DoGlide()
+    {
         leafHead.SetActive(false);
         ParachuteLeaf.SetActive(true);
     }
 
-    public void StopGlide() {
+    public void StopGlide()
+    {
         ParachuteLeaf.SetActive(false);
         leafHead.SetActive(true);
     }
 
-    public void DoMeleeAttack() {
+    public void DoMeleeAttack()
+    {
         leafHead.SetActive(false);
         attackRange.SetActive(true);
         leafHand.SetActive(true);
     }
 
-    public void StopMeleeAttack() {
+    public void StopMeleeAttack()
+    {
         leafHead.SetActive(true);
         attackRange.SetActive(false);
         leafHand.SetActive(false);
     }
 
-    public void DoChargedMeleeAttack() {
+    public void DoChargedMeleeAttack()
+    {
         leafHead.SetActive(false);
         attackRange.SetActive(true);
         leafHead.SetActive(false);
         leafHand.SetActive(true);
     }
 
-    public void DoDistantAttack() {
+    public void DoDistantAttack()
+    {
         leafHead.SetActive(false);
         GameObject LeafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
         LeafBoomerang.GetComponent<MoveLeaf>().SetSpawnPosition(spawnLeaf);
@@ -104,12 +121,15 @@ public class InteractBehavior : MonoBehaviour {
         LeafBoomerang.GetComponent<MoveLeaf>().SetDamage(distantDamage);
     }
 
-    public void StopDistantAttack() {
+    public void StopDistantAttack()
+    {
         leafHead.SetActive(true);
     }
 
-    public void DoInflate(bool inflate) {
-        if (inflate) {
+    public void DoInflate(bool inflate)
+    {
+        if (inflate)
+        {
             GameObject smoke = Instantiate(smokeSpawner, gameObject.transform.position, Quaternion.identity);
             Destroy(smoke, 4);
             leafHead.SetActive(false);
@@ -118,7 +138,9 @@ public class InteractBehavior : MonoBehaviour {
             //inflateForm.GetComponent<Rigidbody>().velocity = Vector3.zero;
             //inflateForm.SetActive(true);
             //normalForm.SetActive(false);
-        } else {
+        }
+        else
+        {
             GameObject smoke = Instantiate(smokeSpawner, gameObject.transform.position, Quaternion.identity);
             Destroy(smoke, 4);
             leafHead.SetActive(true);
@@ -131,9 +153,11 @@ public class InteractBehavior : MonoBehaviour {
         }
     }
 
-    public void DoResizeTiny(bool resizeTiny) {
+    public void DoResizeTiny(bool resizeTiny)
+    {
 
-        if (resizeTiny) {
+        if (resizeTiny)
+        {
             GameObject smoke = Instantiate(smokeSpawner, gameObject.transform.position, Quaternion.identity);
             Destroy(smoke, 4);
             leafHead.SetActive(false);
@@ -145,7 +169,8 @@ public class InteractBehavior : MonoBehaviour {
             //ResizeDistanceCamera
             //GameObject.FindGameObjectWithTag("Hitodama").transform.localScale = GameObject.FindGameObjectWithTag("Hitodama").transform.localScale / coefResize;
         }
-        else {
+        else
+        {
             GameObject smoke = Instantiate(smokeSpawner, gameObject.transform.position, Quaternion.identity);
             Destroy(smoke, 4);
             leafHead.SetActive(true);
@@ -159,100 +184,132 @@ public class InteractBehavior : MonoBehaviour {
 
     }
 
-    public void DoBeginAbsorption(GameObject absorbableObject) {
+    public void DoBeginAbsorption(GameObject absorbableObject)
+    {
         canvasQTE.SetActive(true);
         sakePot.SetActive(true);
     }
 
-    public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject) {
-        Pair<Capacity, float> pairCapacity;
-        Capacity capacity = Capacity.Nothing;
-        float timerCapacity = 0;
+    public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject, InputController input)
+    {
+        Pair<Capacity, float> pairCapacity = new Pair<Capacity, float>(Capacity.Nothing, 0);
 
-        if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0) {
+        if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0)
+        {
 
             centerButton.GetComponent<Image>().color = Color.white;
             absorptionTimer -= 0.03f;
             absorptionGauge -= 0.01f;
-            if (Input.GetButtonDown("Fire3")) {
+            InputParams inputParams = input.RetrieveUserRequest();
+            if (inputParams.contextualButtonPressed)
+            {
                 centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
                 centerButton.GetComponent<Image>().color = Color.grey;
                 absorptionGauge += 1;
-
+                inputParams.contextualButtonPressed = false;
+                input.SetUserRequest(inputParams);
             }
 
             loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
 
-            if (absorptionGauge > maxAbsorptionGauge) {
-                absorbableObject.GetComponent<YokaiController>().Absorbed();
-                gameObject.GetComponent<PlayerCollectableController>().AddYokai();
-                capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
-                timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
-                absorptionTimer = 4f;
-                absorptionGauge = 0;
-                centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
-                centerButton.GetComponent<Image>().color = Color.white;
-                sakePot.SetActive(false);
-                canvasQTE.SetActive(false);
-
+            if (absorptionGauge > maxAbsorptionGauge)
+            {
+                pairCapacity = AbsorbeYokai(absorbableObject);
+                DeactivateAbsorptionQTE();
+                ResetAbsorptionGauge();
             }
 
         }
-        else {
-            sakePot.SetActive(false);
-            absorptionGauge = 0;
-            absorptionTimer = 4f;
-            centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
-            centerButton.GetComponent<Image>().color = Color.white;
-            canvasQTE.SetActive(false);
+        else
+        {
+            DeactivateAbsorptionQTE();
+            ResetAbsorptionGauge();
         }
-
-        pairCapacity = new Pair<Capacity, float>(capacity, timerCapacity);
 
         return pairCapacity;
     }
 
-	public GameObject DoSpawnLure() {
+    private void ResetAbsorptionGauge()
+    {
+        absorptionGauge = 0;
+        absorptionTimer = 4f;
+        centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
+        centerButton.GetComponent<Image>().color = Color.white;
+    }
+
+    private void ActivateAbsorptionQTE()
+    {
+        canvasQTE.SetActive(true);
+        sakePot.SetActive(true);
+    }
+
+    private void DeactivateAbsorptionQTE()
+    {
+        sakePot.SetActive(false);
+        canvasQTE.SetActive(false);
+    }
+
+    private Pair<Capacity, float> AbsorbeYokai(GameObject absorbableObject)
+    {
+        absorbableObject.GetComponent<YokaiController>().Absorbed();
+
+        Capacity capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
+        if (capacity == Capacity.Nothing) {
+            gameObject.GetComponent<PlayerCollectableController>().AddYokai();
+        }
+        float timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
+        return new Pair<Capacity, float>(capacity, timerCapacity);
+    }
+
+    public GameObject DoSpawnLure()
+    {
         GameObject clone = null;
-		if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
-			leafHead.SetActive(false);
-			clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
-			clone.transform.Translate(0, 3, 2);
-		}
+        if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null)
+        {
+            leafHead.SetActive(false);
+            clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
+            clone.transform.Translate(0, 3, 2);
+        }
         return clone;
     }
 
-    public void DestroyLure(GameObject lure) {
-        if (lure != null) {
+    public void DestroyLure(GameObject lure)
+    {
+        if (lure != null)
+        {
             Destroy(lure);
             leafHead.SetActive(true);
         }
     }
 
-    public void CheckExistingLure(GameObject lure) {
-        if (lure == null && leafHead.activeSelf == false) {
+    public void CheckExistingLure(GameObject lure)
+    {
+        if (lure == null && leafHead.activeSelf == false)
+        {
             leafHead.SetActive(true);
         }
     }
 
-    public void DoCarry(GameObject objectToCarry) {
+    public void DoCarry(GameObject objectToCarry)
+    {
         objectToCarry.transform.parent = catchSlot.transform;
         objectToCarry.transform.position = catchSlot.transform.position;
         Destroy(objectToCarry.GetComponent<Rigidbody>());
     }
 
-    public void StopCarry(GameObject objectToCarry) {
+    public void StopCarry(GameObject objectToCarry)
+    {
         objectToCarry.transform.parent = null;
         Rigidbody body = objectToCarry.AddComponent(typeof(Rigidbody)) as Rigidbody;
         body.useGravity = true;
         body.mass = 100;
     }
 
-    public void ResetLeaf() {
+    public void ResetLeaf()
+    {
         leafHead.SetActive(true);
         leafHand.SetActive(false);
         sakePot.SetActive(false);
         ParachuteLeaf.SetActive(false);
-        Debug.Log("leaf on head !!");
     }
 }
