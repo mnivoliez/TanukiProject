@@ -132,11 +132,11 @@ public class KodaController : MonoBehaviour {
     [Header("CAPACITY")]
     [Space(10)]
     // Capacity
-    [SerializeField] private bool hasPermanentDoubleJumpCapacity;
+    [SerializeField]
+    private bool hasPermanentDoubleJumpCapacity;
     [SerializeField] private bool hasPermanentLureCapacity;
-    private bool permanentBallCapacity;
-    private bool permanentShrinkCapacity;
-    private bool temporaryShrinkCapacity;
+    private bool hasPermanentBallCapacity;
+    private bool hasPermanentShrinkCapacity;
     [SerializeField] private Capacity temporaryCapacity;
     [SerializeField] private float timerCapacity;
 
@@ -172,10 +172,19 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private AudioClip pushUpSound;
     private float timerStepSound;
 
-
     private LeafLock leafLock;
 
     int FPS = 40;
+
+    [Header("LANTERN")]
+    [Space(10)]
+    [SerializeField]
+    private float timeStopToDie = 1.0f;
+    private bool runOnWater = false;
+    private GameObject[] lanterns;
+    private GameObject lanternNearest = null;
+    private bool playerStop = false;
+    private float timeStop = 0f;
 
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
@@ -204,6 +213,8 @@ public class KodaController : MonoBehaviour {
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
         direction = transform.Find("Direction");
+
+        lanterns = GameObject.FindGameObjectsWithTag("Lantern");
     }
 
     /*private void OnGUI() {
@@ -264,6 +275,52 @@ public class KodaController : MonoBehaviour {
 
         animBody.UpdateState(movementState, speed, animationMoveSpeed);
         //ResetInteractStateParameter();
+
+        if (runOnWater) {
+            //Debug.Log("on water");
+            float distance = 0f;
+            if (lanterns.Length > 0) {
+                lanternNearest = lanterns[0];
+                distance = Vector3.Distance(lanternNearest.transform.position, transform.position);
+            }
+            else {
+                lanternNearest = null;
+            }
+            foreach (GameObject lantern in lanterns) {
+                float dis = Vector3.Distance(lantern.transform.position, transform.position);
+                if (dis < distance) {
+                    lanternNearest = lantern;
+                    distance = dis;
+                }
+            }
+            if (lanternNearest != null) {
+                if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
+                    Debug.Log("die distance");
+                    GetComponent<PlayerHealth>().PlayerDie();
+                    runOnWater = false;
+                }
+                else {
+                    if (movementState == MovementState.Idle) {
+                        if (playerStop == false) {
+                            playerStop = true;
+                            timeStop = Time.time;
+                        }
+                    }
+                    else {
+                        playerStop = false;
+                    }
+                    if (playerStop && ((Time.time - timeStop) > timeStopToDie)) {
+                        Debug.Log("die stop");
+                        GetComponent<PlayerHealth>().PlayerDie();
+                        runOnWater = false;
+                    }
+                }
+            }
+            else {
+                GetComponent<PlayerHealth>().PlayerDie();
+                runOnWater = false;
+            }
+        }
     }
 
     void OnCollisionEnter(Collision coll) {
@@ -272,7 +329,11 @@ public class KodaController : MonoBehaviour {
 
         //Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
         //Debug.Log ("_grounds.count enter=" + _grounds.Count);
-        if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
+        if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock") || gO.layer == LayerMask.NameToLayer("Water")) {
+            if (gO.layer == LayerMask.NameToLayer("Water")) {
+                runOnWater = true;
+                playerStop = false;
+            }
             ContactPoint[] contacts = coll.contacts;
 
             //Debug.Log ("contacts.Length=" + contacts.Length);
@@ -281,6 +342,7 @@ public class KodaController : MonoBehaviour {
                 timerStepSound = 0.25f;
                 foreach (ContactPoint c in contacts) {
                     //Debug.Log ("c.normal.y=" + c.normal.y);
+                    // no need to give water a slide angle since its angle is always 0 (default value of slideAngle)
                     float slideAngle = 0;
                     if (gO.layer == LayerMask.NameToLayer("Ground")) {
                         slideAngle = slideAngleNormal;
@@ -307,7 +369,7 @@ public class KodaController : MonoBehaviour {
     void OnCollisionStay(Collision coll) {
         GameObject gO = coll.gameObject;
 
-        if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
+        if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock") || gO.layer == LayerMask.NameToLayer("Water")) {
             ContactPoint[] contacts = coll.contacts;
 
             if (contacts.Length > 0) {
@@ -320,6 +382,7 @@ public class KodaController : MonoBehaviour {
                 foreach (ContactPoint c in contacts) {
                     if (c.normal != null) {
                         float slideAngle = 0;
+                        // no need to give water a slide angle since its angle is always 0 (default value of slideAngle)
                         if (gO.layer == LayerMask.NameToLayer("Ground")) {
                             slideAngle = slideAngleNormal;
                         }
@@ -349,7 +412,11 @@ public class KodaController : MonoBehaviour {
         //Debug.Log ("_grounds.count exit=" + _grounds.Count);
         if (IsGrounded()) {
             GameObject gO = coll.gameObject;
-            if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")) {
+            if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock") || gO.layer == LayerMask.NameToLayer("Water")) {
+                if (gO.layer == LayerMask.NameToLayer("Water")) {
+                    runOnWater = false;
+                    playerStop = false;
+                }
                 if (_grounds.Contains(gO)) {
                     _grounds.Remove(gO);
                 }
@@ -826,7 +893,6 @@ public class KodaController : MonoBehaviour {
                 if (pairCapacity.First != Capacity.Nothing) {
                     AddCapacity(pairCapacity);
                 }
-
             }
         }
     }
@@ -859,7 +925,7 @@ public class KodaController : MonoBehaviour {
         temporaryCapacity = Capacity.Nothing;
         canvasQTE.SetActive(false);
 
-        
+
     }
 
     private void ProgressTimerCapacity() {
@@ -877,16 +943,15 @@ public class KodaController : MonoBehaviour {
         interactBehaviorCtrl.ResetLeaf();
     }
 
-    public int GetCaughtYokai() { return 0; } //Work in progress ...
     public bool GetPowerJump() { return hasPermanentDoubleJumpCapacity; }
     public bool GetPowerLure() { return hasPermanentLureCapacity; }
-    public bool GetPowerBall() { return permanentBallCapacity; }
-    public bool GetPowerShrink() { return permanentShrinkCapacity; }
+    public bool GetPowerBall() { return hasPermanentBallCapacity; }
+    public bool GetPowerShrink() { return hasPermanentShrinkCapacity; }
     public Transform GetRespawnPointPosition() { return gameObject.transform; }
 
-    public void SetCaughtYokai(int yokai_caught) { Debug.Log("ARRETEZ DE VOUS BATTEZ ! D:"); } //Work in progress ...
     public void SetPowerJump(bool has_double_jump) { hasPermanentDoubleJumpCapacity = has_double_jump; }
-    public void SetPowerBall(bool has_power_ball) { permanentBallCapacity = has_power_ball; }
-    public void SetPowerShrink(bool has_power_shrink) { permanentShrinkCapacity = has_power_shrink; }
+    public void SetPowerLure(bool has_lure) { hasPermanentLureCapacity = has_lure; }
+    public void SetPowerBall(bool has_power_ball) { hasPermanentBallCapacity = has_power_ball; }
+    public void SetPowerShrink(bool has_power_shrink) { hasPermanentShrinkCapacity = has_power_shrink; }
     public void SetRespawnPointPosition(float x_pos, float y_pos, float z_pos) { body.position = new Vector3(x_pos, y_pos, z_pos); }
 }
