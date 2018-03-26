@@ -12,12 +12,15 @@ public class LanternController : MonoBehaviour {
     [SerializeField] private float _min_intensity;
     [SerializeField] private float _max_intensity;
 
-    [SerializeField]
-    private GameObject airLantern;
-    [SerializeField]
-    private float timeDestroy = 2.0f;
+    [SerializeField] private GameObject airLantern;
+    [SerializeField] private float timeoutRespawn = 2.0f;
+    private float elaspTimeBeforeRespawn;
+    private bool shallRespawn;
 
-    private Vector3 pointRespawnLantern;
+    private Vector3 positionOrigin;
+    private Quaternion rotationOrigin;
+
+    private Rigidbody lanternBody;
 
     private SphereCollider _bbox;
 
@@ -36,7 +39,8 @@ public class LanternController : MonoBehaviour {
     }
 
     private void Start() {
-        pointRespawnLantern = transform.position;
+        positionOrigin = transform.position;
+        rotationOrigin = transform.rotation;
     }
 
     private void Update() {
@@ -52,12 +56,27 @@ public class LanternController : MonoBehaviour {
         _bbox.radius = _range - 0.5f;
     }
 
+    private void FixedUpdate() {
+        if (shallRespawn) {
+            if ((Time.time - timeoutRespawn) > elaspTimeBeforeRespawn) {
+                lanternBody = GetComponent<Rigidbody>();
+                lanternBody.velocity = Vector3.zero;
+                transform.position = positionOrigin;
+                transform.rotation = rotationOrigin;
+                shallRespawn = false;
+                gameObject.layer = LayerMask.NameToLayer("Catchable");
+                GetComponent<BoxCollider>().enabled = true;
+            }
+        }
+    }
+
     private void OnCollisionEnter(Collision collision) {
-        //layer 4 = water
-        if (collision.gameObject.layer == 4) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Water")) {
             GameObject air = Instantiate(airLantern, transform.position, Quaternion.identity);
-            air.GetComponent<AirLanternController>().setPointRespawnLantern(pointRespawnLantern);
-            Destroy(gameObject, timeDestroy);
+            gameObject.layer = 0;
+            shallRespawn = true;
+            elaspTimeBeforeRespawn = Time.time;
+            GetComponent<BoxCollider>().enabled = false ;
         }
     }
 
