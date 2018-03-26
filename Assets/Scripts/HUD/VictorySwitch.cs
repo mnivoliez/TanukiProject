@@ -30,6 +30,11 @@ public class VictorySwitch : MonoBehaviour
 	{
 		
 	}
+    //Fonction for playtest victory
+    public void VictoryScreen() {
+        Victory = true;
+        StartCoroutine(Fading());
+    }
 
 	void OnCollisionEnter(Collision col)
 	{

@@ -22,6 +22,8 @@ public abstract class YokaiController : MonoBehaviour {
     [SerializeField] protected Capacity capacity;
     [SerializeField] protected float timerCapacity = 0;
     [SerializeField] protected float damage = 1f;
+    protected Vector3 positionOrigin;
+    [SerializeField] protected float distanceLimit;
 
     public virtual void LooseHp(float damage) { }
 
@@ -46,5 +48,21 @@ public abstract class YokaiController : MonoBehaviour {
     public void SetTarget(GameObject target) { this.target = target; }
 
     public void SetTimerCapacity(float timer) { timerCapacity = timer; }
+
+    public bool TooFarAway() {
+        bool tooFarAway = false;
+        if (Vector3.Distance(transform.position, positionOrigin) > distanceLimit) {
+            tooFarAway = true;
+        }
+        return tooFarAway;
+    }
+    
+    public bool TooFarAway(Vector3 position) {
+        bool tooFarAway = false;
+        if (Vector3.Distance(position, positionOrigin) > distanceLimit) {
+            tooFarAway = true;
+        }
+        return tooFarAway;
+    }
 }
 

@@ -192,9 +192,7 @@ public class InteractBehavior : MonoBehaviour
 
     public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject, InputController input)
     {
-        Pair<Capacity, float> pairCapacity;
-        Capacity capacity = Capacity.Nothing;
-        float timerCapacity = 0;
+        Pair<Capacity, float> pairCapacity = new Pair<Capacity, float>(Capacity.Nothing, 0);
 
         if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0)
         {
@@ -216,7 +214,7 @@ public class InteractBehavior : MonoBehaviour
 
             if (absorptionGauge > maxAbsorptionGauge)
             {
-                AbsorbeYokai(absorbableObject);
+                pairCapacity = AbsorbeYokai(absorbableObject);
                 DeactivateAbsorptionQTE();
                 ResetAbsorptionGauge();
             }
@@ -227,8 +225,6 @@ public class InteractBehavior : MonoBehaviour
             DeactivateAbsorptionQTE();
             ResetAbsorptionGauge();
         }
-
-        pairCapacity = new Pair<Capacity, float>(capacity, timerCapacity);
 
         return pairCapacity;
     }
@@ -256,8 +252,11 @@ public class InteractBehavior : MonoBehaviour
     private Pair<Capacity, float> AbsorbeYokai(GameObject absorbableObject)
     {
         absorbableObject.GetComponent<YokaiController>().Absorbed();
-        gameObject.GetComponent<PlayerCollectableController>().AddYokai();
+
         Capacity capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
+        if (capacity == Capacity.Nothing) {
+            gameObject.GetComponent<PlayerCollectableController>().AddYokai();
+        }
         float timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
         return new Pair<Capacity, float>(capacity, timerCapacity);
     }
@@ -265,16 +264,19 @@ public class InteractBehavior : MonoBehaviour
     public GameObject DoSpawnLure()
     {
         GameObject clone = null;
-		if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
-			leafHead.SetActive(false);
-			clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
-			clone.transform.Translate(0, 3, 2);
-		}
+        if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null)
+        {
+            leafHead.SetActive(false);
+            clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
+            clone.transform.Translate(0, 3, 2);
+        }
         return clone;
     }
 
-    public void DestroyLure(GameObject lure) {
-        if (lure != null) {
+    public void DestroyLure(GameObject lure)
+    {
+        if (lure != null)
+        {
             Destroy(lure);
             leafHead.SetActive(true);
         }
@@ -309,6 +311,5 @@ public class InteractBehavior : MonoBehaviour
         leafHand.SetActive(false);
         sakePot.SetActive(false);
         ParachuteLeaf.SetActive(false);
-        Debug.Log("leaf on head !!");
     }
 }
