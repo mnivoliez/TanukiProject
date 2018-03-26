@@ -17,6 +17,14 @@ public class PlayerCollectableController : MonoBehaviour {
 
     public void AddYokai() {
         nbYokai++;
-        Debug.Log("+1yokai !");
+        //Debug.Log("+1yokai !");
+    }
+
+    public int GetnbYokai () {
+        return nbYokai;
+    }
+
+    public void SetnbYokai(int nbYokai_from_load) {
+        nbYokai = nbYokai_from_load;
     }
 }

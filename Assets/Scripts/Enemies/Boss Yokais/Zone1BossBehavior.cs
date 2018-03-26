@@ -146,6 +146,7 @@ public class Zone1BossBehavior : YokaiController {
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
+            GameObject.Find("VictoryTrigger").GetComponent<VictorySwitch>().VictoryScreen();
             Destroy(gameObject);
         }
         else {
@@ -217,7 +218,8 @@ public class Zone1BossBehavior : YokaiController {
     public void AttackTarget() {
 
         GameObject projectile = Instantiate(prefabProjectile, spawnProjectile.transform.position, Quaternion.identity);
-        projectile.transform.LookAt(target.transform);
+        Vector3 targetPos = new Vector3(target.transform.position.x, target.transform.position.y+1, target.transform.position.z);
+        projectile.transform.LookAt(targetPos);
         projectile.GetComponent<ProjectileBehavior>().SetDamage(projectileDamage);
         Destroy(projectile, 10f);
 
