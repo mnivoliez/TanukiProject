@@ -84,7 +84,7 @@ public class PlayerHealth : MonoBehaviour {
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
         anim.SetBool("Fade", false);
         animPlayer.SetBool("isDead", false);
-        animPlayer.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
+        gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
         playerHealthCurrent = playerHealthMax;
         isInvincible = false;
     }
@@ -106,6 +106,11 @@ public class PlayerHealth : MonoBehaviour {
     public void SetHealthMax(float current_max_hp) {
         playerHealthMax = current_max_hp;
     }
+
+    public void SetRespawnPoint(GameObject checkPoint) {
+        respawnPoint = checkPoint;
+    }
+
     public void PlayerDie() {
         animPlayer.SetBool("isDead", true);
         StartCoroutine(Fading());
