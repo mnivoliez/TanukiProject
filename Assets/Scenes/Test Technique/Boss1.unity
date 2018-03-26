@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4840803, g: 0.51113504, b: 0.6302889, a: 1}
+  m_IndirectSpecularColor: {r: 0.20146064, g: 0.22607669, b: 0.3574937, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1140,7 +1140,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4488226356366060, guid: e4c71325b06e7fa4296cbc86759ac4b1, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114259744709687526, guid: e4c71325b06e7fa4296cbc86759ac4b1,
         type: 2}
@@ -1521,6 +1521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coeffRebond: 200
+  bumperSound: {fileID: 0}
 --- !u!33 &404502164
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1859,6 +1860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coeffRebond: 200
+  bumperSound: {fileID: 0}
 --- !u!33 &488727209
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2847,7 +2849,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4692208143034700, guid: ddeee740630d22645b33b9cc367d8549, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ddeee740630d22645b33b9cc367d8549, type: 2}
@@ -3418,7 +3420,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4378223560522452, guid: 24816ce9644b315449ac2e4c60f7d1e0, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114145638267293618, guid: 24816ce9644b315449ac2e4c60f7d1e0,
         type: 2}
@@ -4541,7 +4543,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4571331301929486, guid: cbde54e9ee73d5c41a5d3b4a1eacc16b, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1287980240845564, guid: cbde54e9ee73d5c41a5d3b4a1eacc16b, type: 2}
       propertyPath: m_Name
@@ -5704,11 +5706,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d8cd0b88591eb54cb62e26d09549da6, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1444693299 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4818047298694508, guid: 8d8cd0b88591eb54cb62e26d09549da6,
-    type: 2}
-  m_PrefabInternal: {fileID: 1444693298}
 --- !u!1 &1451147979
 GameObject:
   m_ObjectHideFlags: 0
@@ -6204,22 +6201,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4725050285864208, guid: a95e21316b361044681464f5613ea9f0, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114140452120384574, guid: a95e21316b361044681464f5613ea9f0,
+    - target: {fileID: 114167405134644822, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: pivot
       value: 
-      objectReference: {fileID: 1444693299}
-    - target: {fileID: 114072387758638234, guid: a95e21316b361044681464f5613ea9f0,
-        type: 2}
-      propertyPath: respawnPoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114140452120384574, guid: a95e21316b361044681464f5613ea9f0,
-        type: 2}
-      propertyPath: glideCounterForce
-      value: 160
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a95e21316b361044681464f5613ea9f0, type: 2}
@@ -6391,7 +6378,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4552063950143726, guid: 808203ed0a7345544b8b92a494a165d8, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1377227220088642, guid: 808203ed0a7345544b8b92a494a165d8, type: 2}
       propertyPath: m_IsActive
@@ -8102,6 +8089,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coeffRebond: 200
+  bumperSound: {fileID: 0}
 --- !u!64 &2024247219
 MeshCollider:
   m_ObjectHideFlags: 0

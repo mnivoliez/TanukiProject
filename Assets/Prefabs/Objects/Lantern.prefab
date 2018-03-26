@@ -108,11 +108,11 @@ Light:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1126762360363800}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 10
+  m_Intensity: 1
   m_Range: 5
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -150,9 +150,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _min_radius: 5
-  _max_radius: 0.5
-  _min_intensity: 10
+  _max_radius: 10
+  _min_intensity: 1
   _max_intensity: 1.5
+  airLantern: {fileID: 0}
+  timeDestroy: 2
 --- !u!135 &135343783729361262
 SphereCollider:
   m_ObjectHideFlags: 1

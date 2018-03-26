@@ -22,13 +22,16 @@ public class ProjectileBehavior : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider other) {
-
         if (other.gameObject.CompareTag("Player")) {
 
             other.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
             Destroy(Instantiate(hitParticle, other.gameObject.transform.position, Quaternion.identity), 1);
             Destroy(gameObject);
         }
+        else if(other.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            Destroy(gameObject);
+        }
 
     }
+
 }

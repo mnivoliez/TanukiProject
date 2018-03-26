@@ -38,6 +38,7 @@ public class YokaiAIv2Controller : YokaiController {
 
     private void Update() {
         if (isAbsorbed) {
+            Debug.Log("DIE !!");
             Die();
         }
     }
@@ -55,8 +56,8 @@ public class YokaiAIv2Controller : YokaiController {
                     int layerAll = -1;
                     RaycastHit hit;
                     if (Physics.Raycast(target.transform.position, -relativePos, out hit, detectArea, layerAll - ignoredLayerMash.value)) {
-                        Debug.Log(target.transform.position);
-                        Debug.Log(hit.transform.tag);
+                        //Debug.Log(target.transform.position);
+                        //Debug.Log(hit.transform.tag);
                         if (hit.transform.tag == "Yokai") {
                             Quaternion rotation = Quaternion.LookRotation(relativePos);
                             rotation.x = transform.rotation.x;
@@ -134,6 +135,7 @@ public class YokaiAIv2Controller : YokaiController {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             target = GameObject.Find("Player");
+            Debug.Log("KNOCKED !!");
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
     }
@@ -149,6 +151,7 @@ public class YokaiAIv2Controller : YokaiController {
 
     public override void Absorbed() {
         isAbsorbed = true;
+        Debug.Log("ABSORBE !!");
         gameObject.GetComponent<Collider>().enabled = false;
     }
 
