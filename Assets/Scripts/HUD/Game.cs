@@ -12,6 +12,7 @@ public static class Game {
     public static GameObject koda;
     public static PlayerHealth koda_health;
     public static KodaController koda_power;
+    public static PlayerCollectableController koda_score;
 
     public static int selected_slot = 0;
     public static string scene_path;
@@ -41,32 +42,7 @@ public static class Game {
     }*/
 
     public static void PreSave_Game_and_Save() {
-        //////////////////////////////////////////////////////////
-        koda = GameObject.FindGameObjectWithTag("Player");
-        koda_health = koda.GetComponent<PlayerHealth>();
-        koda_power = koda.GetComponent<KodaController>();
-        //////////////////////////////////////////////////////////
-
-        playerData.hp_max = koda_health.GetHealthMax();
-        playerData.hp = koda_health.GetHealthCurrent();
-
-        //playerData.caught_Yokai = koda_power.GetCaughtYokai();
-
-        Transform check_point = koda_power.GetRespawnPointPosition();
-        playerData.check_point_x = check_point.position.x;
-        playerData.check_point_y = check_point.position.y;
-        playerData.check_point_z = check_point.position.z;
-
-        playerData.current_scene = SceneManager.GetActiveScene().name;
-
-        playerData.power_jump = koda_power.GetPowerJump();
-        playerData.power_ball = koda_power.GetPowerBall();
-        playerData.power_shrink = koda_power.GetPowerShrink();
-
-        playerData.selected_slot = selected_slot;
-
-        scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
-
+        Update_Game();
         Save();
     }
 
@@ -93,19 +69,21 @@ public static class Game {
             koda = GameObject.FindGameObjectWithTag("Player");
             koda_health = koda.GetComponent<PlayerHealth>();
             koda_power = koda.GetComponent<KodaController>();
+            koda_score = koda.GetComponent<PlayerCollectableController>();
             //////////////////////////////////////////////////////////
             Load();
 
             koda_health.SetHealthCurrent(playerData.hp);
             koda_health.SetHealthMax(playerData.hp_max);
 
-            //koda_power.SetCaughtYokai(playerData.caught_yokai);
+            koda_score.SetnbYokai(playerData.caught_yokai);
 
             koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
 
-            //SceneManager.SetActiveScene(playerData.current_scene); //Marche pas encore lol !
+            //SceneManager.SetActiveScene(playerData.current_scene); // Working ONLY if the saved scene IS IN the SceneManager !
 
             koda_power.SetPowerJump(playerData.power_jump);
+            koda_power.SetPowerLure(playerData.power_lure);
             koda_power.SetPowerBall(playerData.power_ball);
             koda_power.SetPowerShrink(playerData.power_shrink);
 
@@ -117,8 +95,46 @@ public static class Game {
         else {
             //SceneManager.LoadScene(playerData.current_scene);
             //Load_and_Post_Load();
-            Debug.Log("Bon ! C'est pas la bonne scene ... Mais c'est pas grave ... J'ai tout prévu : Ce joli message. Bisous !");
+            Debug.Log("Trying to load a scene that is not supposed to exist in this game.");
         }
+    }
+
+    public static void Load_From_Main_Menue() {
+        /*
+         SceneManager.LoadScene(playerData.current_scene);
+         Load_and_Post_Load()
+         */
+        Debug.Log("Will load ... Soon™.");
+    }
+
+    public static void Update_Game() {
+        //////////////////////////////////////////////////////////
+        koda = GameObject.FindGameObjectWithTag("Player");
+        koda_health = koda.GetComponent<PlayerHealth>();
+        koda_power = koda.GetComponent<KodaController>();
+        koda_score = koda.GetComponent<PlayerCollectableController>();
+        //////////////////////////////////////////////////////////
+
+        playerData.hp_max = koda_health.GetHealthMax();
+        playerData.hp = koda_health.GetHealthCurrent();
+
+        playerData.caught_yokai = koda_score.GetnbYokai();
+
+        Transform check_point = koda_power.GetRespawnPointPosition();
+        playerData.check_point_x = check_point.position.x;
+        playerData.check_point_y = check_point.position.y;
+        playerData.check_point_z = check_point.position.z;
+
+        playerData.current_scene = SceneManager.GetActiveScene().name;
+
+        playerData.power_jump = koda_power.GetPowerJump();
+        playerData.power_lure = koda_power.GetPowerLure();
+        playerData.power_ball = koda_power.GetPowerBall();
+        playerData.power_shrink = koda_power.GetPowerShrink();
+
+        playerData.selected_slot = selected_slot;
+
+        scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
     }
 
 }
@@ -137,6 +153,7 @@ public struct PlayerData {
     public float check_point_z;
 
     public bool power_jump;
+    public bool power_lure;
     public bool power_ball;
     public bool power_shrink;
 }

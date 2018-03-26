@@ -15,6 +15,13 @@ public class Pause : MonoBehaviour {
     private GameObject OptionsPanel;
     private GameObject ExitPanel;
 
+    public Text score_to_display;
+
+    public Text has_doublejump;
+    public Text has_lure;
+    public Text has_ball;
+    public Text has_shrink;
+
 
     // Use this for initialization
     void Start () {
@@ -66,12 +73,31 @@ public class Pause : MonoBehaviour {
             PausePanel.SetActive(true);
             CanvasPause.enabled = true;
 			transform.GetChild (0).gameObject.SetActive (true);
-		}
+            Update_Pause_Menu_data();
+        }
         Paused = true;
     }
 
     public void Load_Game() {
         UnpauseGame();
         Game.Load_and_Post_Load();
+    }
+
+    public void Update_Pause_Menu_data() {
+        Game.Update_Game();
+        int score_value = Game.playerData.caught_yokai;
+        score_to_display.text = "Yokai Caught : " + score_value;
+
+        bool has_power = Game.playerData.power_jump;
+        has_doublejump.text = "Double Jump : " + has_power;
+
+        has_power = Game.playerData.power_lure;
+        has_lure.text = "Lure : " + has_power;
+
+        has_power = Game.playerData.power_ball;
+        has_ball.text = "Ball : " + has_power;
+
+        has_power = Game.playerData.power_shrink;
+        has_shrink.text = "Shrink : " + has_power;
     }
 }
