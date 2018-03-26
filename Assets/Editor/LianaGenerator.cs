@@ -12,8 +12,6 @@ public class LianaGenerator : EditorWindow {
     private string lenght;
     private static GameObject lianaMesh;
     private bool autoLenght;
-    private bool addLeaves;
-    private GameObject leavesMesh;
 
     [MenuItem("Generate/All Liana")]
     public static void GenerateAllLiana() {
@@ -43,7 +41,6 @@ public class LianaGenerator : EditorWindow {
 
     void Awake() {
         autoLenght = false;
-        addLeaves = false;
         lenght = "";
     }
 
@@ -56,7 +53,8 @@ public class LianaGenerator : EditorWindow {
             lianaLenght = 10;
         }
 
-        int nbLianaPart = (int)(lianaLenght / sizeLianaMesh.y);
+        float partSizeLianaMesh = sizeLianaMesh.y * 0.2f;
+        int nbLianaPart = (int)(lianaLenght / (sizeLianaMesh.y - partSizeLianaMesh));
 
         foreach (GameObject liana in lianaObjects) {
             Rigidbody rgbody = liana.AddComponent<Rigidbody>();
@@ -74,7 +72,7 @@ public class LianaGenerator : EditorWindow {
                 lianaPart.transform.localPosition = new Vector3(0, positionYLianaPart, 0);
                 lianaPart.GetComponent<SpringJoint>().connectedBody = bodyToConnect;
                 bodyToConnect = lianaPart.GetComponent<Rigidbody>();
-                positionYLianaPart -= sizeLianaMesh.y;
+                positionYLianaPart -= sizeLianaMesh.y - partSizeLianaMesh;
             }
         }
     }
@@ -85,10 +83,6 @@ public class LianaGenerator : EditorWindow {
         autoLenght = EditorGUILayout.Toggle("Auto lenght liana", autoLenght);
         EditorGUI.BeginDisabledGroup(autoLenght);
         lenght = EditorGUILayout.TextField("Lenght liana", lenght);
-        EditorGUI.EndDisabledGroup();
-        addLeaves = EditorGUILayout.Toggle("Add leaves", addLeaves);
-        EditorGUI.BeginDisabledGroup(!addLeaves);
-        leavesMesh = EditorGUILayout.ObjectField("Find leaves mesh", leavesMesh, typeof(GameObject)) as GameObject;
         EditorGUI.EndDisabledGroup();
 
 
@@ -103,14 +97,15 @@ public class LianaGenerator : EditorWindow {
         int nbLianaPart = 0;
         RaycastHit hit;
         float lenght = 0;
+        float partSizeLianaMesh = sizeLianaMesh * 0.2f;
 
-        if (Physics.Raycast(liana.transform.position, Vector3.down, out hit, 10)) {
+        if (Physics.Raycast(liana.transform.position, Vector3.down, out hit, 30)) {
             lenght = hit.distance - 0.5f;
         } else {
             lenght = 10;
         }
 
-        nbLianaPart = (int)(lenght / sizeLianaMesh);
+        nbLianaPart = (int)(lenght / (sizeLianaMesh - partSizeLianaMesh));
 
         return nbLianaPart;
     }
@@ -125,17 +120,20 @@ public class LianaGenerator : EditorWindow {
 
             Component[] allComponents;
             allComponents = liana.GetComponents(typeof(Component));
-            foreach (Component component in allComponents) {
-                if (component.GetType() != typeof(Transform)) {
-                    if (component.GetType() == typeof(Rigidbody)) {
-                        foreach (Component componentForJoint in allComponents) {
-                            if (componentForJoint.GetType() == typeof(FixedJoint)) {
-                                DestroyImmediate(componentForJoint);
+            if (allComponents.Length > 1) {
+
+                foreach (Component component in allComponents) {
+                    if (component.GetType() != typeof(Transform)) {
+                        if (component.GetType() == typeof(Rigidbody)) {
+                            foreach (Component componentForJoint in allComponents) {
+                                if (componentForJoint.GetType() == typeof(FixedJoint)) {
+                                    DestroyImmediate(componentForJoint);
+                                }
                             }
                         }
-                    }
-                    DestroyImmediate(component);
-                }  
+                        DestroyImmediate(component);
+                    }  
+                }
             }
         }
     }
