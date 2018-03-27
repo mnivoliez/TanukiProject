@@ -77,7 +77,6 @@ public class Zone1BossBehavior : YokaiController {
                     transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
                     cooldownPurchase += Time.deltaTime;
                     if (cooldownPurchase > purchaseRate/2) {
-                        Debug.Log("Change COLOR !");
                         rendererMat.SetColor("_Globalcolor", chargeColor);
                     }
                     
