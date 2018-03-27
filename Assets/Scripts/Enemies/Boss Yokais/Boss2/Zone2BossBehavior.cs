@@ -15,6 +15,7 @@ public class Zone2BossBehavior : YokaiController {
     private int phasePattern = 0;
     private bool interPhase;
     private List<GameObject> yokais;
+    private List<GameObject> yokaisSpe;
     private float hpMax = 10;
     private bool doKnockBack;
     private bool doYell;
@@ -60,14 +61,17 @@ public class Zone2BossBehavior : YokaiController {
         hpMax = hp;
 
         yokais = new List<GameObject>();
+        yokaisSpe = new List<GameObject>();
         oreilles = new List<GameObject>();
 
         GameObject[] gameObjects = FindObjectsOfType(typeof(GameObject)) as GameObject[];
 
         for (var i = 0; i < gameObjects.Length; i++) {
-            if (gameObjects[i].name.Contains("Yokai")) {
+            if (gameObjects[i].name.Contains("Yokai_General")) {
                 yokais.Add(gameObjects[i]);
-            } else if (gameObjects[i].name.Contains("Oreille")) {
+            } else if (gameObjects[i].name.Contains("YokaiSpeLure")) {
+                yokaisSpe.Add(gameObjects[i]);
+            } else if (gameObjects[i].name.Contains("Oreille") || gameObjects[i].name == "Corps Caché") {
                 oreilles.Add(gameObjects[i]);
                 gameObjects[i].SetActive(false);
             }
@@ -86,12 +90,12 @@ public class Zone2BossBehavior : YokaiController {
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.NameToLayer("Ground"))) {
+        /*if (Physics.Raycast(transform.position, Vector3.down, out hit, LayerMask.NameToLayer("Ground"))) {
             float rayon = myCollider.radius * (transform.localScale.y);
             if (hit.distance < rayon && hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground")) {
                 transform.position = new Vector3(transform.position.x, hit.point.y + rayon, transform.position.z);
             }
-        }
+        }*/
 
         if (!isKnocked) {
 
@@ -135,21 +139,9 @@ public class Zone2BossBehavior : YokaiController {
                         BumpTarget();
                     }
                 } else {
-                    //GameObject lure = GameObject.FindGameObjectWithTag("Lure");
                     if (target == null) {
                         target = player;
                     }
-
-                    /*if (target.tag == "Player") {
-                        if (lure != null) {
-                            target = lure;
-                        }
-                    }
-                    else if (target.tag == "Lure") {
-                        if (lure == null) {
-                            target = player;
-                        }
-                    }*/
 
                     if (stop == true) {
                         if (corps.activeSelf == false) {
@@ -197,6 +189,9 @@ public class Zone2BossBehavior : YokaiController {
 
     void Stop() {
         Physics.IgnoreCollision(target.GetComponent<Collider>(), myCollider, false);
+        foreach (GameObject yokaiSpe in yokaisSpe) {
+            Physics.IgnoreCollision(yokaiSpe.GetComponent<Collider>(), myCollider, false);
+        }
         transform.LookAt(target.transform);
         myRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         if (currentRocksToThrow > 0) {
@@ -284,7 +279,6 @@ public class Zone2BossBehavior : YokaiController {
         } else if (collid.gameObject.tag == "WaterBoss2" && phasePattern == 2 && lanternsInRange.Count > 0) {
             BeingHit();
             LooseHp(1);
-            Debug.Log("Water Damage !");
         } else if (collid.gameObject.tag == "Lure") {
             if (stop) {
                 Physics.IgnoreCollision(myCollider, collid.gameObject.GetComponent<Collider>(), false);
@@ -330,6 +324,9 @@ public class Zone2BossBehavior : YokaiController {
 
     private void FollowTarget() {
         Physics.IgnoreCollision(target.GetComponent<Collider>(), myCollider, true);
+        foreach (GameObject yokaiSpe in yokaisSpe) {
+            Physics.IgnoreCollision(yokaiSpe.GetComponent<Collider>(), myCollider, true);
+        }
         myRigidbody.constraints = RigidbodyConstraints.None;
         //follow target
         Vector3 relativePos = target.transform.position - transform.position;
@@ -338,8 +335,12 @@ public class Zone2BossBehavior : YokaiController {
         rotation.z = transform.rotation.z;
         transform.rotation = rotation;
 
+        //myRigidbody.velocity = Vector3.zero;
         float dis = Vector3.Distance(transform.position, target.transform.position);
-        transform.Translate(0, 0, speed * Time.deltaTime);
+        Vector3 vectDir = (target.transform.position - oreilles[0].transform.position).normalized;
+        //transform.Translate(vectDir * speed * Time.deltaTime);
+        vectDir.y = 0;
+        myRigidbody.velocity = new Vector3(vectDir.x * speed, myRigidbody.velocity.y, vectDir.z * speed);
     }
 
     void KnockBack (Vector3 firstPosition, Vector3 secondPosition) {
