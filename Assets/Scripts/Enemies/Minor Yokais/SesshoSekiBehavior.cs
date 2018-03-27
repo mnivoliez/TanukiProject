@@ -17,6 +17,7 @@ public class SesshoSekiBehavior : YokaiController {
     private bool positionToGoSet;
     private bool prepare;
     private bool search;
+    private bool comeBack;
     private float nextAction;
 
     [SerializeField] private float durationOfPreparation = 2;
@@ -24,6 +25,7 @@ public class SesshoSekiBehavior : YokaiController {
 
 
     void Start() {
+        comeBack = true;
         prepare = true;
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
@@ -42,85 +44,87 @@ public class SesshoSekiBehavior : YokaiController {
     private void FixedUpdate() {
         if (!isKnocked) {
             if (target != null) {
-                if (prepare) {
-                    Debug.Log("prepare: " + target.name);
-                    if (Time.time < nextAction || !positionTargetSet) {
-                        if (!positionTargetSet) {
-                            body.velocity = Vector3.zero;
-                            transform.rotation = Quaternion.identity;
-                            positionTarget = target.transform.position;
-                            transform.LookAt(target.transform);
-                            rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
-                            positionTargetSet = true;
-                            nextAction = Time.time + durationOfPreparation;
-                        }
-                    } else if (Time.time >= nextAction) {
-                        prepare = false;
-                        positionTargetSet = false;
-                    }
-                } else if (search) {
-                    Debug.Log("search");
-                    body.velocity = Vector3.zero;
-                    transform.rotation = Quaternion.identity;
-                    if (Time.time < nextAction) {
-                        rendererMat.color = new Color(40f / 255f, 150f / 255f, 150f / 255f);
-                    } else {
-                        search = false;
-                        prepare = true;
-                        positionToGoSet = false;
-                    }
-
-                } else {
-                    Debug.Log("go to target");
-                    Vector3 relativePos = new Vector3();
-
-                    if (!positionToGoSet) {
-                        relativePos = (positionTarget - transform.position) * 1.5f;
-                        positionToGo = transform.position + relativePos;
-                        rendererMat.color = new Color(150f / 255f, 150f / 255f, 40f / 255f);
-                        positionToGoSet = true;
-                    }
-
-                    relativePos = positionToGo - transform.position;
-                    relativePos.y = 0;
-
-                    Vector3 lookAtTarget = positionToGo - transform.position;
-                    Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
-                    rotation.x = transform.rotation.x;
-                    rotation.z = transform.rotation.z;
-                    transform.rotation = rotation;
-                    
-                    if ((int)positionToGo.x != (int)transform.position.x || (int)positionToGo.z != (int)transform.position.z) {
-                        Vector3 normalize = relativePos.normalized;
-                        body.velocity = normalize * speed;
-                    }
-                    else {
-                        search = true;
-                        nextAction = durationOfResearch + Time.time;
-                    }
-                }
-                
+                comeBack = false;
             }
-            else {
+
+            if (comeBack) {
                 //comeback the origine position
-                Debug.Log("comeBack");
                 prepare = true;
                 search = false;
                 positionTargetSet = false;
                 positionToGoSet = false;
                 rendererMat.color = Color.white;
-                if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.y != (int)positionOrigin.y || (int)transform.position.z != (int)positionOrigin.z) {
+                if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
                     Vector3 relativePos = positionOrigin - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(relativePos);
                     rotation.x = transform.rotation.x;
                     rotation.z = transform.rotation.z;
                     transform.rotation = rotation;
                     Vector3 normalize = relativePos.normalized;
+                    normalize.y = 0;
                     body.velocity = normalize * speed;
                 }
                 else {
                     transform.rotation = rotationOrigin;
                     body.velocity = Vector3.zero;
+                }
+            } else if (prepare) {
+                if (Time.time < nextAction || !positionTargetSet) {
+                    if (!positionTargetSet) {
+                        body.velocity = Vector3.zero;
+                        transform.rotation = Quaternion.identity;
+                        positionTarget = target.transform.position;
+                        transform.LookAt(target.transform);
+                        rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+                        positionTargetSet = true;
+                        nextAction = Time.time + durationOfPreparation;
+                    }
+                }
+                else if (Time.time >= nextAction) {
+                    prepare = false;
+                    positionTargetSet = false;
+                }
+            } else if (search) {
+                body.velocity = Vector3.zero;
+                transform.rotation = Quaternion.identity;
+                if (Time.time < nextAction) {
+                    rendererMat.color = new Color(40f / 255f, 150f / 255f, 150f / 255f);
+                }
+                else {
+                    if (target == null) {
+                        comeBack = true;
+                    }
+                    search = false;
+                    prepare = true;
+                    positionToGoSet = false;
+                }
+
+            }
+            else {
+                Vector3 relativePos = new Vector3();
+                if (!positionToGoSet) {
+                    relativePos = (positionTarget - transform.position) * 1.5f;
+                    positionToGo = transform.position + relativePos;
+                    rendererMat.color = new Color(150f / 255f, 150f / 255f, 40f / 255f);
+                    positionToGoSet = true;
+                }
+
+                relativePos = positionToGo - transform.position;
+                relativePos.y = 0;
+
+                Vector3 lookAtTarget = positionToGo - transform.position;
+                Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
+                rotation.x = transform.rotation.x;
+                rotation.z = transform.rotation.z;
+                transform.rotation = rotation;
+
+                if ((int)positionToGo.x != (int)transform.position.x || (int)positionToGo.z != (int)transform.position.z) {
+                    Vector3 normalize = relativePos.normalized;
+                    body.velocity = normalize * speed;
+                }
+                else {
+                    search = true;
+                    nextAction = durationOfResearch + Time.time;
                 }
             }
         }
