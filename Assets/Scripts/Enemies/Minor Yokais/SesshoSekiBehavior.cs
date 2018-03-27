@@ -69,6 +69,7 @@ public class SesshoSekiBehavior : YokaiController {
                     body.velocity = Vector3.zero;
                 }
             } else if (prepare) {
+                body.velocity = Vector3.zero;
                 if (Time.time < nextAction || !positionTargetSet) {
                     if (!positionTargetSet) {
                         body.velocity = Vector3.zero;
@@ -85,6 +86,7 @@ public class SesshoSekiBehavior : YokaiController {
                     positionTargetSet = false;
                 }
             } else if (search) {
+                body.velocity = Vector3.zero;
                 body.velocity = Vector3.zero;
                 transform.rotation = Quaternion.identity;
                 if (Time.time < nextAction) {
@@ -131,9 +133,9 @@ public class SesshoSekiBehavior : YokaiController {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == "Player") {
-            bodyAttack = true;
-            Vector3 vectorToCollision = collision.gameObject.transform.position - transform.position;
+        if (collision.gameObject.tag == "Player" && !isKnocked) {
+            collision.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
+            Destroy(Instantiate(hitParticle, collision.gameObject.transform.position, Quaternion.identity), 1);
         }
 
 
