@@ -25,8 +25,8 @@ public class InteractBehavior : MonoBehaviour
     private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private GameObject rangeMaxLeaf;
-    [SerializeField] private float distantAttackRange = 20f;
-    [SerializeField] private float distandAttackConeAngle = 8f;
+    [SerializeField] private float distantAttackRange = 8f;
+    [SerializeField] private float distandAttackConeAngle = 20f;
     private HashSet<GameObject> enemiesInRange;
     [SerializeField] private float distantDamage;
 
@@ -127,18 +127,18 @@ public class InteractBehavior : MonoBehaviour
 
         /* init target */
         // define default point
-        Vector3 target = transform.position + transform.forward * distantAttackRange;
-        float smaller_dist = distantAttackRange;
+        Vector3 target = tanukiPlayer.transform.position + tanukiPlayer.transform.forward * distantAttackRange;
+        float smaller_dist = distantAttackRange + 0.5f;
 
         //check for each yokai if in range and targetable;
         foreach (GameObject yokai in enemiesInRange)
         {
-            float angle = Vector3.Angle(yokai.transform.position - transform.position, transform.forward);
+            float angle = Vector3.Angle(yokai.transform.position - tanukiPlayer.transform.position, tanukiPlayer.transform.forward);
             Debug.Log(angle);
             bool in_distant_attack_cone = angle < distandAttackConeAngle;
             if (in_distant_attack_cone)
             {
-                float tmp_dist = Vector3.Distance(transform.position, yokai.transform.position);
+                float tmp_dist = Vector3.Distance(tanukiPlayer.transform.position, yokai.transform.position);
                 if (tmp_dist < smaller_dist)
                 {
                     smaller_dist = tmp_dist;
