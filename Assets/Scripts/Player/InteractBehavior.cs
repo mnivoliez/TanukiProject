@@ -25,6 +25,9 @@ public class InteractBehavior : MonoBehaviour
     private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private GameObject rangeMaxLeaf;
+    [SerializeField] private float distantAttackRange = 8f;
+    [SerializeField] private float distandAttackConeAngle = 20f;
+    private HashSet<GameObject> enemiesInRange;
     [SerializeField] private float distantDamage;
 
     [Header("INFLATE")]
@@ -66,10 +69,12 @@ public class InteractBehavior : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        enemiesInRange = new HashSet<GameObject>();
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
         catchSlot = GameObject.Find("Catchable Object");
         sakePot.SetActive(false);
+        GetComponent<SphereCollider>().radius = distantAttackRange;
     }
 
     // Update is called once per frame
@@ -115,10 +120,37 @@ public class InteractBehavior : MonoBehaviour
     public void DoDistantAttack()
     {
         leafHead.SetActive(false);
-        GameObject LeafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
-        LeafBoomerang.GetComponent<MoveLeaf>().SetSpawnPosition(spawnLeaf);
-        LeafBoomerang.GetComponent<MoveLeaf>().SetTargetPosition(rangeMaxLeaf);
-        LeafBoomerang.GetComponent<MoveLeaf>().SetDamage(distantDamage);
+        GameObject leafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
+        MoveLeaf moveLeaf = leafBoomerang.GetComponent<MoveLeaf>();
+        moveLeaf.SetSpawnPosition(spawnLeaf);
+        moveLeaf.SetDamage(distantDamage);
+
+        /* init target */
+        // define default point
+        Vector3 target = tanukiPlayer.transform.position + tanukiPlayer.transform.forward * distantAttackRange;
+        float smaller_dist = distantAttackRange + 0.5f;
+
+        //check for each yokai if in range and targetable;
+        foreach (GameObject yokai in enemiesInRange)
+        {
+            float angle = Vector3.Angle(yokai.transform.position - tanukiPlayer.transform.position, tanukiPlayer.transform.forward);
+            Debug.Log(angle);
+            bool in_distant_attack_cone = angle < distandAttackConeAngle;
+            if (in_distant_attack_cone)
+            {
+                float tmp_dist = Vector3.Distance(tanukiPlayer.transform.position, yokai.transform.position);
+                if (tmp_dist < smaller_dist)
+                {
+                    smaller_dist = tmp_dist;
+                    target = yokai.transform.position;
+                }
+            }
+        }
+
+        //set the target "y" coord by spawn level
+        target.y = spawnLeaf.transform.position.y;
+        moveLeaf.SetTargetPosition(target);
+
     }
 
     public void StopDistantAttack()
@@ -254,7 +286,8 @@ public class InteractBehavior : MonoBehaviour
         absorbableObject.GetComponent<YokaiController>().Absorbed();
 
         Capacity capacity = absorbableObject.GetComponent<YokaiController>().GetCapacity();
-        if (capacity == Capacity.Nothing) {
+        if (capacity == Capacity.Nothing)
+        {
             gameObject.GetComponent<PlayerCollectableController>().AddYokai();
         }
         float timerCapacity = absorbableObject.GetComponent<YokaiController>().GetTimerCapacity();
@@ -311,5 +344,18 @@ public class InteractBehavior : MonoBehaviour
         leafHand.SetActive(false);
         sakePot.SetActive(false);
         ParachuteLeaf.SetActive(false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Yokai"))
+        {
+            enemiesInRange.Add(other.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        enemiesInRange.Remove(other.gameObject);
     }
 }
