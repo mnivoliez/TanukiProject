@@ -11,6 +11,8 @@ public class BazekoriBehavior : YokaiController {
     Vector3 endPosition;
     Vector3 bending = Vector3.up;
     float timeStamp = 0;
+    [SerializeField] private GameObject hpCollectable;
+    private Vector3 positionCollectable;
 
     void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
@@ -70,10 +72,15 @@ public class BazekoriBehavior : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        positionCollectable = transform.position;
+        positionCollectable.y = positionCollectable.y + 1;
     }
 
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
+            if(Random.Range(0,10) > 4.9f) {
+                Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
+            }
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         }
