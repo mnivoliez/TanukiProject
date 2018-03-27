@@ -9,29 +9,18 @@ public class DetectionRange : MonoBehaviour {
     void Start () {
         bossBehavior = gameObject.GetComponentInParent<Zone1BossBehavior>();
         collidTrigger = GetComponent<Collider>();
-        InvokeRepeating("ActivateCollider",1f,4f);
     }
-	
 
-	void Update () {
-		
-	}
-
-    void ActivateCollider() {
+    public void ActivateCollider() {
         collidTrigger.enabled = true;
-        Invoke("DesactivateCollider",0.2f);
-    }
-    void DesactivateCollider() {
-        collidTrigger.enabled = false;
     }
 
     void OnTriggerEnter(Collider collid) {
 
         if (collid.gameObject.CompareTag("Player") && !bossBehavior.GetIsKnocked()) {
             bossBehavior.SetFollowPlayer(true);
+            collidTrigger.enabled = false;
         }
     }
-
-    
 
 }
