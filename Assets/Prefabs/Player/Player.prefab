@@ -557,6 +557,7 @@ GameObject:
   - component: {fileID: 114413189276461600}
   - component: {fileID: 114939442216126860}
   - component: {fileID: 114280008632786526}
+  - component: {fileID: 135930249030745058}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -1680,8 +1681,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1445498394530796}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.58, y: 26.3, z: -37.36}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 23.8, y: 1, z: 15.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4205313172721576}
@@ -1689,7 +1690,7 @@ Transform:
   - {fileID: 4116831124776206}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4725214603365620
 Transform:
   m_ObjectHideFlags: 1
@@ -2630,7 +2631,9 @@ MonoBehaviour:
   rotateSpeed: 10
   playerModel: {fileID: 4116831124776206}
   direction: {fileID: 4482390627050012}
-  permanentDoubleJumpCapacity: 0
+  hasPermanentDoubleJumpCapacity: 0
+  hasPermanentLureCapacity: 0
+  temporaryCapacity: 0
   timerCapacity: 0
   canvasQTE: {fileID: 1949089745060774}
   loadingBar: {fileID: 224066717798767024}
@@ -2652,6 +2655,7 @@ MonoBehaviour:
   fallSound: {fileID: 8300000, guid: 732ba29d76df83e4ab233cb559ab41ec, type: 3}
   glideSound: {fileID: 8300000, guid: 207570e147c3ca74884222afc8859a59, type: 3}
   pushUpSound: {fileID: 8300000, guid: 186cbb937029ab449a033abb440af6ba, type: 3}
+  timeStopToDie: 1
 --- !u!114 &114170007115717232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3075,6 +3079,18 @@ Projector:
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 0
+--- !u!135 &135930249030745058
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1445498394530796}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.89321727
+  m_Center: {x: -0.000051781535, y: 0.888521, z: -0.23924208}
 --- !u!136 &136074191931487960
 CapsuleCollider:
   m_ObjectHideFlags: 1
