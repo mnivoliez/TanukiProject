@@ -65,9 +65,9 @@ public class Zone2BossBehavior : YokaiController {
         GameObject[] gameObjects = FindObjectsOfType(typeof(GameObject)) as GameObject[];
 
         for (var i = 0; i < gameObjects.Length; i++) {
-            if (gameObjects[i].name.Contains("Yokai")) {
+            if (gameObjects[i].name.Contains("Yokai_General")) {
                 yokais.Add(gameObjects[i]);
-            } else if (gameObjects[i].name.Contains("Oreille")) {
+            } else if (gameObjects[i].name.Contains("Oreille") || gameObjects[i].name == "Corps Caché") {
                 oreilles.Add(gameObjects[i]);
                 gameObjects[i].SetActive(false);
             }
@@ -135,21 +135,9 @@ public class Zone2BossBehavior : YokaiController {
                         BumpTarget();
                     }
                 } else {
-                    //GameObject lure = GameObject.FindGameObjectWithTag("Lure");
                     if (target == null) {
                         target = player;
                     }
-
-                    /*if (target.tag == "Player") {
-                        if (lure != null) {
-                            target = lure;
-                        }
-                    }
-                    else if (target.tag == "Lure") {
-                        if (lure == null) {
-                            target = player;
-                        }
-                    }*/
 
                     if (stop == true) {
                         if (corps.activeSelf == false) {
@@ -284,7 +272,6 @@ public class Zone2BossBehavior : YokaiController {
         } else if (collid.gameObject.tag == "WaterBoss2" && phasePattern == 2 && lanternsInRange.Count > 0) {
             BeingHit();
             LooseHp(1);
-            Debug.Log("Water Damage !");
         } else if (collid.gameObject.tag == "Lure") {
             if (stop) {
                 Physics.IgnoreCollision(myCollider, collid.gameObject.GetComponent<Collider>(), false);
