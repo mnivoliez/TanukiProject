@@ -77,7 +77,7 @@ public class LianaGenerator : EditorWindow {
             lianaLenght = 10;
         }
 
-        float partSizeLianaMesh = sizeLianaMesh.y * 0.05f;
+        float partSizeLianaMesh = sizeLianaMesh.y * 0.1f;
         int nbLianaPart = (int)(lianaLenght / (sizeLianaMesh.y - partSizeLianaMesh));
         float connectedMassScalePas = (float)(1.0 / nbLianaPart);
 
@@ -142,7 +142,7 @@ public class LianaGenerator : EditorWindow {
         int nbLianaPart = 0;
         RaycastHit hit;
         float lenght = 0;
-        float partSizeLianaMesh = sizeLianaMesh * 0.05f;
+        float partSizeLianaMesh = sizeLianaMesh * 0.1f;
 
         if (Physics.Raycast(liana.transform.position, Vector3.down, out hit, 30)) {
             lenght = hit.distance - 0.5f;
