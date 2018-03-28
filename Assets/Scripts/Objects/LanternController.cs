@@ -57,6 +57,8 @@ public class LanternController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        if (GetComponent<Rigidbody>() && GetComponent<Rigidbody>().IsSleeping())
+            GetComponent<Rigidbody>().WakeUp();
         if (shallRespawn) {
             if ((Time.time - timeoutRespawn) > elaspTimeBeforeRespawn) {
                 lanternBody = GetComponent<Rigidbody>();
@@ -70,15 +72,18 @@ public class LanternController : MonoBehaviour {
         }
     }
 
-    private void OnCollisionEnter(Collision collision) {
+    private void OnCollisionStay(Collision collision) {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Water")) {
-            GameObject air = Instantiate(airLantern, transform.position, Quaternion.identity);
-            gameObject.layer = 0;
-            shallRespawn = true;
-            elaspTimeBeforeRespawn = Time.time;
-            GetComponent<BoxCollider>().enabled = false ;
+            
+            if (shallRespawn == false) {
+                GameObject air = Instantiate(airLantern, transform.position, Quaternion.identity);
+                gameObject.layer = 0;
+                shallRespawn = true;
+                elaspTimeBeforeRespawn = Time.time;
+                GetComponent<BoxCollider>().enabled = false;
+            }
         }
-    }
+    } 
 
     public bool isInEffectArea(Vector3 point) {
         float dist = Vector3.Distance(transform.position, point);
