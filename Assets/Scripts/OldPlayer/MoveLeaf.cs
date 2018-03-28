@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveLeaf : MonoBehaviour
-{
+public class MoveLeaf : MonoBehaviour {
 
     private float initialSpeed = 15f;
     private float currentSpeed;
@@ -14,65 +13,57 @@ public class MoveLeaf : MonoBehaviour
     private bool arrived = false;
     [SerializeField] private GameObject disparitionEffect;
 
-    void Start()
-    {
+    void Start() {
         currentSpeed = initialSpeed;
     }
 
-    void Update()
-    {
-        if (!arrived)
-        {
+    void Update() {
+        if (Pause.Paused) {
+            return;
+        }
+
+        if (!arrived) {
             MoveTo();
-            if (transform.position == targetPosition)
-            {
+            if (transform.position == targetPosition) {
                 arrived = true;
             }
         }
-        else
-        {
+        else {
             BackTo();
         }
     }
 
-    public void MoveTo()
-    {
+    public void MoveTo() {
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
         transform.Rotate(Vector3.left, rotationSpeed);
     }
 
-    public void BackTo()
-    {
+    public void BackTo() {
         arrived = false;
         GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().StopDistantAttackState();
         GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
         FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
-        Destroy(FXDisappear, 2f);
+        Destroy(FXDisappear, 1f);
         Destroy(gameObject);
     }
 
-    public void SetSpawnPosition(GameObject spPos)
-    {
+    public void SetSpawnPosition(GameObject spPos) {
         spawnLeaf = spPos;
     }
 
-    public void SetTargetPosition(Vector3 pos)
-    {
+    public void SetTargetPosition(Vector3 pos) {
         targetPosition = pos;
     }
 
-    public void SetDamage(float dmg)
-    {
+    public void SetDamage(float dmg) {
         damage = dmg;
     }
 
-    public float GetDamage()
-    {
+    public float GetDamage() {
         return damage;
     }
 
-    void OnTriggerEnter(Collider collid)
-    {
+    void OnTriggerEnter(Collider collid) {
 
         //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
 
@@ -84,8 +75,7 @@ public class MoveLeaf : MonoBehaviour
 
     }
 
-    void OnTriggerExit(Collider collid)
-    {
+    void OnTriggerExit(Collider collid) {
 
         //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
         //    collid.gameObject.GetComponent<YokaiController>().EndHit();
