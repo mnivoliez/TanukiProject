@@ -32,8 +32,8 @@ uniform fixed4 _FirstLColor;
 	uniform half _Interpolation;
 
 	uniform int _LanternCount;
-	uniform float4 _Centers[5];
-	uniform float _Distances[5];
+	uniform float4 _Centers[20];
+	uniform float _Distances[20];
 
 	uniform fixed4 _SecondLColor;
 
