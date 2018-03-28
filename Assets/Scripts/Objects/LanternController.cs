@@ -14,6 +14,11 @@ public class LanternController : MonoBehaviour {
 
     [SerializeField] private GameObject airLantern;
     [SerializeField] private float timeoutRespawn = 2.0f;
+
+    [SerializeField] private AudioClip lanterSound;
+    private bool is_being_played = false;
+    private bool token_play_once = false;
+
     private float elaspTimeBeforeRespawn;
     private bool shallRespawn;
 
@@ -29,10 +34,21 @@ public class LanternController : MonoBehaviour {
         if (transform.parent == null) {
             _range = _min_radius;
             _light.intensity = _min_intensity;
+
+            is_being_played = false;
+            token_play_once = false;
         }
         else {
             _range = _max_radius;
             _light.intensity = _max_intensity;
+
+            is_being_played = true;
+            if (is_being_played && !token_play_once)
+            {
+                token_play_once = true;
+                AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
+                Debug.Log("Playing Sound");
+            }
         }
         _bbox = GetComponent<SphereCollider>();
         _bbox.radius = _range;
@@ -47,10 +63,20 @@ public class LanternController : MonoBehaviour {
         if (transform.parent == null) {
             _range = _min_radius;
             _light.intensity = _min_intensity;
+
+            is_being_played = false;
+            token_play_once = false;
         }
         else {
             _range = _max_radius;
             _light.intensity = _max_intensity;
+
+            is_being_played = true;
+            if (is_being_played && !token_play_once) {
+                token_play_once = true;
+                AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
+                Debug.Log("Playing Sound");
+            }
         }
         _light.range = _range;
         _bbox.radius = _range - 0.5f;
