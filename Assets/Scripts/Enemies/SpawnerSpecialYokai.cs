@@ -7,6 +7,7 @@ public class SpawnerSpecialYokai : MonoBehaviour {
     [SerializeField] private GameObject prefabYokai;
     [SerializeField] private GameObject prefabSmokeSpawn;
     [SerializeField] private float timerPowerUp;
+    [SerializeField] private float raySpawn = 5f;
     private float cooldownSpawner = 0;
     private GameObject instanceYokai;
 
@@ -27,7 +28,7 @@ public class SpawnerSpecialYokai : MonoBehaviour {
 
     void SpawnYokai() {
 
-        Vector3 newPosSpawn = Random.insideUnitSphere * 5;
+        Vector3 newPosSpawn = Random.insideUnitSphere * raySpawn;
         newPosSpawn.y = 0;
         Instantiate(prefabSmokeSpawn, transform.position + newPosSpawn, Quaternion.identity);
         instanceYokai = Instantiate(prefabYokai, transform.position + newPosSpawn, Quaternion.identity);
