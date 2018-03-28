@@ -52,9 +52,7 @@ public class Zone2BossBehavior : YokaiController {
         currentRocksToThrow = nbRocksToThrow;
         spawnRock = transform.Find("SpawnRock");
         corps = transform.Find("corps").gameObject;
-
         
-
         SetTarget(GameObject.Find("Player"));
         player = target;
         rendererMat = corps.GetComponent<Renderer>().material;
