@@ -14,6 +14,9 @@ public class BazekoriBehavior : YokaiController {
     [SerializeField] private GameObject hpCollectable;
     private Vector3 positionCollectable;
 
+    [SerializeField] private AudioClip yokaiScream;
+    [SerializeField] private AudioClip absorbed;
+
     void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
         rendererMat = gameObject.GetComponent<Renderer>().material;
@@ -74,6 +77,7 @@ public class BazekoriBehavior : YokaiController {
         gameObject.GetComponent<Collider>().enabled = false;
         positionCollectable = transform.position;
         positionCollectable.y = positionCollectable.y + 1;
+        SoundController.instance.PlaySingle(absorbed);
     }
 
     public override void Die() {
@@ -104,8 +108,8 @@ public class BazekoriBehavior : YokaiController {
     }
 
     void OnTriggerEnter(Collider other) {
-
         if (other.gameObject.CompareTag("Leaf") && !isKnocked) {
+            SoundController.instance.PlaySingle(yokaiScream);
             float damage;
             if (other.gameObject.GetComponent<MoveLeaf>() != null) {
                 damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
@@ -122,7 +126,6 @@ public class BazekoriBehavior : YokaiController {
         if (col.gameObject.CompareTag("Player") && !isKnocked) {
             col.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
             Destroy(Instantiate(hitParticle, col.gameObject.transform.position, Quaternion.identity), 1);
-
         }
     }
 
