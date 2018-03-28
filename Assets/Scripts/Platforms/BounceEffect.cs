@@ -22,6 +22,7 @@ public class BounceEffect : MonoBehaviour {
             }
             catch {
             }
+            Koda.velocity = Vector3.zero;
             Koda.AddForce(temp_orientation * coeffRebond, ForceMode.Impulse); // 200 = coeffRebond
         }
         else if (collision.gameObject.CompareTag("Lure")) {
