@@ -84,7 +84,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1287980240845564}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
@@ -226,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2161f8b0e776db47ba8f267e69c3300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackRate: 3
 --- !u!114 &114456123645206014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,9 +244,15 @@ MonoBehaviour:
     type: 2}
   knockedParticle: {fileID: 1117990352001664, guid: 8a7c7c93ab321eb4db975f2acca7f2a9,
     type: 2}
+  target: {fileID: 0}
   capacity: 1
   timerCapacity: 10
+  damage: 1
+  distanceLimit: 0
   jumpForce: 300
+  attackRate: 0.2
+  hpCollectable: {fileID: 1297914045944790, guid: ddeee740630d22645b33b9cc367d8549,
+    type: 2}
 --- !u!136 &136592542172844994
 CapsuleCollider:
   m_ObjectHideFlags: 1
