@@ -263,6 +263,15 @@ public class KodaController : MonoBehaviour
 
         // get updated inputParams
         inputParams = inputController.RetrieveUserRequest();
+        if (IsGrounded())
+        {
+            inputParams.hasDoubleJumped = false;
+        }
+        else if (movementState == MovementState.DoubleJump)
+        {
+            inputParams.hasDoubleJumped = true;
+        }
+        inputController.SetUserRequest(inputParams);
         UpdateMoveStateParameters(inputParams);
 
         // get updated inputParams
@@ -780,7 +789,7 @@ public class KodaController : MonoBehaviour
             inputParams.jumpRequest &&
             (movementState == MovementState.Idle ||
                 movementState == MovementState.Run ||
-                (movementState == MovementState.Jump && ((temporaryCapacity == Capacity.DoubleJump) || hasPermanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+                (!inputParams.hasDoubleJumped && ((temporaryCapacity == Capacity.DoubleJump) || hasPermanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest)
         {
