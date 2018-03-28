@@ -36,6 +36,7 @@ public class Zone2BossBehavior : YokaiController {
     [SerializeField] private float throwRateP2 = 1;
     [SerializeField] private int nbRocksToThrow = 5;
     [SerializeField] private GameObject prefabRock;
+    [SerializeField] private GameObject river;
 
 	// Use this for initialization
 	void Start () {
@@ -52,13 +53,17 @@ public class Zone2BossBehavior : YokaiController {
         spawnRock = transform.Find("SpawnRock");
         corps = transform.Find("corps").gameObject;
 
+        
+
         SetTarget(GameObject.Find("Player"));
         player = target;
         rendererMat = corps.GetComponent<Renderer>().material;
         myRigidbody = GetComponent<Rigidbody>();
         myCollider = GetComponent<SphereCollider>();
+        Physics.IgnoreCollision(myCollider, river.GetComponent<Collider>(), true);
         myRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         hpMax = hp;
+
 
         yokais = new List<GameObject>();
         yokaisSpe = new List<GameObject>();
@@ -125,6 +130,15 @@ public class Zone2BossBehavior : YokaiController {
                 }
                 
             } else if (phasePattern == 2) {                                                     //PHASE 2
+
+                GameObject[] gameObjects = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+                yokaisSpe.Clear();
+                for (var i = 0; i < gameObjects.Length; i++) {
+                    if (gameObjects[i].name.Contains("YokaiSpeLure")) {
+                        yokaisSpe.Add(gameObjects[i]);
+                    }
+                }
+
                 if (doKnockBack) {
                     KnockBack(startPosition, endPosition);
                 } else if (canBump) {
