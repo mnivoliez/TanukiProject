@@ -77,8 +77,9 @@ public class LianaGenerator : EditorWindow {
             lianaLenght = 10;
         }
 
-        float partSizeLianaMesh = sizeLianaMesh.y * 0.15f;
+        float partSizeLianaMesh = sizeLianaMesh.y * 0.05f;
         int nbLianaPart = (int)(lianaLenght / (sizeLianaMesh.y - partSizeLianaMesh));
+        //float connectedMassScalePas = (float)(1.0 / nbLianaPart);
 
         foreach (GameObject liana in lianaObjects) {
             Rigidbody rgbody = liana.AddComponent<Rigidbody>();
@@ -111,6 +112,7 @@ public class LianaGenerator : EditorWindow {
                 lianaPart.transform.localPosition = new Vector3(0, positionYLianaPart, 0);
                 lianaPart.transform.Rotate(0, rotationY, 0);
                 lianaPart.GetComponent<SpringJoint>().connectedBody = bodyToConnect;
+                //lianaPart.GetComponent<SpringJoint>().connectedMassScale = connectedMassScalePas * (i + 1);
                 bodyToConnect = lianaPart.GetComponent<Rigidbody>();
                 positionYLianaPart -= sizeLianaMesh.y - partSizeLianaMesh;
             }
@@ -140,7 +142,7 @@ public class LianaGenerator : EditorWindow {
         int nbLianaPart = 0;
         RaycastHit hit;
         float lenght = 0;
-        float partSizeLianaMesh = sizeLianaMesh * 0.15f;
+        float partSizeLianaMesh = sizeLianaMesh * 0.05f;
 
         if (Physics.Raycast(liana.transform.position, Vector3.down, out hit, 30)) {
             lenght = hit.distance - 0.5f;
