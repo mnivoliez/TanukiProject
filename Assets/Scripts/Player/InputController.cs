@@ -12,6 +12,7 @@ public struct InputParams
     public ActionRequest actionRequest;
     public bool contextualButtonPressed;
     public bool jumpRequest;
+    public bool hasDoubleJumped;
     public float moveX;
     public float moveZ;
 
@@ -36,6 +37,7 @@ public class InputController : MonoBehaviour
     {
         inputParams.actionRequest = ActionRequest.None;
         inputParams = new InputParams();
+        inputParams.hasDoubleJumped = false;
     }
 
     // Update is called once per frame
@@ -76,8 +78,10 @@ public class InputController : MonoBehaviour
 
             if (Input.GetAxisRaw("Lure") != 1) { triggerAxisInUse = false; }
 
-            if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1)) {
-                if (!triggerAxisInUse) {
+            if (Input.GetButtonDown("Lure") || (Input.GetAxisRaw("Lure") == 1))
+            {
+                if (!triggerAxisInUse)
+                {
                     triggerAxisInUse = true;
                     actionRequested++;
                     inputParams.actionRequest = ActionRequest.SpawnLure;
