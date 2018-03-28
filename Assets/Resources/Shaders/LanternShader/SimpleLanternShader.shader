@@ -62,8 +62,8 @@ Shader "Custom/Lantern/simpleShader" {
         uniform half _Offset;
 
         uniform const int _LanternCount;
-		uniform float4 _Centers[5];
-        uniform float _Distances[5];
+		uniform float4 _Centers[20];
+        uniform float _Distances[20];
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.

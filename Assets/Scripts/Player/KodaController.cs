@@ -709,7 +709,9 @@ public class KodaController : MonoBehaviour
             case InteractState.DestroyLure:
                 if (previousInteractState == InteractState.Nothing && interactStateParameter.canDestroyLure)
                 {
+                    _grounds.Remove(actualLure);
                     interactBehaviorCtrl.DestroyLure(actualLure);
+                    _grounds.Remove(actualLure);
                     actualLure = null;
                     leafLock.isUsed = false;
                     leafLock.parent = InteractState.Nothing;
