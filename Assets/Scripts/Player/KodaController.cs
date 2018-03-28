@@ -175,7 +175,11 @@ public class KodaController : MonoBehaviour
     [SerializeField] private AudioClip footStepSound1;
     [SerializeField] private AudioClip footStepSound2;
     [SerializeField] private AudioClip footStepSound3;
+    [SerializeField] private AudioClip footStepWaterSoud1;
+    [SerializeField] private AudioClip footStepWaterSound2;
+    [SerializeField] private AudioClip footStepWaterSound3;
     private AudioClip[] allFootStepSound;
+    private AudioClip[] allFootStepWaterSound;
     [SerializeField] private AudioClip fallSound;
     [SerializeField] private AudioClip glideSound;
     [SerializeField] private AudioClip pushUpSound;
@@ -208,6 +212,7 @@ public class KodaController : MonoBehaviour
     {
         VictorySwitch.Victory = false;
         allFootStepSound = new AudioClip[] { footStepSound1, footStepSound2, footStepSound3 };
+        allFootStepWaterSound = new AudioClip[] { footStepWaterSoud1, footStepWaterSound2 };
 
         leafLock = new LeafLock(false, InteractState.Nothing);
         movementState = MovementState.Idle;
@@ -416,9 +421,14 @@ public class KodaController : MonoBehaviour
             {
                 bool found = false;
                 timerStepSound -= Time.deltaTime;
-                if (timerStepSound <= 0 && speed > 0)
+                if (timerStepSound <= 0 && speed > 0 && (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")))
                 {
                     SoundController.instance.RandomizeFX(allFootStepSound);
+                    timerStepSound = 0.25f;
+                }
+                if (timerStepSound <= 0 && speed > 0 && (gO.layer == LayerMask.NameToLayer("Water")))
+                {
+                    SoundController.instance.RandomizeFX(allFootStepWaterSound);
                     timerStepSound = 0.25f;
                 }
                 foreach (ContactPoint c in contacts)

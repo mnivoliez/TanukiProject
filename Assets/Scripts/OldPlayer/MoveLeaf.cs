@@ -12,6 +12,8 @@ public class MoveLeaf : MonoBehaviour {
     private Vector3 targetPosition = Vector3.zero;
     private bool arrived = false;
     [SerializeField] private GameObject disparitionEffect;
+    [SerializeField] private AudioClip throwLeaf;
+    [SerializeField] private AudioClip vanishLeaf;
 
     void Start() {
         currentSpeed = initialSpeed;
@@ -45,9 +47,11 @@ public class MoveLeaf : MonoBehaviour {
         FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
         Destroy(FXDisappear, 1f);
         Destroy(gameObject);
+        SoundController.instance.PlaySingle(vanishLeaf);
     }
 
     public void SetSpawnPosition(GameObject spPos) {
+        SoundController.instance.PlaySingle(throwLeaf);
         spawnLeaf = spPos;
     }
 
