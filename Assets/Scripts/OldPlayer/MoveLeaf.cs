@@ -51,11 +51,11 @@ public class MoveLeaf : MonoBehaviour
         FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
         Destroy(FXDisappear, 2f);
         Destroy(gameObject);
-        SoundController.instance.PlayKodaSingle(vanishLeaf);
+        SoundController.instance.PlaySingle(vanishLeaf);
     }
 
     public void SetSpawnPosition(GameObject spPos) {
-        SoundController.instance.PlayKodaSingle(throwLeaf);
+        SoundController.instance.PlaySingle(throwLeaf);
         spawnLeaf = spPos;
     }
 
