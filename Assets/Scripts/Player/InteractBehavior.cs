@@ -46,6 +46,7 @@ public class InteractBehavior : MonoBehaviour {
     [SerializeField]
     private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
+    [SerializeField] private AudioClip absorption;
 
     [Header("LURE")]
     [Space(8)]
@@ -214,6 +215,7 @@ public class InteractBehavior : MonoBehaviour {
                 absorptionGauge += 1;
                 inputParams.contextualButtonPressed = false;
                 input.SetUserRequest(inputParams);
+                SoundController.instance.PlaySingle(absorption);
             }
 
             loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
@@ -222,12 +224,14 @@ public class InteractBehavior : MonoBehaviour {
                 pairCapacity = AbsorbeYokai(absorbableObject);
                 DeactivateAbsorptionQTE();
                 ResetAbsorptionGauge();
+                SoundController.instance.StopSingle();
             }
 
         }
         else {
             DeactivateAbsorptionQTE();
             ResetAbsorptionGauge();
+            SoundController.instance.StopSingle();
         }
 
         return pairCapacity;

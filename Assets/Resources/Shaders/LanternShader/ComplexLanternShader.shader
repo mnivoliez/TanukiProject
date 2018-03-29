@@ -95,8 +95,8 @@ Shader "Custom/Lantern/complexShader" {
 			;
 
 			uniform const int _numberOfCenters;
-		    uniform float4 _centers[5];
-            uniform float _distances[5];
+		    uniform float4 _centers[20];
+            uniform float _distances[20];
 
 			v2f vert (appdata v)
 			{
@@ -204,8 +204,8 @@ Shader "Custom/Lantern/complexShader" {
 			;
 
 			uniform const int _numberOfCenters;
-		    uniform float4 _centers[5];
-            uniform float _distances[5];
+		    uniform float4 _centers[20];
+            uniform float _distances[20];
 
 			v2f vert (appdata v)
 			{
