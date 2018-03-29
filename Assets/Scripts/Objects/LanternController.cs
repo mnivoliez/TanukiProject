@@ -47,7 +47,7 @@ public class LanternController : MonoBehaviour {
             {
                 token_play_once = true;
                 //AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
-                SoundController.instance.PlayLanternSingle(lanterSound);
+                //SoundController.instance.PlayLanternSingle(lanterSound);
             }
         }
         _bbox = GetComponent<SphereCollider>();
