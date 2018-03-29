@@ -16,12 +16,14 @@ public class CameraController : MonoBehaviour {
 	[SerializeField] private float minCameraDistance = 7f;
 	[SerializeField] private float maxCameraDistance = 20f;
 	[SerializeField] private float defaultCameraDistance = 15f;
+	[SerializeField] private float wideCameraDistance = 35f;
 
 	[Header("ANGLE")]
 	[Space(10)]
 	[SerializeField] private float minCameraAngle = -20;
 	[SerializeField] private float maxCameraAngle = 75;
 	[SerializeField] private float defaultCameraAngle = 55;
+	[SerializeField] private float wideCameraAngle = 65;
 
 	[Header("CENTER")]
 	[Space(10)]
@@ -37,12 +39,8 @@ public class CameraController : MonoBehaviour {
 
 	private float cameraDistance = 10f;
 
-	private bool leftClicked = false;
-	private bool rightClicked = false;
-	private bool centerCamera = false;
 
 	private float currentCameraDistance = 15f;
-	//private float currentUnclampedCameraDistance = 15f;
 
 	private float currentCameraAngle = 55f;
 	private float currentCameraAngleYRot = 0f;
@@ -52,15 +50,26 @@ public class CameraController : MonoBehaviour {
 	private float minCameraHeight = 2;
 	private float maxCameraHeight = 7;
 	private float defaultCameraHeight = 3.5f;
+	private float wideCameraHeight = 3.5f;
 	private float raycastCameraHeight = 3.5f;
 
 	private Vector3 diffPos;
-	//private Vector3 diffAngle;
 
 	private float centerTime = 0;
 	private Vector3 centerCamPos;
 	private Vector3 centerCamDirection;
 	private Quaternion centerCamRot;
+	private bool centerCamera = false;
+
+	private float wideTime = 0;
+	private Vector3 wideCamPos;
+	private Vector3 wideCamDirection;
+	private Quaternion wideCamRot;
+	private bool wideCamera = false;
+	private bool wideCameraLocked = false;
+	private Vector3 wideDeltaPos = new Vector3 (0, 8, -3.6f);
+	private Vector3 widePlayerPosition;
+	private Vector3 lookatPosition;
 
 	void Start() {
 		player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -77,12 +86,24 @@ public class CameraController : MonoBehaviour {
 		//Debug.Log ("CAMERA currentCameraHeight=" + currentCameraHeight);
 
 		// get the height relative to the default distance
-		minCameraHeight = defaultCameraDistance * Mathf.Tan(minCameraAngle * Mathf.Deg2Rad);
-		maxCameraHeight = defaultCameraDistance * Mathf.Tan(maxCameraAngle * Mathf.Deg2Rad);
+		minCameraHeight = minCameraDistance * Mathf.Tan(minCameraAngle * Mathf.Deg2Rad);
+		maxCameraHeight = maxCameraDistance * Mathf.Tan(maxCameraAngle * Mathf.Deg2Rad);
 		defaultCameraHeight = defaultCameraDistance * Mathf.Tan(defaultCameraAngle * Mathf.Deg2Rad);
+
+		/*wideCameraHeight = defaultCameraHeight + 8;
+		Debug.Log ("wideCameraHeight=" + wideCameraHeight);
+		wideCameraAngle = Mathf.Atan (wideCameraHeight / wideCameraDistance) * Mathf.Rad2Deg;
+		Debug.Log ("wideCameraAngle=" + wideCameraAngle);*/
+
+		wideCameraHeight = wideCameraDistance * Mathf.Tan(wideCameraAngle * Mathf.Deg2Rad);
+		//Debug.Log ("wideCameraHeight2=" + wideCameraHeight);
 
 		RepositionCamera();
 	}
+
+	//2
+	//-8
+	//3
 
 	private void Update() {
 		if (Pause.Paused) {
@@ -93,10 +114,16 @@ public class CameraController : MonoBehaviour {
 
 		ManagerCenterCamera();
 
-		if (!centerCamera) {
-			GetCameraMovement();
+		CheckPlayerChangedPosition ();
 
-			GetCameraRotation();
+		if (!centerCamera && !wideCamera)
+		{
+			if (!wideCameraLocked)
+			{
+				GetCameraMovement ();
+			}
+
+			GetCameraRotation ();
 		}
 
 		RecalculateValues();
@@ -105,26 +132,21 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void GetInputData() {
-		if (Input.GetMouseButtonDown(0)) {
-			leftClicked = true;
-		}
-		if (Input.GetMouseButtonUp(0)) {
-			leftClicked = false;
-		}
-		if (Input.GetMouseButtonDown(1)) {
-			rightClicked = true;
-		}
-		if (Input.GetMouseButtonUp(1)) {
-			rightClicked = false;
-		}
 		if (Input.GetButtonDown("CenterCamera")) {
 			if (!centerCamera) {
 				RecenterCamera();
 			}
 		}
+		if (Input.GetButtonDown("WideCamera") && !wideCameraLocked) {
+			if (!wideCamera) {
+				WideCamera();
+			}
+		}
 	}
 
 	public void RecenterCamera() {
+
+		wideCameraLocked = false;
 		centerTime = Time.time;
 		centerCamDirection = playerTanukiModel.forward;
 		centerCamPos = camBase.position;
@@ -132,21 +154,72 @@ public class CameraController : MonoBehaviour {
 		centerCamera = true;
 
 		currentCameraAngle = defaultCameraAngle;
-		currentCameraDistance = currentCameraDistance;
+		currentCameraDistance = defaultCameraDistance;
 		currentCameraHeight = defaultCameraHeight;
 	}
 
+	public void WideCamera() {
+		wideTime = Time.time;
+		wideCamDirection = playerTanukiModel.forward;
+		wideCamPos = camBase.position;
+		wideCamRot = camBase.rotation;
+		wideCamera = true;
+
+		currentCameraAngle = wideCameraAngle;
+		currentCameraDistance = wideCameraDistance;
+		currentCameraHeight = wideCameraHeight;
+	}
+
 	private void ManagerCenterCamera() {
-		if (centerCamera) {
+		Vector3 wideLookatPos = playerTanukiModel.position + Vector3.up * wideDeltaPos.y * 2 / 3;
+
+		if (centerCamera)
+		{
+			//Debug.Log("CAMERA CENTER START!!");
 			float diffTime = Time.time - centerTime;
-			if (diffTime < timeToCenter + 0.1f) {
+			if (diffTime < timeToCenter + 0.1f)
+			{
+				//Debug.Log("CAMERA CENTER BEGIN!!");
 				Vector3 resetPos = playerTanukiModel.position + Vector3.up * defaultCameraHeight - centerCamDirection * defaultCameraDistance;
-				camBase.position = Vector3.Lerp(centerCamPos, resetPos, Mathf.Clamp01(diffTime) / timeToCenter);
-				camBase.rotation = Quaternion.Lerp(centerCamRot, Quaternion.identity, Mathf.Clamp01(diffTime) / timeToCenter);
+				camBase.position = Vector3.Lerp (centerCamPos, resetPos, Mathf.Clamp01 (diffTime) / timeToCenter);
+				camBase.rotation = Quaternion.Lerp (centerCamRot, Quaternion.identity, Mathf.Clamp01 (diffTime) / timeToCenter);
+
+				lookatPosition = Vector3.Lerp (lookatPosition, playerTanukiModel.position, Mathf.Clamp01 (diffTime) / timeToCenter);
 			}
-			else {
+			else
+			{
 				centerCamera = false;
+				lookatPosition = playerTanukiModel.position;
 			}
+		}
+		else if (wideCamera)
+		{
+			//Debug.Log("CAMERA CENTER START!!");
+			float diffTime = Time.time - wideTime;
+			if (diffTime < timeToCenter + 0.1f)
+			{
+				//Debug.Log("CAMERA CENTER BEGIN!!");
+				Vector3 resetPos = playerTanukiModel.position + Vector3.up * wideCameraHeight - wideCamDirection * wideCameraDistance;
+				camBase.position = Vector3.Lerp (wideCamPos, resetPos, Mathf.Clamp01 (diffTime) / timeToCenter);
+				camBase.rotation = Quaternion.Lerp (wideCamRot, Quaternion.identity, Mathf.Clamp01 (diffTime) / timeToCenter);
+
+				lookatPosition = Vector3.Lerp (playerTanukiModel.position, wideLookatPos, Mathf.Clamp01 (diffTime) / timeToCenter);
+			}
+			else
+			{
+				wideCamera = false;
+				wideCameraLocked = true;
+				widePlayerPosition = playerTanukiModel.position;
+				lookatPosition = wideLookatPos;
+			}
+		}
+		else if (wideCameraLocked)
+		{
+			lookatPosition = wideLookatPos;
+		}
+		else
+		{
+			lookatPosition = playerTanukiModel.position;
 		}
 	}
 
@@ -229,35 +302,49 @@ public class CameraController : MonoBehaviour {
 
 		RaycastHit hit;
 		// check for clamping local camera
-		if (Physics.Raycast(playerTanukiModel.position, -direction, out hit, currentCameraDistance * 1.1f, layerAll - ignoredLayerMask.value)) {
+		if (Physics.Raycast(playerTanukiModel.position - direction * 0.1f, -direction, out hit, Mathf.Sqrt(currentCameraDistance * currentCameraDistance + currentCameraHeight * currentCameraHeight) * 1.1f, layerAll - ignoredLayerMask.value)) {
 			float colDist = Vector3.Distance(playerTanukiModel.position, hit.point + direction * step);
-			if (colDist > minCameraDistance) {
-				//Debug.Log ("CLAMP NORMAL!!");
+			if (colDist > Mathf.Sqrt(minCameraDistance * minCameraDistance + minCameraHeight * minCameraHeight)) {
+				Debug.Log ("CLAMP NORMAL!!");
 				transform.position = Vector3.Lerp(transform.position, hit.point + direction * step, Time.deltaTime * raycastDampening);
+				transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, Vector3.zero, Time.deltaTime * raycastDampening);
 			}
 			else {
-				RaycastHit hit1;
 				RaycastHit hit2;
-				//Debug.Log ("CLAMP MINIMUM!!");
+				Debug.Log ("CLAMP MINIMUM!! " + hit.transform.name);
 				Vector3 hitPointnoY = hit.point - transform.position;
 				hitPointnoY.y = 0;
 
 				Vector3 startingPoint = playerTanukiModel.position + Vector3.up * raycastCameraHeight;
-				if (Physics.Raycast(startingPoint, (camBase.position - startingPoint).normalized, out hit2, maxCameraDistance * 1.1f, layerAll - ignoredLayerMask.value)) {
+
+				if (Physics.Raycast(startingPoint, (camBase.position - startingPoint).normalized, out hit2, Mathf.Sqrt(currentCameraDistance * currentCameraDistance + currentCameraHeight * currentCameraHeight) * 1.1f, layerAll - ignoredLayerMask.value))
+				{
 					//Debug.Log ("CLAMP MINIMUM REPAIRED!! " + hit2.point);
 					//Debug.Log ("CLAMP MINIMUM REPAIRED BETTER!! " + transform.position);
-					//Debug.Log ("CLAMP MINIMUM REPAIRED EVEN BETTER!! " + (hit2.point + direction * step + Vector3.up * currentCameraHeight));
-					transform.position = Vector3.Lerp(transform.position, hit2.point + direction * step + Vector3.up * currentCameraHeight, Time.deltaTime * raycastDampening);
+					//Debug.Log ("CLAMP MINIMUM REPAIRED EVEN BETTER!! " + (hit2.point + direction * step + (hit2.point - hit.point).normalized * currentCameraHeight));
+					//transform.position = Vector3.Lerp(transform.position, hit.point + direction * step + Vector3.up * currentCameraHeight, Time.deltaTime * raycastDampening);
+					transform.position = Vector3.Lerp(transform.position, hit.point + hit.normal * step + (Vector3.up - Vector3.Project(Vector3.up, hit.normal)).normalized * currentCameraHeight, Time.deltaTime * raycastDampening);
 				}
+				Vector3 eulerAnglesNew = new Vector3 (Vector3.Angle (camBase.position - playerTanukiModel.position, transform.position - playerTanukiModel.position), 0, 0);
+				transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, eulerAnglesNew, Time.deltaTime * raycastDampening);;
 			}
 		}
 		else {
 			//Debug.Log ("CLAMP RELEASE!!");
 			transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * raycastDampening);
+			transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, Vector3.zero, Time.deltaTime * raycastDampening);
 		}
 
-		camBase.LookAt(playerTanukiModel.position);
-		transform.LookAt(playerTanukiModel.position);
+
+		camBase.LookAt(lookatPosition);
+	}
+
+	private void CheckPlayerChangedPosition()
+	{
+		if (wideCameraLocked && Vector3.Distance (widePlayerPosition, playerTanukiModel.position) > 0.1f)
+		{
+			RecenterCamera();
+		}
 	}
 
 	private void RepositionCamera() {
@@ -282,6 +369,5 @@ public class CameraController : MonoBehaviour {
 			maxCameraDistance = maxCameraDistance * coefResize;
 			cameraDistance = cameraDistance * coefResize;
 		}
-
 	}
 }
