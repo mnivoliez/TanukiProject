@@ -9,7 +9,7 @@ struct appdata
 
 struct v2f
 {
-	#if defined(SHADOWCASTER_PASS) 
+	#if defined(SHADOWCASTER_PASS)
 		V2F_SHADOW_CASTER;
 	#else
 		float3 normalDir : TEXCOORD2;
@@ -32,11 +32,11 @@ float4 _FirstTexture_ST;
 	uniform half _Interpolation;
 
 	uniform int _LanternCount;
-	uniform float4 _Centers[5];
-	uniform float _Distances[5];
+	uniform float4 _Centers[20];
+	uniform float _Distances[20];
 #endif
 
-#if !defined(SHADOWCASTER_PASS) 
+#if !defined(SHADOWCASTER_PASS)
 	uniform float4 _LightColor0;
 	uniform fixed4 _FirstLColor;
 	uniform fixed4 _FirstDColor;
@@ -155,7 +155,7 @@ half4 frag (v2f i) : SV_Target
 	    float3 halfDir = normalize(lightDir + viewDir);
 		float3 reflLightDir = reflect(-lightDir, i.normalDir);
 		float NdotH = floor(saturate(dot(i.normalDir, halfDir)) * _StepCount*2) / (_StepCount*2-0.5);
-		float VdotR = saturate(dot(viewDir, reflLightDir)); 
+		float VdotR = saturate(dot(viewDir, reflLightDir));
 		float NdotV = saturate(dot(i.normalDir, viewDir));
 
 		float rim = LIGHT_ATTENUATION(i) * pow(1-NdotV, 4) * _RimIntensity * pow(VdotR, _RimPow);
