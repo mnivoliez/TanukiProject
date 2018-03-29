@@ -46,8 +46,8 @@ public class LanternController : MonoBehaviour {
             if (is_being_played && !token_play_once)
             {
                 token_play_once = true;
-                AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
-                Debug.Log("Playing Sound");
+                //AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
+                SoundController.instance.PlayLanternSingle(lanterSound);
             }
         }
         _bbox = GetComponent<SphereCollider>();
@@ -74,8 +74,8 @@ public class LanternController : MonoBehaviour {
             is_being_played = true;
             if (is_being_played && !token_play_once) {
                 token_play_once = true;
-                AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
-                Debug.Log("Playing Sound");
+                //AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
+                SoundController.instance.PlayLanternSingle(lanterSound);
             }
         }
         _light.range = _range;
