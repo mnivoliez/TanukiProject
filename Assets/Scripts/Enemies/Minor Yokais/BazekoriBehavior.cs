@@ -15,7 +15,6 @@ public class BazekoriBehavior : YokaiController {
     private Vector3 positionCollectable;
 
     [SerializeField] private AudioClip yokaiScream;
-    [SerializeField] private AudioClip absorbed;
 
     void Start() {
         target = GameObject.FindGameObjectWithTag("Player");

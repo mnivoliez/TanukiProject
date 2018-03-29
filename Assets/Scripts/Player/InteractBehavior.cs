@@ -224,6 +224,7 @@ public class InteractBehavior : MonoBehaviour {
                 pairCapacity = AbsorbeYokai(absorbableObject);
                 DeactivateAbsorptionQTE();
                 ResetAbsorptionGauge();
+                SoundController.instance.StopSingle();
             }
 
         }
