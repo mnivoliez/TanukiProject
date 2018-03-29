@@ -132,7 +132,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void GetInputData() {
-		if (Input.GetButtonDown("CenterCamera")) {
+		if (Input.GetButtonDown("CenterCamera") || (Input.GetAxisRaw("CenterCamera") == 1)) {
 			if (!centerCamera) {
 				RecenterCamera();
 			}
@@ -305,13 +305,13 @@ public class CameraController : MonoBehaviour {
 		if (Physics.Raycast(playerTanukiModel.position - direction * 0.1f, -direction, out hit, Mathf.Sqrt(currentCameraDistance * currentCameraDistance + currentCameraHeight * currentCameraHeight) * 1.1f, layerAll - ignoredLayerMask.value)) {
 			float colDist = Vector3.Distance(playerTanukiModel.position, hit.point + direction * step);
 			if (colDist > Mathf.Sqrt(minCameraDistance * minCameraDistance + minCameraHeight * minCameraHeight)) {
-				Debug.Log ("CLAMP NORMAL!!");
+				//Debug.Log ("CLAMP NORMAL!!");
 				transform.position = Vector3.Lerp(transform.position, hit.point + direction * step, Time.deltaTime * raycastDampening);
 				transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, Vector3.zero, Time.deltaTime * raycastDampening);
 			}
 			else {
 				RaycastHit hit2;
-				Debug.Log ("CLAMP MINIMUM!! " + hit.transform.name);
+				//Debug.Log ("CLAMP MINIMUM!! " + hit.transform.name);
 				Vector3 hitPointnoY = hit.point - transform.position;
 				hitPointnoY.y = 0;
 
