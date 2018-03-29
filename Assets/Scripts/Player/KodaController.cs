@@ -559,7 +559,7 @@ public class KodaController : MonoBehaviour {
             else if (inclinationNormals.Count == 1) {
                 scalar_forward = Vector3.Dot(inclinationNormals[0], forwardNoY.normalized);
                 scalar_right = Vector3.Dot(inclinationNormals[0], rightNoY.normalized);
-                Debug.Log("scalar3 tot=" + scalar_forward);
+                //Debug.Log("scalar3 tot=" + scalar_forward);
                 //Debug.Log ("scalar4 tot=" + scalar_right);
 
                 if (scalar_forward < 0) {
@@ -595,7 +595,7 @@ public class KodaController : MonoBehaviour {
             ) * moveSpeed;
             //Debug.Log ("direction.forward=" + direction.forward);
             //Debug.Log ("forward=" + forwardNoY);
-            Debug.Log("inputVelocityAxis=" + inputVelocityAxis);
+            //Debug.Log("inputVelocityAxis=" + inputVelocityAxis);
         }
     }
 
