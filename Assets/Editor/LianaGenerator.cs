@@ -79,7 +79,7 @@ public class LianaGenerator : EditorWindow {
 
         float partSizeLianaMesh = sizeLianaMesh.y * 0.1f;
         int nbLianaPart = (int)(lianaLenght / (sizeLianaMesh.y - partSizeLianaMesh));
-        float connectedMassScalePas = (float)(1.0 / nbLianaPart);
+        float connectedMassScalePas = (float)(0.5f / nbLianaPart);
 
         foreach (GameObject liana in lianaObjects) {
             Rigidbody rgbody = liana.AddComponent<Rigidbody>();
@@ -111,8 +111,9 @@ public class LianaGenerator : EditorWindow {
                 lianaPart.transform.parent = liana.transform;
                 lianaPart.transform.localPosition = new Vector3(0, positionYLianaPart, 0);
                 lianaPart.transform.Rotate(0, rotationY, 0);
-                lianaPart.GetComponent<CharacterJoint>().connectedBody = bodyToConnect;
-                lianaPart.GetComponent<CharacterJoint>().connectedMassScale = connectedMassScalePas * (i + 1);
+                var lianaJoint = lianaPart.GetComponent<ConfigurableJoint>();
+                lianaJoint.connectedBody = bodyToConnect;
+                lianaJoint.connectedMassScale = connectedMassScalePas * (i + 1) + 0.5f;
                 bodyToConnect = lianaPart.GetComponent<Rigidbody>();
                 positionYLianaPart -= sizeLianaMesh.y - partSizeLianaMesh;
             }
