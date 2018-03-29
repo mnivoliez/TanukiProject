@@ -23,6 +23,8 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
 
     private Rigidbody body;
 
+    [SerializeField] private AudioClip yokaiScream;
+
     void Start() {
         currentSpeed = speed;
         positionOrigin = transform.position;
@@ -119,6 +121,7 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
         if (collision.gameObject.tag == "Lure") {
 
             if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
+                SoundController.instance.PlayYokaiSingle(yokaiScream);
                 BeingHit();
                 LooseHp(1);
                 EndHit();
