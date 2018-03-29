@@ -105,11 +105,10 @@ public class KodaController : MonoBehaviour {
     //Orientation Camera player
     [Header("CAMERA")]
     [Space(10)]
-    //[SerializeField] private Transform pivot;
-    [SerializeField]
-    private float rotateSpeed;
-    [SerializeField] private Transform playerModel;
-    [SerializeField] private Transform direction;
+	//[SerializeField] private Transform pivot;
+	[SerializeField] private float rotateSpeed;
+	[SerializeField] private Transform playerModel;
+	[SerializeField] private Transform direction;
 
     private Vector3 orientationMove;
     private Vector3 inputVelocityAxis;
@@ -132,8 +131,7 @@ public class KodaController : MonoBehaviour {
     [Header("CAPACITY")]
     [Space(10)]
     // Capacity
-    [SerializeField]
-    private bool hasPermanentDoubleJumpCapacity;
+    [SerializeField] private bool hasPermanentDoubleJumpCapacity;
     [SerializeField] private bool hasPermanentLureCapacity;
     private bool hasPermanentBallCapacity;
     private bool hasPermanentShrinkCapacity;
@@ -161,8 +159,7 @@ public class KodaController : MonoBehaviour {
 
     [Header("SOUND")]
     [Space(10)]
-    [SerializeField]
-    private AudioClip jumpSound;
+    [SerializeField] private AudioClip jumpSound;
     [SerializeField] private AudioClip footStepSound1;
     [SerializeField] private AudioClip footStepSound2;
     [SerializeField] private AudioClip footStepSound3;
@@ -182,8 +179,7 @@ public class KodaController : MonoBehaviour {
 
     [Header("LANTERN")]
     [Space(10)]
-    [SerializeField]
-    private float timeStopToDie = 1.0f;
+    [SerializeField] private float timeStopToDie = 1.0f;
     private bool runOnWater = false;
     private GameObject[] lanterns;
     private GameObject lanternNearest = null;
@@ -217,7 +213,7 @@ public class KodaController : MonoBehaviour {
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
-        direction = transform.Find("Direction");
+		direction = transform.Find("Direction");
 
         lanterns = GameObject.FindGameObjectsWithTag("Lantern");
         inclinationNormals = new List<Vector3>();
@@ -484,7 +480,8 @@ public class KodaController : MonoBehaviour {
         }
 
         //Debug.Log ("allowedToWalk=" + allowedToWalk);
-        if (allowedToWalk) {
+        if (allowedToWalk)
+		{
             //Debug.Log ("0-45");
             inputVelocityAxis =
             (
