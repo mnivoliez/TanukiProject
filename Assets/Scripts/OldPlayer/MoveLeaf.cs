@@ -12,12 +12,18 @@ public class MoveLeaf : MonoBehaviour {
     private Vector3 targetPosition = Vector3.zero;
     private bool arrived = false;
     [SerializeField] private GameObject disparitionEffect;
+    [SerializeField] private AudioClip throwLeaf;
+    [SerializeField] private AudioClip vanishLeaf;
 
     void Start() {
         currentSpeed = initialSpeed;
     }
 
     void Update() {
+        if (Pause.Paused) {
+            return;
+        }
+
         if (!arrived) {
             MoveTo();
             if (transform.position == targetPosition) {
@@ -39,16 +45,18 @@ public class MoveLeaf : MonoBehaviour {
         GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().StopDistantAttackState();
         GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
         FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
-        Destroy(FXDisappear, 2f);
+        Destroy(FXDisappear, 1f);
         Destroy(gameObject);
+        SoundController.instance.PlaySingle(vanishLeaf);
     }
 
     public void SetSpawnPosition(GameObject spPos) {
+        SoundController.instance.PlaySingle(throwLeaf);
         spawnLeaf = spPos;
     }
 
-    public void SetTargetPosition(GameObject tPos) {
-        targetPosition = new Vector3(tPos.transform.position.x, tPos.transform.position.y, tPos.transform.position.z);
+    public void SetTargetPosition(Vector3 pos) {
+        targetPosition = pos;
     }
 
     public void SetDamage(float dmg) {
@@ -62,7 +70,7 @@ public class MoveLeaf : MonoBehaviour {
     void OnTriggerEnter(Collider collid) {
 
         //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
-            
+
         //    collid.gameObject.GetComponent<YokaiController>().BeingHit();
         //    collid.gameObject.GetComponent<YokaiController>().LooseHp(damage);
 

@@ -175,7 +175,11 @@ public class KodaController : MonoBehaviour
     [SerializeField] private AudioClip footStepSound1;
     [SerializeField] private AudioClip footStepSound2;
     [SerializeField] private AudioClip footStepSound3;
+    [SerializeField] private AudioClip footStepWaterSoud1;
+    [SerializeField] private AudioClip footStepWaterSound2;
+    [SerializeField] private AudioClip footStepWaterSound3;
     private AudioClip[] allFootStepSound;
+    private AudioClip[] allFootStepWaterSound;
     [SerializeField] private AudioClip fallSound;
     [SerializeField] private AudioClip glideSound;
     [SerializeField] private AudioClip pushUpSound;
@@ -208,6 +212,7 @@ public class KodaController : MonoBehaviour
     {
         VictorySwitch.Victory = false;
         allFootStepSound = new AudioClip[] { footStepSound1, footStepSound2, footStepSound3 };
+        allFootStepWaterSound = new AudioClip[] { footStepWaterSoud1, footStepWaterSound2 };
 
         leafLock = new LeafLock(false, InteractState.Nothing);
         movementState = MovementState.Idle;
@@ -263,6 +268,15 @@ public class KodaController : MonoBehaviour
 
         // get updated inputParams
         inputParams = inputController.RetrieveUserRequest();
+        if (IsGrounded())
+        {
+            inputParams.hasDoubleJumped = false;
+        }
+        else if (movementState == MovementState.DoubleJump)
+        {
+            inputParams.hasDoubleJumped = true;
+        }
+        inputController.SetUserRequest(inputParams);
         UpdateMoveStateParameters(inputParams);
 
         // get updated inputParams
@@ -416,9 +430,14 @@ public class KodaController : MonoBehaviour
             {
                 bool found = false;
                 timerStepSound -= Time.deltaTime;
-                if (timerStepSound <= 0 && speed > 0)
+                if (timerStepSound <= 0 && speed > 0 && (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock")))
                 {
                     SoundController.instance.RandomizeFX(allFootStepSound);
+                    timerStepSound = 0.25f;
+                }
+                if (timerStepSound <= 0 && speed > 0 && (gO.layer == LayerMask.NameToLayer("Water")))
+                {
+                    SoundController.instance.RandomizeFX(allFootStepWaterSound);
                     timerStepSound = 0.25f;
                 }
                 foreach (ContactPoint c in contacts)
@@ -699,7 +718,9 @@ public class KodaController : MonoBehaviour
             case InteractState.DestroyLure:
                 if (previousInteractState == InteractState.Nothing && interactStateParameter.canDestroyLure)
                 {
+                    _grounds.Remove(actualLure);
                     interactBehaviorCtrl.DestroyLure(actualLure);
+                    _grounds.Remove(actualLure);
                     actualLure = null;
                     leafLock.isUsed = false;
                     leafLock.parent = InteractState.Nothing;
@@ -778,7 +799,7 @@ public class KodaController : MonoBehaviour
             inputParams.jumpRequest &&
             (movementState == MovementState.Idle ||
                 movementState == MovementState.Run ||
-                (movementState == MovementState.Jump && ((temporaryCapacity == Capacity.DoubleJump) || hasPermanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+                (!inputParams.hasDoubleJumped && ((temporaryCapacity == Capacity.DoubleJump) || hasPermanentDoubleJumpCapacity) && interactState != InteractState.Carry));
         moveStateParameters.grounded = IsGrounded();
         if (inputParams.jumpRequest)
         {
