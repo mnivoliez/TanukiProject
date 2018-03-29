@@ -23,7 +23,7 @@ public class LanternsRenderingController : MonoBehaviour
     private bool _isDirty;
 
     // If changed, restart unity to it to be effective.
-    private const int MAX_NUMBER_OF_LANTERNS = 5;
+    private const int MAX_NUMBER_OF_LANTERNS = 20;
     void Awake()
     {
         lanterns = new List<LanternController>();
