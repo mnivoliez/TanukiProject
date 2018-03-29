@@ -83,9 +83,10 @@ public class PlayerHealth : MonoBehaviour {
         gameObject.transform.rotation = new Quaternion (0,0,0,0);
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
         anim.SetBool("Fade", false);
-        animPlayer.SetBool("isDead", false);
+        //animPlayer.SetBool("isDead", false);
         gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
         playerHealthCurrent = playerHealthMax;
+        gameObject.GetComponent<InputController>().SetFreezeInput(false);
         isInvincible = false;
     }
 
@@ -112,7 +113,9 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     public void PlayerDie() {
-        animPlayer.SetBool("isDead", true);
+        gameObject.GetComponent<InputController>().SetFreezeInput(true);
+        //animPlayer.SetBool("isDead", true);
+        animPlayer.SetTrigger("PlayerIsDead");
         StartCoroutine(Fading());
         gameObject.GetComponent<KodaController>().ResetPlayer();
         knockBackCounter = 0;
