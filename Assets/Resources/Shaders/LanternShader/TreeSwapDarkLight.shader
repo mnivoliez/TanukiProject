@@ -91,8 +91,8 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 _Offset;
 
             uniform const int _numberOfCenters;
-            uniform float4 _centers[5];
-            uniform float _distances[5];
+            uniform float4 _centers[20];
+            uniform float _distances[20];
 
             struct VertexInput {
                 float4 vertex : POSITION;
@@ -282,8 +282,8 @@ Shader "Custom/Dissolve/TreeCorrupted" {
                 _Offset;
 
             uniform const int _numberOfCenters;
-            uniform float4 _centers[5];
-            uniform float _distances[5];
+            uniform float4 _centers[20];
+            uniform float _distances[20];
 
             struct VertexInput {
                 float4 vertex : POSITION;
