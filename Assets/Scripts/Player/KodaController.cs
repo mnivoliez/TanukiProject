@@ -94,7 +94,7 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private float slideAngleRock = 10f;
     [SerializeField] private GameObject absorbRange;
 
-    private Vector3 inclinationNormal;
+    private List<Vector3> inclinationNormals;
     private GameObject catchableObject;
     private GameObject objectToCarry;
     private GameObject actualLure;
@@ -105,11 +105,10 @@ public class KodaController : MonoBehaviour {
     //Orientation Camera player
     [Header("CAMERA")]
     [Space(10)]
-    //[SerializeField] private Transform pivot;
-    [SerializeField]
-    private float rotateSpeed;
-    [SerializeField] private Transform playerModel;
-    [SerializeField] private Transform direction;
+	//[SerializeField] private Transform pivot;
+	[SerializeField] private float rotateSpeed;
+	[SerializeField] private Transform playerModel;
+	[SerializeField] private Transform direction;
 
     private Vector3 orientationMove;
     private Vector3 inputVelocityAxis;
@@ -132,8 +131,7 @@ public class KodaController : MonoBehaviour {
     [Header("CAPACITY")]
     [Space(10)]
     // Capacity
-    [SerializeField]
-    private bool hasPermanentDoubleJumpCapacity;
+    [SerializeField] private bool hasPermanentDoubleJumpCapacity;
     [SerializeField] private bool hasPermanentLureCapacity;
     private bool hasPermanentBallCapacity;
     private bool hasPermanentShrinkCapacity;
@@ -161,8 +159,7 @@ public class KodaController : MonoBehaviour {
 
     [Header("SOUND")]
     [Space(10)]
-    [SerializeField]
-    private AudioClip jumpSound;
+    [SerializeField] private AudioClip jumpSound;
     [SerializeField] private AudioClip footStepSound1;
     [SerializeField] private AudioClip footStepSound2;
     [SerializeField] private AudioClip footStepSound3;
@@ -178,8 +175,7 @@ public class KodaController : MonoBehaviour {
 
     [Header("LANTERN")]
     [Space(10)]
-    [SerializeField]
-    private float timeStopToDie = 1.0f;
+    [SerializeField] private float timeStopToDie = 1.0f;
     private bool runOnWater = false;
     private GameObject[] lanterns;
     private GameObject lanternNearest = null;
@@ -212,9 +208,10 @@ public class KodaController : MonoBehaviour {
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
-        direction = transform.Find("Direction");
+		direction = transform.Find("Direction");
 
-        lanterns = GameObject.FindGameObjectsWithTag("Lantern");
+		lanterns = GameObject.FindGameObjectsWithTag("Lantern");
+		inclinationNormals = new List<Vector3> ();
     }
 
     /*private void OnGUI() {
@@ -224,9 +221,6 @@ public class KodaController : MonoBehaviour {
 	}*/
 
     private void FixedUpdate() {
-        /*}
-
-        private void Update() {*/
         if (Pause.Paused) {
             return;
         }
@@ -324,7 +318,6 @@ public class KodaController : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision coll) {
-
         GameObject gO = coll.gameObject;
 
         //Debug.Log ("gO.layer enter=" + LayerMask.LayerToName(gO.layer));
@@ -390,20 +383,34 @@ public class KodaController : MonoBehaviour {
                             slideAngle = slideAngleRock;
                         }
 
-                        //Debug.Log ("Ground=" + c.normal + " norm=" + c.normal.y + " name=" + gO.name + " " + Time.time);
-                        coefInclination = Vector3.Angle(c.normal, Vector3.up);
-                        if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f) {
-                            allowedToWalk = true;
+						coefInclination = Vector3.Angle(c.normal, Vector3.up);
+						//Debug.Log ("Ground=" + c.normal + " norm=" + c.normal.y + " angle=" + coefInclination + " name=" + gO.name + " " + Time.time);
+                        if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f)
+						{
+							allowedToWalk = true;
                         }
-                        else {
+                        else
+						{
+							inclinationNormals.Add(c.normal);
                             allowedToWalk = false;
-                            inclinationNormal = c.normal;
+                            //inclinationNormal = c.normal;
                         }
-                        //direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
-                        direction.RotateAround(direction.position, Vector3.right, gO.transform.rotation.eulerAngles.x);
-                        direction.RotateAround(direction.position, Vector3.forward, gO.transform.rotation.eulerAngles.z);
+						break;
                     }
-                }
+				}
+				//Debug.Log ("inclinationNormals.Count=" + inclinationNormals.Count + " " + Time.time);
+				if (allowedToWalk)
+				{
+					//direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
+					float angleX = Mathf.Abs(gO.transform.rotation.eulerAngles.x);
+					if (angleX > 180)
+						angleX -= 360;
+					float angleZ = Mathf.Abs(gO.transform.rotation.eulerAngles.z);
+					if (angleZ > 180)
+						angleZ -= 360;
+					direction.RotateAround(direction.position, Vector3.right, angleX % 90);
+					direction.RotateAround(direction.position, Vector3.forward, angleZ % 90);
+				}
             }
         }
     }
@@ -460,38 +467,126 @@ public class KodaController : MonoBehaviour {
         }
 
         //Debug.Log ("allowedToWalk=" + allowedToWalk);
-        if (allowedToWalk) {
+        if (allowedToWalk)
+		{
             //Debug.Log ("0-45");
             inputVelocityAxis =
-                (
+            (
                 moveStateParameters.moveX * direction.right +
                 moveStateParameters.moveZ * direction.forward
             ).normalized * moveSpeed;
         }
-        else {
-            //Debug.Log ("45-90");
-            inclinationNormal.y = 0;
-            inclinationNormal.Normalize();
-            //Debug.Log ("inclinationNormal=" + inclinationNormal);
-            Vector3 forwardNoY = direction.forward;
-            forwardNoY.y = 0;
-            forwardNoY.Normalize();
-            //Debug.Log ("forwardNoY=" + forwardNoY);
-            Vector3 rightNoY = direction.right;
-            rightNoY.y = 0;
-            rightNoY.Normalize();
-            //Debug.Log ("rightNoY=" + rightNoY);
-            float scalar = Vector3.Dot(inclinationNormal, (forwardNoY * moveStateParameters.moveZ + rightNoY * moveStateParameters.moveX).normalized);
-            float factor = 1;
-            if (scalar < 0) {
-                factor = 1 + scalar;
-            }
-            inputVelocityAxis =
-                (
-                moveStateParameters.moveX * rightNoY +
-                moveStateParameters.moveZ * forwardNoY
-            ).normalized * moveSpeed * factor;
-        }
+		else
+		{
+			//Debug.Log ("45-90");
+			float scalar_forward = 0;
+			float scalar_right = 0;
+
+			Vector3 forwardNoY = direction.forward;
+			forwardNoY.y = 0;
+			forwardNoY = forwardNoY.normalized * moveStateParameters.moveZ;
+			//Debug.Log ("forwardNoY=" + forwardNoY);
+			Vector3 rightNoY = direction.right;
+			rightNoY.y = 0;
+			rightNoY = rightNoY.normalized * moveStateParameters.moveX;
+
+			float factor_forward = 1;
+			float factor_right = 1;
+
+			if (inclinationNormals.Count > 1)
+			{
+				Vector3 inclinationNormalAdd = Vector3.zero;
+				Vector3 inclinationTengeantAddForward = Vector3.zero;
+				Vector3 inclinationTengeantAddRight = Vector3.zero;
+				List<Vector3> inclinationTengeantForward = new List<Vector3> ();
+				List<Vector3> inclinationTengeantRight = new List<Vector3> ();
+
+				//Debug.Log ("inclinationNormals tot=" + inclinationNormals.Count);
+				foreach (Vector3 IN in inclinationNormals)
+				{
+					Vector3 inclinationNormal = IN;
+					inclinationNormal.y = 0;
+					inclinationNormal.Normalize ();
+
+					Vector3 forwardProj = forwardNoY - Vector3.Project (forwardNoY, inclinationNormal);
+					Vector3 rightProj = rightNoY - Vector3.Project (rightNoY, inclinationNormal);
+
+					inclinationTengeantForward.Add (forwardProj);
+					inclinationTengeantRight.Add (rightProj);
+
+					inclinationNormalAdd += inclinationNormal;
+					inclinationTengeantAddForward += forwardProj;
+					inclinationTengeantAddRight += rightProj;
+				}
+				inclinationNormalAdd.Normalize ();
+				inclinationTengeantAddForward.Normalize ();
+				inclinationTengeantAddRight.Normalize ();
+				//Debug.Log ("inclinationNormalAdd tot=" + inclinationNormalAdd);
+				//Debug.Log ("inclinationTengeantAddForward tot=" + inclinationTengeantAddForward);
+				//Debug.Log ("inclinationTengeantAddRight tot=" + inclinationTengeantAddRight);
+
+				scalar_forward += Vector3.Dot (inclinationNormalAdd, inclinationTengeantAddForward);
+				scalar_right += Vector3.Dot (inclinationNormalAdd, inclinationTengeantAddRight);
+				//Debug.Log ("scalar1 tot=" + scalar_forward);
+				//Debug.Log ("scalar2 tot=" + scalar_right);
+
+				if (scalar_forward < -0.5f)
+				{
+					//factor_forward = Mathf.Round ((1 + scalar_forward) * 100) / 100.0f;
+					factor_forward = 0;
+				}
+
+				if (scalar_right < -0.5f)
+				{
+					//factor_right = Mathf.Round((1 + scalar_right) * 100) / 100.0f;
+					factor_right = 0;
+				}
+
+				//factor_forward = Mathf.Round ((1 - Mathf.Abs(scalar_forward)) * 100) / 100.0f;
+				//factor_right = Mathf.Round((1 - Mathf.Abs(scalar_right)) * 100) / 100.0f;
+			}
+			else if (inclinationNormals.Count == 1)
+			{
+				scalar_forward = Vector3.Dot(inclinationNormals[0], forwardNoY.normalized);
+				scalar_right = Vector3.Dot(inclinationNormals[0], rightNoY.normalized);
+				//Debug.Log ("scalar3 tot=" + scalar_forward);
+				//Debug.Log ("scalar4 tot=" + scalar_right);
+
+				if (scalar_forward < 0) {
+					factor_forward = Mathf.Round ((1 + scalar_forward) * 100) / 100.0f;
+				}
+				if (scalar_right < 0) {
+					factor_right = Mathf.Round ((1 + scalar_right) * 100) / 100.0f;
+				}
+				//Debug.Log ("factor_forward tot=" + factor_forward);
+				//Debug.Log ("factor_right tot=" + factor_right);
+			}
+
+			//Debug.Log ("forwardNoY * factor_forward tot1=" + forwardNoY * factor_forward);
+			//Debug.Log ("rightNoY * factor_right tot1=" + rightNoY * factor_right);
+
+			forwardNoY = new Vector3 (
+				Mathf.Round (forwardNoY.x * factor_forward * 10) / 10.0f,
+				Mathf.Round (forwardNoY.y * factor_forward * 10) / 10.0f,
+				Mathf.Round (forwardNoY.z * factor_forward * 10) / 10.0f
+			);
+			rightNoY = new Vector3 (
+				Mathf.Round (rightNoY.x * factor_right * 10) / 10.0f,
+				Mathf.Round (rightNoY.y * factor_right * 10) / 10.0f,
+				Mathf.Round (rightNoY.z * factor_right * 10) / 10.0f
+			);
+			//Debug.Log ("forwardNoY * factor_forward tot2=" + forwardNoY);
+			//Debug.Log ("rightNoY * factor_right tot2=" + rightNoY);
+
+			inputVelocityAxis =
+			(
+				rightNoY +
+				forwardNoY
+			) * moveSpeed;
+			//Debug.Log ("direction.forward=" + direction.forward);
+			//Debug.Log ("forward=" + forwardNoY);
+			//Debug.Log ("inputVelocityAxis=" + inputVelocityAxis);
+		}
     }
 
     private void ApplyMovement() {
@@ -508,7 +603,8 @@ public class KodaController : MonoBehaviour {
 
         // reset variables
         allowedToWalk = true;
-        inclinationNormal = Vector3.zero;
+        //inclinationNormal = Vector3.zero;
+		inclinationNormals.Clear();
         direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
     }
 
@@ -581,6 +677,7 @@ public class KodaController : MonoBehaviour {
                         }
 
                         if (previousInteractState != InteractState.Glide) {
+                            //Debug.Log("SOUND GLIDE !");
                             SoundController.instance.PlayKodaSingle(glideSound);
                         }
                         leafLock.isUsed = true;
@@ -809,7 +906,6 @@ public class KodaController : MonoBehaviour {
         interactStateParameter.canAirStream = false;
     }
 
-
     public float GetJumpForce() { return jumpForce; }
 
     public InteractState GetInteractState() { return interactState; }
@@ -835,7 +931,6 @@ public class KodaController : MonoBehaviour {
             }
         }
         if (collid.gameObject.CompareTag("AirStreamForce") && interactState == InteractState.Glide) {
-
             //Debug.Log("AirStreamForce enter");
             interactStateParameter.canAirStream = true;
             /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
@@ -924,8 +1019,6 @@ public class KodaController : MonoBehaviour {
 
         temporaryCapacity = Capacity.Nothing;
         canvasQTE.SetActive(false);
-
-
     }
 
     private void ProgressTimerCapacity() {
