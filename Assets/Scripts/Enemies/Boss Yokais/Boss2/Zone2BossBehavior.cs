@@ -188,7 +188,11 @@ public class Zone2BossBehavior : YokaiController {
                 }
             }
         }
-	}
+
+        if (isAbsorbed) {
+            Die();
+        }
+    }
 
     void ThrowRock() {
         GameObject theRock = Instantiate(prefabRock);
