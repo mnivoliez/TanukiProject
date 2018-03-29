@@ -76,7 +76,7 @@ public class BazekoriBehavior : YokaiController {
         gameObject.GetComponent<Collider>().enabled = false;
         positionCollectable = transform.position;
         positionCollectable.y = positionCollectable.y + 1;
-        SoundController.instance.PlaySingle(absorbed);
+        SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die() {
@@ -108,7 +108,7 @@ public class BazekoriBehavior : YokaiController {
 
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Leaf") && !isKnocked) {
-            SoundController.instance.PlaySingle(yokaiScream);
+            SoundController.instance.PlayYokaiSingle(yokaiScream);
             float damage;
             if (other.gameObject.GetComponent<MoveLeaf>() != null) {
                 damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
