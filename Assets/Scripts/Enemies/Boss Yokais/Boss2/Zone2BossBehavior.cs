@@ -29,6 +29,7 @@ public class Zone2BossBehavior : YokaiController {
     private float delayToBump;
     private List<GameObject> lanternsInRange;
     private float throwRate;
+    private GameObject[] lanterns;
 
     [SerializeField] private float timeToBump = 3;
     [SerializeField] private float timeToKnockBack;
@@ -37,6 +38,7 @@ public class Zone2BossBehavior : YokaiController {
     [SerializeField] private int nbRocksToThrow = 5;
     [SerializeField] private GameObject prefabRock;
     [SerializeField] private GameObject river;
+    [SerializeField] private GameObject positionLanternPhase1;
 
 	// Use this for initialization
 	void Start () {
@@ -61,8 +63,7 @@ public class Zone2BossBehavior : YokaiController {
         Physics.IgnoreCollision(myCollider, river.GetComponent<Collider>(), true);
         myRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         hpMax = hp;
-
-
+        
         yokais = new List<GameObject>();
         yokaisSpe = new List<GameObject>();
         oreilles = new List<GameObject>();
@@ -114,10 +115,21 @@ public class Zone2BossBehavior : YokaiController {
                     yokais.Remove(objectToDestroy);
                     Destroy(objectToDestroy);
                 } else {
+                    foreach (GameObject lantern in lanterns) {
+                        lantern.GetComponent<LanternController>().Respawn();
+                    }
+
                     interPhase = false;
                     phasePattern = 2;
                 }
             } else if (phasePattern == 1) {                                                     //PHASE 1
+                if (lanterns == null) {
+                    lanterns = GameObject.FindGameObjectsWithTag("Lantern");
+                    foreach (GameObject lantern in lanterns) {
+                        lantern.transform.position = positionLanternPhase1.transform.position;
+                    }
+                }
+
                 transform.LookAt(target.transform);
                 if (doKnockBack) {
                     KnockBack(startPosition, endPosition);
