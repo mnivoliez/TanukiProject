@@ -26,6 +26,8 @@ public class YokaiGeneralBehavior : YokaiController {
 
     private GameObject[] yokaiList;
 
+    [SerializeField] private AudioClip yokaiScream;
+
     void Start()
     {
         positionOrigin = transform.position;
@@ -144,6 +146,7 @@ public class YokaiGeneralBehavior : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
+            SoundController.instance.PlayYokaiSingle(yokaiScream);
             BeingHit();
             LooseHp(damage);
             EndHit();
@@ -177,6 +180,7 @@ public class YokaiGeneralBehavior : YokaiController {
     {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die()

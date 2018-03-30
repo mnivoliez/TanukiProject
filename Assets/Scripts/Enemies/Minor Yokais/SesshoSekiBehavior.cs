@@ -23,6 +23,8 @@ public class SesshoSekiBehavior : YokaiController {
     [SerializeField] private float durationOfPreparation = 2;
     [SerializeField] private float durationOfResearch = 2;
 
+    [SerializeField] private AudioClip yokaiScream;
+
 
     void Start() {
         comeBack = true;
@@ -167,6 +169,7 @@ public class SesshoSekiBehavior : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
+            SoundController.instance.PlayYokaiSingle(yokaiScream);
             BeingHit();
             LooseHp(damage);
             EndHit();
@@ -199,6 +202,7 @@ public class SesshoSekiBehavior : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die() {
