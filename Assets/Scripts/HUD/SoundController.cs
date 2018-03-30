@@ -5,6 +5,9 @@ using UnityEngine;
 public class SoundController : MonoBehaviour {
 
     public AudioSource fxKodaSource;
+    public AudioSource fxLeafSource;
+    public AudioSource fxYokaiSource;
+    public AudioSource fxYLanternSource;
     public AudioSource fxOtherSource;
     public AudioSource musicSource;
     public static SoundController instance;
@@ -35,6 +38,21 @@ public class SoundController : MonoBehaviour {
     public void PlayKodaSingle(AudioClip clip) {
         fxKodaSource.clip = clip;
         fxKodaSource.Play();
+    }
+
+    public void PlayLeafSingle(AudioClip clip) {
+        fxLeafSource.clip = clip;
+        fxLeafSource.Play();
+    }
+
+    public void PlayYokaiSingle(AudioClip clip) {
+        fxYokaiSource.clip = clip;
+        fxYokaiSource.Play();
+    }
+
+    public void PlayLanternSingle(AudioClip clip) {
+        fxYLanternSource.clip = clip;
+        fxYLanternSource.Play();
     }
 
     public void PlaySingle(AudioClip clip) {

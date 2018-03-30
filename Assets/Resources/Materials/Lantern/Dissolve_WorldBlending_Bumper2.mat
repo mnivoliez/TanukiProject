@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Dissolve_WorldBlending_Bumper2
+  m_Shader: {fileID: 4800000, guid: 19581300d12b17b4a8c5d85646a80c8d, type: 3}
+  m_ShaderKeywords: _ISMASK_ON _LANTERN _MODE_LANTERN
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _FirstTexture:
+        m_Texture: {fileID: 2800000, guid: a8ce4f56f98a2c848a52e767b01fd8c4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTexture:
+        m_Texture: {fileID: 2800000, guid: 69cd24f9b72881a459ba1e2b1948aa97, type: 3}
+        m_Scale: {x: 3, y: 3}
+        m_Offset: {x: -0.24, y: 0.48}
+    - _SecondTexture:
+        m_Texture: {fileID: 2800000, guid: 2c2e8d75f79cbae4d86f746ca7d9888b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _IsAlpha: 0
+    - _IsMask: 1
+    - _MaskGEmi: 1
+    - _MaskREmi: 1.15
+    - _Mode: 1
+    - _RimIntensity: 1.6
+    - _RimPow: 1
+    - _SpecIntensity: 0
+    - _SpecPow: 1
+    - _StepCount: 4.25
+    m_Colors:
+    - _FirstDColor: {r: 0, g: 0.6810851, b: 0.8161765, a: 0}
+    - _FirstLColor: {r: 1, g: 0.6838235, b: 0.91277885, a: 0}
+    - _MaskGColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MaskRColor: {r: 0.12499998, g: 0.89137936, b: 1, a: 0}
+    - _SecondDColor: {r: 0.86764705, g: 0.14673442, b: 0.14673442, a: 0}
+    - _SecondLColor: {r: 0.051470578, g: 0.004163062, b: 0.004163062, a: 0}
