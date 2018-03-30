@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LureController : MonoBehaviour {
+public class LureController : MonoBehaviour
+{
 
     [SerializeField]
     private float gravityScale = 1.0f;
@@ -17,31 +18,47 @@ public class LureController : MonoBehaviour {
 
     Rigidbody body;
 
-    private void Start() {
+    private void Start()
+    {
         gravity = -gravityGlobal * gravityScale * Vector3.up;
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         body.AddForce(gravity * (40 * Time.deltaTime), ForceMode.Acceleration);
     }
 
-    private void BeingHit() {
+    private void BeingHit()
+    {
         health--;
         Debug.Log(health);
-        if (health <= 0) {
-            Destroy(gameObject);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+        if (health <= 0)
+        {
+            Destroy();
         }
     }
 
-    void OnCollisionEnter(Collision collider) {
-        if (collider.gameObject.tag == "Yokai") {
+    void OnCollisionEnter(Collision collider)
+    {
+        if (collider.gameObject.tag == "Yokai")
+        {
             BeingHit();
         }
+        else if (collider.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            Destroy();
+        }
+    }
+
+    void Destroy()
+    {
+        Destroy(gameObject);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
     }
 }
