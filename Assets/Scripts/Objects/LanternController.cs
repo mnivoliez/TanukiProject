@@ -84,12 +84,13 @@ public class LanternController : MonoBehaviour {
         else {
             _range = _max_radius;
             _light.intensity = _max_intensity;
-
-            is_being_played = true;
-            if (is_being_played && !token_play_once) {
-                token_play_once = true;
-                //AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
-                SoundController.instance.PlayLanternSingle(lanterSound);
+            if (transform.parent.tag == "Hand") { 
+                is_being_played = true;
+                if (is_being_played && !token_play_once) {
+                    token_play_once = true;
+                    //AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
+                    SoundController.instance.PlayLanternSingle(lanterSound);
+                }
             }
         }
         _light.range = _range;
@@ -98,28 +99,30 @@ public class LanternController : MonoBehaviour {
 
     private void FixedUpdate() {
 
-        pos_player = the_player.transform.position;
-        pos_lantern = the_lantern.transform.position;
-        vec_distance = pos_player - pos_lantern;
-        numb_distance = Mathf.Sqrt(Mathf.Pow(vec_distance.x, 2) + Mathf.Pow(vec_distance.y, 2) + Mathf.Pow(vec_distance.z, 2));
-        //Debug.Log(numb_distance);
-        if (numb_distance < 60f)
-        {
-            if (!dome_playing)
-            {
-                SoundController.instance.PlayLanternSource(lanterDome);
-                dome_playing = true;
+        the_player = GameObject.Find("Player");
+        the_lantern = GetComponent<Rigidbody>();
+
+        if (the_lantern != null) {
+            pos_player = the_player.transform.position;
+            pos_lantern = the_lantern.transform.position;
+            vec_distance = pos_player - pos_lantern;
+            numb_distance = Mathf.Sqrt(Mathf.Pow(vec_distance.x, 2) + Mathf.Pow(vec_distance.y, 2) + Mathf.Pow(vec_distance.z, 2));
+            //Debug.Log(numb_distance);
+            if (numb_distance < 60f) {
+                if (!dome_playing) {
+                    SoundController.instance.PlayLanternSource(lanterDome);
+                    dome_playing = true;
+                }
+                if (dome_playing) {
+                    SoundController.instance.AdjustLanternSource(1 - (numb_distance / 60f));
+                }
             }
-            if(dome_playing)
-            {
-                SoundController.instance.AdjustLanternSource(1 - (numb_distance/60f));
+            if (numb_distance >= 60f) {
+                SoundController.instance.StopLanternSource();
+                dome_playing = false;
             }
         }
-        if (numb_distance >= 60f)
-        {
-            SoundController.instance.StopLanternSource();
-            dome_playing = false;
-        }
+        
 
         if (GetComponent<Rigidbody>() && GetComponent<Rigidbody>().IsSleeping())
             GetComponent<Rigidbody>().WakeUp();
