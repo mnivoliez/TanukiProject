@@ -9,46 +9,45 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1093917704804846}
+  m_RootGameObject: {fileID: 1348646749122602}
   m_IsPrefabParent: 1
---- !u!1 &1093917704804846
+--- !u!1 &1348646749122602
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4504662842871904}
-  - component: {fileID: 33072444435377756}
-  - component: {fileID: 23565707226600608}
-  - component: {fileID: 64615330756245032}
-  - component: {fileID: 114080207015173420}
+  - component: {fileID: 4627174296729140}
+  - component: {fileID: 33971767287062896}
+  - component: {fileID: 23184950202154320}
+  - component: {fileID: 193564962880870078}
   m_Layer: 0
-  m_Name: Bumper
+  m_Name: P_TreeHairy 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4504662842871904
+--- !u!4 &4627174296729140
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1093917704804846}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -32.55, y: 0.83, z: 32.09}
-  m_LocalScale: {x: 4.1506715, y: 1, z: 4.291295}
+  m_GameObject: {fileID: 1348646749122602}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -20.97, y: -0.67564535, z: 24.627222}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23565707226600608
+--- !u!23 &23184950202154320
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1093917704804846}
+  m_GameObject: {fileID: 1348646749122602}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -57,7 +56,9 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: dda48ffd5734517498fd22548c97a165, type: 2}
+  - {fileID: 2100000, guid: 98e00c360b48ef04686eacd738fabdc8, type: 2}
+  - {fileID: 2100000, guid: 98e00c360b48ef04686eacd738fabdc8, type: 2}
+  - {fileID: 2100000, guid: 1743249916ac3df49973d97d515f47b0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -65,7 +66,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
@@ -77,37 +78,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33072444435377756
+--- !u!33 &33971767287062896
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1093917704804846}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &64615330756245032
-MeshCollider:
+  m_GameObject: {fileID: 1348646749122602}
+  m_Mesh: {fileID: 4300000, guid: 2a56d0af3b7ab8044afd5f5c7a128dd2, type: 3}
+--- !u!193 &193564962880870078
+Tree:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1093917704804846}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: -1
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114080207015173420
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1093917704804846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15dea528120cb514daf95198f4ae2e7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coeffRebond: 200
-  bumperSound: {fileID: 8300000, guid: e50712acbce39df4a926b95f88c909aa, type: 3}
+  m_GameObject: {fileID: 1348646749122602}
+  m_SpeedTreeWindAsset: {fileID: 0}
+  m_TreeData: {fileID: 0}
