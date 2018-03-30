@@ -231,8 +231,11 @@ public class Zone2BossBehavior : YokaiController {
 
             if (hp <= 0) {
                 isKnocked = true;
-                Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
-                rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+                Vector3 posKnockedParticle = corps.GetComponent<MeshRenderer>().bounds.max;
+                posKnockedParticle.x = transform.position.x;
+                posKnockedParticle.z = transform.position.z;
+                Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
+                rendererMat.SetColor("_Globalcolor", new Color(255f / 255f, 255f / 255f, 255f / 255f));
             }
         }
     }
