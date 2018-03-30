@@ -269,6 +269,12 @@ public class KodaController : MonoBehaviour {
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
+        if (previousMovementState == MovementState.Fall && (movementState == MovementState.Idle || movementState == MovementState.Run)) {
+            SoundController.instance.PlayKodaSingle(fallSound);
+            //Debug.Log("Outch !");
+            //Debug.Log(body.velocity.y);
+        }
+
         if (previousMovementState != movementState) {
             animBody.OnStateExit(previousMovementState);
             animBody.OnStateEnter(movementState);
@@ -301,7 +307,7 @@ public class KodaController : MonoBehaviour {
             }
             if (lanternNearest != null) {
                 if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
-                    Debug.Log("die distance");
+                    //Debug.Log("die distance");
                     GetComponent<PlayerHealth>().PlayerDie();
                     runOnWater = false;
                 }
@@ -316,7 +322,7 @@ public class KodaController : MonoBehaviour {
                         playerStop = false;
                     }
                     if (playerStop && ((Time.time - timeStop) > timeStopToDie)) {
-                        Debug.Log("die stop");
+                        //Debug.Log("die stop");
                         GetComponent<PlayerHealth>().PlayerDie();
                         runOnWater = false;
                     }
@@ -779,6 +785,7 @@ public class KodaController : MonoBehaviour {
     }
 
     void UpdateMoveStateParameters(InputParams inputParams) {
+
         if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters)) {
             moveStateParameters.position_before_fall = body.position;
         }
