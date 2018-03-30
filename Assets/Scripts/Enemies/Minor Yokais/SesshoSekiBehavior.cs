@@ -24,6 +24,7 @@ public class SesshoSekiBehavior : YokaiController {
     [SerializeField] private float durationOfResearch = 2;
 
     [SerializeField] private AudioClip yokaiScream;
+    [SerializeField] private AudioClip yokaiHurt;
 
 
     void Start() {
@@ -144,6 +145,7 @@ public class SesshoSekiBehavior : YokaiController {
         if (collision.gameObject.tag == "Lure") {
 
             if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
+                SoundController.instance.PlayYokaiSingle(yokaiHurt);
                 BeingHit();
                 LooseHp(1);
                 EndHit();
@@ -169,7 +171,7 @@ public class SesshoSekiBehavior : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
-            SoundController.instance.PlayYokaiSingle(yokaiScream);
+            SoundController.instance.PlayYokaiSingle(yokaiHurt);
             BeingHit();
             LooseHp(damage);
             EndHit();
@@ -182,6 +184,7 @@ public class SesshoSekiBehavior : YokaiController {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             target = GameObject.Find("Player");
+            SoundController.instance.PlayYokaiSingle(yokaiScream);
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
     }

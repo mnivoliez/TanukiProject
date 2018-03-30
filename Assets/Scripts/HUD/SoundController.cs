@@ -7,7 +7,8 @@ public class SoundController : MonoBehaviour {
     public AudioSource fxKodaSource;
     public AudioSource fxLeafSource;
     public AudioSource fxYokaiSource;
-    public AudioSource fxYLanternSource;
+    public AudioSource fxLanternSource;
+    public AudioSource fxLanternEffect;
     public AudioSource fxOtherSource;
     public AudioSource musicSource;
     public static SoundController instance;
@@ -51,8 +52,22 @@ public class SoundController : MonoBehaviour {
     }
 
     public void PlayLanternSingle(AudioClip clip) {
-        fxYLanternSource.clip = clip;
-        fxYLanternSource.Play();
+        fxLanternEffect.clip = clip;
+        fxLanternEffect.Play();
+        //fxLanternSource.volume();
+    }
+
+    public void PlayLanternSource(AudioClip clip) {
+        fxLanternSource.clip = clip;
+        fxLanternSource.Play();
+    }
+
+    public void StopLanternSource() {
+        fxLanternSource.Stop();
+    }
+
+    public void AdjustLanternSource (float setVol) {
+        fxLanternSource.volume = setVol;
     }
 
     public void PlaySingle(AudioClip clip) {
