@@ -85,7 +85,6 @@ public class KodaController : MonoBehaviour {
     [Space(10)]
     [SerializeField]
     private float moveSpeed = 10f;
-    [SerializeField] private float animationMoveSpeed = 10f;
     [SerializeField] private float airControl = 12f;
     [SerializeField] private float jumpForce = 120f;
     [SerializeField] private float airStreamForce = 200f;
@@ -275,7 +274,8 @@ public class KodaController : MonoBehaviour {
             animBody.OnStateEnter(interactState);	
         }
 
-		animBody.UpdateState(movementState, speed, animationMoveSpeed, angle/90, body.velocity.y/10);
+		animBody.UpdateState(movementState, speed, angle/67.5f, body.velocity.y/10);
+		angle = Mathf.Lerp (angle, 0, 0.2f);
         //ResetInteractStateParameter();
 
         if (runOnWater) {
