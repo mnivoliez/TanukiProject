@@ -16,6 +16,8 @@ public class SoundController : MonoBehaviour {
     public float lowPitchRange = 0.95f;
     public float highPitchRange = 1.05f;
 
+    private bool lanterClosestFoundPlay = false;
+
     private void Awake() {
         SoundController[] allInstance;
         allInstance = (SoundController[])FindObjectsOfType(typeof(SoundController));
@@ -58,12 +60,17 @@ public class SoundController : MonoBehaviour {
     }
 
     public void PlayLanternSource(AudioClip clip) {
-        fxLanternSource.clip = clip;
-        fxLanternSource.Play();
+        if (!lanterClosestFoundPlay) {
+            lanterClosestFoundPlay = true;
+            fxLanternSource.clip = clip;
+            fxLanternSource.Play();
+        }
     }
 
     public void StopLanternSource() {
-        fxLanternSource.Stop();
+        if (lanterClosestFoundPlay) {
+            fxLanternSource.Stop();
+        }
     }
 
     public void AdjustLanternSource (float setVol) {

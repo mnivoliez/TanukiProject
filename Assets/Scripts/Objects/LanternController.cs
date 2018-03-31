@@ -18,6 +18,8 @@ public class LanternController : MonoBehaviour {
     [SerializeField] private AudioClip lanterSound;
     [SerializeField] private AudioClip lanterFallWater;
     [SerializeField] private AudioClip lanterDome;
+    private bool lanterClosestFoundPlay = false;
+
     private GameObject the_player;
     private Vector3 pos_player;
     private Rigidbody the_lantern;
@@ -112,14 +114,16 @@ public class LanternController : MonoBehaviour {
                 if (!dome_playing) {
                     SoundController.instance.PlayLanternSource(lanterDome);
                     dome_playing = true;
+                    lanterClosestFoundPlay = true;
                 }
                 if (dome_playing) {
                     SoundController.instance.AdjustLanternSource(1 - (numb_distance / 60f));
                 }
             }
-            if (numb_distance >= 60f) {
+            if (numb_distance >= 60f && lanterClosestFoundPlay) {
                 SoundController.instance.StopLanternSource();
                 dome_playing = false;
+                lanterClosestFoundPlay = false;
             }
         }
         
