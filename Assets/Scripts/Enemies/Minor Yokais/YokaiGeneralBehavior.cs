@@ -27,6 +27,7 @@ public class YokaiGeneralBehavior : YokaiController {
     private GameObject[] yokaiList;
 
     [SerializeField] private AudioClip yokaiScream;
+    [SerializeField] private AudioClip yokaiHurt;
 
     void Start()
     {
@@ -146,7 +147,7 @@ public class YokaiGeneralBehavior : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
-            SoundController.instance.PlayYokaiSingle(yokaiScream);
+            SoundController.instance.PlayYokaiSingle(yokaiHurt);
             BeingHit();
             LooseHp(damage);
             EndHit();
@@ -161,6 +162,7 @@ public class YokaiGeneralBehavior : YokaiController {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             target = GameObject.Find("Player");
+            SoundController.instance.PlayYokaiSingle(yokaiScream);
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
     }
