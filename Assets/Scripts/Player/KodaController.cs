@@ -302,7 +302,8 @@ public class KodaController : MonoBehaviour
             }
         }
 
-        if (previousMovementState != movementState) {
+        if (previousMovementState != movementState)
+        {
             animBody.OnStateExit(previousMovementState);
             animBody.OnStateEnter(movementState);
         }
@@ -338,8 +339,10 @@ public class KodaController : MonoBehaviour
                     distance = dis;
                 }
             }
-            if (lanternNearest != null) {
-                if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
+            if (lanternNearest != null)
+            {
+                if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect())
+                {
                     //Debug.Log("die distance");
                     GetComponent<PlayerHealth>().PlayerDie();
                     runOnWater = false;
@@ -358,7 +361,8 @@ public class KodaController : MonoBehaviour
                     {
                         playerStop = false;
                     }
-                    if (playerStop && ((Time.time - timeStop) > timeStopToDie)) {
+                    if (playerStop && ((Time.time - timeStop) > timeStopToDie))
+                    {
                         //Debug.Log("die stop");
                         GetComponent<PlayerHealth>().PlayerDie();
                         runOnWater = false;
@@ -891,9 +895,11 @@ public class KodaController : MonoBehaviour
         return fall;
     }
 
-    void UpdateMoveStateParameters(InputParams inputParams) {
+    void UpdateMoveStateParameters(InputParams inputParams)
+    {
 
-        if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters)) {
+        if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters))
+        {
             moveStateParameters.position_before_fall = body.position;
         }
         moveStateParameters.position = body.position;
