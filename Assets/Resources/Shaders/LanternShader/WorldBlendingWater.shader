@@ -32,7 +32,7 @@
 
 	SubShader
 	{
-		Tags {"Queue"="Transparent" "RenderType"="Transparent"}
+		Tags {"Queue"="Transparent-100" "RenderType"="Transparent"}
 
         Cull Off
 

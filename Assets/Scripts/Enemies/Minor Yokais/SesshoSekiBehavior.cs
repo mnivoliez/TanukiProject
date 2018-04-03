@@ -182,7 +182,11 @@ public class SesshoSekiBehavior : YokaiController {
         hp = hp - damage;
         if (hp <= 0) {
             isKnocked = true;
-            Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
+            Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
+            posKnockedParticle.x = transform.position.x;
+            posKnockedParticle.z = transform.position.z;
+            Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
+            rendererMat.SetColor("_Globalcolor", new Color(255f / 255f, 255f / 255f, 255f / 255f));
             target = GameObject.Find("Player");
             SoundController.instance.PlayYokaiSingle(yokaiScream);
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
