@@ -168,7 +168,8 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private AudioClip footStepWaterSound3;
     private AudioClip[] allFootStepSound;
     private AudioClip[] allFootStepWaterSound;
-    [SerializeField] private AudioClip fallSound;
+    [SerializeField] private AudioClip fallGroundSound;
+    [SerializeField] private AudioClip fallWaterSound;
     [SerializeField] private AudioClip glideSound;
     [SerializeField] private AudioClip pushUpSound;
     private float timerStepSound;
@@ -269,6 +270,17 @@ public class KodaController : MonoBehaviour {
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
+        if (previousMovementState == MovementState.Fall && (movementState == MovementState.Idle || movementState == MovementState.Run)) {
+            if (!runOnWater) {
+                SoundController.instance.PlayKodaSingle(fallGroundSound);
+                //Debug.Log("Outch !");
+                //Debug.Log(body.velocity.y);
+            }
+            if(runOnWater) {
+                SoundController.instance.PlayKodaSingle(fallWaterSound);
+            }
+        }
+
         if (previousMovementState != movementState) {
             animBody.OnStateExit(previousMovementState);
             animBody.OnStateEnter(movementState);
@@ -301,7 +313,7 @@ public class KodaController : MonoBehaviour {
             }
             if (lanternNearest != null) {
                 if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
-                    Debug.Log("die distance");
+                    //Debug.Log("die distance");
                     GetComponent<PlayerHealth>().PlayerDie();
                     runOnWater = false;
                 }
@@ -316,7 +328,7 @@ public class KodaController : MonoBehaviour {
                         playerStop = false;
                     }
                     if (playerStop && ((Time.time - timeStop) > timeStopToDie)) {
-                        Debug.Log("die stop");
+                        //Debug.Log("die stop");
                         GetComponent<PlayerHealth>().PlayerDie();
                         runOnWater = false;
                     }
@@ -779,6 +791,7 @@ public class KodaController : MonoBehaviour {
     }
 
     void UpdateMoveStateParameters(InputParams inputParams) {
+
         if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters)) {
             moveStateParameters.position_before_fall = body.position;
         }
@@ -1013,17 +1026,33 @@ public class KodaController : MonoBehaviour {
     }
 
     //Temporary in public mode for the playtest
-    public void AddCapacity(Pair<Capacity, float> pairCapacity) {
-        temporaryCapacity = pairCapacity.First;
-        switch (pairCapacity.First) {
+    public void AddCapacity(Pair<Capacity, float> pairCapacity)
+    {
+        if (pairCapacity.First != Capacity.Nothing && pairCapacity.Second == 0) {
+            switch (pairCapacity.First) {
 
-            case Capacity.DoubleJump:
-                canvasQTE.SetActive(true);
-                break;
+                case Capacity.DoubleJump:
+                    hasPermanentDoubleJumpCapacity = true;
+                    break;
 
-            case Capacity.Glide:
-                break;
+                case Capacity.Lure:
+                    hasPermanentLureCapacity = true;
+                    break;
+            }
+        } else {
+            temporaryCapacity = pairCapacity.First;
+            switch (pairCapacity.First)
+            {
+
+                case Capacity.DoubleJump:
+                    canvasQTE.SetActive(true);
+                    break;
+
+                case Capacity.Glide:
+                    break;
+            }
         }
+        
 
         timerCapacity = pairCapacity.Second;
         maxPowerUpGauge = pairCapacity.Second;
