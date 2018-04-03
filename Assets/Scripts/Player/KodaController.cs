@@ -168,7 +168,8 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private AudioClip footStepWaterSound3;
     private AudioClip[] allFootStepSound;
     private AudioClip[] allFootStepWaterSound;
-    [SerializeField] private AudioClip fallSound;
+    [SerializeField] private AudioClip fallGroundSound;
+    [SerializeField] private AudioClip fallWaterSound;
     [SerializeField] private AudioClip glideSound;
     [SerializeField] private AudioClip pushUpSound;
     private float timerStepSound;
@@ -270,9 +271,14 @@ public class KodaController : MonoBehaviour {
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
 
         if (previousMovementState == MovementState.Fall && (movementState == MovementState.Idle || movementState == MovementState.Run)) {
-            SoundController.instance.PlayKodaSingle(fallSound);
-            //Debug.Log("Outch !");
-            //Debug.Log(body.velocity.y);
+            if (!runOnWater) {
+                SoundController.instance.PlayKodaSingle(fallGroundSound);
+                //Debug.Log("Outch !");
+                //Debug.Log(body.velocity.y);
+            }
+            if(runOnWater) {
+                SoundController.instance.PlayKodaSingle(fallWaterSound);
+            }
         }
 
         if (previousMovementState != movementState) {
