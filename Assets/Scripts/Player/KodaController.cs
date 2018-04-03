@@ -273,11 +273,11 @@ public class KodaController : MonoBehaviour {
         if (previousMovementState == MovementState.Fall && (movementState == MovementState.Idle || movementState == MovementState.Run)) {
             if (!runOnWater) {
                 SoundController.instance.PlayKodaSingle(fallGroundSound);
-                //Debug.Log("Outch !");
-                //Debug.Log(body.velocity.y);
+                //Debug.Log(" Fall Ground Outch !");
             }
             if(runOnWater) {
                 SoundController.instance.PlayKodaSingle(fallWaterSound);
+                //Debug.Log(" Fall Water Splash !");
             }
         }
 
