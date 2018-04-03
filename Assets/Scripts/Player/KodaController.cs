@@ -892,7 +892,6 @@ public class KodaController : MonoBehaviour
 
     void UpdateMoveStateParameters(InputParams inputParams)
     {
-
         if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters))
         {
             moveStateParameters.position_before_fall = body.position;
