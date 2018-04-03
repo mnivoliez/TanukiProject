@@ -270,14 +270,19 @@ public class InteractBehavior : MonoBehaviour {
         GameObject clone = null;
         if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
             leafHead.SetActive(false);
-            clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
-            clone.transform.Translate(0, 3, 2);
+            Vector3 spawnLurePosition = tanukiPlayer.position + new Vector3(0, 3, 0) + (tanukiPlayer.forward * 2);
+            GameObject smokeSpawn = Instantiate(smokeSpawner, spawnLurePosition, Quaternion.identity);
+            smokeSpawn.transform.localScale = Vector3.one * 0.3f;
+            clone = Instantiate(lure, spawnLurePosition, tanukiPlayer.rotation);
+            //clone.transform.Translate(0, 3, 2);
         }
         return clone;
     }
 
     public void DestroyLure(GameObject lure) {
         if (lure != null) {
+            GameObject smokeSpawn = Instantiate(smokeSpawner, lure.transform.position, Quaternion.identity);
+            smokeSpawn.transform.localScale = Vector3.one * 0.3f;
             Destroy(lure);
             leafHead.SetActive(true);
         }
