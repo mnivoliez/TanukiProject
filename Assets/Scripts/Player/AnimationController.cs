@@ -8,7 +8,6 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
     private Animator animBody;
 
 	private float smoothVertSpeed;
-	private float prevVel = 0;
 
     void Start () {
         animBody = GetComponent<Animator>();
@@ -22,12 +21,11 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
 
 		smoothVertSpeed = Mathf.Lerp (smoothVertSpeed, verticalSpeed, .3f);
 		animBody.SetFloat("VerticalSpeed", smoothVertSpeed);
-		animBody.SetFloat ("PrevVertVel", prevVel);
-		prevVel = verticalSpeed;
 
 		if(Input.GetKeyDown(KeyCode.F)) animBody.SetTrigger("InstantAttack");
-		if(Input.GetKey(KeyCode.G)) animBody.SetTrigger("DistantAttack");
-		if(Input.GetKeyDown(KeyCode.H)) animBody.SetBool("SakeGrab", !animBody.GetBool("SakeGrab"));
+		if(Input.GetKeyDown(KeyCode.G)) animBody.SetTrigger("DistantAttack");
+        if(Input.GetKeyDown(KeyCode.H)) animBody.SetBool("IsAbsorbing", !animBody.GetBool("IsAbsorbing"));
+        if(Input.GetKeyDown(KeyCode.J)) animBody.SetTrigger("Hit");
 
         //currentState = state;
         //switch (state) {
