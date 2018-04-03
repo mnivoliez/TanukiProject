@@ -11,7 +11,7 @@ public struct InputParams
 {
     public ActionRequest actionRequest;
     public bool contextualButtonPressed;
-    public float absorptionTimeout;
+    public bool absorptionInterrupted;
     public bool jumpRequest;
     public bool hasDoubleJumped;
     public float moveX;
@@ -24,7 +24,7 @@ public struct InputParams
         jumpRequest = false;
         moveX = 0f;
         moveZ = 0f;
-        absorptionTimeout = 0f;
+        absorptionInterrupted = false;
     }
 }
 

@@ -45,6 +45,7 @@ public class InteractBehavior : MonoBehaviour
     [Header("ABSORB")]
     [Space(8)]
     [SerializeField]
+    private bool absorbing;
     private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
     [SerializeField] private AudioClip absorption;
@@ -74,12 +75,19 @@ public class InteractBehavior : MonoBehaviour
         leafHand.SetActive(false);
         catchSlot = GameObject.Find("Catchable Object");
         sakePot.SetActive(false);
+        absorbing = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (absorbing)
+        {
+            absorptionTimer -= Time.deltaTime;
+            loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
+            absorptionGauge -= 0.01f;
+            if (absorptionTimer < 0) StopAbsorption();
+        }
     }
 
     public void DoGlide()
@@ -216,32 +224,26 @@ public class InteractBehavior : MonoBehaviour
 
     public void DoBeginAbsorption(GameObject absorbableObject)
     {
-        canvasQTE.SetActive(true);
-        sakePot.SetActive(true);
+        ActivateAbsorptionQTE();
+        absorbing = true;
     }
 
     public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject, InputController input)
     {
         Pair<Capacity, float> pairCapacity = new Pair<Capacity, float>(Capacity.Nothing, 0);
-
-        if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0)
+        InputParams inputParams = input.RetrieveUserRequest();
+        if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorbing)
         {
 
             centerButton.GetComponent<Image>().color = Color.white;
-            absorptionTimer -= 0.03f;
-            absorptionGauge -= 0.01f;
-            InputParams inputParams = input.RetrieveUserRequest();
             if (inputParams.contextualButtonPressed)
             {
                 centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
                 centerButton.GetComponent<Image>().color = Color.grey;
                 absorptionGauge += 1;
                 inputParams.contextualButtonPressed = false;
-                input.SetUserRequest(inputParams);
                 SoundController.instance.PlaySingle(absorption);
             }
-
-            loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
 
             if (absorptionGauge > maxAbsorptionGauge)
             {
@@ -253,14 +255,20 @@ public class InteractBehavior : MonoBehaviour
         }
         else
         {
-            DeactivateAbsorptionQTE();
-            ResetAbsorptionGauge();
-            SoundController.instance.StopSingle();
+            centerButton.GetComponent<Image>().color = Color.white;
+            DoBeginAbsorption(absorbableObject);
         }
-
+        input.SetUserRequest(inputParams);
         return pairCapacity;
     }
 
+    public void StopAbsorption()
+    {
+        absorbing = false;
+        ResetAbsorptionGauge();
+        DeactivateAbsorptionQTE();
+        SoundController.instance.StopSingle();
+    }
     private void ResetAbsorptionGauge()
     {
         absorptionGauge = 0;
