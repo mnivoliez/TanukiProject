@@ -744,7 +744,10 @@ public class KodaController : MonoBehaviour
                     }
 
                 }
-
+                if (previousInteractState == InteractState.Absorb)
+                {
+                    interactBehaviorCtrl.StopAbsorption();
+                }
                 if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry)
                 {
                     interactBehaviorCtrl.StopCarry(catchableObject);
@@ -1006,7 +1009,7 @@ public class KodaController : MonoBehaviour
                         {
                             interactStateParameter.canActivate = true;
                         }
-                        else if (inFrontOfAbsorbableObject)
+                        else if (inFrontOfAbsorbableObject && !inputParams.absorptionInterrupted)
                         {
                             interactStateParameter.canAbsorb = true;
                         }
@@ -1028,6 +1031,7 @@ public class KodaController : MonoBehaviour
         if (inputParams.actionRequest != ActionRequest.Glide)
         {
             inputParams.actionRequest = ActionRequest.None;
+            inputParams.absorptionInterrupted = false;
             inputController.SetUserRequest(inputParams);
         }
     }
