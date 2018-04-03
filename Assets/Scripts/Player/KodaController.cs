@@ -1026,17 +1026,33 @@ public class KodaController : MonoBehaviour {
     }
 
     //Temporary in public mode for the playtest
-    public void AddCapacity(Pair<Capacity, float> pairCapacity) {
-        temporaryCapacity = pairCapacity.First;
-        switch (pairCapacity.First) {
+    public void AddCapacity(Pair<Capacity, float> pairCapacity)
+    {
+        if (pairCapacity.First != Capacity.Nothing && pairCapacity.Second == 0) {
+            switch (pairCapacity.First) {
 
-            case Capacity.DoubleJump:
-                canvasQTE.SetActive(true);
-                break;
+                case Capacity.DoubleJump:
+                    hasPermanentDoubleJumpCapacity = true;
+                    break;
 
-            case Capacity.Glide:
-                break;
+                case Capacity.Lure:
+                    hasPermanentLureCapacity = true;
+                    break;
+            }
+        } else {
+            temporaryCapacity = pairCapacity.First;
+            switch (pairCapacity.First)
+            {
+
+                case Capacity.DoubleJump:
+                    canvasQTE.SetActive(true);
+                    break;
+
+                case Capacity.Glide:
+                    break;
+            }
         }
+        
 
         timerCapacity = pairCapacity.Second;
         maxPowerUpGauge = pairCapacity.Second;
