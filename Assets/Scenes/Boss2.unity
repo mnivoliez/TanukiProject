@@ -3530,7 +3530,7 @@ GameObject:
   - component: {fileID: 223448127}
   - component: {fileID: 223448129}
   - component: {fileID: 223448128}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: corps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4230,6 +4230,11 @@ Prefab:
         type: 2}
       propertyPath: m_Radius
       value: 9.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114512512806789540, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: airLantern
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5, type: 2}
@@ -8039,6 +8044,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: aaff69cd8cd3fa2438b32071e2380879, type: 2}
+    - target: {fileID: 100000, guid: a6bc6237b66e409498c21c6ccbbb4b88, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a6bc6237b66e409498c21c6ccbbb4b88, type: 3}
   m_IsPrefabParent: 0
@@ -9793,6 +9802,11 @@ Prefab:
         type: 2}
       propertyPath: m_Radius
       value: 9.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114512512806789540, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: airLantern
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5, type: 2}
@@ -12110,6 +12124,11 @@ Prefab:
         type: 2}
       propertyPath: m_Range
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114512512806789540, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
+        type: 2}
+      propertyPath: airLantern
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5, type: 2}
@@ -17191,7 +17210,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1734684111}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: SpawnRock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21398,6 +21417,34 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2067323104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2067323105}
+  m_Layer: 0
+  m_Name: SpawnLanterPhase1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2067323105
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2067323104}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 94.5, y: 2.63, z: -94.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 28
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2078236586 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4932080817516006, guid: 7b6f39fb32b2e73478e37ed38ac6a6c5,
@@ -21749,7 +21796,7 @@ GameObject:
   - component: {fileID: 2132195040}
   - component: {fileID: 2132195038}
   - component: {fileID: 2132195037}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Boss
   m_TagString: Yokai
   m_Icon: {fileID: 0}
@@ -21768,7 +21815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
-  hp: 10
+  hp: 6
   hitParticle: {fileID: 1817594945345752, guid: d320902dd6408504b87ec6b13c1a14a0,
     type: 2}
   knockedParticle: {fileID: 1117990352001664, guid: 8a7c7c93ab321eb4db975f2acca7f2a9,
@@ -21778,6 +21825,7 @@ MonoBehaviour:
   timerCapacity: 0
   damage: 1
   distanceLimit: 0
+  absorbed: {fileID: 0}
   timeToBump: 6
   timeToKnockBack: 3
   throwRateP1: 2
@@ -21785,6 +21833,7 @@ MonoBehaviour:
   nbRocksToThrow: 6
   prefabRock: {fileID: 1258659169701658, guid: be07d156447af5446ba246dac83c45d0, type: 2}
   river: {fileID: 579984604}
+  positionLanternPhase1: {fileID: 2067323104}
 --- !u!54 &2132195038
 Rigidbody:
   m_ObjectHideFlags: 0

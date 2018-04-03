@@ -87,13 +87,7 @@ public class LanternController : MonoBehaviour {
             GetComponent<Rigidbody>().WakeUp();
         if (shallRespawn) {
             if ((Time.time - timeoutRespawn) > elaspTimeBeforeRespawn) {
-                lanternBody = GetComponent<Rigidbody>();
-                lanternBody.velocity = Vector3.zero;
-                transform.position = positionOrigin;
-                transform.rotation = rotationOrigin;
-                shallRespawn = false;
-                gameObject.layer = LayerMask.NameToLayer("Catchable");
-                GetComponent<BoxCollider>().enabled = true;
+                Respawn();
             }
         }
     }
@@ -118,5 +112,15 @@ public class LanternController : MonoBehaviour {
 
     public float GetRadiusEffect() {
         return _range;
+    }
+
+    public void Respawn() {
+        lanternBody = GetComponent<Rigidbody>();
+        lanternBody.velocity = Vector3.zero;
+        transform.position = positionOrigin;
+        transform.rotation = rotationOrigin;
+        shallRespawn = false;
+        gameObject.layer = LayerMask.NameToLayer("Catchable");
+        GetComponent<BoxCollider>().enabled = true;
     }
 }
