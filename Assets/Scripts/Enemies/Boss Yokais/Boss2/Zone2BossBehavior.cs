@@ -127,6 +127,7 @@ public class Zone2BossBehavior : YokaiController {
                     lanterns = GameObject.FindGameObjectsWithTag("Lantern");
                     foreach (GameObject lantern in lanterns) {
                         lantern.transform.position = positionLanternPhase1.transform.position;
+                        Physics.IgnoreCollision(lantern.GetComponent<BoxCollider>(), myCollider);
                     }
                 }
 
