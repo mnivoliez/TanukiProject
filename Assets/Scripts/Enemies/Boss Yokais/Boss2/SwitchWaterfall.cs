@@ -54,7 +54,7 @@ public class SwitchWaterfall : MonoBehaviour {
         } else {
 
             foreach (GameObject triggerCascade in triggersCascade) {
-                if (triggerCascade.transform.localPosition.y < ) {
+                if (triggerCascade.transform.localPosition.y < 32) {
                     triggerCascade.transform.localPosition = new Vector3(triggerCascade.transform.localPosition.x, triggerCascade.transform.localPosition.y + 1, triggerCascade.transform.localPosition.z);
                 }
             }
