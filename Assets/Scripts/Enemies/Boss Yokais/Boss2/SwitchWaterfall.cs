@@ -36,14 +36,9 @@ public class SwitchWaterfall : MonoBehaviour {
         }
 
         if (switchOn) {
-            /*foreach (GameObject waterObject in waterObjects) {
-                if (!waterObject.activeSelf) {
-                    waterObject.SetActive(true);
-                }
-            }*/
 
             foreach (GameObject triggerCascade in triggersCascade) {
-                if (triggerCascade.transform.localPosition.y > -35) {
+                if (triggerCascade.transform.localPosition.y > 0) {
                     triggerCascade.transform.localPosition = new Vector3(triggerCascade.transform.localPosition.x, triggerCascade.transform.localPosition.y - 1, triggerCascade.transform.localPosition.z);
                 }
             }
@@ -57,14 +52,9 @@ public class SwitchWaterfall : MonoBehaviour {
             }
 
         } else {
-            /*foreach (GameObject waterObject in waterObjects) {
-                if (waterObject.activeSelf) {
-                    waterObject.SetActive(false);
-                }
-            }*/
 
             foreach (GameObject triggerCascade in triggersCascade) {
-                if (triggerCascade.transform.localPosition.y < 0) {
+                if (triggerCascade.transform.localPosition.y < ) {
                     triggerCascade.transform.localPosition = new Vector3(triggerCascade.transform.localPosition.x, triggerCascade.transform.localPosition.y + 1, triggerCascade.transform.localPosition.z);
                 }
             }
