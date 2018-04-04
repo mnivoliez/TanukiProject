@@ -10,6 +10,8 @@ public class LianaGenerator : EditorWindow {
     private static List<GameObject> lianaObjects;
     private float lianaLenght;
     private string lenght;
+    private float lianaSize;
+    private string size;
     private static List<GameObject> lianaMeshs;
     private static GameObject lianaMesh1;
     private static GameObject lianaMesh2;
@@ -49,6 +51,7 @@ public class LianaGenerator : EditorWindow {
     void Awake() {
         autoLenght = false;
         lenght = "";
+        size = "";
     }
 
     private void Generate() {
@@ -72,18 +75,26 @@ public class LianaGenerator : EditorWindow {
         Vector3 sizeLianaMesh = lianaMesh1.GetComponent<MeshRenderer>().bounds.size;
 
         float.TryParse(lenght, out lianaLenght);
-
+        
         if (lianaLenght == 0) {
             lianaLenght = 10;
         }
 
-        float partSizeLianaMesh = sizeLianaMesh.y * 0.1f;
+        float.TryParse(size, out lianaSize);
+
+        if (lianaSize == 0) {
+            lianaSize = 1;
+        }
+
+        sizeLianaMesh *= lianaSize;
+        
+        float partSizeLianaMesh = sizeLianaMesh.y * 0.20f;
         int nbLianaPart = (int)(lianaLenght / (sizeLianaMesh.y - partSizeLianaMesh));
-        float connectedMassScalePas = (float)(0.1f / nbLianaPart);
+        float connectedMassScalePas = (float)(0.2f / nbLianaPart);
 
         foreach (GameObject liana in lianaObjects) {
             Rigidbody rgbody = liana.AddComponent<Rigidbody>();
-            FixedJoint hgJoint = liana.AddComponent<FixedJoint>();
+            HingeJoint hgJoint = liana.AddComponent<HingeJoint>();
             Rigidbody bodyToConnect = rgbody;
 
             if (autoLenght) {
@@ -92,6 +103,7 @@ public class LianaGenerator : EditorWindow {
 
             int r = 0;
 
+            Vector3 positionLianaVector = Vector3.zero;
             float positionYLianaPart = 0;
             for (int i = 0; i < nbLianaPart; i++) {
                 int rTemp = r;
@@ -107,13 +119,22 @@ public class LianaGenerator : EditorWindow {
 
                 int rotationY = rnd.Next(360);
 
-                GameObject lianaPart = Instantiate(lianaMeshs[r], liana.transform.position, lianaMesh1.transform.rotation);
+                GameObject lianaPart = Instantiate(lianaMeshs[r]);
                 lianaPart.transform.parent = liana.transform;
+                lianaPart.transform.localScale *= lianaSize;
                 lianaPart.transform.localPosition = new Vector3(0, positionYLianaPart, 0);
+                lianaPart.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 lianaPart.transform.Rotate(0, rotationY, 0);
+
                 var lianaJoint = lianaPart.GetComponent<Joint>();
+
+                if (i == 0) {
+                    DestroyImmediate(lianaJoint);
+                    lianaJoint = lianaPart.AddComponent<HingeJoint>();
+                }
+                
                 lianaJoint.connectedBody = bodyToConnect;
-                lianaJoint.connectedMassScale = connectedMassScalePas * (i + 1) + 0.9f;
+                lianaJoint.connectedMassScale = connectedMassScalePas * (i + 1) + 0.8f;
                 bodyToConnect = lianaPart.GetComponent<Rigidbody>();
                 positionYLianaPart -= sizeLianaMesh.y - partSizeLianaMesh;
             }
@@ -126,6 +147,8 @@ public class LianaGenerator : EditorWindow {
         lianaMesh2 = EditorGUILayout.ObjectField("Find liana prefab", lianaMesh2, typeof(GameObject)) as GameObject;
         lianaMesh3 = EditorGUILayout.ObjectField("Find liana prefab", lianaMesh3, typeof(GameObject)) as GameObject;
         lianaMesh4 = EditorGUILayout.ObjectField("Find liana prefab", lianaMesh4, typeof(GameObject)) as GameObject;
+
+        size = EditorGUILayout.TextField("Size liana", size);
 
         autoLenght = EditorGUILayout.Toggle("Auto lenght liana", autoLenght);
         EditorGUI.BeginDisabledGroup(autoLenght);
@@ -172,7 +195,7 @@ public class LianaGenerator : EditorWindow {
                     if (component.GetType() != typeof(Transform)) {
                         if (component.GetType() == typeof(Rigidbody)) {
                             foreach (Component componentForJoint in allComponents) {
-                                if (componentForJoint.GetType() == typeof(FixedJoint)) {
+                                if (componentForJoint.GetType() == typeof(HingeJoint) || componentForJoint.GetType() == typeof(FixedJoint) || componentForJoint.GetType() == typeof(ConfigurableJoint) || componentForJoint.GetType() == typeof(CharacterJoint)) {
                                     DestroyImmediate(componentForJoint);
                                 }
                             }
