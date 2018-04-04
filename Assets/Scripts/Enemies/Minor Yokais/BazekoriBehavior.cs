@@ -14,6 +14,9 @@ public class BazekoriBehavior : YokaiController {
     [SerializeField] private GameObject hpCollectable;
     private Vector3 positionCollectable;
 
+    [SerializeField] private AudioClip yokaiScream;
+    [SerializeField] private AudioClip yokaiHurt;
+
     void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
         rendererMat = gameObject.GetComponent<Renderer>().material;
@@ -46,7 +49,7 @@ public class BazekoriBehavior : YokaiController {
     }
 
     public override void LooseHp(float damage) {
-        hp -= damage;
+        hp = hp - damage;
         BeingHit();
         Invoke("EndHit", 0.3f);
         if (hp <= 0) {
@@ -56,6 +59,7 @@ public class BazekoriBehavior : YokaiController {
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+            SoundController.instance.PlayYokaiSingle(yokaiScream);
         }
 
     }
@@ -74,6 +78,7 @@ public class BazekoriBehavior : YokaiController {
         gameObject.GetComponent<Collider>().enabled = false;
         positionCollectable = transform.position;
         positionCollectable.y = positionCollectable.y + 1;
+        SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die() {
@@ -104,7 +109,6 @@ public class BazekoriBehavior : YokaiController {
     }
 
     void OnTriggerEnter(Collider other) {
-
         if (other.gameObject.CompareTag("Leaf") && !isKnocked) {
             float damage;
             if (other.gameObject.GetComponent<MoveLeaf>() != null) {
@@ -113,6 +117,8 @@ public class BazekoriBehavior : YokaiController {
             else {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
+
+            SoundController.instance.PlayYokaiSingle(yokaiHurt);
             LooseHp(damage);
         }
 
@@ -122,7 +128,6 @@ public class BazekoriBehavior : YokaiController {
         if (col.gameObject.CompareTag("Player") && !isKnocked) {
             col.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
             Destroy(Instantiate(hitParticle, col.gameObject.transform.position, Quaternion.identity), 1);
-
         }
     }
 

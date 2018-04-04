@@ -5,12 +5,18 @@ using UnityEngine;
 public class SoundController : MonoBehaviour {
 
     public AudioSource fxKodaSource;
+    public AudioSource fxLeafSource;
+    public AudioSource fxYokaiSource;
+    public AudioSource fxLanternSource;
+    public AudioSource fxLanternEffect;
     public AudioSource fxOtherSource;
     public AudioSource musicSource;
     public static SoundController instance;
 
     public float lowPitchRange = 0.95f;
     public float highPitchRange = 1.05f;
+
+    private bool lanterClosestFoundPlay = false;
 
     private void Awake() {
         SoundController[] allInstance;
@@ -35,6 +41,40 @@ public class SoundController : MonoBehaviour {
     public void PlayKodaSingle(AudioClip clip) {
         fxKodaSource.clip = clip;
         fxKodaSource.Play();
+    }
+
+    public void PlayLeafSingle(AudioClip clip) {
+        fxLeafSource.clip = clip;
+        fxLeafSource.Play();
+    }
+
+    public void PlayYokaiSingle(AudioClip clip) {
+        fxYokaiSource.clip = clip;
+        fxYokaiSource.Play();
+    }
+
+    public void PlayLanternSingle(AudioClip clip) {
+        fxLanternEffect.clip = clip;
+        fxLanternEffect.Play();
+        //fxLanternSource.volume();
+    }
+
+    public void PlayLanternSource(AudioClip clip) {
+        if (!lanterClosestFoundPlay) {
+            lanterClosestFoundPlay = true;
+            fxLanternSource.clip = clip;
+            fxLanternSource.Play();
+        }
+    }
+
+    public void StopLanternSource() {
+        if (lanterClosestFoundPlay) {
+            fxLanternSource.Stop();
+        }
+    }
+
+    public void AdjustLanternSource (float setVol) {
+        fxLanternSource.volume = setVol;
     }
 
     public void PlaySingle(AudioClip clip) {

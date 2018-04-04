@@ -23,6 +23,9 @@ public class SesshoSekiBehavior : YokaiController {
     [SerializeField] private float durationOfPreparation = 2;
     [SerializeField] private float durationOfResearch = 2;
 
+    [SerializeField] private AudioClip yokaiScream;
+    [SerializeField] private AudioClip yokaiHurt;
+
 
     void Start() {
         comeBack = true;
@@ -142,6 +145,7 @@ public class SesshoSekiBehavior : YokaiController {
         if (collision.gameObject.tag == "Lure") {
 
             if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
+                SoundController.instance.PlayYokaiSingle(yokaiHurt);
                 BeingHit();
                 LooseHp(1);
                 EndHit();
@@ -167,6 +171,7 @@ public class SesshoSekiBehavior : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
+            SoundController.instance.PlayYokaiSingle(yokaiHurt);
             BeingHit();
             LooseHp(damage);
             EndHit();
@@ -177,8 +182,13 @@ public class SesshoSekiBehavior : YokaiController {
         hp = hp - damage;
         if (hp <= 0) {
             isKnocked = true;
-            Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
+            Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
+            posKnockedParticle.x = transform.position.x;
+            posKnockedParticle.z = transform.position.z;
+            Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
+            rendererMat.SetColor("_Globalcolor", new Color(255f / 255f, 255f / 255f, 255f / 255f));
             target = GameObject.Find("Player");
+            SoundController.instance.PlayYokaiSingle(yokaiScream);
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
     }
@@ -195,6 +205,7 @@ public class SesshoSekiBehavior : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die() {

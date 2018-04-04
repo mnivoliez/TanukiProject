@@ -29,6 +29,7 @@ public class Zone2BossBehavior : YokaiController {
     private float delayToBump;
     private List<GameObject> lanternsInRange;
     private float throwRate;
+    private GameObject[] lanterns;
 
     [SerializeField] private float timeToBump = 3;
     [SerializeField] private float timeToKnockBack;
@@ -36,6 +37,8 @@ public class Zone2BossBehavior : YokaiController {
     [SerializeField] private float throwRateP2 = 1;
     [SerializeField] private int nbRocksToThrow = 5;
     [SerializeField] private GameObject prefabRock;
+    [SerializeField] private GameObject river;
+    [SerializeField] private GameObject positionLanternPhase1;
 
 	// Use this for initialization
 	void Start () {
@@ -51,15 +54,16 @@ public class Zone2BossBehavior : YokaiController {
         currentRocksToThrow = nbRocksToThrow;
         spawnRock = transform.Find("SpawnRock");
         corps = transform.Find("corps").gameObject;
-
+        
         SetTarget(GameObject.Find("Player"));
         player = target;
         rendererMat = corps.GetComponent<Renderer>().material;
         myRigidbody = GetComponent<Rigidbody>();
         myCollider = GetComponent<SphereCollider>();
+        Physics.IgnoreCollision(myCollider, river.GetComponent<Collider>(), true);
         myRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         hpMax = hp;
-
+        
         yokais = new List<GameObject>();
         yokaisSpe = new List<GameObject>();
         oreilles = new List<GameObject>();
@@ -111,10 +115,22 @@ public class Zone2BossBehavior : YokaiController {
                     yokais.Remove(objectToDestroy);
                     Destroy(objectToDestroy);
                 } else {
+                    foreach (GameObject lantern in lanterns) {
+                        lantern.GetComponent<LanternController>().Respawn();
+                    }
+
                     interPhase = false;
                     phasePattern = 2;
                 }
             } else if (phasePattern == 1) {                                                     //PHASE 1
+                if (lanterns == null) {
+                    lanterns = GameObject.FindGameObjectsWithTag("Lantern");
+                    foreach (GameObject lantern in lanterns) {
+                        lantern.transform.position = positionLanternPhase1.transform.position;
+                        Physics.IgnoreCollision(lantern.GetComponent<BoxCollider>(), myCollider);
+                    }
+                }
+
                 transform.LookAt(target.transform);
                 if (doKnockBack) {
                     KnockBack(startPosition, endPosition);
@@ -125,6 +141,15 @@ public class Zone2BossBehavior : YokaiController {
                 }
                 
             } else if (phasePattern == 2) {                                                     //PHASE 2
+
+                GameObject[] gameObjects = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+                yokaisSpe.Clear();
+                for (var i = 0; i < gameObjects.Length; i++) {
+                    if (gameObjects[i].name.Contains("YokaiSpeLure")) {
+                        yokaisSpe.Add(gameObjects[i]);
+                    }
+                }
+
                 if (doKnockBack) {
                     KnockBack(startPosition, endPosition);
                 } else if (canBump) {
@@ -176,7 +201,11 @@ public class Zone2BossBehavior : YokaiController {
                 }
             }
         }
-	}
+
+        if (isAbsorbed) {
+            Die();
+        }
+    }
 
     void ThrowRock() {
         GameObject theRock = Instantiate(prefabRock);
@@ -215,8 +244,11 @@ public class Zone2BossBehavior : YokaiController {
 
             if (hp <= 0) {
                 isKnocked = true;
-                Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
-                rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+                Vector3 posKnockedParticle = corps.GetComponent<MeshRenderer>().bounds.max;
+                posKnockedParticle.x = transform.position.x;
+                posKnockedParticle.z = transform.position.z;
+                Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
+                rendererMat.SetColor("_Globalcolor", new Color(255f / 255f, 255f / 255f, 255f / 255f));
             }
         }
     }
