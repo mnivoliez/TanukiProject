@@ -245,7 +245,7 @@ public class CameraController : MonoBehaviour {
 				Vector3 directionNoY = playerTanukiModel.position - camBase.position;
 				directionNoY.y = 0;
 				directionNoY.Normalize();
-				camBase.position = playerTanukiModel.position + Vector3.up * currentCameraHeight - currentCameraDistance * directionNoY;
+				camBase.position = Vector3.Lerp(camBase.position, playerTanukiModel.position + Vector3.up * currentCameraHeight - currentCameraDistance * directionNoY, Time.deltaTime);
 			}
 		}
 	}
