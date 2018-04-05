@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundController : MonoBehaviour {
 
@@ -15,6 +16,10 @@ public class SoundController : MonoBehaviour {
 
     public float lowPitchRange = 0.95f;
     public float highPitchRange = 1.05f;
+
+    [SerializeField] private AudioClip Koda_Dark_Theme;
+    [SerializeField] private AudioClip Koda_Light_Theme;
+    [SerializeField] private AudioClip Koda_Boss_Theme;
 
     private bool lanterClosestFoundPlay = false;
 
@@ -35,6 +40,22 @@ public class SoundController : MonoBehaviour {
                 Destroy(gameObject);
             }
            
+        }
+    }
+
+    private void Start() {
+
+        //Debug.Log(SceneManager.GetActiveScene().name);
+        if(SceneManager.GetActiveScene().name == "Boss1" || SceneManager.GetActiveScene().name == "Boss2") {
+            PlayMusic(Koda_Boss_Theme, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Zone Tuto") {
+            PlayMusic(Koda_Light_Theme, true);
+        }
+        if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete" ||
+            SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
+            PlayMusic(Koda_Dark_Theme, true);
         }
     }
 
