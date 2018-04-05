@@ -51,7 +51,6 @@ public class MovingRockZ2P3 : MonoBehaviour {
 
 
     private void OnCollisionEnter(Collision col) {
-        Debug.Log("OnCollisionStay" + col.collider.name);
 
         if (col.gameObject.CompareTag("Lure")) {
             LureBlocking = true;
