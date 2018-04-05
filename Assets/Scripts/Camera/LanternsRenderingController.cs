@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class LanternsRenderingController : MonoBehaviour
 {
     private List<LanternController> lanterns;
@@ -34,8 +34,8 @@ public class LanternsRenderingController : MonoBehaviour
             lanterns.Add(l.GetComponent<LanternController>());
         }
 
-        Shader.SetGlobalVectorArray("_Centers", new Vector4[MAX_NUMBER_OF_LANTERNS]);
-        Shader.SetGlobalFloatArray("_Distances", new float[MAX_NUMBER_OF_LANTERNS]);
+        Shader.SetGlobalVectorArray("_CentersLantern", new Vector4[MAX_NUMBER_OF_LANTERNS]);
+        Shader.SetGlobalFloatArray("_DistancesLantern", new float[MAX_NUMBER_OF_LANTERNS]);
 
         UpdateShaderWithLanternsPosition();
         _isDirty = false;
@@ -76,8 +76,8 @@ public class LanternsRenderingController : MonoBehaviour
         Shader.SetGlobalFloat("_Speed", speed);
 
         Shader.SetGlobalInt("_LanternCount", lanterns.Count);
-        Shader.SetGlobalFloatArray("_Distances", distances);
-        Shader.SetGlobalVectorArray("_Centers", positions);
+        Shader.SetGlobalFloatArray("_DistancesLantern", distances);
+        Shader.SetGlobalVectorArray("_CentersLantern", positions);
 
     }
 }
