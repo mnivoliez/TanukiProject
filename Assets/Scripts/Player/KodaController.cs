@@ -621,7 +621,7 @@ public class KodaController : MonoBehaviour
 
                 scalar_forward += Vector3.Dot(inclinationNormalAdd, inclinationTengeantAddForward);
                 scalar_right += Vector3.Dot(inclinationNormalAdd, inclinationTengeantAddRight);
-                Debug.Log("scalar1 tot=" + scalar_forward);
+                //Debug.Log("scalar1 tot=" + scalar_forward);
                 //Debug.Log ("scalar2 tot=" + scalar_right);
 
                 if (scalar_forward < -0.5f)
