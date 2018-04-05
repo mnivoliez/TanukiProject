@@ -43,18 +43,30 @@ public class SoundController : MonoBehaviour {
         }
     }
 
-    private void Start() {
+    // called first
+    void OnEnable() {
+        //Debug.Log("OnEnable called");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
+    // called second
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        //Debug.Log("OnSceneLoaded: " + scene.name);
+        //Debug.Log(mode);
         //Debug.Log(SceneManager.GetActiveScene().name);
-        if(SceneManager.GetActiveScene().name == "Boss1" || SceneManager.GetActiveScene().name == "Boss2") {
+
+        if (SceneManager.GetActiveScene().name == "Boss1" || SceneManager.GetActiveScene().name == "Boss2") {
+            StopMusic();
             PlayMusic(Koda_Boss_Theme, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Zone Tuto") {
+        if (SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "Zone Tuto") {
+            StopMusic();
             PlayMusic(Koda_Light_Theme, true);
         }
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete" ||
             SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
+            StopMusic();
             PlayMusic(Koda_Dark_Theme, true);
         }
     }
@@ -120,6 +132,10 @@ public class SoundController : MonoBehaviour {
         musicSource.clip = musicClip;
         musicSource.Play();
         musicSource.loop = loop;
+    }
+
+    public void StopMusic() {
+        musicSource.Stop();
     }
 
 }
