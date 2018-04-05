@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour {
         }
         else {
             isInvincible = false;
-            GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
+            //GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
 
         }
     }
