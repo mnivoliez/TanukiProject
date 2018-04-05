@@ -70,7 +70,7 @@ public class LanternController : MonoBehaviour {
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
 
-        the_player = GameObject.Find("Player");
+        the_player = GameObject.FindGameObjectWithTag("Player");
         the_lantern = GetComponent<Rigidbody>();
     }
 
@@ -86,7 +86,7 @@ public class LanternController : MonoBehaviour {
         else {
             _range = _max_radius;
             _light.intensity = _max_intensity;
-            if (transform.parent.tag == "Hand") { 
+            if (transform.parent.tag == "Hand") {
                 is_being_played = true;
                 if (is_being_played && !token_play_once) {
                     token_play_once = true;
@@ -101,8 +101,8 @@ public class LanternController : MonoBehaviour {
 
     private void FixedUpdate() {
 
-        the_player = GameObject.Find("Player");
-        the_lantern = GetComponent<Rigidbody>();
+        //the_player = GameObject.FindGameObjectWithTag("Player");
+        //the_lantern = GetComponent<Rigidbody>();
 
         if (the_lantern != null) {
             pos_player = the_player.transform.position;
@@ -126,7 +126,7 @@ public class LanternController : MonoBehaviour {
                 lanterClosestFoundPlay = false;
             }
         }
-        
+
 
         if (GetComponent<Rigidbody>() && GetComponent<Rigidbody>().IsSleeping())
             GetComponent<Rigidbody>().WakeUp();
@@ -150,7 +150,7 @@ public class LanternController : MonoBehaviour {
                 GetComponent<BoxCollider>().enabled = false;
             }
         }
-    } 
+    }
 
     public bool isInEffectArea(Vector3 point) {
         float dist = Vector3.Distance(transform.position, point);
