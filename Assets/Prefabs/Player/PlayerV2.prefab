@@ -633,7 +633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1445498394530796
 GameObject:
   m_ObjectHideFlags: 0
@@ -2284,7 +2284,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1016694685093972}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.15337086, y: 0.85966104, z: 4.23}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4242536727091230}
@@ -3061,7 +3061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9086bfa12385aab4ca643baff46935e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  farClip: 20
+  farClip: 30
   aspectRatio: 0.8
   size: 1.5
   imageResolution: 0.5
@@ -3216,7 +3216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dff346c17ac8de498136f8c94c77ccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParachuteLeaf: {fileID: 1216659900842424}
+  ParachuteLeaf: {fileID: 137523292414133522}
   leafHead: {fileID: 1383801718374554}
   leafHand: {fileID: 1216659900842424}
   attackRange: {fileID: 1211683150294972}
@@ -3233,10 +3233,10 @@ MonoBehaviour:
     type: 2}
   coefResize: 4
   absorptionTimer: 4
-  sakePot: {fileID: 0}
+  sakePot: {fileID: 1859801205628698}
   absorption: {fileID: 8300000, guid: 4a82cdbfa9cb68f49adfd4f07cf37449, type: 3}
   lure: {fileID: 1205433849735308, guid: a7a714b09336eaf4099c9ee50efc4b13, type: 2}
-  tanukiPlayer: {fileID: 0}
+  tanukiPlayer: {fileID: 4242536727091230}
   canvasQTE: {fileID: 1868011067087762}
   loadingBar: {fileID: 224836808966265710}
   centerButton: {fileID: 224119884338353334}
@@ -3251,8 +3251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7566b0cc28105664097dc5c25530b874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHand: {fileID: 0}
-  parentObjectInHand: {fileID: 0}
+  parentObjectInHand: {fileID: 1216659900842424}
 --- !u!119 &119785275203550714
 Projector:
   m_ObjectHideFlags: 1
@@ -3385,7 +3384,7 @@ SkinnedMeshRenderer:
   m_Bones:
   - {fileID: 4566058521670800}
   m_BlendShapeWeights:
-  - -36.82
+  - 0
   m_RootBone: {fileID: 4566058521670800}
   m_AABB:
     m_Center: {x: -0.13586712, y: 0.12136668, z: -0.28592432}
