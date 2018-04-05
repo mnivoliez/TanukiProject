@@ -32,8 +32,8 @@ float4 _FirstTexture_ST;
 	uniform half _Interpolation;
 
 	uniform int _LanternCount;
-	uniform float4 _Centers[20];
-	uniform float _Distances[20];
+	uniform float4 _CentersLantern[20];
+	uniform float _DistancesLantern[20];
 #endif
 
 #if !defined(SHADOWCASTER_PASS)
@@ -97,7 +97,7 @@ half4 frag (v2f i) : SV_Target
 		float len = -100;
 		if(_LanternCount != 0) {
 		    for(int id = 0; id < _LanternCount; id++) {
-		        len = max(len, _Distances[id] - length(_Centers[id].xyz - i.posWorld.xyz));
+		        len = max(len, _DistancesLantern[id] - length(_CentersLantern[id].xyz - i.posWorld.xyz));
 		    }
 		}
 
