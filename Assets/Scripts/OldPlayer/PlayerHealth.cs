@@ -16,7 +16,7 @@ public class PlayerHealth : MonoBehaviour {
     [SerializeField] private GameObject respawnPoint;
     [SerializeField] private GameObject deathTransition;
     private Image Black;
-    private Animator anim;
+    private Animator animTransition;
     private Animator animPlayer;
 
     void Start() {
@@ -28,7 +28,7 @@ public class PlayerHealth : MonoBehaviour {
         GameObject transitionImageInstance = Instantiate(deathTransition);
 
         Black = transitionImageInstance.GetComponent<Image>();
-        anim = transitionImageInstance.GetComponent<Animator>();
+        animTransition = transitionImageInstance.GetComponent<Animator>();
     }
 
     void Update() {
@@ -53,6 +53,7 @@ public class PlayerHealth : MonoBehaviour {
 
     public void LooseHP(float dmg) {
         if (!isInvincible) {
+            animPlayer.SetTrigger("Hit");
             playerHealthCurrent = playerHealthCurrent - dmg;
             KnockBack();
             if (playerHealthCurrent <= 0) {
@@ -78,12 +79,11 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     IEnumerator Fading() {
-        anim.SetBool("Fade", true);
+        animTransition.SetBool("Fade", true);
         yield return new WaitUntil(() => Black.color.a == 1);
         gameObject.transform.rotation = new Quaternion (0,0,0,0);
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
-        anim.SetBool("Fade", false);
-        //animPlayer.SetBool("isDead", false);
+        animTransition.SetBool("Fade", false);
         gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
         playerHealthCurrent = playerHealthMax;
         gameObject.GetComponent<InputController>().SetFreezeInput(false);
@@ -96,8 +96,8 @@ public class PlayerHealth : MonoBehaviour {
         Vector3 knockBackDirection = -transform.forward + Vector3.up;
         GetComponent<Rigidbody>().AddForce(knockBackForce * knockBackDirection, ForceMode.Impulse);
         isInvincible = true;
-        GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0.035f);
-        GetComponent<Renderer>().sharedMaterial.SetVector("_color", new Vector3(1,0,1));
+        //GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0.035f);
+        //GetComponent<Renderer>().sharedMaterial.SetVector("_color", new Vector3(1,0,1));
 
     }
 
@@ -114,11 +114,10 @@ public class PlayerHealth : MonoBehaviour {
 
     public void PlayerDie() {
         gameObject.GetComponent<InputController>().SetFreezeInput(true);
-        //animPlayer.SetBool("isDead", true);
-        animPlayer.SetTrigger("PlayerIsDead");
+        animPlayer.SetTrigger("Death");
         StartCoroutine(Fading());
         gameObject.GetComponent<KodaController>().ResetPlayer();
         knockBackCounter = 0;
-        GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
+        //GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
     }
 }

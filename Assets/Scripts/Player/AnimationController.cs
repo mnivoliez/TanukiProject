@@ -2,68 +2,68 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovementStateReceiver {
+public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovementStateReceiver {
 
     //Animation
     private Animator animBody;
 
-	private float smoothVertSpeed;
+    private float smoothVertSpeed;
 
-    void Start () {
+    void Start() {
         animBody = GetComponent<Animator>();
     }
 
-	public void UpdateState(MovementState state, float speed, float lateralBend, float verticalSpeed) {
+    public void UpdateState(MovementState state, float speed, float lateralBend, float verticalSpeed) {
 
         animBody.SetFloat("Speed", speed);
 
-		animBody.SetFloat("LateralBend", lateralBend);
+        animBody.SetFloat("LateralBend", lateralBend);
 
-		smoothVertSpeed = Mathf.Lerp (smoothVertSpeed, verticalSpeed, .3f);
-		animBody.SetFloat("VerticalSpeed", smoothVertSpeed);
+        smoothVertSpeed = Mathf.Lerp(smoothVertSpeed, verticalSpeed, .3f);
+        animBody.SetFloat("VerticalSpeed", smoothVertSpeed);
 
-		if(Input.GetKeyDown(KeyCode.F)) animBody.SetTrigger("InstantAttack");
-		if(Input.GetKeyDown(KeyCode.G)) animBody.SetTrigger("DistantAttack");
-        if(Input.GetKeyDown(KeyCode.H)) animBody.SetBool("IsAbsorbing", !animBody.GetBool("IsAbsorbing"));
-        if(Input.GetKeyDown(KeyCode.J)) animBody.SetTrigger("Hit");
-        if(Input.GetKeyDown(KeyCode.K)) animBody.SetTrigger("Death");
+        //if(Input.GetKeyDown(KeyCode.F)) animBody.SetTrigger("InstantAttack");
+        //if(Input.GetKeyDown(KeyCode.G)) animBody.SetTrigger("DistantAttack");
+        //if(Input.GetKeyDown(KeyCode.H)) animBody.SetBool("IsAbsorbing", !animBody.GetBool("IsAbsorbing"));
+        //if(Input.GetKeyDown(KeyCode.J)) animBody.SetTrigger("Hit");
+        //if(Input.GetKeyDown(KeyCode.K)) animBody.SetTrigger("Death");
 
         //currentState = state;
         //switch (state) {
 
 
         //    case MovementState.Jump:
-                    
-                
+
+
         //        break;
 
         //    case MovementState.DoubleJump:
-                
+
         //        break;
         //}
-		int layer = 1 << 10 + 1 << 8;
+        int layer = 1 << 10 + 1 << 8;
     }
 
-	public void OnStateEnter(MovementState state) {
-		switch(state) {
-		case MovementState.Jump:
-				animBody.SetBool("isInAir", true);
-				break;
-		case MovementState.PushUp:
-				animBody.SetBool ("isInAir", true);
-				break;
-		case MovementState.Fall:
-				animBody.SetBool("isInAir", true);
-				break;
-			case MovementState.DoubleJump:
-				animBody.SetTrigger("DoubleJump");
-				break;
-		case MovementState.Idle:
-				animBody.SetBool ("isInAir", false);
-				break;
-		case MovementState.Run:
-				animBody.SetBool("isInAir", false);
-				break;
+    public void OnStateEnter(MovementState state) {
+        switch (state) {
+            case MovementState.Jump:
+                animBody.SetBool("isInAir", true);
+                break;
+            case MovementState.PushUp:
+                animBody.SetBool("isInAir", true);
+                break;
+            case MovementState.Fall:
+                animBody.SetBool("isInAir", true);
+                break;
+            case MovementState.DoubleJump:
+                animBody.SetTrigger("DoubleJump");
+                break;
+            case MovementState.Idle:
+                animBody.SetBool("isInAir", false);
+                break;
+            case MovementState.Run:
+                animBody.SetBool("isInAir", false);
+                break;
         }
     }
 
@@ -80,18 +80,18 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
     public void OnStateEnter(InteractState state) {
         switch (state) {
 
-			case InteractState.Glide:
-				animBody.SetBool ("isGliding", true);
+            case InteractState.Glide:
+                animBody.SetBool("isGliding", true);
                 break;
 
             case InteractState.MeleeAttack:
-				animBody.SetTrigger("InstantAttack");
-				//animBody.SetLayerWeight (1, 1);
+                animBody.SetTrigger("InstantAttack");
+                //animBody.SetLayerWeight (1, 1);
                 break;
 
             case InteractState.DistantAttack:
-				animBody.SetTrigger("DistantAttack");
-				//animBody.SetLayerWeight (1, 1);
+                animBody.SetTrigger("DistantAttack");
+                //animBody.SetLayerWeight (1, 1);
                 break;
 
             case InteractState.SpawnLure:
@@ -111,20 +111,20 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
                 break;
 
             case InteractState.Absorb:
-                animBody.SetBool("isAbsorbing", true);
+                animBody.SetBool("IsAbsorbing", true);
                 //animBody.SetLayerWeight(1, 1);
                 break;
 
-			case InteractState.Nothing:
-				break;
+            case InteractState.Nothing:
+                break;
         }
     }
 
     public void OnStateExit(InteractState state) {
         switch (state) {
             case InteractState.Glide:
-				animBody.SetBool("isGliding", false);
-				break;
+                animBody.SetBool("isGliding", false);
+                break;
 
             case InteractState.MeleeAttack:
                 //animBody.SetBool("isAttacking", false);
@@ -151,7 +151,7 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
                 break;
 
             case InteractState.Absorb:
-                animBody.SetBool("isAbsorbing", false);
+                animBody.SetBool("IsAbsorbing", false);
                 break;
         }
     }
