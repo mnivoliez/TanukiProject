@@ -92,36 +92,36 @@ public class InteractBehavior : MonoBehaviour
 
     public void DoGlide()
     {
-        leafHead.SetActive(false);
-        ParachuteLeaf.SetActive(true);
+//        leafHead.SetActive(false);
+//        ParachuteLeaf.SetActive(true);
     }
 
     public void StopGlide()
     {
-        ParachuteLeaf.SetActive(false);
-        leafHead.SetActive(true);
+//        ParachuteLeaf.SetActive(false);
+//        leafHead.SetActive(true);
     }
 
     public void DoMeleeAttack()
     {
-        leafHead.SetActive(false);
-        attackRange.SetActive(true);
-        leafHand.SetActive(true);
+//        leafHead.SetActive(false);
+//        attackRange.SetActive(true);
+//        leafHand.SetActive(true);
     }
 
     public void StopMeleeAttack()
     {
-        leafHead.SetActive(true);
-        attackRange.SetActive(false);
-        leafHand.SetActive(false);
+//        leafHead.SetActive(true);
+//        attackRange.SetActive(false);
+//        leafHand.SetActive(false);
     }
 
     public void DoChargedMeleeAttack()
     {
-        leafHead.SetActive(false);
-        attackRange.SetActive(true);
-        leafHead.SetActive(false);
-        leafHand.SetActive(true);
+//        leafHead.SetActive(false);
+//        attackRange.SetActive(true);
+//        leafHead.SetActive(false);
+//        leafHand.SetActive(true);
     }
 
     public void DoDistantAttack()
@@ -161,7 +161,7 @@ public class InteractBehavior : MonoBehaviour
 
     public void StopDistantAttack()
     {
-        leafHead.SetActive(true);
+//        leafHead.SetActive(true);
     }
 
     public void DoInflate(bool inflate)
@@ -279,14 +279,14 @@ public class InteractBehavior : MonoBehaviour
 
     private void ActivateAbsorptionQTE()
     {
-        canvasQTE.SetActive(true);
-        sakePot.SetActive(true);
+//        canvasQTE.SetActive(true);
+//        sakePot.SetActive(true);
     }
 
     private void DeactivateAbsorptionQTE()
     {
-        sakePot.SetActive(false);
-        canvasQTE.SetActive(false);
+//        sakePot.SetActive(false);
+//        canvasQTE.SetActive(false);
     }
 
     private Pair<Capacity, float> AbsorbeYokai(GameObject absorbableObject)
@@ -323,7 +323,7 @@ public class InteractBehavior : MonoBehaviour
             GameObject smokeSpawn = Instantiate(smokeSpawner, lure.transform.position, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
             Destroy(lure);
-            leafHead.SetActive(true);
+//            leafHead.SetActive(true);
         }
     }
 
@@ -331,7 +331,7 @@ public class InteractBehavior : MonoBehaviour
     {
         if (lure == null && leafHead.activeSelf == false)
         {
-            leafHead.SetActive(true);
+//            leafHead.SetActive(true);
         }
     }
 
@@ -352,10 +352,10 @@ public class InteractBehavior : MonoBehaviour
 
     public void ResetLeaf()
     {
-        leafHead.SetActive(true);
-        leafHand.SetActive(false);
-        sakePot.SetActive(false);
-        ParachuteLeaf.SetActive(false);
+//        leafHead.SetActive(true);
+//        leafHand.SetActive(false);
+//        sakePot.SetActive(false);
+//        ParachuteLeaf.SetActive(false);
     }
 
     public void AddYokaiInRange(GameObject yokai)

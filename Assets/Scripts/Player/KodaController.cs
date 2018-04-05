@@ -94,7 +94,6 @@ public class KodaController : MonoBehaviour
     [Space(10)]
     [SerializeField]
     private float moveSpeed = 10f;
-    [SerializeField] private float animationMoveSpeed = 10f;
     [SerializeField] private float airControl = 12f;
     [SerializeField] private float jumpForce = 120f;
     [SerializeField] private float airStreamForce = 200f;
@@ -119,6 +118,8 @@ public class KodaController : MonoBehaviour
     private float rotateSpeed;
     [SerializeField] private Transform playerModel;
     [SerializeField] private Transform direction;
+
+	private float angle;
 
     private Vector3 orientationMove;
     private Vector3 inputVelocityAxis;
@@ -311,10 +312,11 @@ public class KodaController : MonoBehaviour
         if (previousInteractState != interactState)
         {
             animBody.OnStateExit(previousInteractState);
-            animBody.OnStateEnter(interactState);
+            animBody.OnStateEnter(interactState);	
         }
 
-        animBody.UpdateState(movementState, speed, animationMoveSpeed);
+		animBody.UpdateState(movementState, speed, angle/67.5f, body.velocity.y/10);
+		angle = Mathf.Lerp (angle, 0, 0.2f);
         //ResetInteractStateParameter();
 
         if (runOnWater)
@@ -564,11 +566,11 @@ public class KodaController : MonoBehaviour
         if (allowedToWalk)
         {
             //Debug.Log ("0-45");
-            inputVelocityAxis =
-            (
-                moveStateParameters.moveX * direction.right +
-                moveStateParameters.moveZ * direction.forward
-            ).normalized * moveSpeed;
+			inputVelocityAxis = (moveStateParameters.moveX * direction.right +
+								 moveStateParameters.moveZ * direction.forward);
+			if (inputVelocityAxis.magnitude > 1)
+				inputVelocityAxis = inputVelocityAxis.normalized;
+			inputVelocityAxis *= moveSpeed;
         }
         else
         {
@@ -696,6 +698,13 @@ public class KodaController : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0, direction.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
+
+			angle = newRotation.eulerAngles.y - playerModel.rotation.eulerAngles.y;
+			if (angle > 180)
+				angle -= 360;
+			else if (angle < -180)
+				angle += 360;
+
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
         }
 
@@ -905,6 +914,7 @@ public class KodaController : MonoBehaviour
         {
             moveStateParameters.position_before_fall = body.position;
         }
+
         moveStateParameters.position = body.position;
         moveStateParameters.velocity = body.velocity;
         moveStateParameters.moveX = inputParams.moveX;
