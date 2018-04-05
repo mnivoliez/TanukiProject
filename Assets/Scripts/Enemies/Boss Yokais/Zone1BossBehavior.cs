@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class Zone1BossBehavior : YokaiController {
 
@@ -21,6 +22,8 @@ public class Zone1BossBehavior : YokaiController {
     [SerializeField] private GameObject arena2;
     [SerializeField] private GameObject arena3;
     [SerializeField] private GameObject arena4;
+
+    [SerializeField] private PlayableDirector playableDirector;
 
     bool onMovement = false;
     Vector3 startPosition;
@@ -154,6 +157,7 @@ public class Zone1BossBehavior : YokaiController {
 
             if (hp < hpMax / 2 && !isKnocked) {
                 if (!changingPhase) {
+                    playableDirector.Play();
                     GameObject smokeParticleTransition = Instantiate(knockedParticle, arenaPhase1.transform.position, Quaternion.identity);
                     smokeParticleTransition.transform.GetChild(0).localScale = new Vector3(200f, 200f, 200f);
                     Destroy(smokeParticleTransition, 3f);
