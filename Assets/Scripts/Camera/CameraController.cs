@@ -160,28 +160,28 @@ public class CameraController : MonoBehaviour {
     private void GetCameraMovement() {
         InputParams inputParams = player.GetComponent<InputController>().RetrieveUserRequest();
 
-        if (currentCameraDistance <= maxCameraDistance && currentCameraDistance >= minCameraDistance) // we are inside the range
-        {
-            camBase.position = new Vector3(camBase.position.x, playerTanukiModel.position.y + currentCameraHeight, camBase.position.z);
-        }
-        else {
-            //Debug.Log ("Dist out of range=" + currentCameraDistance);
-
-            if ( // we are out of range and moving
-                (inputParams.moveZ < -0.01f && currentCameraDistance < minCameraDistance) ||
-                (inputParams.moveZ > +0.01f && currentCameraDistance > maxCameraDistance)) {
-                //Debug.Log ("Dist out of range MOVE");
-                camBase.position = playerTanukiModel.position + diffPos;
-            }
-            else {
-                //Debug.Log ("Dist out of range OTHER");
-                currentCameraDistance = Mathf.Clamp(currentCameraDistance, minCameraDistance + 0.05f, maxCameraDistance - 0.05f);
-                Vector3 directionNoY = playerTanukiModel.position - camBase.position;
-                directionNoY.y = 0;
-                directionNoY.Normalize();
-                camBase.position = playerTanukiModel.position + Vector3.up * currentCameraHeight - currentCameraDistance * directionNoY;
-            }
-        }
+       // if (currentCameraDistance <= maxCameraDistance && currentCameraDistance >= minCameraDistance) // we are inside the range
+       // {
+            //camBase.position = new Vector3(camBase.position.x, playerTanukiModel.position.y + currentCameraHeight, camBase.position.z);
+       // }
+//        else {
+//            //Debug.Log ("Dist out of range=" + currentCameraDistance);
+//
+//            if ( // we are out of range and moving
+//                (inputParams.moveZ < -0.01f && currentCameraDistance < minCameraDistance) ||
+//                (inputParams.moveZ > +0.01f && currentCameraDistance > maxCameraDistance)) {
+//                //Debug.Log ("Dist out of range MOVE");
+//                camBase.position = playerTanukiModel.position + diffPos;
+//            }
+//            else {
+//                //Debug.Log ("Dist out of range OTHER");
+//                currentCameraDistance = Mathf.Clamp(currentCameraDistance, minCameraDistance + 0.05f, maxCameraDistance - 0.05f);
+	                Vector3 directionNoY = playerTanukiModel.position - camBase.position;
+	                directionNoY.y = 0;
+	                directionNoY.Normalize();
+	                camBase.position = playerTanukiModel.position + Vector3.up * currentCameraHeight - currentCameraDistance * directionNoY;
+//            }
+//        }
     }
 
     private void GetCameraRotation() {
