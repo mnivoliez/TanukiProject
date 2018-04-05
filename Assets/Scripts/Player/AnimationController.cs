@@ -26,6 +26,7 @@ public class AnimationController :  MonoBehaviour, /*IInterractState,*/ IMovemen
 		if(Input.GetKeyDown(KeyCode.G)) animBody.SetTrigger("DistantAttack");
         if(Input.GetKeyDown(KeyCode.H)) animBody.SetBool("IsAbsorbing", !animBody.GetBool("IsAbsorbing"));
         if(Input.GetKeyDown(KeyCode.J)) animBody.SetTrigger("Hit");
+        if(Input.GetKeyDown(KeyCode.K)) animBody.SetTrigger("Death");
 
         //currentState = state;
         //switch (state) {
