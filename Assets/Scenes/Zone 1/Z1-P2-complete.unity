@@ -3235,7 +3235,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 85047856}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &85047860
 Behaviour:
   m_ObjectHideFlags: 0
@@ -3687,7 +3687,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 105186170}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &105186173
 Behaviour:
   m_ObjectHideFlags: 0
@@ -5341,6 +5341,10 @@ PlayableDirector:
     value: {fileID: 105186170}
   - key: {fileID: 114652737329571968, guid: 0423868e4f5d2ef479491c8a7cff4fcf, type: 2}
     value: {fileID: 105186170}
+  - key: {fileID: 114639698502111812, guid: 0423868e4f5d2ef479491c8a7cff4fcf, type: 2}
+    value: {fileID: 1957128897}
+  - key: {fileID: 114814572771611708, guid: 0423868e4f5d2ef479491c8a7cff4fcf, type: 2}
+    value: {fileID: 1308912803}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &193874047
@@ -20990,7 +20994,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 546825387}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &546825390
 Behaviour:
   m_ObjectHideFlags: 0
@@ -21216,6 +21220,10 @@ PlayableDirector:
     value: {fileID: 1897441280}
   - key: {fileID: 114993584411130924, guid: 18baaf4d04cd7884a8cb1716538f2e37, type: 2}
     value: {fileID: 1897441280}
+  - key: {fileID: 114951670162431216, guid: 18baaf4d04cd7884a8cb1716538f2e37, type: 2}
+    value: {fileID: 1957128897}
+  - key: {fileID: 114055303617472114, guid: 18baaf4d04cd7884a8cb1716538f2e37, type: 2}
+    value: {fileID: 1308912803}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &556780348
@@ -37536,6 +37544,10 @@ PlayableDirector:
     value: {fileID: 490404641}
   - key: {fileID: 0}
     value: {fileID: 1012625002}
+  - key: {fileID: 114143340731105892, guid: d5f25403e9bd1944e984b6dceaf8d19e, type: 2}
+    value: {fileID: 1957128897}
+  - key: {fileID: 114106904552962052, guid: d5f25403e9bd1944e984b6dceaf8d19e, type: 2}
+    value: {fileID: 1308912803}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1012625004
@@ -45964,6 +45976,47 @@ Transform:
   m_PrefabParentObject: {fileID: 4144957973830586, guid: c4c823d4ca100f044aef68eaa6468628,
     type: 2}
   m_PrefabInternal: {fileID: 1304186788}
+--- !u!1 &1308912803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1308912805}
+  - component: {fileID: 1308912804}
+  m_Layer: 0
+  m_Name: Cutscene_UnFreezeInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1308912804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1308912803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cf3892e4c34f748920016e09f4b319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isfreeze: 0
+--- !u!4 &1308912805
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1308912803}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 87.1, y: 4.8599987, z: -41.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 38
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1309480840 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4737052159968556, guid: fbba39631e519d34f84845e17d2003f5,
@@ -49409,6 +49462,10 @@ PlayableDirector:
     value: {fileID: 0}
   - key: {fileID: 0}
     value: {fileID: 0}
+  - key: {fileID: 114766176956806896, guid: 012373b65b45b684fb0bff287a77ff48, type: 2}
+    value: {fileID: 1957128897}
+  - key: {fileID: 114026503710439588, guid: 012373b65b45b684fb0bff287a77ff48, type: 2}
+    value: {fileID: 1308912803}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1531564379
@@ -52981,6 +53038,10 @@ PlayableDirector:
     value: {fileID: 85047856}
   - key: {fileID: 114211766375945136, guid: 9278572afab17964ab6c68f284482883, type: 2}
     value: {fileID: 1127214637}
+  - key: {fileID: 114084147444406558, guid: 9278572afab17964ab6c68f284482883, type: 2}
+    value: {fileID: 1957128897}
+  - key: {fileID: 114664083660192152, guid: 9278572afab17964ab6c68f284482883, type: 2}
+    value: {fileID: 1308912803}
   m_ExposedReferences:
     m_References: []
 --- !u!43 &1768511066
@@ -64448,6 +64509,47 @@ Transform:
   m_PrefabParentObject: {fileID: 4565478167039564, guid: cf32fcd3186e73b4081395bb803227d0,
     type: 2}
   m_PrefabInternal: {fileID: 1954572314}
+--- !u!1 &1957128897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1957128899}
+  - component: {fileID: 1957128898}
+  m_Layer: 0
+  m_Name: Cutscene_FreezeInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1957128898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1957128897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cf3892e4c34f748920016e09f4b319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isfreeze: 1
+--- !u!4 &1957128899
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1957128897}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 87.1, y: 4.8599987, z: -41.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 37
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1958434444
 Prefab:
   m_ObjectHideFlags: 0
@@ -65204,7 +65306,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1994021454}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &1994021457
 Behaviour:
   m_ObjectHideFlags: 0
@@ -66243,6 +66345,10 @@ PlayableDirector:
     value: {fileID: 546825387}
   - key: {fileID: 114751616537424004, guid: 5f0afd4949fffa645908980300674dc6, type: 2}
     value: {fileID: 546825387}
+  - key: {fileID: 114424474151088974, guid: 5f0afd4949fffa645908980300674dc6, type: 2}
+    value: {fileID: 1957128897}
+  - key: {fileID: 114161946942512458, guid: 5f0afd4949fffa645908980300674dc6, type: 2}
+    value: {fileID: 1308912803}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &2047551050

@@ -9,6 +9,7 @@ public enum ActionRequest {
 public struct InputParams {
     public ActionRequest actionRequest;
     public bool contextualButtonPressed;
+    public bool absorptionInterrupted;
     public bool jumpRequest;
     public bool hasDoubleJumped;
     public float moveX;
@@ -20,6 +21,7 @@ public struct InputParams {
         jumpRequest = false;
         moveX = 0f;
         moveZ = 0f;
+        absorptionInterrupted = false;
     }
 }
 
@@ -71,9 +73,9 @@ public class InputController : MonoBehaviour {
 
             if (Input.GetButtonDown("Lure") /*|| (Input.GetAxisRaw("Lure") == 1)*/) {
                 //if (!triggerAxisInUse) {
-                    //triggerAxisInUse = true;
-                    actionRequested++;
-                    inputParams.actionRequest = ActionRequest.SpawnLure;
+                //triggerAxisInUse = true;
+                actionRequested++;
+                inputParams.actionRequest = ActionRequest.SpawnLure;
                 //}
             }
 
