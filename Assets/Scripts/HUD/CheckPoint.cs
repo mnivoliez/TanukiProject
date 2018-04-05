@@ -17,7 +17,7 @@ public class CheckPoint : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
 
-        if(other.name == "Player") {
+        if(other.CompareTag("Player")) {
 
             Game.PreSave_Game_and_Save();
             //Debug.Log(Application.persistentDataPath);
