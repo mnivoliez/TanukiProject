@@ -2636,6 +2636,8 @@ Transform:
   m_LocalPosition: {x: -18.085938, y: 16.939453, z: -19.105469}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2024900615}
+  - {fileID: 397205306}
   - {fileID: 617925721}
   - {fileID: 1886150893}
   m_Father: {fileID: 0}
@@ -3369,6 +3371,47 @@ Transform:
   m_PrefabParentObject: {fileID: 4451109365322330, guid: fa4c975346a38ce4ab54f1b5b0750e8d,
     type: 2}
   m_PrefabInternal: {fileID: 392934281}
+--- !u!1 &397205304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 397205306}
+  - component: {fileID: 397205305}
+  m_Layer: 0
+  m_Name: TimeLine_UnFreezeImput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &397205305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 397205304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cf3892e4c34f748920016e09f4b319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isfreeze: 0
+--- !u!4 &397205306
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 397205304}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 315155166}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &398568635
 Prefab:
   m_ObjectHideFlags: 0
@@ -5751,7 +5794,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 315155166}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 30, y: 100, z: 0}
 --- !u!95 &617925722
 Animator:
@@ -16129,7 +16172,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 315155166}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1886150894
 Animator:
@@ -16180,6 +16223,10 @@ PlayableDirector:
     value: {fileID: 0}
   - key: {fileID: 114880026242990936, guid: 87566fe0d9529b64083ab2b15e7a7fd2, type: 2}
     value: {fileID: 0}
+  - key: {fileID: 114858062778696150, guid: 87566fe0d9529b64083ab2b15e7a7fd2, type: 2}
+    value: {fileID: 2024900613}
+  - key: {fileID: 114468372144351010, guid: 87566fe0d9529b64083ab2b15e7a7fd2, type: 2}
+    value: {fileID: 397205304}
   m_ExposedReferences:
     m_References: []
 --- !u!1001 &1886165618
@@ -17544,6 +17591,47 @@ Transform:
   m_PrefabParentObject: {fileID: 4588023347668978, guid: 45f8afb02641ab045a76f68478a90921,
     type: 2}
   m_PrefabInternal: {fileID: 2020824014}
+--- !u!1 &2024900613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2024900615}
+  - component: {fileID: 2024900614}
+  m_Layer: 0
+  m_Name: TimeLine_FreezeImput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &2024900614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2024900613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cf3892e4c34f748920016e09f4b319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isfreeze: 1
+--- !u!4 &2024900615
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2024900613}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 315155166}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2039472509 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1759741902480468, guid: 40b5a5ef22a1e8044816450141f4a6cd,
@@ -18199,7 +18287,7 @@ MonoBehaviour:
   smokeSpawner: {fileID: 1611510778676392, guid: 9d3fa92c9a5ef914fa318eefb0924a89,
     type: 2}
   coefResize: 4
-  absorptionTimer: 4
+  absorbing: 0
   sakePot: {fileID: 151731961}
   absorption: {fileID: 0}
   lure: {fileID: 1205433849735308, guid: a7a714b09336eaf4099c9ee50efc4b13, type: 2}
