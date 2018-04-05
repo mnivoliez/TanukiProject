@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class PlayerCatchObject : MonoBehaviour {
 
-    [SerializeField]
-    private GameObject leftHand;
-    [SerializeField]
-    private GameObject parentObjectInHand;
+    [SerializeField] private GameObject parentObjectInHand;
     private GameObject objectInHand;
     private float rangeNearestObject;
     private GameObject nearestObject;

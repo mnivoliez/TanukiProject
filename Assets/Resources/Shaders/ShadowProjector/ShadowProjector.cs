@@ -54,7 +54,7 @@ public class ShadowProjector : MonoBehaviour {
 		blurMat = new Material (Shader.Find ("Custom/Projector/Blur"));
 		projMaterial = new Material (Shader.Find ("Custom/Projector/ProjectorShadow"));
 
-		playerLayerMask = LayerMask.GetMask ("Player");
+		playerLayerMask = LayerMask.GetMask ("PlayerShadow");
 		groundLayerMask = LayerMask.GetMask ("Ground");
 
 		InitProjector ();
