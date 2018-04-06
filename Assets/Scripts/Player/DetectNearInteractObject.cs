@@ -6,25 +6,35 @@ public class DetectNearInteractObject : MonoBehaviour {
 
     private float rangeNearestObject;
     private GameObject nearestObject;
+    private float fieldOfView;
 
     // Use this for initialization
     void Start () {
-		
+        fieldOfView = 45f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (nearestObject != null
+            && nearestObject.layer == LayerMask.NameToLayer("Catchable")
+            && Vector3.Distance(nearestObject.gameObject.transform.position, transform.parent.position) > 4
+            && Vector3.Angle(transform.forward, (nearestObject.gameObject.transform.position - transform.parent.position)) > fieldOfView) {
+            nearestObject = null;
+            rangeNearestObject = 0;
+        }
 	}
 
     void OnTriggerStay(Collider collider) {
 
-        bool needDetectObject = (collider.gameObject.layer == LayerMask.NameToLayer("Catchable") || collider.gameObject.layer == LayerMask.NameToLayer("Activable")
+        bool needDetectObject = ((collider.gameObject.layer == LayerMask.NameToLayer("Catchable")
+            && Vector3.Distance(collider.gameObject.transform.position, transform.parent.position) < 4
+            && Vector3.Angle(transform.forward, (collider.gameObject.transform.position - transform.parent.position)) <= fieldOfView)
+            || collider.gameObject.layer == LayerMask.NameToLayer("Activable")
             || (collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked()));
 
         if (needDetectObject) {
-            if (nearestObject == null || (nearestObject.name != null && rangeNearestObject > Vector3.Distance(collider.gameObject.transform.position, transform.position))) {
-                rangeNearestObject = Vector3.Distance(collider.gameObject.transform.position, transform.position);
+            if (nearestObject == null || (nearestObject.name != null && rangeNearestObject > Vector3.Distance(collider.gameObject.transform.position, transform.parent.position))) {
+                rangeNearestObject = Vector3.Distance(collider.gameObject.transform.position, transform.parent.position);
                 nearestObject = collider.gameObject;
             }
         }
@@ -42,7 +52,7 @@ public class DetectNearInteractObject : MonoBehaviour {
         return nearestObject;
     }
 
-    private void OnGUI() {
+    /*private void OnGUI() {
         if (nearestObject != null) {
             GUIStyle style = new GUIStyle();
             style.fontSize = 20;
@@ -50,5 +60,5 @@ public class DetectNearInteractObject : MonoBehaviour {
             style.alignment = TextAnchor.UpperCenter;
             GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 + 100, 200f, 200f), nearestObject.name, style);
         }
-    }
+    }*/
 }
