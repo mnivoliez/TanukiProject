@@ -55,7 +55,7 @@ public class Zone2BossBehavior : YokaiController {
         spawnRock = transform.Find("SpawnRock");
         corps = transform.Find("corps").gameObject;
         
-        SetTarget(GameObject.Find("Player"));
+        SetTarget(GameObject.FindGameObjectWithTag("Player"));
         player = target;
         rendererMat = corps.GetComponent<Renderer>().material;
         myRigidbody = GetComponent<Rigidbody>();
