@@ -71,7 +71,7 @@ public class InteractBehavior : MonoBehaviour {
         enemiesInRange = new HashSet<GameObject>();
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
-        catchSlot = GameObject.Find("Catchable Object");
+        catchSlot = GameObject.Find("JNT_R_CatchableObject_Parent_Hand");
         //sakePot.SetActive(false);
         absorbing = false;
     }

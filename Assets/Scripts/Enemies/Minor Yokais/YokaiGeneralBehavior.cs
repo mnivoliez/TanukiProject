@@ -24,20 +24,21 @@ public class YokaiGeneralBehavior : YokaiController {
     [SerializeField]
     private float neighbourDistance = 2.0f;
 
-    private GameObject[] yokaiList;
+    private List<GameObject> yokaiList;
 
     void Start() {
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
-
+        target = GameObject.FindGameObjectWithTag("Player");
         body = gameObject.GetComponent<Rigidbody>();
+        yokaiList = new List<GameObject>(GameObject.FindGameObjectsWithTag("Yokai"));
     }
 
     void Update() {
         if (isAbsorbed) {
             Die();
         }
-        yokaiList = GameObject.FindGameObjectsWithTag("Yokai");
+        //yokaiList = GameObject.FindGameObjectsWithTag("Yokai");
     }
 
     private void FixedUpdate() {
@@ -136,7 +137,7 @@ public class YokaiGeneralBehavior : YokaiController {
         if (hp <= 0) {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
-            target = GameObject.Find("Player");
+            //target = GameObject.FindGameObjectWithTag("Player");
             SoundController.instance.PlayYokaiSingle(yokaiScream);
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
