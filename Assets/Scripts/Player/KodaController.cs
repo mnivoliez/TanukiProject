@@ -85,7 +85,6 @@ public class KodaController : MonoBehaviour {
     [Space(10)]
     [SerializeField]
     private float moveSpeed = 10f;
-    [SerializeField] private float animationMoveSpeed = 10f;
     [SerializeField] private float airControl = 12f;
     [SerializeField] private float jumpForce = 120f;
     [SerializeField] private float airStreamForce = 200f;
@@ -105,10 +104,13 @@ public class KodaController : MonoBehaviour {
     //Orientation Camera player
     [Header("CAMERA")]
     [Space(10)]
-	//[SerializeField] private Transform pivot;
-	[SerializeField] private float rotateSpeed;
-	[SerializeField] private Transform playerModel;
-	[SerializeField] private Transform direction;
+    //[SerializeField] private Transform pivot;
+    [SerializeField]
+    private float rotateSpeed;
+    [SerializeField] private Transform playerModel;
+    [SerializeField] private Transform direction;
+
+    private float angle;
 
     private Vector3 orientationMove;
     private Vector3 inputVelocityAxis;
@@ -131,7 +133,8 @@ public class KodaController : MonoBehaviour {
     [Header("CAPACITY")]
     [Space(10)]
     // Capacity
-    [SerializeField] private bool hasPermanentDoubleJumpCapacity;
+    [SerializeField]
+    private bool hasPermanentDoubleJumpCapacity;
     [SerializeField] private bool hasPermanentLureCapacity;
     private bool hasPermanentBallCapacity;
     private bool hasPermanentShrinkCapacity;
@@ -159,7 +162,8 @@ public class KodaController : MonoBehaviour {
 
     [Header("SOUND")]
     [Space(10)]
-    [SerializeField] private AudioClip jumpSound;
+    [SerializeField]
+    private AudioClip jumpSound;
     [SerializeField] private AudioClip footStepSound1;
     [SerializeField] private AudioClip footStepSound2;
     [SerializeField] private AudioClip footStepSound3;
@@ -180,7 +184,8 @@ public class KodaController : MonoBehaviour {
 
     [Header("LANTERN")]
     [Space(10)]
-    [SerializeField] private float timeStopToDie = 1.0f;
+    [SerializeField]
+    private float timeStopToDie = 1.0f;
     private bool runOnWater = false;
     private GameObject[] lanterns;
     private GameObject lanternNearest = null;
@@ -214,7 +219,7 @@ public class KodaController : MonoBehaviour {
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
 
-		direction = transform.Find("Direction");
+        direction = transform.Find("Direction");
 
         lanterns = GameObject.FindGameObjectsWithTag("Lantern");
         inclinationNormals = new List<Vector3>();
@@ -273,11 +278,11 @@ public class KodaController : MonoBehaviour {
         if (previousMovementState == MovementState.Fall && (movementState == MovementState.Idle || movementState == MovementState.Run)) {
             if (!runOnWater) {
                 SoundController.instance.PlayKodaSingle(fallGroundSound);
-                //Debug.Log("Outch !");
-                //Debug.Log(body.velocity.y);
+                //Debug.Log(" Fall Ground Outch !");
             }
-            if(runOnWater) {
+            if (runOnWater) {
                 SoundController.instance.PlayKodaSingle(fallWaterSound);
+                //Debug.Log(" Fall Water Splash !");
             }
         }
 
@@ -291,7 +296,8 @@ public class KodaController : MonoBehaviour {
             animBody.OnStateEnter(interactState);
         }
 
-        animBody.UpdateState(movementState, speed, animationMoveSpeed);
+        animBody.UpdateState(movementState, speed, angle / 67.5f, body.velocity.y / 10);
+        angle = Mathf.Lerp(angle, 0, 0.2f);
         //ResetInteractStateParameter();
 
         if (runOnWater) {
@@ -492,14 +498,13 @@ public class KodaController : MonoBehaviour {
         }
 
         //Debug.Log ("allowedToWalk=" + allowedToWalk);
-        if (allowedToWalk)
-		{
+        if (allowedToWalk) {
             //Debug.Log ("0-45");
-            inputVelocityAxis =
-            (
-                moveStateParameters.moveX * direction.right +
-                moveStateParameters.moveZ * direction.forward
-            ).normalized * moveSpeed;
+            inputVelocityAxis = (moveStateParameters.moveX * direction.right +
+                                 moveStateParameters.moveZ * direction.forward);
+            if (inputVelocityAxis.magnitude > 1)
+                inputVelocityAxis = inputVelocityAxis.normalized;
+            inputVelocityAxis *= moveSpeed;
         }
         else {
             //Debug.Log ("45-90");
@@ -549,7 +554,7 @@ public class KodaController : MonoBehaviour {
 
                 scalar_forward += Vector3.Dot(inclinationNormalAdd, inclinationTengeantAddForward);
                 scalar_right += Vector3.Dot(inclinationNormalAdd, inclinationTengeantAddRight);
-                Debug.Log("scalar1 tot=" + scalar_forward);
+                //Debug.Log("scalar1 tot=" + scalar_forward);
                 //Debug.Log ("scalar2 tot=" + scalar_right);
 
                 if (scalar_forward < -0.5f) {
@@ -617,6 +622,13 @@ public class KodaController : MonoBehaviour {
         if (moveStateParameters.moveX != 0 || moveStateParameters.moveZ != 0) {
             transform.rotation = Quaternion.Euler(0, direction.rotation.eulerAngles.y, 0);
             Quaternion newRotation = Quaternion.LookRotation(new Vector3(orientationMove.x, 0f, orientationMove.z));
+
+            angle = newRotation.eulerAngles.y - playerModel.rotation.eulerAngles.y;
+            if (angle > 180)
+                angle -= 360;
+            else if (angle < -180)
+                angle += 360;
+
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
         }
 
@@ -662,7 +674,9 @@ public class KodaController : MonoBehaviour {
                     }
 
                 }
-
+                if (previousInteractState == InteractState.Absorb) {
+                    interactBehaviorCtrl.StopAbsorption();
+                }
                 if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
                     interactBehaviorCtrl.StopCarry(catchableObject);
                     leafLock.parent = InteractState.Nothing;
@@ -795,6 +809,7 @@ public class KodaController : MonoBehaviour {
         if (!IsGoingUp(moveStateParameters) && !IsFalling(moveStateParameters)) {
             moveStateParameters.position_before_fall = body.position;
         }
+
         moveStateParameters.position = body.position;
         moveStateParameters.velocity = body.velocity;
         moveStateParameters.moveX = inputParams.moveX;
@@ -889,7 +904,7 @@ public class KodaController : MonoBehaviour {
                         if (inFrontOfActivableObject) {
                             interactStateParameter.canActivate = true;
                         }
-                        else if (inFrontOfAbsorbableObject) {
+                        else if (inFrontOfAbsorbableObject && !inputParams.absorptionInterrupted) {
                             interactStateParameter.canAbsorb = true;
                         }
                         else if (inFrontOfPortableObject) {
@@ -908,6 +923,7 @@ public class KodaController : MonoBehaviour {
         }
         if (inputParams.actionRequest != ActionRequest.Glide) {
             inputParams.actionRequest = ActionRequest.None;
+            inputParams.absorptionInterrupted = false;
             inputController.SetUserRequest(inputParams);
         }
     }
@@ -998,14 +1014,13 @@ public class KodaController : MonoBehaviour {
 				body.AddForce (Vector3.up * 10, ForceMode.Impulse);*/
             }
         }
-        else if (collid.CompareTag("Yokai")) {
-            if (interactState == InteractState.Absorb && previousInteractState != InteractState.Absorb) {
-                if (interactStateParameter.canAbsorb) {
-                    interactBehaviorCtrl.DoBeginAbsorption(collid.gameObject);
-                }
+        else if (collid.CompareTag("Yokai") && interactState == InteractState.Absorb && interactStateParameter.canAbsorb) {
+            if (previousInteractState != InteractState.Absorb) {
+
+                interactBehaviorCtrl.DoBeginAbsorption(collid.gameObject);
 
             }
-            else if (previousInteractState == InteractState.Absorb) {
+            else {
                 Pair<Capacity, float> pairCapacity = interactBehaviorCtrl.DoContinueAbsorption(collid.gameObject, inputController);
                 if (pairCapacity.First != Capacity.Nothing) {
                     AddCapacity(pairCapacity);
@@ -1026,8 +1041,7 @@ public class KodaController : MonoBehaviour {
     }
 
     //Temporary in public mode for the playtest
-    public void AddCapacity(Pair<Capacity, float> pairCapacity)
-    {
+    public void AddCapacity(Pair<Capacity, float> pairCapacity) {
         if (pairCapacity.First != Capacity.Nothing && pairCapacity.Second == 0) {
             switch (pairCapacity.First) {
 
@@ -1039,10 +1053,10 @@ public class KodaController : MonoBehaviour {
                     hasPermanentLureCapacity = true;
                     break;
             }
-        } else {
+        }
+        else {
             temporaryCapacity = pairCapacity.First;
-            switch (pairCapacity.First)
-            {
+            switch (pairCapacity.First) {
 
                 case Capacity.DoubleJump:
                     canvasQTE.SetActive(true);
@@ -1052,7 +1066,7 @@ public class KodaController : MonoBehaviour {
                     break;
             }
         }
-        
+
 
         timerCapacity = pairCapacity.Second;
         maxPowerUpGauge = pairCapacity.Second;
