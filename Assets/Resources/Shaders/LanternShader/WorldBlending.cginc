@@ -50,6 +50,9 @@ float4 _FirstTexture_ST;
 
 	uniform half _StepCount;
 
+	uniform fixed4 _AlphaModeEmiL;
+	uniform fixed4 _AlphaModeEmiD;
+
 	#if defined(_LANTERN)
 		uniform fixed4 _SecondLColor;
 		uniform fixed4 _SecondDColor;
@@ -111,9 +114,9 @@ half4 frag (v2f i) : SV_Target
 	fixed4 tex2 = tex2D(_SecondTexture, TRANSFORM_TEX (i.uv0, _FirstTexture));
 
 	float isMask = 1.0;
-	#if defined(_ISALPHA_ON)
+	#if defined(_MASKMODE)
 		isMask = tex1.a;
-	#else
+	#elif defined(_ALPHAMODE)
 		#if defined(_LANTERN)
 			clip(lerp(tex1.a, tex2.a, lrp)-0.5);
 		#else
@@ -167,15 +170,21 @@ half4 frag (v2f i) : SV_Target
 	    float3 indirectDiff = ShadeSH9(float4(i.normalDir, 1));
 		float3 emissive = 0;
 		#if defined(_LANTERN)
-			emissive += (stepDiff * diffCol.rgb * lerp(_FirstLColor.rgb*_FirstLColor.a, _SecondLColor.rgb*_SecondLColor.a, lrp)*5.0)
-				   + (1-stepDiff) * diffCol.rgb * lerp(_FirstDColor.rgb*_FirstDColor.a, _SecondDColor.rgb*_SecondDColor.a, lrp)*5.0;
-			emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*100.0);
+			#if defined(_EMISSIVEMODE)
+				emissive += lerp(tex1.a * _AlphaModeEmiL.rgb * _AlphaModeEmiL.a, tex2.a * _AlphaModeEmiD.rgb * _AlphaModeEmiD.a, lrp)*25.0;
+			#endif
+			emissive += (stepDiff * diffCol.rgb * lerp(_FirstLColor.rgb*_FirstLColor.a, _SecondLColor.rgb*_SecondLColor.a, lrp)*25.0)
+				   + (1-stepDiff) * diffCol.rgb * lerp(_FirstDColor.rgb*_FirstDColor.a, _SecondDColor.rgb*_SecondDColor.a, lrp)*25.0;
+			emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*25.0);
 		    #if defined(_ISMASK_ON)
-				emissive += lerp(rMask * _MaskRColor.rgb * (_MaskREmi-1), gMask * _MaskGColor.rgb * (_MaskGEmi-1), lrp)*5.0;
+				emissive += lerp(rMask * _MaskRColor.rgb * (_MaskREmi-1), gMask * _MaskGColor.rgb * (_MaskGEmi-1), lrp)*25.0;
 			#endif
 		#else
-			emissive += (stepDiff * diffCol.rgb * _FirstLColor.rgb*_FirstLColor.a*5.0)
-				   + (1-stepDiff) * diffCol.rgb*_FirstDColor.rgb*_FirstDColor.a*5.0;
+			#if defined(_EMISSIVEMODE)
+				emissive += tex1.a * _AlphaModeEmiL.rgb * _AlphaModeEmiL.a*25.0;
+			#endif
+			emissive += (stepDiff * diffCol.rgb * _FirstLColor.rgb*_FirstLColor.a*25.0)
+				   + (1-stepDiff) * diffCol.rgb*_FirstDColor.rgb*_FirstDColor.a*25.0;
 		#endif
 		return half4(((directDiff + indirectDiff + spec + rim) * diffCol + emissive) * isMask, 1.0);
 	#elif defined(FORWARDADD_PASS)
