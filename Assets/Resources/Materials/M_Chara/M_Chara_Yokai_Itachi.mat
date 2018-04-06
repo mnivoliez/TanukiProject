@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: M_Chara_Yokai_Itachi
   m_Shader: {fileID: 4800000, guid: 19581300d12b17b4a8c5d85646a80c8d, type: 3}
-  m_ShaderKeywords: _ISALPHA_ON _MODE_SIMPLE
+  m_ShaderKeywords: _ALPHAMODE_EMISSIVE _EMISSIVEMODE _ISALPHA_ON _MODE_SIMPLE _SIMPLE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -75,6 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlphaMode: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -90,7 +91,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RimIntensity: 9.1
+    - _RimIntensity: 20
     - _RimPow: 1
     - _ShadowEffects: 5
     - _ShadowSize: 0
@@ -99,17 +100,20 @@ Material:
     - _SpecPow: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StepCount: 6.37
+    - _StepCount: 3.91
     - _Strength: 1
     - _Thickness: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - _AlphaModeEmi: {r: 1, g: 0, b: 0, a: 1}
+    - _AlphaModeEmiD: {r: 1, g: 0, b: 0, a: 0.647}
+    - _AlphaModeEmiL: {r: 0.034602053, g: 0.9411765, b: 0.56604224, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorEmissive: {r: 0, g: 1, b: 0.5862069, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FirstDColor: {r: 0, g: 0, b: 0, a: 0}
-    - _FirstLColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FirstDColor: {r: 1, g: 1, b: 1, a: 0}
+    - _FirstLColor: {r: 0.11764705, g: 0.009515572, b: 0.10124087, a: 0.141}
     - _Globalcolor: {r: 0.49264705, g: 0.49264705, b: 0.49264705, a: 1}
     - _MaskColor: {r: 0, g: 0.6275863, b: 1, a: 0.191}
     - _MaskGColor: {r: 0, g: 0, b: 0, a: 1}

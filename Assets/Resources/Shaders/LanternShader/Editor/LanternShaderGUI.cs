@@ -14,12 +14,22 @@ public class LanternShaderGUI : ShaderGUI {
 		Water
 	}
 
+	private enum AlphaMode {
+		Alpha,
+		Emissive,
+		Mask
+	}
+
 	private string shaderName = "Custom/Lantern/WorldBlending";
 
 	private MaterialProperty _Mode = null;
 
-	private MaterialProperty _IsAlpha = null;
-	GUIContent isAlphaGUI = new GUIContent ("Alpha is Mask ?", "Take (A) as a mask ?");
+	private MaterialProperty _AlphaMode = null;
+	GUIContent isAlphaModeGUI = new GUIContent ("Alpha is ?", "Take (A) as ?");
+	private MaterialProperty _AlphaModeEmiL = null;
+	GUIContent alphaModeEmiLGUI = new GUIContent ("Light", "Albedo (RGB) and Emissive (A)");
+	private MaterialProperty _AlphaModeEmiD = null;
+	GUIContent alphaModeEmiDGUI = new GUIContent ("Dark", "Albedo (RGB) and Emissive (A)");
 
 	private MaterialProperty _FirstTexture = null;
 	GUIContent firstTextureGUI = new GUIContent ("Light", "Albedo (RGB) and Alpha Cutout (A)");
@@ -29,7 +39,6 @@ public class LanternShaderGUI : ShaderGUI {
 	GUIContent firstColorWaterGUI = new GUIContent ("Water", "Albedo (RGB) and Transparency (A)");
 	private MaterialProperty _FirstDColor = null;
 	GUIContent firstDColorGUI = new GUIContent ("Dim", "Dim Color (RGB) and Emissive (A)");
-
 
 	private MaterialProperty _SecondTexture = null;
 	GUIContent secondTextureGUI = new GUIContent ("Dark", "Albedo (RGB) and Alpha Cutout (A)");
@@ -104,7 +113,9 @@ public class LanternShaderGUI : ShaderGUI {
 		_SecondLColor = FindProperty ("_SecondLColor", props);
 		
 		if (ShaderType.Base == shaderType) {
-			_IsAlpha = ShaderGUI.FindProperty ("_IsAlpha", props);
+			_AlphaMode = ShaderGUI.FindProperty ("_AlphaMode", props);
+			_AlphaModeEmiL = ShaderGUI.FindProperty ("_AlphaModeEmiL", props);
+			_AlphaModeEmiD = ShaderGUI.FindProperty ("_AlphaModeEmiD", props);
 
 			_FirstDColor = FindProperty ("_FirstDColor", props);
 			_SecondDColor = ShaderGUI.FindProperty ("_SecondDColor", props);
@@ -159,7 +170,20 @@ public class LanternShaderGUI : ShaderGUI {
 	void DoBase() {
 		EditorGUI.BeginChangeCheck ();
 		editor.ShaderProperty (_Mode, _Mode.displayName);
+		if (shaderType == ShaderType.Base) {
+			GUILayout.Space(pixelSpace);
+			editor.ShaderProperty (_AlphaMode, isAlphaModeGUI);
+		}
 		bool hasChanged = EditorGUI.EndChangeCheck ();
+
+		if(shaderType == ShaderType.Base) {
+			if((AlphaMode)_AlphaMode.floatValue == AlphaMode.Emissive) {
+				if((BlendMode)_Mode.floatValue == BlendMode.Lantern)
+					TextureInline(null, _AlphaModeEmiL, _AlphaModeEmiD, null, alphaModeEmiLGUI, alphaModeEmiDGUI);
+				else
+					editor.ShaderProperty (_AlphaModeEmiL, alphaModeEmiLGUI);
+			}
+		}
 		
 		if ((BlendMode)_Mode.floatValue == BlendMode.Simple) {
 			DoSimpleArea ();
@@ -192,10 +216,7 @@ public class LanternShaderGUI : ShaderGUI {
 
 	void DoSimpleArea () {
 		GUILayout.Space(pixelSpace);
-		if (shaderType == ShaderType.Base) {
-			editor.ShaderProperty (_IsAlpha, isAlphaGUI);
-			GUILayout.Space(pixelSpace);
-		}
+
 		EditorGUILayout.LabelField ("Texture", EditorStyles.boldLabel);
 		if (shaderType == ShaderType.Base) {
 			firstTextureGUI.text = "Tex";
@@ -211,10 +232,6 @@ public class LanternShaderGUI : ShaderGUI {
 
 	void DoLanternArea () {
 		GUILayout.Space(pixelSpace);
-		if (shaderType == ShaderType.Base) {
-			editor.ShaderProperty (_IsAlpha, isAlphaGUI);
-			GUILayout.Space(pixelSpace);
-		}
 
 		if (shaderType == ShaderType.Base) {
 			EditorGUILayout.LabelField ("Light Texture", EditorStyles.boldLabel);
@@ -301,7 +318,10 @@ public class LanternShaderGUI : ShaderGUI {
 	}
 
 	void TextureInline(MaterialProperty propTex, MaterialProperty propLCol, MaterialProperty propDCol, GUIContent tex, GUIContent lCol, GUIContent dCol) {
-		Rect rect = editor.TexturePropertySingleLine(tex, propTex);
+		Rect rect = EditorGUILayout.GetControlRect ();
+
+		if(propTex != null) editor.TexturePropertySingleLine(tex, propTex);
+
 		if (propLCol != null) {
 			Rect rect1 = new Rect (rect);
 			rect1.xMin = rect.width / 2.265f -14;
@@ -357,5 +377,12 @@ public class LanternShaderGUI : ShaderGUI {
 		SetKeyword ("_SIMPLE", !isLantern);
 		SetKeyword ("_LANTERN", isLantern);
 		SetKeyword ("_ISMASK_ON", isMask);
+		
+		if (shaderType == ShaderType.Base) {
+			AlphaMode alphaMode = (AlphaMode)_AlphaMode.floatValue;
+			SetKeyword ("_ALPHAMODE", alphaMode == AlphaMode.Alpha);
+			SetKeyword ("_EMISSIVEMODE", alphaMode == AlphaMode.Emissive);
+			SetKeyword ("_MASKMODE", alphaMode == AlphaMode.Mask);
+		}
 	}
 }
