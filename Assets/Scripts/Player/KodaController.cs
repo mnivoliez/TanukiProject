@@ -139,8 +139,8 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private bool hasPermanentLureCapacity;
     private bool hasPermanentBallCapacity;
     private bool hasPermanentShrinkCapacity;
-    [SerializeField] private Capacity temporaryCapacity;
-    [SerializeField] private float timerCapacity;
+    private Capacity temporaryCapacity;
+    private float timerCapacity;
 
     //QTE
     private float maxPowerUpGauge = 10f;
