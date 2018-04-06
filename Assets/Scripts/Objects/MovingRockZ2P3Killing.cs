@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingRockZ2P3 : MonoBehaviour {
-
+public class MovingRockZ2P3Killing : MonoBehaviour {
     private Vector3 position_movingrock;
     private Vector3 position_movingrock_origin;
     private Rigidbody MovingBlock;
@@ -17,7 +16,7 @@ public class MovingRockZ2P3 : MonoBehaviour {
     private PlayerHealth KodaPlayerHP;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         position_movingrock = transform.position;
         position_movingrock_origin = transform.position;
 
@@ -25,9 +24,9 @@ public class MovingRockZ2P3 : MonoBehaviour {
 
         KodaPlayerHP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         Lure = GameObject.FindGameObjectWithTag("Lure");
 
         if (Lure == null) {
@@ -44,12 +43,12 @@ public class MovingRockZ2P3 : MonoBehaviour {
                 x = 0.0f;
             }
 
-            position_movingrock.y = position_movingrock_origin.y/2.0f * Mathf.Cos(x * pi) + position_movingrock_origin.y/2.0f;
+            position_movingrock.y = position_movingrock_origin.y / 2.0f * Mathf.Cos(x * pi) + position_movingrock_origin.y / 2.0f;
             transform.position = position_movingrock;
             x = x + 0.002f;
         }
-        
-	}
+
+    }
 
 
     private void OnCollisionEnter(Collision col) {
@@ -57,14 +56,14 @@ public class MovingRockZ2P3 : MonoBehaviour {
         if (col.gameObject.CompareTag("Lure")) {
             LureBlocking = true;
         }
-        /*if(col.gameObject.CompareTag("Player")){
+        if (col.gameObject.CompareTag("Player")) {
             Player_Crunched = true;
-        }*/
+        }
     }
 
-    /*private void OnCollisionExit(Collision col) {
+    private void OnCollisionExit(Collision col) {
         if (col.gameObject.CompareTag("Player")) {
             Player_Crunched = false;
         }
-    }*/
+    }
 }
