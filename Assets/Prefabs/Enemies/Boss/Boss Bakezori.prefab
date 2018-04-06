@@ -28,6 +28,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1128927869016112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4016026466256906}
+  - component: {fileID: 20733271296862928}
+  - component: {fileID: 124665437404024830}
+  - component: {fileID: 81088677951622814}
+  m_Layer: 0
+  m_Name: CutScene_Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!1 &1230049228463812
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,6 +127,7 @@ GameObject:
   - component: {fileID: 54213137508096448}
   - component: {fileID: 64166624730048370}
   - component: {fileID: 114259744709687526}
+  - component: {fileID: 95341259793387282}
   m_Layer: 0
   m_Name: Boss Bakezori
   m_TagString: Yokai
@@ -133,6 +152,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4016026466256906
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1128927869016112}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0.598, z: 1.428}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4488226356366060}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4032072454690394
 Transform:
   m_ObjectHideFlags: 1
@@ -191,8 +223,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1652755976738808}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.14, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 11, y: 11, z: 11}
   m_Children:
   - {fileID: 4032072454690394}
@@ -201,6 +233,7 @@ Transform:
   - {fileID: 4191070640476588}
   - {fileID: 4428088447538558}
   - {fileID: 4164279879216692}
+  - {fileID: 4016026466256906}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -230,6 +263,42 @@ Transform:
   m_Father: {fileID: 4488226356366060}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &20733271296862928
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1128927869016112}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
 --- !u!23 &23074203832504002
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -278,7 +347,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: cca542751135584489f300ccbf463d17, type: 2}
+  - {fileID: 2100000, guid: ee59aee5f52f0cc47b2970af97aeeb0e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -346,7 +415,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 54ca12d76525434499eea58d134cf92c, type: 2}
+  - {fileID: 2100000, guid: ee59aee5f52f0cc47b2970af97aeeb0e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -438,6 +507,30 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 3f1c3bffb64294e46a109da9418ad9f0, type: 3}
+--- !u!81 &81088677951622814
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1128927869016112}
+  m_Enabled: 1
+--- !u!95 &95341259793387282
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1652755976738808}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114209728644803002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -471,6 +564,9 @@ MonoBehaviour:
   timerCapacity: 0
   damage: 1
   distanceLimit: 0
+  absorbed: {fileID: 8300000, guid: 399b7d5af75fce04fbb0514bfb73ce90, type: 3}
+  yokaiScream: {fileID: 8300000, guid: c0c1d0863cba86d4da8dededf5a0eae3, type: 3}
+  yokaiHurt: {fileID: 8300000, guid: 4a82cdbfa9cb68f49adfd4f07cf37449, type: 3}
   jumpForce: 20
   spawnBoss: {fileID: 0}
   platform1: {fileID: 0}
@@ -483,6 +579,7 @@ MonoBehaviour:
   arena2: {fileID: 0}
   arena3: {fileID: 0}
   arena4: {fileID: 0}
+  playableDirector: {fileID: 0}
   projectileDamage: 1
   firerate: 5
   prefabProjectile: {fileID: 1375116678262640, guid: 88d92c83a65977a489e8f9cd656da485,
@@ -518,6 +615,13 @@ Projector:
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 4294967039
+--- !u!124 &124665437404024830
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1128927869016112}
+  m_Enabled: 1
 --- !u!135 &135320025962271174
 SphereCollider:
   m_ObjectHideFlags: 1
