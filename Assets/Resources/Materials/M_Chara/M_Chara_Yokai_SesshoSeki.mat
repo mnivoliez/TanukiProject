@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: M_Chara_Yokai_SesshoSeki
   m_Shader: {fileID: 4800000, guid: 19581300d12b17b4a8c5d85646a80c8d, type: 3}
-  m_ShaderKeywords: _ISALPHA_ON _MODE_SIMPLE
+  m_ShaderKeywords: _ALPHAMODE_EMISSIVE _EMISSIVEMODE _ISALPHA_ON _MODE_SIMPLE _SIMPLE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -75,6 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlphaMode: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -90,7 +91,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RimIntensity: 0
+    - _RimIntensity: 6.2
     - _RimPow: 1
     - _ShadowEffects: 5
     - _ShadowSize: 0
@@ -99,17 +100,20 @@ Material:
     - _SpecPow: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StepCount: 7.54
+    - _StepCount: 6.14
     - _Strength: 1
     - _Thickness: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - _AlphaModeEmi: {r: 0, g: 0, b: 0, a: 0}
+    - _AlphaModeEmiD: {r: 0, g: 0, b: 0, a: 0}
+    - _AlphaModeEmiL: {r: 1, g: 0.5586207, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorEmissive: {r: 1, g: 0.35172424, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FirstDColor: {r: 1, g: 0.9724138, b: 0, a: 1}
-    - _FirstLColor: {r: 1, g: 0.47586197, b: 0, a: 1}
+    - _FirstDColor: {r: 0, g: 0.0049695573, b: 0.102941155, a: 0.166}
+    - _FirstLColor: {r: 0.38022014, g: 0.34672362, b: 0.3897059, a: 0.328}
     - _Globalcolor: {r: 0.49264705, g: 0.49264705, b: 0.49264705, a: 1}
     - _MaskColor: {r: 0, g: 0.6275863, b: 1, a: 0.191}
     - _MaskGColor: {r: 0, g: 0, b: 0, a: 1}
