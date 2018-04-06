@@ -2369,14 +2369,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1445498394530796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -89.56, y: 0, z: -23.3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4482390627050012}
   - {fileID: 4242536727091230}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -86.62701, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4726461154928680
 Transform:
   m_ObjectHideFlags: 1
@@ -2636,7 +2636,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: -2.5
-  far clip plane: 2.035351
+  far clip plane: 2.597545
   field of view: 60
   orthographic: 1
   orthographic size: 1.5
@@ -2888,7 +2888,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   airControl: 12
-  jumpForce: 130
+  jumpForce: 140
   airStreamForce: 200
   glideCounterForce: 160
   slideAngleNormal: 45
@@ -2898,8 +2898,8 @@ MonoBehaviour:
   rotateSpeed: 10
   playerModel: {fileID: 4242536727091230}
   direction: {fileID: 4482390627050012}
-  hasPermanentDoubleJumpCapacity: 1
-  hasPermanentLureCapacity: 1
+  hasPermanentDoubleJumpCapacity: 0
+  hasPermanentLureCapacity: 0
   canvasQTE: {fileID: 1868011067087762}
   loadingBar: {fileID: 224836808966265710}
   centerButton: {fileID: 224119884338353334}
@@ -3290,7 +3290,7 @@ Projector:
   m_Enabled: 1
   serializedVersion: 2
   m_NearClipPlane: 0
-  m_FarClipPlane: 2.035351
+  m_FarClipPlane: 2.597545
   m_FieldOfView: 60
   m_AspectRatio: 0.8
   m_Orthographic: 1
