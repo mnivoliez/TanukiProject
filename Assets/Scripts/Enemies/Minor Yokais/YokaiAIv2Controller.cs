@@ -124,6 +124,7 @@ public class YokaiAIv2Controller : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
+            SoundController.instance.PlayYokaiSingle(yokaiHurt);
             LooseHp(damage);
 
         }
@@ -159,6 +160,7 @@ public class YokaiAIv2Controller : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die() {
