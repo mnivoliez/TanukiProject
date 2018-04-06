@@ -14,9 +14,6 @@ public class BazekoriBehavior : YokaiController {
     [SerializeField] private GameObject hpCollectable;
     private Vector3 positionCollectable;
 
-    [SerializeField] private AudioClip yokaiScream;
-    [SerializeField] private AudioClip yokaiHurt;
-
     void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
         rendererMat = gameObject.GetComponent<Renderer>().material;
@@ -83,7 +80,7 @@ public class BazekoriBehavior : YokaiController {
 
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
-            if(Random.Range(0,10) > 4.9f) {
+            if (Random.Range(0, 10) > 4.9f) {
                 Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
             }
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);

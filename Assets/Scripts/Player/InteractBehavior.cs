@@ -50,7 +50,10 @@ public class InteractBehavior : MonoBehaviour {
     [Space(8)]
     [SerializeField]
     private GameObject lure;
-    [SerializeField] private Transform tanukiPlayer;
+    [SerializeField]
+    private Transform tanukiPlayer;
+    [SerializeField][Range(0,3)]
+    private float lureSpawnHeight = 1f;
 
     //QTE
     private float maxAbsorptionGauge = 4f;
@@ -101,7 +104,7 @@ public class InteractBehavior : MonoBehaviour {
 
     public void StopGlide() {
         StopAllCoroutines();
-        
+
         StartCoroutine(FoldUpLeaf());
         //ParachuteLeaf.SetActive(false);
         //leafHead.SetActive(true);
@@ -295,7 +298,7 @@ public class InteractBehavior : MonoBehaviour {
         GameObject clone = null;
         if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
             leafHead.SetActive(false);
-            Vector3 spawnLurePosition = tanukiPlayer.position + new Vector3(0, 3, 0) + (tanukiPlayer.forward * 2);
+            Vector3 spawnLurePosition = tanukiPlayer.position + new Vector3(0, lureSpawnHeight, 0) + (tanukiPlayer.forward * 2);
             GameObject smokeSpawn = Instantiate(smokeSpawner, spawnLurePosition, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
             clone = Instantiate(lure, spawnLurePosition, tanukiPlayer.rotation);
