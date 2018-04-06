@@ -9,6 +9,7 @@ public class DetectYokaiArea : MonoBehaviour {
 	void Start () {
         interBehavior = GameObject.FindGameObjectWithTag("Player").GetComponent<InteractBehavior>();
         GetComponent<SphereCollider>().radius = interBehavior.GetDistantAttackRange();
+
     }
 
 
