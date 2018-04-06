@@ -26,9 +26,6 @@ public class YokaiGeneralBehavior : YokaiController {
 
     private List<GameObject> yokaiList;
 
-    [SerializeField] private AudioClip yokaiScream;
-    [SerializeField] private AudioClip yokaiHurt;
-
     void Start() {
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
@@ -70,7 +67,7 @@ public class YokaiGeneralBehavior : YokaiController {
                 if (bodyAttack) {
                     //attack target with rate
                     if (Time.time > nextBodyAttack) {
-                        target = GameObject.FindGameObjectWithTag("Player");
+                        target = GameObject.Find("Player");
                         nextBodyAttack = nextBodyAttack + rateBodyAttack;
                         target.GetComponent<PlayerHealth>().LooseHP(damageBody);
                     }
@@ -162,7 +159,6 @@ public class YokaiGeneralBehavior : YokaiController {
     }
 
     public override void Die() {
-        //Debug.Log("Target: " + target);
         if (Vector3.Distance(transform.position, target.transform.position) < 0.5) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
@@ -202,7 +198,7 @@ public class YokaiGeneralBehavior : YokaiController {
         int groupSize = 0;
 
         foreach (GameObject yokai in yokaiList) {
-            if (yokai != gameObject && yokai != null) {
+            if (yokai != gameObject) {
                 distance = Vector3.Distance(yokai.transform.position, transform.position);
                 if (distance < neighbourDistance) {
                     vcentre = vcentre + yokai.transform.position;
@@ -215,7 +211,6 @@ public class YokaiGeneralBehavior : YokaiController {
                 }
             }
         }
-        
         if (groupSize > 0) {
             rel = true;
             vcentre = vcentre / groupSize + (tarPos - transform.position);

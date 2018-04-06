@@ -203,10 +203,10 @@ half4 frag (v2f i) : SV_Target
 	    float3 indirectDiff = ShadeSH9(float4(i.normalDir, 1));
 		float3 emissive = 0;
 		#if defined(_LANTERN)
-			emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*100.0);
-			emissive += lerp((tex1+invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a, (tex2+invEdgeIntensity) * _SecondFoamColor*_SecondFoamColor.a, lrp) *100.0;
+			emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*25.0);
+			emissive += lerp((tex1+invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a, (tex2+invEdgeIntensity) * _SecondFoamColor*_SecondFoamColor.a, lrp) *25.0;
 		#else
-			emissive += (tex1 + invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a*100.0;
+			emissive += (tex1 + invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a*25.0;
 		#endif
 		return half4((directDiff + indirectDiff) * diffCol + emissive, opacity);
 	#else
