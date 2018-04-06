@@ -8,7 +8,7 @@ public class InteractBehavior : MonoBehaviour {
     [Header("GLIDE")]
     [Space(8)]
     [SerializeField]
-    private GameObject ParachuteLeaf;
+    private SkinnedMeshRenderer ParachuteLeaf;
 
     [Header("MELEE ATTACK")]
     [Space(8)]
@@ -20,8 +20,7 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("DISTANT ATTACK")]
     [Space(8)]
-    [SerializeField]
-    private GameObject leafPrefab;
+    [SerializeField] private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private float distantAttackRange = 8f;
     [SerializeField] private float distandAttackConeAngle = 20f;
@@ -30,8 +29,7 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("INFLATE")]
     [Space(8)]
-    [SerializeField]
-    private GameObject normalForm;
+    [SerializeField] private GameObject normalForm;
     [SerializeField] private GameObject inflateForm;
     [SerializeField] private GameObject smokeSpawner;
 
@@ -43,8 +41,8 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("ABSORB")]
     [Space(8)]
-    [SerializeField]
-    private float absorptionTimer = 4f;
+    private bool absorbing;
+    [SerializeField] private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
     [SerializeField] private AudioClip absorption;
 
@@ -71,22 +69,51 @@ public class InteractBehavior : MonoBehaviour {
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
         catchSlot = GameObject.Find("Catchable Object");
-        sakePot.SetActive(false);
+        //sakePot.SetActive(false);
+        absorbing = false;
     }
 
     // Update is called once per frame
     void Update() {
-
+        if (absorbing) {
+            absorptionTimer -= Time.deltaTime;
+            loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
+            absorptionGauge -= 0.01f;
+            if (absorptionTimer < 0) StopAbsorption();
+        }
     }
 
     public void DoGlide() {
-        leafHead.SetActive(false);
-        ParachuteLeaf.SetActive(true);
+        //leafHead.SetActive(false);
+        //ParachuteLeaf.SetActive(true);
+        StopAllCoroutines();
+        StartCoroutine(DeployLeaf());
+    }
+
+    IEnumerator DeployLeaf() {
+        float lerpBlend;
+        while (ParachuteLeaf.GetBlendShapeWeight(0) < 99) {
+            lerpBlend = Mathf.Lerp(ParachuteLeaf.GetBlendShapeWeight(0), 100, 0.3f);
+            ParachuteLeaf.SetBlendShapeWeight(0, lerpBlend);
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
     public void StopGlide() {
-        ParachuteLeaf.SetActive(false);
-        leafHead.SetActive(true);
+        StopAllCoroutines();
+        
+        StartCoroutine(FoldUpLeaf());
+        //ParachuteLeaf.SetActive(false);
+        //leafHead.SetActive(true);
+    }
+
+    IEnumerator FoldUpLeaf() {
+        float lerpBlend;
+        while (ParachuteLeaf.GetBlendShapeWeight(0) > 1) {
+            lerpBlend = Mathf.Lerp(ParachuteLeaf.GetBlendShapeWeight(0), 0, 0.5f);
+            ParachuteLeaf.SetBlendShapeWeight(0, lerpBlend);
+            yield return new WaitForSeconds(0.03f);
+        }
     }
 
     public void DoMeleeAttack() {
@@ -196,29 +223,23 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void DoBeginAbsorption(GameObject absorbableObject) {
-        canvasQTE.SetActive(true);
-        sakePot.SetActive(true);
+        ActivateAbsorptionQTE();
+        absorbing = true;
     }
 
     public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject, InputController input) {
         Pair<Capacity, float> pairCapacity = new Pair<Capacity, float>(Capacity.Nothing, 0);
-
-        if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorptionTimer > 0) {
+        InputParams inputParams = input.RetrieveUserRequest();
+        if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorbing) {
 
             centerButton.GetComponent<Image>().color = Color.white;
-            absorptionTimer -= 0.03f;
-            absorptionGauge -= 0.01f;
-            InputParams inputParams = input.RetrieveUserRequest();
             if (inputParams.contextualButtonPressed) {
                 centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
                 centerButton.GetComponent<Image>().color = Color.grey;
                 absorptionGauge += 1;
                 inputParams.contextualButtonPressed = false;
-                input.SetUserRequest(inputParams);
                 SoundController.instance.PlaySingle(absorption);
             }
-
-            loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
 
             if (absorptionGauge > maxAbsorptionGauge) {
                 pairCapacity = AbsorbeYokai(absorbableObject);
@@ -226,17 +247,21 @@ public class InteractBehavior : MonoBehaviour {
                 ResetAbsorptionGauge();
                 SoundController.instance.StopSingle();
             }
-
         }
         else {
-            DeactivateAbsorptionQTE();
-            ResetAbsorptionGauge();
-            SoundController.instance.StopSingle();
+            centerButton.GetComponent<Image>().color = Color.white;
+            DoBeginAbsorption(absorbableObject);
         }
-
+        input.SetUserRequest(inputParams);
         return pairCapacity;
     }
 
+    public void StopAbsorption() {
+        absorbing = false;
+        ResetAbsorptionGauge();
+        DeactivateAbsorptionQTE();
+        SoundController.instance.StopSingle();
+    }
     private void ResetAbsorptionGauge() {
         absorptionGauge = 0;
         absorptionTimer = 4f;
@@ -246,11 +271,11 @@ public class InteractBehavior : MonoBehaviour {
 
     private void ActivateAbsorptionQTE() {
         canvasQTE.SetActive(true);
-        sakePot.SetActive(true);
+        //sakePot.SetActive(true);
     }
 
     private void DeactivateAbsorptionQTE() {
-        sakePot.SetActive(false);
+        //sakePot.SetActive(false);
         canvasQTE.SetActive(false);
     }
 
@@ -270,14 +295,19 @@ public class InteractBehavior : MonoBehaviour {
         GameObject clone = null;
         if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
             leafHead.SetActive(false);
-            clone = Instantiate(lure, tanukiPlayer.position, tanukiPlayer.rotation);
-            clone.transform.Translate(0, 3, 2);
+            Vector3 spawnLurePosition = tanukiPlayer.position + new Vector3(0, 3, 0) + (tanukiPlayer.forward * 2);
+            GameObject smokeSpawn = Instantiate(smokeSpawner, spawnLurePosition, Quaternion.identity);
+            smokeSpawn.transform.localScale = Vector3.one * 0.3f;
+            clone = Instantiate(lure, spawnLurePosition, tanukiPlayer.rotation);
+            //clone.transform.Translate(0, 3, 2);
         }
         return clone;
     }
 
     public void DestroyLure(GameObject lure) {
         if (lure != null) {
+            GameObject smokeSpawn = Instantiate(smokeSpawner, lure.transform.position, Quaternion.identity);
+            smokeSpawn.transform.localScale = Vector3.one * 0.3f;
             Destroy(lure);
             leafHead.SetActive(true);
         }
@@ -305,8 +335,8 @@ public class InteractBehavior : MonoBehaviour {
     public void ResetLeaf() {
         leafHead.SetActive(true);
         leafHand.SetActive(false);
-        sakePot.SetActive(false);
-        ParachuteLeaf.SetActive(false);
+        //sakePot.SetActive(false);
+        //ParachuteLeaf.SetActive(false);
     }
 
     public void AddYokaiInRange(GameObject yokai) {
