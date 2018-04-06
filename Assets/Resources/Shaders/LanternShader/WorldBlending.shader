@@ -4,8 +4,9 @@
 	{
 		[KeywordEnum(Simple, Lantern)] _Mode("Blend Mode", Float) = 0
 
-		[Toggle] 
-		_IsAlpha		("", Float)			= 0
+		[KeywordEnum(Alpha, Emissive, Mask)] _AlphaMode("Alpha is :", Float) = 0
+		_AlphaModeEmiL	("", Color)			= (0,0,0,0)
+		_AlphaModeEmiD	("", Color)			= (0,0,0,0)
 
 		_FirstTexture	("", 2D)			= "white" {}
 		_FirstLColor	("", Color)			= (1,1,1,0)
@@ -56,7 +57,7 @@
 			#pragma target 3.0
 			#pragma multi_compile_fwdbase_fullshadows
 			#pragma shader_feature _SIMPLE _LANTERN
-			#pragma shader_feature _ISALPHA_ON
+			#pragma shader_feature _ALPHAMODE _EMISSIVEMODE _MASKMODE
 			#pragma shader_feature _ISMASK_ON
 
 			#define FORWARDBASE_PASS
@@ -81,7 +82,7 @@
 			#pragma target 3.0
 			#pragma multi_compile_fwdadd_fullshadows
 			#pragma shader_feature _SIMPLE _LANTERN
-			#pragma shader_feature _ISALPHA_ON
+			#pragma shader_feature _ALPHAMODE _EMISSIVEMODE _MASKMODE
 			#pragma shader_feature _ISMASK_ON
 
 			#define FORWARDADD_PASS
@@ -105,7 +106,7 @@
 			#pragma multi_compile_shadowcaster
 			#pragma fragmentoption ARB_precision_hint_fastest
 			#pragma shader_feature _SIMPLE _LANTERN
-			#pragma shader_feature _ISALPHA_ON
+			#pragma shader_feature _ALPHAMODE
 
 			#define SHADOWCASTER_PASS
 

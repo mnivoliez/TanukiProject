@@ -21,12 +21,30 @@ GameObject:
   - component: {fileID: 4737052159968556}
   - component: {fileID: 33462770283334102}
   - component: {fileID: 23912664127484918}
-  - component: {fileID: 136540571482859388}
   - component: {fileID: 54398445850200568}
-  - component: {fileID: 114044518999307536}
+  - component: {fileID: 114903614692226328}
+  - component: {fileID: 195574607325431200}
+  - component: {fileID: 136540571482859388}
   m_Layer: 0
   m_Name: Yokai_General
   m_TagString: Yokai
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1836042612336576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4234876861530306}
+  - component: {fileID: 135983082204893478}
+  - component: {fileID: 114268253790439384}
+  m_Layer: 14
+  m_Name: YokaiDetectArea
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,6 +66,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4234876861530306
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1836042612336576}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4737052159968556}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4406704482261374
 Transform:
   m_ObjectHideFlags: 1
@@ -55,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1911416713191646}
   m_LocalRotation: {x: -0, y: 0.07452713, z: -0, w: 0.997219}
-  m_LocalPosition: {x: 0.001, y: 0.24699974, z: 0.405}
+  m_LocalPosition: {x: 0.007, y: 0.24699974, z: 0.443}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4737052159968556}
@@ -68,10 +99,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1797446027158602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.3, y: 15.32, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4406704482261374}
+  - {fileID: 4234876861530306}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -89,7 +121,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 458fe95c6029efc4084f1cf5a5f281fe, type: 2}
+  - {fileID: 2100000, guid: fb0ca73a347a30c44b184985010e46d8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,7 +156,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 78d4552648c874144a0243ae966d32e5, type: 2}
-  - {fileID: 2100000, guid: 458fe95c6029efc4084f1cf5a5f281fe, type: 2}
+  - {fileID: 2100000, guid: fb0ca73a347a30c44b184985010e46d8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -173,7 +205,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114044518999307536
+--- !u!114 &114268253790439384
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1836042612336576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c6c565d302ac9044ad51870725407d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114903614692226328
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -181,11 +224,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1797446027158602}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5168522f530b2247b9be66cfdc37374, type: 3}
+  m_Script: {fileID: 11500000, guid: af64e9a3f0885334993982b5c5c449f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  hp: 4
+  speed: 5
+  hp: 3
   hitParticle: {fileID: 1817594945345752, guid: d320902dd6408504b87ec6b13c1a14a0,
     type: 2}
   knockedParticle: {fileID: 1117990352001664, guid: 8a7c7c93ab321eb4db975f2acca7f2a9,
@@ -194,14 +237,29 @@ MonoBehaviour:
   capacity: 0
   timerCapacity: 0
   damage: 1
-  distanceLimit: 20
+  distanceLimit: 0
   absorbed: {fileID: 8300000, guid: 399b7d5af75fce04fbb0514bfb73ce90, type: 3}
+  yokaiScream: {fileID: 0}
+  yokaiHurt: {fileID: 0}
+  detectArea: 20
+  comeBack: 1
+  ignoredLayerMash:
+    serializedVersion: 2
+    m_Bits: 60928
   damageBody: 1
-  rangeAttack: 4
   rateBodyAttack: 2
-  neighbourDistance: 2
-  yokaiScream: {fileID: 8300000, guid: c0c1d0863cba86d4da8dededf5a0eae3, type: 3}
-  yokaiHurt: {fileID: 8300000, guid: 4a82cdbfa9cb68f49adfd4f07cf37449, type: 3}
+--- !u!135 &135983082204893478
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1836042612336576}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 7
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136540571482859388
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -211,7 +269,28 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.40110493
-  m_Height: 0.83678436
+  m_Radius: 0.5
+  m_Height: 0.8
   m_Direction: 1
-  m_Center: {x: -0.0074949265, y: 0.08160782, z: 0}
+  m_Center: {x: 0, y: 0.25603238, z: 0}
+--- !u!195 &195574607325431200
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1797446027158602}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.4
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5111976
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
