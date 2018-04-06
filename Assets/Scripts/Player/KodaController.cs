@@ -92,6 +92,7 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private float slideAngleNormal = 45f;
     [SerializeField] private float slideAngleRock = 10f;
     [SerializeField] private GameObject absorbRange;
+    [SerializeField] private float fieldOfView = 45f;
 
     private List<Vector3> inclinationNormals;
     private GameObject catchableObject;
@@ -884,7 +885,7 @@ public class KodaController : MonoBehaviour {
                     bool inFrontOfAbsorbableObject = false;
                     bool inFrontOfPortableObject = false;
 
-                    if (nearestObject.CompareTag("Yokai")) {
+                    if (nearestObject.CompareTag("Yokai") && nearestObject.GetComponent<YokaiController>().GetIsKnocked()) {
                         inFrontOfAbsorbableObject = true;
                         interactStateParameter.yokaiStillInRange = true;
 
