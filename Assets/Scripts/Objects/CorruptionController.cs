@@ -33,23 +33,23 @@ public class CorruptionController : MonoBehaviour {
         if (other.CompareTag("Lantern")) {
             _lanterns.Remove(other.gameObject.GetComponent<LanternController>());
         }
-        //else {
+        else {
             ManageCollision(other);
-        //}
+        }
 
     }
 
     void OnTriggerStay(Collider other) {
 
-        //if (!other.CompareTag("Lantern")) {
+        if (!other.CompareTag("Lantern")) {
             ManageCollision(other);
-        //}
+        }
     }
 
     void OnCollisionStay(Collision collision) {
-        //if (!collision.collider.CompareTag("Lantern")) {
+        if (!collision.collider.CompareTag("Lantern")) {
             ManageCollision(collision.collider);
-        //}
+        }
     }
 
     private void ManageCollision(Collider other) {
@@ -57,9 +57,12 @@ public class CorruptionController : MonoBehaviour {
         switch (_lanternEffect) {
             case LanternEffect.Appear:
                 if (isInLanternRange) {
+                    //if (this.name == "P_PlateformTree_Logs_02") { Debug.Log("appear collider" + this.name); }
+                    
                     MakeAppearForCollider(other);
                 }
                 else {
+                    //if (this.name == "P_PlateformTree_Logs_02") { Debug.Log("disappear collider" + this.name); }
                     MakeDisappearForCollider(other);
                 }
                 break;
