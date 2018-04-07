@@ -127,6 +127,7 @@ public class YokaiAIv2Controller : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
+            SoundController.instance.PlayYokaiSingle(yokaiHurt);
             LooseHp(damage);
 
         }
