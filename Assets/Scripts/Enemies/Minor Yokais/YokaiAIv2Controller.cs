@@ -23,6 +23,9 @@ public class YokaiAIv2Controller : YokaiController {
     private Color initColor = new Color(10f / 255f, 10f / 255f, 10f / 255f, 1f);
     private Color hitColor = new Color(250f / 255f, 250f / 255f, 0f / 255f, 1f);
 
+    [SerializeField] private GameObject hpCollectable;
+    private Vector3 positionCollectable;
+
     private void Start() {
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
@@ -158,12 +161,18 @@ public class YokaiAIv2Controller : YokaiController {
 
     public override void Absorbed() {
         isAbsorbed = true;
+        positionCollectable = transform.position;
+        positionCollectable.y = positionCollectable.y;
         gameObject.GetComponent<Collider>().enabled = false;
+        SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
-            target.GetComponent<Animator>().SetBool("isAbsorbing", false);
+            if (Random.Range(0, 10) > 4.9f) {
+                Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
+            }
+            target.GetComponent<Animator>().SetBool("IsAbsorbing", false);
             Destroy(gameObject);
         }
         else {

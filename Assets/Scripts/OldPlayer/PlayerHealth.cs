@@ -29,6 +29,7 @@ public class PlayerHealth : MonoBehaviour {
 
         Black = transitionImageInstance.GetComponent<Image>();
         animTransition = transitionImageInstance.GetComponent<Animator>();
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
     }
 
     void Update() {
@@ -85,6 +86,7 @@ public class PlayerHealth : MonoBehaviour {
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
         animTransition.SetBool("Fade", false);
         gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         playerHealthCurrent = playerHealthMax;
         gameObject.GetComponent<InputController>().SetFreezeInput(false);
         isInvincible = false;
