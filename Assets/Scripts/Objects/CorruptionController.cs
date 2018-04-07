@@ -47,9 +47,9 @@ public class CorruptionController : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision collision) {
-        if (!collision.collider.CompareTag("Lantern")) {
-            ManageCollision(collision.collider);
-        }
+        //if (!collision.collider.CompareTag("Lantern")) {
+        ManageCollision(collision.collider);
+        //}
     }
 
     private void ManageCollision(Collider other) {
@@ -57,8 +57,7 @@ public class CorruptionController : MonoBehaviour {
         switch (_lanternEffect) {
             case LanternEffect.Appear:
                 if (isInLanternRange) {
-                    //if (this.name == "P_PlateformTree_Logs_02") { Debug.Log("appear collider" + this.name); }
-                    
+                    //if (this.name == "P_PlateformTree_Logs_02") { Debug.Log("appear collider" + this.name); }                    
                     MakeAppearForCollider(other);
                 }
                 else {
@@ -69,11 +68,9 @@ public class CorruptionController : MonoBehaviour {
             case LanternEffect.Disappear:
                 if (isInLanternRange) {
                     MakeDisappearForCollider(other);
-
                 }
                 else {
                     MakeAppearForCollider(other);
-
                 }
                 break;
         }
