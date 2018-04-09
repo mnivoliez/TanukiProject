@@ -20,9 +20,11 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     void Update() {
+        //===========================
         if (Pause.Paused) {
             return;
         }
+        //===========================
 
         if (!arrived) {
             MoveTo();

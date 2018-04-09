@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class Button_Interaction : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     public void OnPointerEnter(Animator animator) {
         animator.SetTrigger("Highlighted");
     }

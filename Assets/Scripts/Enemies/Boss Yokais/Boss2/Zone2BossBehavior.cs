@@ -83,6 +83,11 @@ public class Zone2BossBehavior : YokaiController {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (Input.GetKeyDown("p")) {
             hp = hpMax / 2;
             interPhase = true;
@@ -91,6 +96,11 @@ public class Zone2BossBehavior : YokaiController {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
         RaycastHit hit;
 

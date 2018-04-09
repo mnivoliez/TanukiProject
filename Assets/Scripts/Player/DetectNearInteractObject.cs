@@ -15,7 +15,12 @@ public class DetectNearInteractObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (nearestObject != null
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+        if (nearestObject != null
             && nearestObject.layer == LayerMask.NameToLayer("Catchable")
             && Vector3.Distance(nearestObject.gameObject.transform.position, transform.parent.position) > 4
             && Vector3.Angle(transform.forward, (nearestObject.gameObject.transform.position - transform.parent.position)) > fieldOfView) {
