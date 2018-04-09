@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,9 +7,13 @@ using UnityEngine.SceneManagement;
 public class LoadSceneOnClick : MonoBehaviour {
 
 	public void LoadByIndex(int sceneIndex) {
-		SceneManager.LoadScene(sceneIndex);
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
+        GC.Collect();
+        SceneManager.LoadScene(sceneIndex);
 	}
 	public void LoadByIndex(string sceneName) {
-		SceneManager.LoadScene(sceneName);
-	}
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
+        GC.Collect();
+        SceneManager.LoadScene(sceneName);
+    }
 }

@@ -339,6 +339,7 @@ public class InteractBehavior : MonoBehaviour {
     public void ResetLeaf() {
         leafHead.SetActive(true);
         leafHand.SetActive(false);
+        ParachuteLeaf.SetBlendShapeWeight(0, 0);
         //sakePot.SetActive(false);
         //ParachuteLeaf.SetActive(false);
     }
