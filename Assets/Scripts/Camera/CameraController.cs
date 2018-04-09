@@ -71,7 +71,14 @@ public class CameraController : MonoBehaviour {
 	private Vector3 widePlayerPosition;
 	private Vector3 lookatPosition;
 
-	void Start() {
+    private Vector3 wideLookatPos;
+    private Vector3 resetPos;
+    private Vector3 directionNoY;
+    private Vector3 direction;
+    private Vector3 eulerAnglesNew;
+
+
+    void Start() {
 		player = GameObject.FindGameObjectWithTag("Player").transform;
 		playerTanukiModel = player.Find("TanukiPlayer");
 		camBase = transform.parent;
@@ -173,7 +180,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void ManagerCenterCamera() {
-		Vector3 wideLookatPos = playerTanukiModel.position + Vector3.up * wideDeltaPos.y * 2 / 3;
+		wideLookatPos = playerTanukiModel.position + Vector3.up * wideDeltaPos.y * 2 / 3;
 
 		if (centerCamera)
 		{
@@ -182,7 +189,7 @@ public class CameraController : MonoBehaviour {
 			if (diffTime < timeToCenter + 0.1f)
 			{
 				//Debug.Log("CAMERA CENTER BEGIN!!");
-				Vector3 resetPos = playerTanukiModel.position + Vector3.up * defaultCameraHeight - centerCamDirection * defaultCameraDistance;
+				resetPos = playerTanukiModel.position + Vector3.up * defaultCameraHeight - centerCamDirection * defaultCameraDistance;
 				camBase.position = Vector3.Lerp (centerCamPos, resetPos, Mathf.Clamp01 (diffTime) / timeToCenter);
 				camBase.rotation = Quaternion.Lerp (centerCamRot, Quaternion.identity, Mathf.Clamp01 (diffTime) / timeToCenter);
 
@@ -201,7 +208,7 @@ public class CameraController : MonoBehaviour {
 			if (diffTime < timeToCenter + 0.1f)
 			{
 				//Debug.Log("CAMERA CENTER BEGIN!!");
-				Vector3 resetPos = playerTanukiModel.position + Vector3.up * wideCameraHeight - wideCamDirection * wideCameraDistance;
+				resetPos = playerTanukiModel.position + Vector3.up * wideCameraHeight - wideCamDirection * wideCameraDistance;
 				camBase.position = Vector3.Lerp (wideCamPos, resetPos, Mathf.Clamp01 (diffTime) / timeToCenter);
 				camBase.rotation = Quaternion.Lerp (wideCamRot, Quaternion.identity, Mathf.Clamp01 (diffTime) / timeToCenter);
 
@@ -230,7 +237,7 @@ public class CameraController : MonoBehaviour {
 
 		if (currentCameraDistance <= maxCameraDistance && currentCameraDistance >= minCameraDistance) // we are inside the range
 		{
-			camBase.position = new Vector3(camBase.position.x, playerTanukiModel.position.y + currentCameraHeight, camBase.position.z);
+			camBase.position.Set(camBase.position.x, playerTanukiModel.position.y + currentCameraHeight, camBase.position.z);
 		}
 		else {
 			//Debug.Log ("Dist out of range=" + currentCameraDistance);
@@ -244,7 +251,7 @@ public class CameraController : MonoBehaviour {
 			else {
 				//Debug.Log ("Dist out of range OTHER");
 				currentCameraDistance = Mathf.Clamp(currentCameraDistance, minCameraDistance + 0.05f, maxCameraDistance - 0.05f);
-				Vector3 directionNoY = playerTanukiModel.position - camBase.position;
+				directionNoY = playerTanukiModel.position - camBase.position;
 				directionNoY.y = 0;
 				directionNoY.Normalize();
 				camBase.position = Vector3.Lerp(camBase.position, playerTanukiModel.position + Vector3.up * currentCameraHeight - currentCameraDistance * directionNoY, Time.deltaTime);
@@ -266,7 +273,7 @@ public class CameraController : MonoBehaviour {
 		if (Mathf.Abs(cam_vertical) > 0.01f) {
 			currentCameraHeight -= cam_vertical * scrollDampening * Time.deltaTime;
 			currentCameraHeight = Mathf.Clamp(currentCameraHeight, minCameraHeight, maxCameraHeight);
-			camBase.position = new Vector3(camBase.position.x, playerTanukiModel.position.y + currentCameraHeight, camBase.position.z);
+			camBase.position.Set(camBase.position.x, playerTanukiModel.position.y + currentCameraHeight, camBase.position.z);
 		}
 	}
 
@@ -274,9 +281,9 @@ public class CameraController : MonoBehaviour {
 		diffPos = camBase.position - playerTanukiModel.position;
 
 		// get new angle
-		Vector3 direction = playerTanukiModel.position - camBase.position;
+		direction = playerTanukiModel.position - camBase.position;
 		direction = direction.normalized;
-		Vector3 directionNoY = direction;
+		directionNoY = direction;
 		directionNoY.y = 0;
 		currentCameraAngle = Vector3.SignedAngle(directionNoY, direction, Vector3.Cross(directionNoY, direction));
 		//Debug.Log ("CAMERA currentCameraAngle=" + currentCameraAngle);
@@ -295,7 +302,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void CalibrateInternalCamera() {
-		Vector3 direction = playerTanukiModel.position - camBase.position;
+		direction = playerTanukiModel.position - camBase.position;
 		direction = direction.normalized;
 
 		float step = 0.2f;
@@ -327,7 +334,7 @@ public class CameraController : MonoBehaviour {
 					//transform.position = Vector3.Lerp(transform.position, hit.point + direction * step + Vector3.up * currentCameraHeight, Time.deltaTime * raycastDampening);
 					transform.position = Vector3.Lerp(transform.position, hit.point + hit.normal * step + (Vector3.up - Vector3.Project(Vector3.up, hit.normal)).normalized * currentCameraHeight, Time.deltaTime * raycastDampening);
 				}
-				Vector3 eulerAnglesNew = new Vector3 (Vector3.Angle (camBase.position - playerTanukiModel.position, transform.position - playerTanukiModel.position), 0, 0);
+				eulerAnglesNew.Set(Vector3.Angle (camBase.position - playerTanukiModel.position, transform.position - playerTanukiModel.position), 0, 0);
 				transform.localEulerAngles = Vector3.Lerp(transform.localEulerAngles, eulerAnglesNew, Time.deltaTime * raycastDampening);;
 			}
 		}
@@ -351,7 +358,7 @@ public class CameraController : MonoBehaviour {
 
 	private void RepositionCamera() {
 		camBase.rotation = Quaternion.identity;
-		camBase.position = new Vector3
+		camBase.position.Set
 			(
 				playerTanukiModel.position.x - currentCameraDistance * Mathf.Sin(currentCameraAngleYRot * Mathf.Deg2Rad),
 				playerTanukiModel.position.y + currentCameraHeight,
