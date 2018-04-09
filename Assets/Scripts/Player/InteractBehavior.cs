@@ -71,7 +71,7 @@ public class InteractBehavior : MonoBehaviour {
         enemiesInRange = new HashSet<GameObject>();
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
-        catchSlot = GameObject.Find("JNT_R_CatchableObject_Parent_Hand");
+		catchSlot = GameObject.FindGameObjectWithTag ("Hand");
         //sakePot.SetActive(false);
         absorbing = false;
     }
@@ -323,6 +323,7 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void DoCarry(GameObject objectToCarry) {
+		Debug.Log ("DoCarry");
         objectToCarry.transform.parent = catchSlot.transform;
         objectToCarry.transform.position = catchSlot.transform.position;
         Destroy(objectToCarry.GetComponent<Rigidbody>());
@@ -338,6 +339,7 @@ public class InteractBehavior : MonoBehaviour {
     public void ResetLeaf() {
         leafHead.SetActive(true);
         leafHand.SetActive(false);
+        ParachuteLeaf.SetBlendShapeWeight(0, 0);
         //sakePot.SetActive(false);
         //ParachuteLeaf.SetActive(false);
     }
