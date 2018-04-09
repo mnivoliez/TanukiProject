@@ -876,7 +876,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.ContextualAction:
-                GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = GetComponent<DetectNearInteractObject>().GetNearestObject();
 
                 if (interactState == InteractState.Carry) {
                     interactStateParameter.finishedCarry = true;
@@ -1030,8 +1030,8 @@ public class KodaController : MonoBehaviour {
             }
         }
         else if (collid.CompareTag("LoveHotel")) {
-            Debug.Log("Love");
             InputParams inputParams = inputController.RetrieveUserRequest();
+            Debug.Log(interactState);
             if (inputParams.contextualButtonPressed && interactState == InteractState.Activate) {
                 Debug.Log("Hotel");
                 LanternStandController stand = collid.gameObject.GetComponent<LanternStandController>();
