@@ -20,7 +20,12 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (parentBehavior.GetIsKnocked()) {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+        if (parentBehavior.GetIsKnocked()) {
             if (areaCollider.enabled == true) {
                 areaCollider.enabled = false;
             }

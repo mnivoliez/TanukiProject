@@ -23,9 +23,6 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
 
     private Rigidbody body;
 
-    [SerializeField] private AudioClip yokaiScream;
-    [SerializeField] private AudioClip yokaiHurt;
-
     void Start() {
         currentSpeed = speed;
         positionOrigin = transform.position;
@@ -36,12 +33,22 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (isAbsorbed) {
             Die();
         }
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!isKnocked) {
             if (target != null) {
 
@@ -159,7 +166,7 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
         if (hp <= 0) {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
-            target = GameObject.Find("Player");
+            target = GameObject.FindGameObjectWithTag("Player");
             SoundController.instance.PlayYokaiSingle(yokaiScream);
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
@@ -180,7 +187,7 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
     }
 
     public override void Die() {
-        if (transform.position == target.transform.position) {
+        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         }
