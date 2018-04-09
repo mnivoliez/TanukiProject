@@ -781,6 +781,7 @@ public class KodaController : MonoBehaviour {
 
             case InteractState.Carry:
                 if (previousInteractState == InteractState.Nothing) {
+				Debug.Log ("Carry");
                     interactBehaviorCtrl.DoCarry(objectToCarry);
                     catchableObject = objectToCarry;
                 }

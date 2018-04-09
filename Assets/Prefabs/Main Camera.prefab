@@ -71,7 +71,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1419379844067706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 48.557617, y: 28.66, z: -275.6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4352783254833590}
@@ -94,7 +94,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -239,13 +239,15 @@ MonoBehaviour:
   minCameraDistance: 4
   maxCameraDistance: 10
   defaultCameraDistance: 10
+  wideCameraDistance: 35
   minCameraAngle: 5
   maxCameraAngle: 50
   defaultCameraAngle: 20
+  wideCameraAngle: 65
   timeToCenter: 0.3
   ignoredLayerMask:
     serializedVersion: 2
-    m_Bits: 65024
+    m_Bits: 2031104
 --- !u!124 &124142839388463782
 Behaviour:
   m_ObjectHideFlags: 1

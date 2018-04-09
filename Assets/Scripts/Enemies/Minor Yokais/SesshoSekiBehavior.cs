@@ -23,8 +23,9 @@ public class SesshoSekiBehavior : YokaiController {
     [SerializeField] private float durationOfPreparation = 2;
     [SerializeField] private float durationOfResearch = 2;
 
-    [SerializeField] private AudioClip yokaiScream;
-    [SerializeField] private AudioClip yokaiHurt;
+    private Color initColor = new Color(97f / 255f, 88f / 255f, 99f / 255f, 84f / 255f);
+    private Color chargeColor = new Color(210f / 255f, 210f / 255f, 70f / 255f, 80f / 255f);
+    private Color hitColor = new Color(180f / 255f, 70f / 255f, 80f / 255f, 80f/ 255f);
 
 
     void Start() {
@@ -56,7 +57,6 @@ public class SesshoSekiBehavior : YokaiController {
                 search = false;
                 positionTargetSet = false;
                 positionToGoSet = false;
-                rendererMat.color = Color.white;
                 if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
                     Vector3 relativePos = positionOrigin - transform.position;
                     Quaternion rotation = Quaternion.LookRotation(relativePos);
@@ -69,17 +69,17 @@ public class SesshoSekiBehavior : YokaiController {
                 }
                 else {
                     transform.rotation = rotationOrigin;
-                    body.velocity = Vector3.zero;
+                    body.velocity = new Vector3(0, body.velocity.y, 0);
                 }
             } else if (prepare) {
-                body.velocity = Vector3.zero;
+                body.velocity = new Vector3(0, body.velocity.y, 0);
                 if (Time.time < nextAction || !positionTargetSet) {
                     if (!positionTargetSet) {
-                        body.velocity = Vector3.zero;
+                        body.velocity = new Vector3(0, body.velocity.y, 0);
                         transform.rotation = Quaternion.identity;
                         positionTarget = target.transform.position;
                         transform.LookAt(target.transform);
-                        rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+                        rendererMat.SetColor("_FirstLColor", chargeColor);
                         positionTargetSet = true;
                         nextAction = Time.time + durationOfPreparation;
                     }
@@ -89,11 +89,10 @@ public class SesshoSekiBehavior : YokaiController {
                     positionTargetSet = false;
                 }
             } else if (search) {
-                body.velocity = Vector3.zero;
-                body.velocity = Vector3.zero;
+                body.velocity = new Vector3(0, body.velocity.y, 0);
                 transform.rotation = Quaternion.identity;
                 if (Time.time < nextAction) {
-                    rendererMat.color = new Color(40f / 255f, 150f / 255f, 150f / 255f);
+                    //rendererMat.color = new Color(40f / 255f, 150f / 255f, 150f / 255f);
                 }
                 else {
                     if (target == null) {
@@ -110,7 +109,7 @@ public class SesshoSekiBehavior : YokaiController {
                 if (!positionToGoSet) {
                     relativePos = (positionTarget - transform.position) * 1.5f;
                     positionToGo = transform.position + relativePos;
-                    rendererMat.color = new Color(150f / 255f, 150f / 255f, 40f / 255f);
+                    rendererMat.SetColor("_FirstLColor", initColor);
                     positionToGoSet = true;
                 }
 
@@ -146,9 +145,7 @@ public class SesshoSekiBehavior : YokaiController {
 
             if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
                 SoundController.instance.PlayYokaiSingle(yokaiHurt);
-                BeingHit();
                 LooseHp(1);
-                EndHit();
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
             }
@@ -171,35 +168,34 @@ public class SesshoSekiBehavior : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
-            SoundController.instance.PlayYokaiSingle(yokaiHurt);
-            BeingHit();
             LooseHp(damage);
-            EndHit();
         }
     }
 
     public override void LooseHp(float damage) {
-        hp = hp - damage;
+        BeingHit();
+        hp -= damage;
+        Invoke("EndHit", 0.3f);
+        SoundController.instance.PlayYokaiSingle(yokaiHurt);
         if (hp <= 0) {
             isKnocked = true;
             Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
-            rendererMat.SetColor("_Globalcolor", new Color(255f / 255f, 255f / 255f, 255f / 255f));
-            target = GameObject.Find("Player");
+            rendererMat.SetColor("_FirstLColor", hitColor);
+            target = GameObject.FindGameObjectWithTag("Player");
             SoundController.instance.PlayYokaiSingle(yokaiScream);
-            //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
     }
 
     public override void BeingHit() {
+        rendererMat.SetColor("_FirstLColor", hitColor);
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
-        //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
     }
 
     public override void EndHit() {
-        //rendererMat.color = Color.white;
+        if (!isKnocked) rendererMat.SetColor("_FirstLColor", initColor);
     }
 
     public override void Absorbed() {
@@ -209,7 +205,7 @@ public class SesshoSekiBehavior : YokaiController {
     }
 
     public override void Die() {
-        if (transform.position == target.transform.position) {
+        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         }
