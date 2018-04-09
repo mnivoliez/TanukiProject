@@ -41,31 +41,6 @@ public class LeafLock {
     }
 }
 
-//public class Leaf {
-//    public class LeafLock {
-//        Leaf _parent;
-//        public LeafLock(Leaf parent) {
-//            _parent = parent;
-//        }
-//        public void Release() {
-//            _parent.leafLock = null;
-//            _parent = null;
-//        }
-//    }
-
-//    private LeafLock leafLock;
-
-//    public LeafLock TakeLeaf() {
-//        if (leafLock == null) {
-//            leafLock = new LeafLock(this);
-//            return leafLock;
-//        }
-//        else {
-//            throw new LeafAlreadyTakenException();
-//        }
-//    }
-//}
-
 public class Pair<T, U> {
     public Pair() {
     }
@@ -185,13 +160,10 @@ public class KodaController : MonoBehaviour {
 
     [Header("LANTERN")]
     [Space(10)]
-    [SerializeField]
-    private float timeStopToDie = 1.0f;
     private bool runOnWater = false;
     private GameObject[] lanterns;
     private GameObject lanternNearest = null;
     private bool playerStop = false;
-    private float timeStop = 0f;
 
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
@@ -324,22 +296,6 @@ public class KodaController : MonoBehaviour {
                     GetComponent<PlayerHealth>().PlayerDie();
                     runOnWater = false;
                 }
-                else {
-                    if (movementState == MovementState.Idle) {
-                        if (playerStop == false) {
-                            playerStop = true;
-                            timeStop = Time.time;
-                        }
-                    }
-                    else {
-                        playerStop = false;
-                    }
-                    if (playerStop && ((Time.time - timeStop) > timeStopToDie)) {
-                        //Debug.Log("die stop");
-                        GetComponent<PlayerHealth>().PlayerDie();
-                        runOnWater = false;
-                    }
-                }
             }
             else {
                 GetComponent<PlayerHealth>().PlayerDie();
@@ -356,7 +312,6 @@ public class KodaController : MonoBehaviour {
         if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock") || gO.layer == LayerMask.NameToLayer("Water")) {
             if (gO.layer == LayerMask.NameToLayer("Water")) {
                 runOnWater = true;
-                playerStop = false;
             }
             ContactPoint[] contacts = coll.contacts;
 
@@ -454,7 +409,6 @@ public class KodaController : MonoBehaviour {
             if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock") || gO.layer == LayerMask.NameToLayer("Water")) {
                 if (gO.layer == LayerMask.NameToLayer("Water")) {
                     runOnWater = false;
-                    playerStop = false;
                 }
                 if (_grounds.Contains(gO)) {
                     _grounds.Remove(gO);
@@ -781,7 +735,6 @@ public class KodaController : MonoBehaviour {
 
             case InteractState.Carry:
                 if (previousInteractState == InteractState.Nothing) {
-				Debug.Log ("Carry");
                     interactBehaviorCtrl.DoCarry(objectToCarry);
                     catchableObject = objectToCarry;
                 }
