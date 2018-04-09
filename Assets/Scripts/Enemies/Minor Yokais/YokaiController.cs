@@ -25,6 +25,8 @@ public abstract class YokaiController : MonoBehaviour {
     protected Vector3 positionOrigin;
     [SerializeField] protected float distanceLimit;
     [SerializeField] protected AudioClip absorbed;
+    [SerializeField] protected AudioClip yokaiScream;
+    [SerializeField] protected AudioClip yokaiHurt;
 
     public virtual void LooseHp(float damage) { }
 

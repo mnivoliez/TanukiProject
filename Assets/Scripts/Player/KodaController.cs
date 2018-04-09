@@ -92,6 +92,7 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private float slideAngleNormal = 45f;
     [SerializeField] private float slideAngleRock = 10f;
     [SerializeField] private GameObject absorbRange;
+    [SerializeField] private float fieldOfView = 45f;
 
     private List<Vector3> inclinationNormals;
     private GameObject catchableObject;
@@ -138,8 +139,8 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private bool hasPermanentLureCapacity;
     private bool hasPermanentBallCapacity;
     private bool hasPermanentShrinkCapacity;
-    [SerializeField] private Capacity temporaryCapacity;
-    [SerializeField] private float timerCapacity;
+    private Capacity temporaryCapacity;
+    private float timerCapacity;
 
     //QTE
     private float maxPowerUpGauge = 10f;
@@ -884,7 +885,7 @@ public class KodaController : MonoBehaviour {
                     bool inFrontOfAbsorbableObject = false;
                     bool inFrontOfPortableObject = false;
 
-                    if (nearestObject.CompareTag("Yokai")) {
+                    if (nearestObject.CompareTag("Yokai") && nearestObject.GetComponent<YokaiController>().GetIsKnocked()) {
                         inFrontOfAbsorbableObject = true;
                         interactStateParameter.yokaiStillInRange = true;
 
