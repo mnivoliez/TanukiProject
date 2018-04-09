@@ -7,14 +7,6 @@ public class StartCutScene : MonoBehaviour {
 
     [SerializeField] private GameObject timelineObject;
     private bool neverPlay = true;
-    void Start () {
-
-    }
-	
-
-	void Update () {
-		
-	}
 
     private void OnTriggerEnter(Collider other) {
 
@@ -23,7 +15,6 @@ public class StartCutScene : MonoBehaviour {
             timelineObject.SetActive(true);
             neverPlay = false;
             timelineObject.GetComponent<PlayableDirector>().Play();
-
         }
 
     }

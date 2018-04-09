@@ -22,6 +22,12 @@ public class SwitchWaterfall : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+
         for (int i = 0; i < objectsOnSwitch.Count; i++) {
             GameObject obj = objectsOnSwitch[i];
             if (obj == null) {

@@ -18,7 +18,11 @@ public class FireBarrierController : MonoBehaviour {
 	
 
 	void Update () {
-
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (disappear) {
             counter += Time.deltaTime;
             renderBarrier.material.SetFloat("_Height", counter);

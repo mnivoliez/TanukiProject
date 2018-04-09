@@ -33,8 +33,13 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
-        if(knockBackCounter > 0) {
+        if (knockBackCounter > 0) {
             knockBackCounter -= Time.deltaTime;
         }
         else {

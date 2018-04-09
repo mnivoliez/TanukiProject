@@ -106,11 +106,13 @@ public class CameraController : MonoBehaviour {
 	//3
 
 	private void Update() {
-		if (Pause.Paused) {
-			return;
-		}
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
-		GetInputData();
+        GetInputData();
 
 		ManagerCenterCamera();
 
