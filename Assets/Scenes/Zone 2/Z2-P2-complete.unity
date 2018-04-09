@@ -4798,26 +4798,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cf32fcd3186e73b4081395bb803227d0, type: 2}
   m_IsPrefabParent: 0
---- !u!21 &33211143
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!4 &40037301 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4565478167039564, guid: cf32fcd3186e73b4081395bb803227d0,
@@ -17339,7 +17319,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed1a01e47956545149e93eb90866cbd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionOnSwitch: []
+  actionOnSwitch:
+  - gameObject: {fileID: 1606688774}
+    action: 0
 --- !u!43 &159234622
 Mesh:
   m_ObjectHideFlags: 0
@@ -21448,37 +21430,6 @@ Transform:
   m_Father: {fileID: 283981295}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &232637648
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1001 &237469601
 Prefab:
   m_ObjectHideFlags: 0
@@ -30109,7 +30060,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 126
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!64 &290342406
 MeshCollider:
@@ -41974,7 +41925,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh19650
+  m_Name: pb_Mesh22042
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -77816,7 +77767,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh49572
+  m_Name: pb_Mesh21318
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -82888,7 +82839,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed1a01e47956545149e93eb90866cbd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionOnSwitch: []
+  actionOnSwitch:
+  - gameObject: {fileID: 1864099039}
+    action: 0
 --- !u!1001 &561059655
 Prefab:
   m_ObjectHideFlags: 0
@@ -161480,7 +161433,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh20908
+  m_Name: pb_Mesh18972
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -164866,7 +164819,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh22932
+  m_Name: pb_Mesh20990
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -184865,6 +184818,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e93ab693adeaa4d4897ebd7c7595f466, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &994005593 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1956672333329828, guid: 2b9461ce2915a67409ef09f0f667ad3c,
+    type: 2}
+  m_PrefabInternal: {fileID: 561059655}
 --- !u!4 &994331311 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4565478167039564, guid: cf32fcd3186e73b4081395bb803227d0,
@@ -186660,7 +186618,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 127
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &1009439224
 Transform:
@@ -187053,7 +187011,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed1a01e47956545149e93eb90866cbd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionOnSwitch: []
+  actionOnSwitch:
+  - gameObject: {fileID: 994005593}
+    action: 0
 --- !u!4 &1012878932 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4867291764727454, guid: f65ec6bca23e35144bb3aa45a6c19cdf,
@@ -258080,7 +258040,7 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 33211143}
+      objectReference: {fileID: 1524416539}
     - target: {fileID: 20144259831111884, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: far clip plane
@@ -258090,7 +258050,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 232637648}
+      objectReference: {fileID: 1972573105}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a95e21316b361044681464f5613ea9f0, type: 2}
   m_IsPrefabParent: 0
@@ -259353,7 +259313,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 126
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1355240823
 Transform:
@@ -281096,7 +281056,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh50430
+  m_Name: pb_Mesh22180
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -285845,6 +285805,26 @@ Transform:
   m_PrefabParentObject: {fileID: 4840609920825822, guid: 7b9a97caa7423154ca6fadc80a679ee8,
     type: 2}
   m_PrefabInternal: {fileID: 1023951357}
+--- !u!21 &1524416539
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!4 &1524725541 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4389761631042078, guid: e93ab693adeaa4d4897ebd7c7595f466,
@@ -289382,7 +289362,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh20618
+  m_Name: pb_Mesh20476
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -314847,6 +314827,11 @@ Transform:
   m_PrefabParentObject: {fileID: 4994554826204534, guid: 0d1ae8f1c0ffe4e409fe28d0719c66e7,
     type: 2}
   m_PrefabInternal: {fileID: 1857339228}
+--- !u!1 &1864099039 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1356976720421664, guid: 2b9461ce2915a67409ef09f0f667ad3c,
+    type: 2}
+  m_PrefabInternal: {fileID: 561059655}
 --- !u!1 &1865488136
 GameObject:
   m_ObjectHideFlags: 0
@@ -328046,6 +328031,37 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0d1ae8f1c0ffe4e409fe28d0719c66e7, type: 2}
   m_IsPrefabParent: 0
+--- !u!84 &1972573105
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!4 &1975962104 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4565478167039564, guid: cf32fcd3186e73b4081395bb803227d0,
