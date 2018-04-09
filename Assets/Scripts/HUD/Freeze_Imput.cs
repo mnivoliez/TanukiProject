@@ -14,6 +14,11 @@ public class Freeze_Imput : MonoBehaviour {
 	
 
 	void Update () {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         playerInput.SetFreezeInput(isfreeze);
     }
 }

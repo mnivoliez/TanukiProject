@@ -6,15 +6,7 @@ public class MeleeAttackTrigger : MonoBehaviour {
 
     private float damage;
 
-    void Start() {
-
-    }
-
-    void Update() {
-
-    }
-
-    void OnTriggerEnter(Collider collid) {
+    /*void OnTriggerEnter(Collider collid) {
 
         //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
         //    collid.gameObject.GetComponent<YokaiController>().BeingHit();
@@ -30,7 +22,7 @@ public class MeleeAttackTrigger : MonoBehaviour {
         //    collid.gameObject.GetComponent<YokaiController>().EndHit();
         //}
 
-    }
+    }*/
 
     public void SetDamage(float dmg) {
         damage = dmg;

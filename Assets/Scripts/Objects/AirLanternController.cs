@@ -11,6 +11,11 @@ public class AirLanternController : MonoBehaviour {
     }
 
     private void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         transform.TransformDirection(Vector3.up);
     }
 }

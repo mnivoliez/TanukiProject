@@ -22,6 +22,11 @@ public class GlobalFlock : MonoBehaviour {
     private Vector3 positionOrigine;
 
     private void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         positionOrigine = transform.position;
         if (amount != transform.childCount || actualZoneSize != zoneSize) {
             actualZoneSize = zoneSize;
@@ -46,6 +51,11 @@ public class GlobalFlock : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (Vector3.Distance(positionOrigine, player.transform.position) < distanceTargetPlayer) {
             target = player.transform.position;

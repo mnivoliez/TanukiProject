@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -165,6 +166,8 @@ public class KodaController : MonoBehaviour {
     private GameObject lanternNearest = null;
     private bool playerStop = false;
 
+    InputParams inputParams;
+
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
         Instantiate(CanvasPrefabPause).name = "PauseCanvas";
@@ -205,9 +208,13 @@ public class KodaController : MonoBehaviour {
 	}*/
 
     private void FixedUpdate() {
+        GC.Collect();
+        Resources.UnloadUnusedAssets();
+        //===========================
         if (Pause.Paused) {
             return;
         }
+        //===========================
 
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
@@ -219,7 +226,7 @@ public class KodaController : MonoBehaviour {
 
         previousMovementState = movementState;
 
-        InputParams inputParams;
+        //InputParams inputParams;
         //deplacements
 
         previousInteractState = interactState;

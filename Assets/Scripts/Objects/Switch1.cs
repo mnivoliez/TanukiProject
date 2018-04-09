@@ -15,11 +15,6 @@ public class Switch1 : MonoBehaviour
 {
 	[SerializeField] private SwitchObject[] actionOnSwitch;
 
-    // Use this for initialization
-    void Start()
-    {
-    }
-
 
     void OnCollisionEnter(Collision collider)
     {
@@ -30,11 +25,5 @@ public class Switch1 : MonoBehaviour
 				obj.gameObject.SetActive (obj.action.Equals (ActionLantern.Activate));
 			}
 		}
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
