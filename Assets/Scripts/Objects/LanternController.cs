@@ -60,6 +60,11 @@ public class LanternController : MonoBehaviour {
     }
 
     private void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (transform.parent == null) {
             _range = _min_radius;
             _light.intensity = _min_intensity;
@@ -85,6 +90,11 @@ public class LanternController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
         //the_player = GameObject.FindGameObjectWithTag("Player");
         //the_lantern = GetComponent<Rigidbody>();

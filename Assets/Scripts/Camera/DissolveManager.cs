@@ -26,7 +26,12 @@ public class DissolveManager : MonoBehaviour {
 	public Material[] materials;
 
 	void Update () {
-		lanternsPos = new Vector4[lanterns.Length];
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+        lanternsPos = new Vector4[lanterns.Length];
 		for(int i = 0; i < lanterns.Length; i++) {
 			lanternsPos[i] = lanterns[i].position;
 		}

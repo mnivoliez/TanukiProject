@@ -33,8 +33,13 @@ public class HitodamaController : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (hpPlayer < playerHealth.GetHealthCurrent()) {
-            gainHPObject = Instantiate(gainHPEffect, transform.position, Quaternion.identity);
+            GameObject gainHPObject = Instantiate(gainHPEffect, transform.position, Quaternion.identity);
             gainHPObject.transform.parent = gameObject.transform;
             Destroy(gainHPObject, 2f);
             PlayerUpdateLife();

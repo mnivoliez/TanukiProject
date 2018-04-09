@@ -78,6 +78,11 @@ public class InteractBehavior : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (absorbing) {
             absorptionTimer -= Time.deltaTime;
             loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;

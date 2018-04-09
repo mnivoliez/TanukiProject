@@ -35,7 +35,12 @@ public class ShadowDirectController : MonoBehaviour {
     }
 
     private void Update() {
-		if (Physics.Raycast(transform.position + position_offset, -Vector3.up, out hit, rayCastDistance, layerAll - ignoredLayerMask.value)) {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+        if (Physics.Raycast(transform.position + position_offset, -Vector3.up, out hit, rayCastDistance, layerAll - ignoredLayerMask.value)) {
 			position = new Vector3(hit.point.x, hit.point.y + 0.05f, hit.point.z);
             
             float distance = Vector3.Distance(transform.position, hit.point);
