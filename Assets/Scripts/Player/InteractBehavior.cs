@@ -323,7 +323,6 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void DoCarry(GameObject objectToCarry) {
-		Debug.Log ("DoCarry");
         objectToCarry.transform.parent = catchSlot.transform;
         objectToCarry.transform.position = catchSlot.transform.position;
         Destroy(objectToCarry.GetComponent<Rigidbody>());
