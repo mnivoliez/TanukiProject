@@ -42,7 +42,12 @@ public class PlatformController : MonoBehaviour {
 	private bool isInit = false;
 
 	void Update() {
-		if (Application.isPlaying) {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+        if (Application.isPlaying) {
 			if (isRunning)
 				transform.position = CalculatePlatformMovement ();
 			else {

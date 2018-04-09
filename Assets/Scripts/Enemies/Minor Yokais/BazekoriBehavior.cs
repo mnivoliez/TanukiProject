@@ -21,6 +21,11 @@ public class BazekoriBehavior : YokaiController {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         transform.GetChild(0).transform.LookAt(target.transform);
         if (followPlayer) {
             MoveToPosition();
@@ -35,6 +40,11 @@ public class BazekoriBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!isKnocked) {
             if (!followPlayer) {
                 if (Random.Range(0, 100) == 5) {

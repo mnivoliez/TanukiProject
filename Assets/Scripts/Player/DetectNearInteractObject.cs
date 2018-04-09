@@ -15,7 +15,12 @@ public class DetectNearInteractObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (nearestObject != null
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+        if (nearestObject != null
             && nearestObject.layer == LayerMask.NameToLayer("Catchable")
             && Vector3.Distance(nearestObject.gameObject.transform.position, transform.parent.position) > 4
             && Vector3.Angle(transform.forward, (nearestObject.gameObject.transform.position - transform.parent.position)) > fieldOfView) {
@@ -25,6 +30,9 @@ public class DetectNearInteractObject : MonoBehaviour {
 	}
 
     void OnTriggerStay(Collider collider) {
+		if (collider.gameObject.tag == "Catchable") {
+			Debug.Log ("Detect: " + collider.name);
+		}
 
         bool needDetectObject = ((collider.gameObject.layer == LayerMask.NameToLayer("Catchable")
             && Vector3.Distance(collider.gameObject.transform.position, transform.parent.position) < 4
@@ -36,6 +44,7 @@ public class DetectNearInteractObject : MonoBehaviour {
             if (nearestObject == null || (nearestObject.name != null && rangeNearestObject > Vector3.Distance(collider.gameObject.transform.position, transform.parent.position))) {
                 rangeNearestObject = Vector3.Distance(collider.gameObject.transform.position, transform.parent.position);
                 nearestObject = collider.gameObject;
+
             }
         }
 
