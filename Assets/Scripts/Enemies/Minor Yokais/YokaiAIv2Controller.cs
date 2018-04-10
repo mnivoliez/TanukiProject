@@ -105,14 +105,10 @@ public class YokaiAIv2Controller : YokaiController {
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == "Player") {
             bodyAttack = true;
-            Vector3 vectorToCollision = collision.gameObject.transform.position - transform.position;
         }
 
         if (collision.gameObject.tag == "Lure") {
-            BeingHit();
             LooseHp(1);
-            EndHit();
-
             Destroy(collision.gameObject);
         }
 
@@ -157,6 +153,8 @@ public class YokaiAIv2Controller : YokaiController {
             rendererMat.SetColor("_Color", hitColor);
             SoundController.instance.PlayYokaiSingle(yokaiScream);
             target = GameObject.FindGameObjectWithTag("Player");
+            agent.SetDestination(transform.position);
+            comeBack = false;
         }
 
     }
@@ -173,13 +171,12 @@ public class YokaiAIv2Controller : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         positionCollectable = transform.position;
-        positionCollectable.y = positionCollectable.y;
         gameObject.GetComponent<Collider>().enabled = false;
         SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die() {
-        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
+        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5) {
             if (Random.Range(0, 10) > 4.9f) {
                 Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
             }
@@ -189,7 +186,7 @@ public class YokaiAIv2Controller : YokaiController {
         else {
             if (transform.localScale.x > 0 && transform.localScale.y > 0 && transform.localScale.z > 0) {
                 Vector3 scale = transform.localScale;
-                scale -= new Vector3(20f, 20f, 20f);
+                scale -= new Vector3(0.2f, 0.2f, 0.2f);
                 if (scale.x < 0 && scale.y < 0 && scale.z < 0) {
                     scale = Vector3.zero;
                 }

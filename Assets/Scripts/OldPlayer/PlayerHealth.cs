@@ -18,6 +18,9 @@ public class PlayerHealth : MonoBehaviour {
     private Image Black;
     private Animator animTransition;
     private Animator animPlayer;
+    [SerializeField] private GameObject Tanuki_Body;
+    private Material matAuraIFrame;
+
 
     void Start() {
         if(respawnPoint == null) {
@@ -30,6 +33,7 @@ public class PlayerHealth : MonoBehaviour {
         Black = transitionImageInstance.GetComponent<Image>();
         animTransition = transitionImageInstance.GetComponent<Animator>();
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
+        matAuraIFrame = Tanuki_Body.GetComponent<Renderer>().materials[1];
     }
 
     void Update() {
@@ -44,6 +48,9 @@ public class PlayerHealth : MonoBehaviour {
         }
         else {
             isInvincible = false;
+            matAuraIFrame.SetFloat("_Edge", 0f);
+            matAuraIFrame.SetFloat("_RimPower", 10f);
+            matAuraIFrame.SetFloat("_Outline", 0.002f);
             //GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
 
         }
@@ -61,9 +68,13 @@ public class PlayerHealth : MonoBehaviour {
         if (!isInvincible) {
             animPlayer.SetTrigger("Hit");
             playerHealthCurrent = playerHealthCurrent - dmg;
-            KnockBack();
+            knockBackCounter = invincibleTime;
+            isInvincible = true;
             if (playerHealthCurrent <= 0) {
                 PlayerDie();
+            }
+            else {
+                KnockBack();
             }
         }
                 
@@ -98,11 +109,12 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     public void KnockBack() {
-        
-        knockBackCounter = invincibleTime;
+
+        matAuraIFrame.SetFloat("_Edge", 0.4f);
+        matAuraIFrame.SetFloat("_RimPower", 1.6f);
+        matAuraIFrame.SetFloat("_Outline", 0.77f);
         Vector3 knockBackDirection = -transform.forward + Vector3.up;
         GetComponent<Rigidbody>().AddForce(knockBackForce * knockBackDirection, ForceMode.Impulse);
-        isInvincible = true;
         //GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0.035f);
         //GetComponent<Renderer>().sharedMaterial.SetVector("_color", new Vector3(1,0,1));
 

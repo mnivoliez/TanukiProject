@@ -43,25 +43,10 @@ public class LanternController : MonoBehaviour {
 
     private void Awake() {
         _light = GetComponent<Light>();
-        if (transform.parent == null) {
-            _range = _min_radius;
-            _light.intensity = _min_intensity;
 
-            //is_being_played = false;
-            //token_play_once = false;
-        }
-        else {
-            _range = _max_radius;
-            _light.intensity = _max_intensity;
-
-            /*is_being_played = true;
-            if (is_being_played && !token_play_once)
-            {
-                token_play_once = true;
-                AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
-                SoundController.instance.PlayLanternSingle(lanterSound);
-            }*/
-        }
+        _range = _min_radius;
+        _light.intensity = _min_intensity;
+        
         _bbox = GetComponent<SphereCollider>();
         _bbox.radius = _range;
     }
