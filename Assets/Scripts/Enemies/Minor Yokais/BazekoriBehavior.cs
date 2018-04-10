@@ -13,13 +13,13 @@ public class BazekoriBehavior : YokaiController {
     float timeStamp = 0;
     [SerializeField] private GameObject hpCollectable;
     private Vector3 positionCollectable;
-    [SerializeField] private Renderer rendererBakezori;
+    //[SerializeField] private Renderer rendererBakezori;
     private Color initColor = new Color(202 / 255f, 54 / 255f, 255f / 255f, 0f);
     private Color hitColor = new Color(1f, 0, 0, 90f/255f);
 
     void Start() {
         target = GameObject.FindGameObjectWithTag("Player");
-
+        rendererMat = GetComponent<Renderer>().material;
     }
 
     void Update() {
@@ -67,7 +67,6 @@ public class BazekoriBehavior : YokaiController {
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
-           // rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
             SoundController.instance.PlayYokaiSingle(yokaiScream);
         }
 
@@ -75,13 +74,14 @@ public class BazekoriBehavior : YokaiController {
 
     public override void BeingHit() {
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
-        rendererBakezori.material.SetColor("_FirstDColor", hitColor);
-        //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
+        //
+        rendererMat.SetColor("_FirstDColor", hitColor);
+        
     }
 
     public override void EndHit() {
-        if (!isKnocked) rendererBakezori.material.SetColor("_FirstDColor", initColor);
-        //rendererMat.color = Color.white;
+        if (!isKnocked) rendererMat.SetColor("_FirstDColor", initColor);
+        //rendererBakezori.material.SetColor("_FirstDColor", initColor);
     }
 
     public override void Absorbed() {
