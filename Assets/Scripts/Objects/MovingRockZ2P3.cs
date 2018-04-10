@@ -28,6 +28,11 @@ public class MovingRockZ2P3 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         Lure = GameObject.FindGameObjectWithTag("Lure");
 
         if (Lure == null) {

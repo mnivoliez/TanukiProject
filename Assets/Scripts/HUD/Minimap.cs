@@ -7,6 +7,7 @@ public class Minimap : MonoBehaviour {
     private GameObject player;
     private Canvas MinimapCanvas;
     private Canvas PauseCanvas;
+    private Vector3 newPosition;
 
     void Start() {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -15,7 +16,7 @@ public class Minimap : MonoBehaviour {
 
     private void LateUpdate() {
 
-        Vector3 newPosition = player.transform.position;
+        newPosition = player.transform.position;
         newPosition.y = transform.position.y;
         transform.position = newPosition;
 
