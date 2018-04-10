@@ -20,6 +20,11 @@ public class Flock : MonoBehaviour {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (Vector3.Distance(transform.position, global.target) >= global.zoneSize) {
             turning = true;
         } else {

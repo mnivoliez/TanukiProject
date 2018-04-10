@@ -57,9 +57,11 @@ public class CameraOrbit : MonoBehaviour {
     }
 
 	private void Update() {
-		if (Pause.Paused) {
-			return;
-		}
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         xFromParent.position = new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z);
         if (Input.GetMouseButtonDown(0)) {
             leftClicked = true;
@@ -84,9 +86,11 @@ public class CameraOrbit : MonoBehaviour {
 
     // LateUpdate is called once per frame, afpter Update() on every game object in the scene
 	void LateUpdate() {
-		if (Pause.Paused) {
-			return;
-		}
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         //Rotation of the camera based on Mouse Coordinates
         float horizontal = Input.GetAxis("MoveCameraGamepadHorizontal") * mouseSensitivity;
         localRotation.x += horizontal;
