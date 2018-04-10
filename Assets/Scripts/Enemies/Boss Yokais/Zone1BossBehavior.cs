@@ -61,6 +61,11 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!isKnocked) {
             transform.GetChild(0).transform.LookAt(target.transform);
 
@@ -105,6 +110,11 @@ public class Zone1BossBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!isKnocked) {
             if (Random.Range(0, 100) == 5) {
                 Behavior();

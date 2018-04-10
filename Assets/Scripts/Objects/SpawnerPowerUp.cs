@@ -16,6 +16,11 @@ public class SpawnerPowerUp : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (instancePowerUp == null) {
             cooldownSpawner += 0.02f;
             if (cooldownSpawner > timerPowerUp) {

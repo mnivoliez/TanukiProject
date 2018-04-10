@@ -12,6 +12,11 @@ public class EyeCollision : MonoBehaviour {
 	
 
 	void Update () {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (bossBehavior.GetIsKnocked()) {
             transform.Rotate(Vector3.right * 5);
         }

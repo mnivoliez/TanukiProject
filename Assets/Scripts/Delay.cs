@@ -21,8 +21,4 @@ public class Delay : MonoBehaviour {
     {
         Destroy(Instantiate(prefabBumperGauche, transform.position, Quaternion.identity, transform), 30);
     }
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }
