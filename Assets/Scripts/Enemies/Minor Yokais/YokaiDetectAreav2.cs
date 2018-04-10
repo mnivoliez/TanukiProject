@@ -14,7 +14,6 @@ public class YokaiDetectAreav2 : MonoBehaviour {
 
         if (!parent.comeBack) {
             if (other.gameObject.tag == "Lure") {
-                Debug.Log(other.gameObject.tag);
                 parent.SetTarget(other.gameObject);
             } else if (parent.GetTarget() == null && other.gameObject.tag == "Player") {
                 parent.SetTarget(other.gameObject);
