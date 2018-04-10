@@ -48,7 +48,8 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     public void BackTo() {
-
+        arrived = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().StopDistantAttackState();
         GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
         FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
         SoundController.instance.PlayLeafSingle(vanishLeaf);

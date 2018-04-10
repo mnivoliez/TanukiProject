@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviour {
     private Image Black;
     private Animator animTransition;
     private Animator animPlayer;
-    [SerializeField] private GameObject Tanuki_Body;
+    //[SerializeField] private GameObject Tanuki_Body;
     //private Material matAuraIFrame;
 
 
