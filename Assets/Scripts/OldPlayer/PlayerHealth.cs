@@ -19,7 +19,7 @@ public class PlayerHealth : MonoBehaviour {
     private Animator animTransition;
     private Animator animPlayer;
     [SerializeField] private GameObject Tanuki_Body;
-    private Material matAuraIFrame;
+    //private Material matAuraIFrame;
 
 
     void Start() {
@@ -33,7 +33,7 @@ public class PlayerHealth : MonoBehaviour {
         Black = transitionImageInstance.GetComponent<Image>();
         animTransition = transitionImageInstance.GetComponent<Animator>();
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
-        matAuraIFrame = Tanuki_Body.GetComponent<Renderer>().materials[1];
+        //matAuraIFrame = Tanuki_Body.GetComponent<Renderer>().materials[1];
     }
 
     void Update() {
@@ -48,9 +48,9 @@ public class PlayerHealth : MonoBehaviour {
         }
         else {
             isInvincible = false;
-            matAuraIFrame.SetFloat("_Edge", 0f);
-            matAuraIFrame.SetFloat("_RimPower", 10f);
-            matAuraIFrame.SetFloat("_Outline", 0.002f);
+            //matAuraIFrame.SetFloat("_Edge", 0f);
+            //matAuraIFrame.SetFloat("_RimPower", 10f);
+            //matAuraIFrame.SetFloat("_Outline", 0.002f);
             //GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
 
         }
@@ -110,9 +110,9 @@ public class PlayerHealth : MonoBehaviour {
 
     public void KnockBack() {
 
-        matAuraIFrame.SetFloat("_Edge", 0.4f);
-        matAuraIFrame.SetFloat("_RimPower", 1.6f);
-        matAuraIFrame.SetFloat("_Outline", 0.77f);
+        //matAuraIFrame.SetFloat("_Edge", 0.4f);
+        //matAuraIFrame.SetFloat("_RimPower", 1.6f);
+        //matAuraIFrame.SetFloat("_Outline", 0.77f);
         Vector3 knockBackDirection = -transform.forward + Vector3.up;
         GetComponent<Rigidbody>().AddForce(knockBackForce * knockBackDirection, ForceMode.Impulse);
         //GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0.035f);
