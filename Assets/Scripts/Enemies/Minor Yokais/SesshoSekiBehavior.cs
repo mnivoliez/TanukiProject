@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class SesshoSekiBehavior : YokaiController {
     
@@ -154,7 +157,9 @@ public class SesshoSekiBehavior : YokaiController {
         if (collision.gameObject.tag == "Lure") {
 
             if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
-                SoundController.instance.PlayYokaiSingle(yokaiHurt);
+                //================================================
+                SoundController.instance.SelectYOKAI("Hurt");
+                //================================================
                 LooseHp(1);
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
@@ -186,7 +191,9 @@ public class SesshoSekiBehavior : YokaiController {
         BeingHit();
         hp -= damage;
         Invoke("EndHit", 0.3f);
-        SoundController.instance.PlayYokaiSingle(yokaiHurt);
+        //================================================
+        SoundController.instance.SelectYOKAI("Hurt");
+        //================================================
         if (hp <= 0) {
             isKnocked = true;
             Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
@@ -195,7 +202,9 @@ public class SesshoSekiBehavior : YokaiController {
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             rendererMat.SetColor("_FirstLColor", hitColor);
             target = GameObject.FindGameObjectWithTag("Player");
-            SoundController.instance.PlayYokaiSingle(yokaiScream);
+            //================================================
+            SoundController.instance.SelectYOKAI("Scream");
+            //================================================
         }
     }
 
@@ -211,7 +220,9 @@ public class SesshoSekiBehavior : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
-        SoundController.instance.PlayYokaiSingle(absorbed);
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
     }
 
     public override void Die() {
