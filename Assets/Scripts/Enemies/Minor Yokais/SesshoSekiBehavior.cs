@@ -145,20 +145,24 @@ public class SesshoSekiBehavior : YokaiController {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == "Player" && !isKnocked) {
-            collision.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
-            Destroy(Instantiate(hitParticle, collision.gameObject.transform.position, Quaternion.identity), 1);
-        }
+        if (!isKnocked) {
 
+            if (collision.gameObject.tag == "Player") {
+                collision.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
+                Destroy(Instantiate(hitParticle, collision.gameObject.transform.position, Quaternion.identity), 1);
 
-        if (collision.gameObject.tag == "Lure") {
+            } else if (collision.gameObject.tag == "Lure") {
 
-            if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
-                SoundController.instance.PlayYokaiSingle(yokaiHurt);
-                LooseHp(1);
-                Destroy(collision.gameObject);
-                GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+                if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
+                    SoundController.instance.PlayYokaiSingle(yokaiHurt);
+                    LooseHp(1);
+                    Destroy(collision.gameObject);
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+                }
             }
+
+
+
         }
     }
 
