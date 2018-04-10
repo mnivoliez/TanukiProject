@@ -35,6 +35,11 @@ public class PlayerDistantAttack : MonoBehaviour
 
     void Update()
     {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
         if (Input.GetButtonDown("Fire2") && !leafInHand)
         {

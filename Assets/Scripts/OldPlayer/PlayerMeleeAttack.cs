@@ -32,8 +32,13 @@ public class PlayerMeleeAttack : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
-		leafIsBack = GetComponent<PlayerDistantAttack>().GetLeafIsBack();
+        leafIsBack = GetComponent<PlayerDistantAttack>().GetLeafIsBack();
 		//Debug.Log("Leaf is back: " + leafIsBack);
 
 		if (timerAttack > 0.3 && !leafInHand) {

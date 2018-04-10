@@ -6,14 +6,6 @@ public class AirStream : MonoBehaviour {
 
     [SerializeField] private float airForce = 100f;
 
-	void Start () {
-		
-	}
-	
-	void Update () {
-		
-	}
-
     /*private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
             if (other.gameObject.GetComponent<CharacterController>().GetInteractState() == InteractState.Glide) {

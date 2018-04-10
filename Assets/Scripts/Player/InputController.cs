@@ -40,6 +40,11 @@ public class InputController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!freezeInput) {
             //inputParams.Reset();
             UpdateMoveInput();

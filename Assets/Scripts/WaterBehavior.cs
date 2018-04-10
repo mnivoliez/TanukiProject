@@ -20,7 +20,11 @@ public class WaterBehavior : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (isPlayer) {
             GameObject lanternNearest = new GameObject();
             float distance = 0f;
