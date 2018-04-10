@@ -38,7 +38,6 @@ public class SpawnerSpecialYokai : MonoBehaviour {
         Instantiate(prefabSmokeSpawn, transform.position + newPosSpawn, Quaternion.identity);
         instanceYokai = Instantiate(prefabYokai, transform.position + newPosSpawn, Quaternion.identity);
         instanceYokai.GetComponent<YokaiController>().SetTimerCapacity(timerPowerUp);
-        instanceYokai.GetComponent<Rigidbody>().AddForce(Vector3.up * 300, ForceMode.Impulse);
         cooldownSpawner = 0;
 
     }

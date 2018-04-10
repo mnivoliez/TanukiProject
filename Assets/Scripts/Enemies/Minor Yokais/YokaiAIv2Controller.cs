@@ -83,7 +83,6 @@ public class YokaiAIv2Controller : YokaiController {
                         
                         //attack target with rate
                         if (Time.time > nextBodyAttack) {
-                            Debug.Log("attack");
                             nextBodyAttack = Time.time + rateBodyAttack;
                             if (target.tag == "Player") {
                                 target.GetComponent<PlayerHealth>().LooseHP(damageBody);
