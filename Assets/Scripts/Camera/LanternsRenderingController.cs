@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class LanternsRenderingController : MonoBehaviour
 {
     private List<LanternController> lanterns;
@@ -42,8 +42,12 @@ public class LanternsRenderingController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         int i = 0;
         while (!_isDirty && i < lanterns.Count)
         {

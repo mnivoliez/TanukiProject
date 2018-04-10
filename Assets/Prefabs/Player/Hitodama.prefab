@@ -98,11 +98,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnHitodama: {fileID: 0}
-  playerHealth: {fileID: 0}
   speed: 4
   initialMinSize: 0.05
-  diffEmissionColor: {r: 0.00019607843, g: 0.72, b: 0.728, a: 1}
-  diffColor: {r: 0.23529412, g: 0.27450982, b: 0.27450982, a: 0.109}
+  diffEmissionColor: {r: 0.039215688, g: 0.98039216, b: 0.98039216, a: 1}
+  initColor: {r: 0.23529412, g: 0.27450982, b: 0.27450982, a: 0.11764706}
+  firstColor: {r: 0.9411765, g: 0.19607843, b: 0.19607843, a: 0.3137255}
+  secondColor: {r: 0.98039216, g: 0.9411765, b: 0.11764706, a: 0.50980395}
+  thirdColor: {r: 0, g: 0.74509805, b: 1, a: 0.7058824}
+  fourthColor: {r: 0.78431374, g: 0.27450982, b: 0.9019608, a: 0.9019608}
   gainHPEffect: {fileID: 1915611445953378, guid: 62169441f9e626149945b992f9cebb19,
     type: 2}
   lostHPEffect: {fileID: 1283502268742046, guid: cef560fa129b6b7449d4a434bb0bff2c,
@@ -2743,9 +2746,9 @@ ParticleSystem:
       type: 0
       properties: 0
   LightsModule:
-    enabled: 0
-    ratio: 0
-    light: {fileID: 0}
+    enabled: 1
+    ratio: 1
+    light: {fileID: 108145248412048022, guid: ae68d43a22dabcc4f990b3ae0d8fce7f, type: 2}
     randomDistribution: 1
     color: 1
     range: 1
@@ -2753,7 +2756,7 @@ ParticleSystem:
     rangeCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -2836,11 +2839,11 @@ ParticleSystem:
   TrailModule:
     enabled: 1
     mode: 0
-    ratio: 0.97
+    ratio: 1
     lifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2

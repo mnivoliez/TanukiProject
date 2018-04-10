@@ -5,13 +5,14 @@ using UnityEngine;
 public class HealObject : MonoBehaviour {
 
     [SerializeField] private float healPoint = 1f;
-
-	void Start () {
-		
-	}
 	
 
 	void Update () {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         transform.Rotate(new Vector3(0, 2, 0));
     }
 

@@ -14,6 +14,11 @@ public class YokaiGeneralTongue : MonoBehaviour {
     private GameObject target;
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (tongueAttack) {
             if(Time.time > nextAttack) {
                 nextAttack = Time.time + rateTongueAttack;

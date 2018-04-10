@@ -47,8 +47,13 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
-		speed = moveSpeed;
+        speed = moveSpeed;
 
 		if (GameObject.Find("Catchable Object").transform.childCount != 0) {
 			speed = movespeedWithObject;

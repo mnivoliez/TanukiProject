@@ -31,6 +31,11 @@ public class LureController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         body.AddForce(gravity * (40 * Time.deltaTime), ForceMode.Acceleration);
     }
 

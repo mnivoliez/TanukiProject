@@ -23,8 +23,13 @@ public class SkipVideo : MonoBehaviour {
 	}
 
     private void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
-        if(Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel")) {
+        if (Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel")) {
             CancelInvoke();
             SkipVideoToNextScene();
         }

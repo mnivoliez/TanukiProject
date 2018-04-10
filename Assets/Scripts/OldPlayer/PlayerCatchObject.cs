@@ -20,7 +20,11 @@ public class PlayerCatchObject : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (parentObjectInHand.transform.childCount != 0) {
             playerController.canDoubleJump = false;
         }

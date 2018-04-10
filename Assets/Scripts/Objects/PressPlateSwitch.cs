@@ -7,19 +7,15 @@ public class PressPlateSwitch : MonoBehaviour {
     private SwitchObject[] actionOnSwitch;
 
     private bool isPressedByLure;
-    private bool isPressedByPlayer;
 
     void Start() {
         isPressedByLure = false;
-        isPressedByPlayer = false;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        isPressedByPlayer = collision.gameObject.CompareTag("Player");
         isPressedByLure = collision.gameObject.CompareTag("Lure");
-        bool isPressed = isPressedByLure || isPressedByPlayer;
-        if(isPressed) {
+        if(isPressedByLure) {
             foreach(SwitchObject obj in actionOnSwitch) {
                 if (obj.gameObject != null)
                 {
@@ -31,10 +27,8 @@ public class PressPlateSwitch : MonoBehaviour {
     }
 
     void OnCollisionExit(Collision collision) {
-        isPressedByPlayer = !collision.gameObject.CompareTag("Player");
         isPressedByLure = !collision.gameObject.CompareTag("Lure");
-        bool isPressed = isPressedByLure || isPressedByPlayer;
-        if(!isPressed) {
+        if(!isPressedByLure) {
             foreach(SwitchObject obj in actionOnSwitch) {
                 if (obj.gameObject != null)
                 {
@@ -42,11 +36,5 @@ public class PressPlateSwitch : MonoBehaviour {
                 }
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
