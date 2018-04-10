@@ -213,8 +213,8 @@ public class InteractBehavior : MonoBehaviour {
 
             //gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, gameObject.transform.localScale / coefResize , Timestamp/tempMaxResize);
             gameObject.transform.localScale = gameObject.transform.localScale / coefResize;
-            gameObject.GetComponent<ShadowDirectController>().ResizeShadow(true, coefResize);
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOrbit>().ResizeDistanceCamera(true, coefResize);
+            //gameObject.GetComponent<ShadowDirectController>().ResizeShadow(true, coefResize);
+            //GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOrbit>().ResizeDistanceCamera(true, coefResize);
             //ResizeDistanceCamera
             //GameObject.FindGameObjectWithTag("Hitodama").transform.localScale = GameObject.FindGameObjectWithTag("Hitodama").transform.localScale / coefResize;
         }
