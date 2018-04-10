@@ -39,7 +39,7 @@ public class LureController : MonoBehaviour
         body.AddForce(gravity * (40 * Time.deltaTime), ForceMode.Acceleration);
     }
 
-    private void BeingHit()
+    public void BeingHit()
     {
         health--;
         
@@ -53,11 +53,13 @@ public class LureController : MonoBehaviour
 
     void OnCollisionEnter(Collision collider)
     {
-        if (collider.gameObject.tag == "Yokai")
+        /*if (collider.gameObject.tag == "Yokai")
         {
             BeingHit();
         }
-        else if (collider.gameObject.layer == LayerMask.NameToLayer("Water"))
+        else */
+
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
             Destroy();
         }
