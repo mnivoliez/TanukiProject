@@ -19,8 +19,8 @@ public class MoveLeaf : MonoBehaviour {
 
     void Start() {
         currentSpeed = initialSpeed;
-        renderLeaf = transform.GetChild(0).GetComponent<Renderer>();
-        renderStem = GetComponent<Renderer>();
+        //renderLeaf = transform.GetChild(0).GetComponent<Renderer>();
+        //renderStem = GetComponent<Renderer>();
     }
 
     void Update() {
@@ -34,12 +34,12 @@ public class MoveLeaf : MonoBehaviour {
             MoveTo();
             if (transform.position == targetPosition) {
                 arrived = true;
-                StartCoroutine(LeafDisappear());
+                //StartCoroutine(LeafDisappear());
             }
         }
-        //else {
-        //    BackTo();
-        //}
+        else {
+            BackTo();
+        }
     }
 
     public void MoveTo() {
@@ -48,12 +48,12 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     public void BackTo() {
-        
-        //GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
-        //FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
-        //Destroy(FXDisappear, 1f);
-        //Destroy(gameObject);
-        //SoundController.instance.PlayLeafSingle(vanishLeaf);
+
+        GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
+        FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
+        SoundController.instance.PlayLeafSingle(vanishLeaf);
+        Destroy(FXDisappear, 1f);
+        Destroy(gameObject);
     }
 
     IEnumerator LeafDisappear() {
