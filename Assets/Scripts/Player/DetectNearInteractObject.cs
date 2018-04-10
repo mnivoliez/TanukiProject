@@ -33,10 +33,6 @@ public class DetectNearInteractObject : MonoBehaviour {
 	}
 
     void OnTriggerStay(Collider collider) {
-		if (collider.gameObject.tag == "Catchable") {
-			Debug.Log ("Detect: " + collider.name);
-		}
-
 
         float distanceObject = Vector3.Distance(collider.gameObject.transform.position, transform.position);
         Vector3 offSetPoint = transform.position + transform.forward * -offSet;

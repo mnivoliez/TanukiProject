@@ -67,7 +67,7 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private float glideCounterForce = 150f;
     [SerializeField] private float slideAngleNormal = 45f;
     [SerializeField] private float slideAngleRock = 10f;
-    [SerializeField] private GameObject absorbRange;
+    [SerializeField] private GameObject interactArea;
     [SerializeField] private float fieldOfView = 45f;
 
     private List<Vector3> inclinationNormals;
@@ -734,7 +734,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.Absorb:
-                GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = interactArea.GetComponent<DetectNearInteractObject>().GetNearestObject();
                 if (nearestObject == null || !nearestObject.CompareTag("Yokai")) {
                     interactStateParameter.yokaiStillInRange = false;
                 }
@@ -836,7 +836,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.ContextualAction:
-                GameObject nearestObject = GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = interactArea.GetComponent<DetectNearInteractObject>().GetNearestObject();
 
                 if (interactState == InteractState.Carry) {
                     interactStateParameter.finishedCarry = true;
