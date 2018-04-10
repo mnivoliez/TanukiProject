@@ -7,15 +7,6 @@ public class CheckPointLantern : MonoBehaviour {
     [SerializeField] private GameObject checkPoint;
     [SerializeField] private GameObject saveEffect;
 
-    void Start () {
-		
-	}
-	
-
-	void Update () {
-		
-	}
-
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
             Destroy(Instantiate(saveEffect, transform.GetChild(0).gameObject.transform.position, Quaternion.identity), 3f);

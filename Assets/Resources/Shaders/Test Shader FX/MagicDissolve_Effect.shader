@@ -7,7 +7,7 @@
 		_NScale ("Noise Scale", Range(0, 10)) = 1 // Color of the dissolve Line
 		_DisAmount("Dissolve Amount", Range(0, 1)) = 0 // amount of dissolving going on
 		
-		_DisLineWidth("Dissolve Width", Range(0, 2)) = 0 // width of the line around the dissolve
+		_DisLineWidth("Dissolve Width", Range(-5, 2)) = 0 // width of the line around the dissolve
 		_DisLineColor("Dissolve Color", Color) = (1,1,1,1) // Color of the dissolve Line
 			_DisLineColorEx("Dissolve Color Extra", Color) = (1,1,1,1) // Color of the dissolve Line
 

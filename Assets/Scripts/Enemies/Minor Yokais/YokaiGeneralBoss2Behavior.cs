@@ -33,12 +33,22 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (isAbsorbed) {
             Die();
         }
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!isKnocked) {
             if (target != null) {
 
