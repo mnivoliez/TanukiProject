@@ -21,6 +21,11 @@ public class BossBehavior : MonoBehaviour {
     }
 
 	void Update () {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (isAbsorbed) {
             Die();
         }

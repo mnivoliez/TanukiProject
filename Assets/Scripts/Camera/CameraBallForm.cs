@@ -17,6 +17,11 @@ public class CameraBallForm : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (target != null) {
 
             transform.position = Vector3.Lerp(transform.position, target.transform.position + CameraOffset, 20 * Time.deltaTime);
