@@ -208,8 +208,8 @@ public class KodaController : MonoBehaviour {
 	}*/
 
     private void FixedUpdate() {
-        GC.Collect();
-        Resources.UnloadUnusedAssets();
+        //GC.Collect();
+        //Resources.UnloadUnusedAssets();
         //===========================
         if (Pause.Paused) {
             return;
