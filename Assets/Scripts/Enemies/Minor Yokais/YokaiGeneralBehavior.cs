@@ -35,6 +35,11 @@ public class YokaiGeneralBehavior : YokaiController {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (isAbsorbed) {
             Die();
         }
@@ -42,6 +47,11 @@ public class YokaiGeneralBehavior : YokaiController {
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!isKnocked) {
             if (target != null) {
                 //follow target

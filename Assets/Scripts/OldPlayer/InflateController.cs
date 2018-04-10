@@ -19,7 +19,11 @@ public class InflateController : MonoBehaviour {
     }
 
     void Update() {
-
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
         if (Input.GetButtonDown("Transformation")) {
             if (isInflate) {
@@ -46,8 +50,7 @@ public class InflateController : MonoBehaviour {
                 }
 
             }
-
-
+            
         }
 
     }

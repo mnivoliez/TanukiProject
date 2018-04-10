@@ -14,6 +14,11 @@ public class DetectRange : MonoBehaviour {
     }
     
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (bazekoriBehavior.GetIsKnocked()){
             CancelInvoke();
             DesactivateCollider();

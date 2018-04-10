@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -37,12 +38,22 @@ public class YokaiAIv2Controller : YokaiController {
     }
 
     private void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (isAbsorbed) {
             Die();
         }
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!isKnocked) {
             if (target != null) {
                 agent.stoppingDistance = stoppingDistance;
@@ -69,16 +80,22 @@ public class YokaiAIv2Controller : YokaiController {
                     }
 
                     if (bodyAttack) {
+                        
                         //attack target with rate
                         if (Time.time > nextBodyAttack) {
-                            target = GameObject.FindGameObjectWithTag("Player");
-                            nextBodyAttack = nextBodyAttack + rateBodyAttack;
-                            target.GetComponent<PlayerHealth>().LooseHP(damageBody);
+                            Debug.Log("attack");
+                            nextBodyAttack = Time.time + rateBodyAttack;
+                            if (target.tag == "Player") {
+                                target.GetComponent<PlayerHealth>().LooseHP(damageBody);
+                            } else if (target.tag == "Lure") {
+                                target.GetComponent<LureController>().BeingHit();
+                            }
                         }
                     }
                 }
             }
             else {
+                bodyAttack = false;
                 if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
                     agent.stoppingDistance = 0.0f;
                     agent.SetDestination(positionOrigin);
@@ -95,27 +112,28 @@ public class YokaiAIv2Controller : YokaiController {
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == "Player") {
             bodyAttack = true;
-            Vector3 vectorToCollision = collision.gameObject.transform.position - transform.position;
         }
 
         if (collision.gameObject.tag == "Lure") {
-            BeingHit();
-            LooseHp(1);
-            EndHit();
 
-            Destroy(collision.gameObject);
+            if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
+                SoundController.instance.PlayYokaiSingle(yokaiHurt);
+                LooseHp(1);
+                Destroy(collision.gameObject);
+                GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+            }
+            bodyAttack = true;
         }
-
-
     }
+
     private void OnCollisionExit(Collision collision) {
-        if (collision.gameObject.tag == "Player") {
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Lure") {
             bodyAttack = false;
         }
     }
 
     void OnTriggerEnter(Collider other) {
-        if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked) {
+        if ((other.gameObject.tag == "Leaf" || (other.gameObject.tag == "Lure" && Math.Abs(other.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f)) && !isKnocked) {
             if (comeBack) {
                 comeBack = false;
             }
@@ -147,6 +165,8 @@ public class YokaiAIv2Controller : YokaiController {
             rendererMat.SetColor("_Color", hitColor);
             SoundController.instance.PlayYokaiSingle(yokaiScream);
             target = GameObject.FindGameObjectWithTag("Player");
+            agent.SetDestination(transform.position);
+            comeBack = false;
         }
 
     }
@@ -163,14 +183,13 @@ public class YokaiAIv2Controller : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         positionCollectable = transform.position;
-        positionCollectable.y = positionCollectable.y;
         gameObject.GetComponent<Collider>().enabled = false;
         SoundController.instance.PlayYokaiSingle(absorbed);
     }
 
     public override void Die() {
-        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
-            if (Random.Range(0, 10) > 4.9f) {
+        if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5) {
+            if (UnityEngine.Random.Range(0, 10) > 4.9f) {
                 Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
             }
             target.GetComponent<Animator>().SetBool("IsAbsorbing", false);
@@ -179,7 +198,7 @@ public class YokaiAIv2Controller : YokaiController {
         else {
             if (transform.localScale.x > 0 && transform.localScale.y > 0 && transform.localScale.z > 0) {
                 Vector3 scale = transform.localScale;
-                scale -= new Vector3(20f, 20f, 20f);
+                scale -= new Vector3(0.2f, 0.2f, 0.2f);
                 if (scale.x < 0 && scale.y < 0 && scale.z < 0) {
                     scale = Vector3.zero;
                 }

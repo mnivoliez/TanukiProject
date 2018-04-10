@@ -145,17 +145,20 @@ public class CameraController : MonoBehaviour {
 	}
 
 	public void RecenterCamera() {
-
+        
 		wideCameraLocked = false;
 		centerTime = Time.time;
-		centerCamDirection = playerTanukiModel.forward;
-		centerCamPos = camBase.position;
-		centerCamRot = camBase.rotation;
-		centerCamera = true;
 
-		currentCameraAngle = defaultCameraAngle;
-		currentCameraDistance = defaultCameraDistance;
-		currentCameraHeight = defaultCameraHeight;
+        if (playerTanukiModel != null) {
+            centerCamDirection = playerTanukiModel.forward;
+            centerCamPos = camBase.position;
+            centerCamRot = camBase.rotation;
+            centerCamera = true;
+
+            currentCameraAngle = defaultCameraAngle;
+            currentCameraDistance = defaultCameraDistance;
+            currentCameraHeight = defaultCameraHeight;
+        }
 	}
 
 	public void WideCamera() {
