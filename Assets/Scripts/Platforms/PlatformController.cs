@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [ExecuteInEditMode]
-public class PlatformControllers : MonoBehaviour {
+public class PlatformController : MonoBehaviour {
 
 	public Vector3[] localWaypoints = new Vector3[2];
 
