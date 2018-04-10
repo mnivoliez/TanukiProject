@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(PathCreator))]
-public class PlatformController : MonoBehaviour {
+public class PlatformControllers : MonoBehaviour {
 
 	private PathCreator creator;
 	private PathPlatform path;
