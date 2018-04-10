@@ -24,10 +24,6 @@ public class PlayerAbsorption : MonoBehaviour {
         currentAbsorption = false;
     }
 
-    void Update() {
-
-    }
-
     void OnTriggerStay(Collider collid) {
         
         if (!currentAbsorption) {
