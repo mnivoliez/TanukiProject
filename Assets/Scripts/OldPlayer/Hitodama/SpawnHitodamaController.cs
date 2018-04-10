@@ -6,11 +6,12 @@ public class SpawnHitodamaController : MonoBehaviour {
 
     public GameObject player;
 
-    void Start() {
-
-    }
-
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         transform.RotateAround(player.transform.position, Vector3.up, 20 * Time.deltaTime);
     }
 }

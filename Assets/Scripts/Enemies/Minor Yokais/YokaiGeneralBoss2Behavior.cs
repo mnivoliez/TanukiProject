@@ -33,12 +33,22 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
     }
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (isAbsorbed) {
             Die();
         }
     }
 
     private void FixedUpdate() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         if (!isKnocked) {
             if (target != null) {
 
@@ -118,11 +128,9 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
 
         if (collision.gameObject.tag == "Lure") {
 
-            if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
+            if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
                 SoundController.instance.PlayYokaiSingle(yokaiHurt);
-                BeingHit();
                 LooseHp(1);
-                EndHit();
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
             }

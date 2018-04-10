@@ -17,7 +17,12 @@ public class SpawnerSpecialYokai : MonoBehaviour {
     }
 	
 	void FixedUpdate () {
-		if(instanceYokai == null) {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+        if (instanceYokai == null) {
             cooldownSpawner += 0.02f;
             if (cooldownSpawner > timerPowerUp) {
                 SpawnYokai();

@@ -14,6 +14,11 @@ public class ProjectileBehavior : MonoBehaviour {
 
 
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
         transform.position += transform.forward * speed * Time.deltaTime;
     }
 
