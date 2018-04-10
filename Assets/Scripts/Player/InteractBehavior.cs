@@ -20,6 +20,7 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("DISTANT ATTACK")]
     [Space(8)]
+    [SerializeField] private GameObject tempLeafHead; //delete when leaf animation is done
     [SerializeField] private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private float distantAttackRange = 8f;
@@ -144,7 +145,8 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void DoDistantAttack() {
-        leafHead.SetActive(false);
+        tempLeafHead.SetActive(false);
+
         GameObject leafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
         MoveLeaf moveLeaf = leafBoomerang.GetComponent<MoveLeaf>();
         moveLeaf.SetSpawnPosition(spawnLeaf);
@@ -175,7 +177,7 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void StopDistantAttack() {
-        leafHead.SetActive(true);
+        tempLeafHead.SetActive(true);
     }
 
     public void DoInflate(bool inflate) {
