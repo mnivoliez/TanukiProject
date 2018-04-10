@@ -120,7 +120,7 @@ public class ShadowProjector : MonoBehaviour {
 	}
     //@TODO : Try to understand why it creates memory leaks !
 	void BlurTexture (RenderTexture src) {
-		/*int width = imageWidth >> downRes;
+		int width = imageWidth >> downRes;
 		int height = imageHeight >> downRes;
 
 		RenderTexture rt1 = RenderTexture.GetTemporary (width, height, depth, format);
@@ -131,9 +131,11 @@ public class ShadowProjector : MonoBehaviour {
 			Graphics.Blit (rt1, rt2, blurMat);
 			RenderTexture.ReleaseTemporary (rt1);
 			rt1 = rt2;
+            //RenderTexture.ReleaseTemporary(rt2);
 		}
 
-		Graphics.Blit (rt1, src);*/
+		Graphics.Blit (rt1, src);
+        RenderTexture.ReleaseTemporary(rt1);
 	}
 
 	void RemoveBorder (RenderTexture src) {
