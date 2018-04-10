@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 [ExecuteInEditMode]
 public class LanternController : MonoBehaviour {
@@ -80,8 +83,9 @@ public class LanternController : MonoBehaviour {
                 is_being_played = true;
                 if (is_being_played && !token_play_once) {
                     token_play_once = true;
-                    //AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
-                    SoundController.instance.PlayLanternSingle(lanterSound);
+                    //================================================
+                    SoundController.instance.SelectLANTERN("Catch");
+                    //================================================
                 }
             }
         }
@@ -96,18 +100,16 @@ public class LanternController : MonoBehaviour {
         }
         //===========================
 
-        //the_player = GameObject.FindGameObjectWithTag("Player");
-        //the_lantern = GetComponent<Rigidbody>();
 
+        //================================================
         if (the_lantern != null) {
             pos_player = the_player.transform.position;
             pos_lantern = the_lantern.transform.position;
             vec_distance = pos_player - pos_lantern;
             numb_distance = Mathf.Sqrt(Mathf.Pow(vec_distance.x, 2) + Mathf.Pow(vec_distance.y, 2) + Mathf.Pow(vec_distance.z, 2));
-            //Debug.Log(numb_distance);
             if (numb_distance < 60f) {
                 if (!dome_playing) {
-                    SoundController.instance.PlayLanternSource(lanterDome);
+                    SoundController.instance.SelectLANTERN("Dome");
                     dome_playing = true;
                     lanterClosestFoundPlay = true;
                 }
@@ -120,6 +122,7 @@ public class LanternController : MonoBehaviour {
                 dome_playing = false;
                 lanterClosestFoundPlay = false;
             }
+            //================================================
         }
 
 
@@ -134,8 +137,9 @@ public class LanternController : MonoBehaviour {
 
     private void OnCollisionStay(Collision collision) {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Water")) {
-
-            SoundController.instance.PlayLanternSingle(lanterFallWater);
+            //================================================
+            SoundController.instance.SelectLANTERN("FallWater");
+            //================================================
 
             if (shallRespawn == false) {
                 GameObject air = Instantiate(airLantern, transform.position, Quaternion.identity);
