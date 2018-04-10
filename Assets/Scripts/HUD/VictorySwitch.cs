@@ -28,8 +28,12 @@ public class VictorySwitch : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
-	}
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
+    }
     //Fonction for playtest victory
     public void VictoryScreen() {
         Victory = true;

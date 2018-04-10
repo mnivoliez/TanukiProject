@@ -24,6 +24,11 @@ public class BallFormController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        //===========================
+        if (Pause.Paused) {
+            return;
+        }
+        //===========================
 
         _onGround = CheckGroundCollision();
 
