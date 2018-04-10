@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,31 +41,6 @@ public class LeafLock {
         this.parent = parentState;
     }
 }
-
-//public class Leaf {
-//    public class LeafLock {
-//        Leaf _parent;
-//        public LeafLock(Leaf parent) {
-//            _parent = parent;
-//        }
-//        public void Release() {
-//            _parent.leafLock = null;
-//            _parent = null;
-//        }
-//    }
-
-//    private LeafLock leafLock;
-
-//    public LeafLock TakeLeaf() {
-//        if (leafLock == null) {
-//            leafLock = new LeafLock(this);
-//            return leafLock;
-//        }
-//        else {
-//            throw new LeafAlreadyTakenException();
-//        }
-//    }
-//}
 
 public class Pair<T, U> {
     public Pair() {
@@ -185,13 +161,12 @@ public class KodaController : MonoBehaviour {
 
     [Header("LANTERN")]
     [Space(10)]
-    [SerializeField]
-    private float timeStopToDie = 1.0f;
     private bool runOnWater = false;
     private GameObject[] lanterns;
     private GameObject lanternNearest = null;
     private bool playerStop = false;
-    private float timeStop = 0f;
+
+    InputParams inputParams;
 
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
@@ -233,9 +208,13 @@ public class KodaController : MonoBehaviour {
 	}*/
 
     private void FixedUpdate() {
+        GC.Collect();
+        Resources.UnloadUnusedAssets();
+        //===========================
         if (Pause.Paused) {
             return;
         }
+        //===========================
 
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
@@ -247,7 +226,7 @@ public class KodaController : MonoBehaviour {
 
         previousMovementState = movementState;
 
-        InputParams inputParams;
+        //InputParams inputParams;
         //deplacements
 
         previousInteractState = interactState;
@@ -324,22 +303,6 @@ public class KodaController : MonoBehaviour {
                     GetComponent<PlayerHealth>().PlayerDie();
                     runOnWater = false;
                 }
-                else {
-                    if (movementState == MovementState.Idle) {
-                        if (playerStop == false) {
-                            playerStop = true;
-                            timeStop = Time.time;
-                        }
-                    }
-                    else {
-                        playerStop = false;
-                    }
-                    if (playerStop && ((Time.time - timeStop) > timeStopToDie)) {
-                        //Debug.Log("die stop");
-                        GetComponent<PlayerHealth>().PlayerDie();
-                        runOnWater = false;
-                    }
-                }
             }
             else {
                 GetComponent<PlayerHealth>().PlayerDie();
@@ -356,7 +319,6 @@ public class KodaController : MonoBehaviour {
         if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock") || gO.layer == LayerMask.NameToLayer("Water")) {
             if (gO.layer == LayerMask.NameToLayer("Water")) {
                 runOnWater = true;
-                playerStop = false;
             }
             ContactPoint[] contacts = coll.contacts;
 
@@ -454,7 +416,6 @@ public class KodaController : MonoBehaviour {
             if (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock") || gO.layer == LayerMask.NameToLayer("Water")) {
                 if (gO.layer == LayerMask.NameToLayer("Water")) {
                     runOnWater = false;
-                    playerStop = false;
                 }
                 if (_grounds.Contains(gO)) {
                     _grounds.Remove(gO);
@@ -781,7 +742,6 @@ public class KodaController : MonoBehaviour {
 
             case InteractState.Carry:
                 if (previousInteractState == InteractState.Nothing) {
-				Debug.Log ("Carry");
                     interactBehaviorCtrl.DoCarry(objectToCarry);
                     catchableObject = objectToCarry;
                 }
@@ -876,7 +836,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.ContextualAction:
-                GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = GetComponent<DetectNearInteractObject>().GetNearestObject();
 
                 if (interactState == InteractState.Carry) {
                     interactStateParameter.finishedCarry = true;
@@ -1030,10 +990,8 @@ public class KodaController : MonoBehaviour {
             }
         }
         else if (collid.CompareTag("LoveHotel")) {
-            Debug.Log("Love");
             InputParams inputParams = inputController.RetrieveUserRequest();
             if (inputParams.contextualButtonPressed && interactState == InteractState.Activate) {
-                Debug.Log("Hotel");
                 LanternStandController stand = collid.gameObject.GetComponent<LanternStandController>();
                 stand.RecallLantern();
                 inputParams.contextualButtonPressed = false;
@@ -1099,6 +1057,13 @@ public class KodaController : MonoBehaviour {
         leafLock.isUsed = false;
         leafLock.parent = InteractState.Nothing;
         interactBehaviorCtrl.ResetLeaf();
+    }
+
+    //Use when AirStreamLantern is Destroy and player is actualy gliding in.
+    public void PlayerOutAirstream() {
+        SoundController.instance.StopSingle();
+        moveStateParameters.inAirStream = false;
+        interactStateParameter.canAirStream = false;
     }
 
     public bool GetPowerJump() { return hasPermanentDoubleJumpCapacity; }
