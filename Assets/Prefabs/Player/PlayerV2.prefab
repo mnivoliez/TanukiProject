@@ -651,6 +651,7 @@ GameObject:
   - component: {fileID: 114413189276461600}
   - component: {fileID: 114939442216126860}
   - component: {fileID: 114280008632786526}
+  - component: {fileID: 114138971644043260}
   m_Layer: 10
   m_Name: PlayerV2
   m_TagString: Player
@@ -2636,7 +2637,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: -2.5
-  far clip plane: 2.035351
+  far clip plane: 2.5997436
   field of view: 60
   orthographic: 1
   orthographic size: 1.5
@@ -2806,6 +2807,7 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   deathTransition: {fileID: 1915411835969860, guid: 13d47a812d7327240b92efd7755f3047,
     type: 2}
+  Tanuki_Body: {fileID: 1778756347560900}
 --- !u!114 &114078812068351628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2854,6 +2856,20 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114138971644043260
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1445498394530796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b7d31e2f3882a4bbdcc3a2066b41c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldOfView: 45
+  rangeInteract: 4
+  direction: {fileID: 4482390627050012}
 --- !u!114 &114165693902508050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2924,7 +2940,6 @@ MonoBehaviour:
   fallWaterSound: {fileID: 8300000, guid: 62d61182122355a49b2372104e0054fc, type: 3}
   glideSound: {fileID: 8300000, guid: 207570e147c3ca74884222afc8859a59, type: 3}
   pushUpSound: {fileID: 8300000, guid: 186cbb937029ab449a033abb440af6ba, type: 3}
-  timeStopToDie: 1
 --- !u!114 &114179824389231946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3062,6 +3077,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b7d31e2f3882a4bbdcc3a2066b41c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fieldOfView: 45
+  rangeInteract: 4
+  direction: {fileID: 4482390627050012}
 --- !u!114 &114542118884576844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3249,6 +3267,7 @@ MonoBehaviour:
   leafHand: {fileID: 1216659900842424}
   attackRange: {fileID: 1211683150294972}
   meleeDamage: 2
+  tempLeafHead: {fileID: 1685668173128874}
   leafPrefab: {fileID: 1691137885492606, guid: b5dc0f5d8c5f8c44faf8a37ad5aee41f, type: 2}
   spawnLeaf: {fileID: 1083905570278098}
   distantAttackRange: 8
@@ -3290,7 +3309,7 @@ Projector:
   m_Enabled: 1
   serializedVersion: 2
   m_NearClipPlane: 0
-  m_FarClipPlane: 2.035351
+  m_FarClipPlane: 2.5997436
   m_FieldOfView: 60
   m_AspectRatio: 0.8
   m_Orthographic: 1
@@ -3434,6 +3453,7 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: 7f164462eb340fd41b9ebbe4b148ecac, type: 2}
+  - {fileID: 2100000, guid: 8d8f24ee94a31434ab035e971ca94525, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

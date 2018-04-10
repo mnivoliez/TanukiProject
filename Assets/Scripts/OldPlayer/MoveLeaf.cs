@@ -14,9 +14,13 @@ public class MoveLeaf : MonoBehaviour {
     [SerializeField] private GameObject disparitionEffect;
     [SerializeField] private AudioClip throwLeaf;
     [SerializeField] private AudioClip vanishLeaf;
+    private Renderer renderLeaf;
+    private Renderer renderStem;
 
     void Start() {
         currentSpeed = initialSpeed;
+        renderLeaf = transform.GetChild(0).GetComponent<Renderer>();
+        renderStem = GetComponent<Renderer>();
     }
 
     void Update() {
@@ -30,11 +34,12 @@ public class MoveLeaf : MonoBehaviour {
             MoveTo();
             if (transform.position == targetPosition) {
                 arrived = true;
+                StartCoroutine(LeafDisappear());
             }
         }
-        else {
-            BackTo();
-        }
+        //else {
+        //    BackTo();
+        //}
     }
 
     public void MoveTo() {
@@ -43,13 +48,35 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     public void BackTo() {
+        
+        //GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
+        //FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
+        //Destroy(FXDisappear, 1f);
+        //Destroy(gameObject);
+        //SoundController.instance.PlayLeafSingle(vanishLeaf);
+    }
+
+    IEnumerator LeafDisappear() {
+        float disappearValue = 0;
+        float dissolveValue = -0.25f;
+
+        while (disappearValue < 0.8f) {
+            //Debug.Log("DISAPPEAR: " + disappearValue);
+            disappearValue = Mathf.Lerp(disappearValue, 1, 0.3f);
+            dissolveValue = Mathf.Lerp(dissolveValue, 0.25f, 0.5f);
+            renderLeaf.material.SetFloat("_DisLineWidth", dissolveValue);
+            renderLeaf.material.SetFloat("_DisAmount", disappearValue);
+            renderStem.material.SetFloat("_DisAmount", disappearValue);            
+            yield return new WaitForSeconds(0.000001f);
+        }
+        GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
+        SoundController.instance.PlayLeafSingle(vanishLeaf);
         arrived = false;
         GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().StopDistantAttackState();
-        GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
-        FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
         Destroy(FXDisappear, 1f);
+        FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
         Destroy(gameObject);
-        SoundController.instance.PlayLeafSingle(vanishLeaf);
+
     }
 
     public void SetSpawnPosition(GameObject spPos) {
