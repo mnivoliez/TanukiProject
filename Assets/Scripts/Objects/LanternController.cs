@@ -74,9 +74,9 @@ public class LanternController : MonoBehaviour {
 
         }
         else {
-            _range = _max_radius;
-            _light.intensity = _max_intensity;
             if (transform.parent.tag == "Hand") {
+                _range = _max_radius;
+                _light.intensity = _max_intensity;
                 is_being_played = true;
                 if (is_being_played && !token_play_once) {
                     token_play_once = true;
