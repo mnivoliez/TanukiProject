@@ -292,6 +292,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4994554826204534, guid: 0d1ae8f1c0ffe4e409fe28d0719c66e7, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0d1ae8f1c0ffe4e409fe28d0719c66e7, type: 2}
   m_IsPrefabParent: 0
@@ -1043,6 +1047,26 @@ Transform:
   m_PrefabParentObject: {fileID: 4588023347668978, guid: 45f8afb02641ab045a76f68478a90921,
     type: 2}
   m_PrefabInternal: {fileID: 1953633617}
+--- !u!21 &152785660
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!4 &157361218 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4565478167039564, guid: cf32fcd3186e73b4081395bb803227d0,
@@ -2638,15 +2662,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
@@ -3200,7 +3224,7 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 372355870}
+      objectReference: {fileID: 152785660}
     - target: {fileID: 20144259831111884, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: far clip plane
@@ -3210,7 +3234,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1845102734}
+      objectReference: {fileID: 1205173976}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a95e21316b361044681464f5613ea9f0, type: 2}
   m_IsPrefabParent: 0
@@ -3499,26 +3523,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4498420591742440, guid: 1060b67c9585c7a4fb7415e96e4dd484,
     type: 2}
   m_PrefabInternal: {fileID: 2144163660}
---- !u!21 &372355870
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!1001 &374421710
 Prefab:
   m_ObjectHideFlags: 0
@@ -5014,15 +5018,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
@@ -6148,15 +6152,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
@@ -6207,15 +6211,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
@@ -9376,15 +9380,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
@@ -9571,6 +9575,37 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 45f8afb02641ab045a76f68478a90921, type: 2}
   m_IsPrefabParent: 0
+--- !u!84 &1205173976
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &1209205669
 Prefab:
   m_ObjectHideFlags: 0
@@ -10030,15 +10065,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
@@ -11088,8 +11123,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayingBackwards: 0
-  waypointPeriod: 1
-  waitTime: 0
+  waypointPeriod: 2
+  waitTime: 2
 --- !u!114 &1397814222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12570,15 +12605,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb512f7f7e2a79d419b8bc7f0ac91d60, type: 2}
@@ -13690,6 +13725,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4994554826204534, guid: 0d1ae8f1c0ffe4e409fe28d0719c66e7, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0d1ae8f1c0ffe4e409fe28d0719c66e7, type: 2}
   m_IsPrefabParent: 0
@@ -14157,37 +14196,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cf32fcd3186e73b4081395bb803227d0, type: 2}
   m_IsPrefabParent: 0
---- !u!84 &1845102734
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &1849471324
 GameObject:
   m_ObjectHideFlags: 0
