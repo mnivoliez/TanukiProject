@@ -8,7 +8,6 @@ public class YokaiAIv2Controller : YokaiController {
 
     [SerializeField] private float detectArea = 20.0f;
     private Quaternion rotationOrigin;
-    public bool comeBack;
     private NavMeshAgent agent;
     private float stoppingDistance;
 
