@@ -21,12 +21,16 @@ public class LoadSceneManager : MonoBehaviour {
 
     void Start() {
         GameObject transitionImageInstance = GameObject.Find("SceneTransitionImage");
-        Black = transitionImageInstance.GetComponent<Image>();
-        anim = transitionImageInstance.GetComponent<Animator>();
+        if (transitionImageInstance != null) {
+            Black = transitionImageInstance.GetComponent<Image>();
+            anim = transitionImageInstance.GetComponent<Animator>();
+        }
 
         GameObject loadingScreen = GameObject.Find("LoadingScreen");
-        canvasLoading = loadingScreen.GetComponent<Canvas>();
-        loadingMainPanel = canvasLoading.transform.GetChild(0).gameObject;
+        if (loadingScreen != null) {
+            canvasLoading = loadingScreen.GetComponent<Canvas>();
+            loadingMainPanel = canvasLoading.transform.GetChild(0).gameObject;
+        }
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -46,12 +50,15 @@ public class LoadSceneManager : MonoBehaviour {
     // The coroutine runs on its own at the same time as Update() and takes an integer indicating which scene to load.
     IEnumerator LoadAsyncScene(string sceneNameToLoad) {
 
-        anim.SetBool("Fade", true);
-        yield return new WaitUntil(() => Black.color.a == 1);
+        if (anim != null) {
+            anim.SetBool("Fade", true);
+            yield return new WaitUntil(() => Black.color.a == 1);
+        }
 
-        loadingMainPanel.SetActive(true);
-
-        yield return new WaitForSeconds(3);
+        if (loadingMainPanel != null) {
+            loadingMainPanel.SetActive(true);
+            yield return new WaitForSeconds(3);
+        }
 
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneNameToLoad);
 
