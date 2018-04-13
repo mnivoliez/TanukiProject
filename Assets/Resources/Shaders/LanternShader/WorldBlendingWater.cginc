@@ -16,6 +16,7 @@ struct v2f
 	float4 pos : SV_POSITION;
 	LIGHTING_COORDS(3,4)
 	float4 projPos : TEXCOORD5;
+	UNITY_FOG_COORDS(6)
 };
 
 uniform sampler2D _FirstTexture;
@@ -80,6 +81,7 @@ v2f vert (appdata v)
 	o.projPos = ComputeScreenPos (o.pos);
     COMPUTE_EYEDEPTH(o.projPos.z);
 	TRANSFER_VERTEX_TO_FRAGMENT(o);
+	UNITY_TRANSFER_FOG(o,o.pos);
 	return o;
 }
 
@@ -208,8 +210,12 @@ half4 frag (v2f i) : SV_Target
 		#else
 			emissive += (tex1 + invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a*25.0;
 		#endif
-		return half4((directDiff + indirectDiff) * diffCol + emissive, opacity);
+		half4 finalCol = half4((directDiff + indirectDiff) * diffCol + emissive, opacity);
+		UNITY_APPLY_FOG(i.fogCoord, finalCol);
+		return finalCol;
 	#else
-		return half4(directDiff * diffCol, opacity);
+		half4 finalCol = half4(directDiff * diffCol, opacity);
+		UNITY_APPLY_FOG_COLOR(i.fogCoord, finalCol, fixed4(0,0,0,0));
+		return finalCol;
 	#endif
 }
