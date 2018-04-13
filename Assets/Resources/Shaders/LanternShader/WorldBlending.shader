@@ -41,7 +41,7 @@
 
 	SubShader
 	{
-		Tags {"Queue"="AlphaTest" "RenderType"="TransparentCutout"}
+		Tags {"Queue"="AlphaTest" "RenderType"="Lantern"}
 
 	    Cull Off
 
