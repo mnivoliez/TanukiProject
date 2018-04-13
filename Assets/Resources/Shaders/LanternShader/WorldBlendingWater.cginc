@@ -69,8 +69,8 @@ v2f vert (appdata v)
 	o.uv0 = v.texcoord0;
 	_WaveDir *= 0.0174532925;
 	float2 waveDir = float2(cos(_WaveDir), sin(_WaveDir));
-	float2 waves = sin((_Time.y * waveDir.x * _WaveSpeed - v.vertex.x * _WaveAmount * abs(waveDir.x))
-					+ (_Time.y * waveDir.y * _WaveSpeed - v.vertex.z * _WaveAmount * abs(waveDir.y)));
+	float2 waves = sin((_Time.y * abs(waveDir.x) * _WaveSpeed - v.vertex.x * _WaveAmount * waveDir.x)
+					+ (_Time.y * abs(waveDir.y) * _WaveSpeed - v.vertex.z * _WaveAmount * waveDir.y));
 	float2 panner = (o.uv0 + _Time.x * waveDir * _WaveSpeed);
 	float4 noise = tex2Dlod(_NoiseTexture, float4(TRANSFORM_TEX (panner, _NoiseTexture).xy,0,0));
 	v.vertex.y += waves * _WaveHeight + ((noise.r-0.5) * _NoiseIntensity);
