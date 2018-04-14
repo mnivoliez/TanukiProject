@@ -39,6 +39,14 @@ public class LoadSceneManager : MonoBehaviour {
         }
     }
 
+    public void LoadByIndexMM(string sceneNameToLoad) {
+
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
+        StartCoroutine(LoadAsyncScene(sceneNameToLoad));
+        Resources.UnloadUnusedAssets();
+        GC.Collect();
+    }
+
     public void LoadByIndex(string sceneNameToLoad, string sceneNameToUnload) {
 
         SceneManager.UnloadSceneAsync(sceneNameToUnload);
