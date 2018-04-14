@@ -126,6 +126,11 @@ public class SoundController : MonoBehaviour {
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 
+        if (SceneManager.GetActiveScene().name == "MainMenu") {
+            StopTheme();
+            PlayTheme(HUDMainMenuTheme, true);
+        }
+
         if (SceneManager.GetActiveScene().name == "Boss1") {
             StopTheme();
             PlayTheme(themeBossZ1, true);
