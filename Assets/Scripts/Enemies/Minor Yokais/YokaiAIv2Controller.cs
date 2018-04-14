@@ -118,7 +118,9 @@ public class YokaiAIv2Controller : YokaiController {
         if (collision.gameObject.tag == "Lure") {
 
             if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
-                SoundController.instance.PlayYokaiSingle(yokaiHurt);
+                //================================================
+                SoundController.instance.SelectYOKAI("Hurt");
+                //================================================
                 LooseHp(1);
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
