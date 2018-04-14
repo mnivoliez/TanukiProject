@@ -1064,7 +1064,9 @@ public class KodaController : MonoBehaviour {
 
     //Use when AirStreamLantern is Destroy and player is actualy gliding in.
     public void PlayerOutAirstream() {
-        SoundController.instance.StopSingle();
+        //================================================
+        //SoundController.instance.StopEnvironnementEffectLong();
+        //================================================
         moveStateParameters.inAirStream = false;
         interactStateParameter.canAirStream = false;
     }
