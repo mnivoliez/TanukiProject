@@ -16,6 +16,7 @@ struct v2f
 	float4 pos : SV_POSITION;
 	LIGHTING_COORDS(3,4)
 	float4 projPos : TEXCOORD5;
+	UNITY_FOG_COORDS(6)
 };
 
 uniform sampler2D _FirstTexture;
@@ -69,8 +70,8 @@ v2f vert (appdata v)
 	o.uv0 = v.texcoord0;
 	_WaveDir *= 0.0174532925;
 	float2 waveDir = float2(cos(_WaveDir), sin(_WaveDir));
-	float2 waves = sin((_Time.y * waveDir.x * _WaveSpeed - v.vertex.x * _WaveAmount * abs(waveDir.x))
-					+ (_Time.y * waveDir.y * _WaveSpeed - v.vertex.z * _WaveAmount * abs(waveDir.y)));
+	float2 waves = sin((_Time.y * abs(waveDir.x) * _WaveSpeed - v.vertex.x * _WaveAmount * waveDir.x)
+					+ (_Time.y * abs(waveDir.y) * _WaveSpeed - v.vertex.z * _WaveAmount * waveDir.y));
 	float2 panner = (o.uv0 + _Time.x * waveDir * _WaveSpeed);
 	float4 noise = tex2Dlod(_NoiseTexture, float4(TRANSFORM_TEX (panner, _NoiseTexture).xy,0,0));
 	v.vertex.y += waves * _WaveHeight + ((noise.r-0.5) * _NoiseIntensity);
@@ -80,6 +81,7 @@ v2f vert (appdata v)
 	o.projPos = ComputeScreenPos (o.pos);
     COMPUTE_EYEDEPTH(o.projPos.z);
 	TRANSFER_VERTEX_TO_FRAGMENT(o);
+	UNITY_TRANSFER_FOG(o,o.pos);
 	return o;
 }
 
@@ -208,8 +210,12 @@ half4 frag (v2f i) : SV_Target
 		#else
 			emissive += (tex1 + invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a*25.0;
 		#endif
-		return half4((directDiff + indirectDiff) * diffCol + emissive, opacity);
+		half4 finalCol = half4((directDiff + indirectDiff) * diffCol + emissive, opacity);
+		UNITY_APPLY_FOG(i.fogCoord, finalCol);
+		return finalCol;
 	#else
-		return half4(directDiff * diffCol, opacity);
+		half4 finalCol = half4(directDiff * diffCol, opacity);
+		UNITY_APPLY_FOG_COLOR(i.fogCoord, finalCol, fixed4(0,0,0,0));
+		return finalCol;
 	#endif
 }

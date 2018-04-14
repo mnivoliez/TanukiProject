@@ -70,7 +70,7 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private float glideCounterForce = 150f;
     [SerializeField] private float slideAngleNormal = 45f;
     [SerializeField] private float slideAngleRock = 10f;
-    [SerializeField] private GameObject absorbRange;
+    [SerializeField] private GameObject interactArea;
     [SerializeField] private float fieldOfView = 45f;
 
     private List<Vector3> inclinationNormals;
@@ -733,7 +733,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.Absorb:
-                GameObject nearestObject = absorbRange.GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = interactArea.GetComponent<DetectNearInteractObject>().GetNearestObject();
                 if (nearestObject == null || !nearestObject.CompareTag("Yokai")) {
                     interactStateParameter.yokaiStillInRange = false;
                 }
@@ -835,7 +835,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.ContextualAction:
-                GameObject nearestObject = GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = interactArea.GetComponent<DetectNearInteractObject>().GetNearestObject();
 
                 if (interactState == InteractState.Carry) {
                     interactStateParameter.finishedCarry = true;
@@ -994,9 +994,7 @@ public class KodaController : MonoBehaviour {
         }
         else if (collid.CompareTag("LoveHotel")) {
             InputParams inputParams = inputController.RetrieveUserRequest();
-            Debug.Log(interactState);
             if (inputParams.contextualButtonPressed && interactState == InteractState.Activate) {
-                Debug.Log("Hotel");
                 LanternStandController stand = collid.gameObject.GetComponent<LanternStandController>();
                 stand.RecallLantern();
                 inputParams.contextualButtonPressed = false;
@@ -1062,6 +1060,13 @@ public class KodaController : MonoBehaviour {
         leafLock.isUsed = false;
         leafLock.parent = InteractState.Nothing;
         interactBehaviorCtrl.ResetLeaf();
+    }
+
+    //Use when AirStreamLantern is Destroy and player is actualy gliding in.
+    public void PlayerOutAirstream() {
+        SoundController.instance.StopSingle();
+        moveStateParameters.inAirStream = false;
+        interactStateParameter.canAirStream = false;
     }
 
     public bool GetPowerJump() { return hasPermanentDoubleJumpCapacity; }

@@ -32,7 +32,7 @@
 
 	SubShader
 	{
-		Tags {"Queue"="Transparent-100" "RenderType"="Transparent"}
+		Tags {"Queue"="Transparent" "RenderType"="Transparent"}
 
         Cull Off
 
@@ -52,6 +52,7 @@
             #pragma fragment frag
 			#pragma target 5.0
 			#pragma multi_compile_fwdbase
+			#pragma multi_compile_fog
 			#pragma shader_feature _SIMPLE _LANTERN
 
 			#define FORWARDBASE_PASS
@@ -78,6 +79,7 @@
             #pragma fragment frag
 			#pragma target 5.0
 			#pragma multi_compile_fwdadd
+			#pragma multi_compile_fog
 			#pragma shader_feature _SIMPLE _LANTERN
 
 			#define FORWARDADD_PASS

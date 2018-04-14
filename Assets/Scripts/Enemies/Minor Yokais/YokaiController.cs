@@ -24,6 +24,7 @@ public abstract class YokaiController : MonoBehaviour {
     [SerializeField] protected float damage = 1f;
     protected Vector3 positionOrigin;
     [SerializeField] protected float distanceLimit;
+    protected bool comeBack;
 
     public virtual void LooseHp(float damage) { }
 
@@ -64,5 +65,7 @@ public abstract class YokaiController : MonoBehaviour {
         }
         return tooFarAway;
     }
+
+    public bool GetComeBack() { return comeBack; }
 }
 

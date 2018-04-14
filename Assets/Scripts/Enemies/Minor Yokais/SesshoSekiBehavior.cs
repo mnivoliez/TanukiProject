@@ -22,6 +22,10 @@ public class SesshoSekiBehavior : YokaiController {
     private bool search;
     private bool comeBack;
     private float nextAction;
+    private Renderer myRenderer;
+    private float offsetRaycast = 1.0f;
+    private Vector3 positionWithOffset;
+    private Vector3 targetPositionWithOffset;
 
     [SerializeField] private float durationOfPreparation = 2;
     [SerializeField] private float durationOfResearch = 2;
@@ -40,7 +44,8 @@ public class SesshoSekiBehavior : YokaiController {
         nextAction = 0;
         positionTargetSet = false;
         rendererMat = GetComponent<Renderer>().material;
-    }
+        myRenderer = GetComponent<Renderer>();
+}
 
     void Update() {
         //===========================
@@ -51,16 +56,26 @@ public class SesshoSekiBehavior : YokaiController {
         if (isAbsorbed) {
             Die();
         }
+
+        positionWithOffset = new Vector3(transform.position.x, transform.position.y + offsetRaycast, transform.position.z);
+        if (target != null) {
+            targetPositionWithOffset = new Vector3(target.transform.position.x, target.transform.position.y + offsetRaycast, target.transform.position.z);
+        }
     }
 
     private void FixedUpdate() {
+        
         //===========================
         if (Pause.Paused) {
             return;
         }
         //===========================
+
+        positionWithOffset = new Vector3(transform.position.x, transform.position.y + offsetRaycast, transform.position.z);
+
         if (!isKnocked) {
-            if (target != null) {
+            RaycastHit myHit;
+            if (target != null && Physics.Raycast(positionWithOffset, targetPositionWithOffset - positionWithOffset, out myHit, (targetPositionWithOffset - positionWithOffset).magnitude + 1f, 1 << LayerMask.NameToLayer("Player"))) {
                 comeBack = false;
             }
 
@@ -85,6 +100,7 @@ public class SesshoSekiBehavior : YokaiController {
                     body.velocity = new Vector3(0, body.velocity.y, 0);
                 }
             } else if (prepare) {
+                body.constraints = RigidbodyConstraints.None;
                 body.velocity = new Vector3(0, body.velocity.y, 0);
                 if (Time.time < nextAction || !positionTargetSet) {
                     if (!positionTargetSet) {
@@ -96,8 +112,11 @@ public class SesshoSekiBehavior : YokaiController {
                         positionTargetSet = true;
                         nextAction = Time.time + durationOfPreparation;
                     }
+
+                    body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
                 }
                 else if (Time.time >= nextAction) {
+                    body.constraints = RigidbodyConstraints.None;
                     prepare = false;
                     positionTargetSet = false;
                 }
@@ -118,6 +137,10 @@ public class SesshoSekiBehavior : YokaiController {
 
             }
             else {
+                body.constraints = RigidbodyConstraints.FreezeRotation;
+
+                RaycastHit hit;
+
                 Vector3 relativePos = new Vector3();
                 if (!positionToGoSet) {
                     relativePos = (positionTarget - transform.position) * 1.5f;
@@ -130,6 +153,14 @@ public class SesshoSekiBehavior : YokaiController {
                 relativePos.y = 0;
 
                 Vector3 lookAtTarget = positionToGo - transform.position;
+
+                int layerMask = ~(1 << LayerMask.NameToLayer("Player"));
+                if (Physics.Raycast(positionWithOffset, targetPositionWithOffset - positionWithOffset, out hit, (targetPositionWithOffset - positionWithOffset).magnitude, layerMask)) {
+                    positionToGo = hit.point - (relativePos.normalized * myRenderer.bounds.size.x * transform.localScale.x / 4);
+                    relativePos = positionToGo - transform.position;
+                    relativePos.y = 0;
+                }
+
                 Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
                 rotation.x = transform.rotation.x;
                 rotation.z = transform.rotation.z;
@@ -148,21 +179,32 @@ public class SesshoSekiBehavior : YokaiController {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == "Player" && !isKnocked) {
-            collision.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
-            Destroy(Instantiate(hitParticle, collision.gameObject.transform.position, Quaternion.identity), 1);
-        }
+        if (!isKnocked) {
 
+            if (collision.gameObject.tag == "Player") {
+                collision.gameObject.GetComponent<PlayerHealth>().LooseHP(damage);
+                Destroy(Instantiate(hitParticle, collision.gameObject.transform.position, Quaternion.identity), 1);
 
-        if (collision.gameObject.tag == "Lure") {
+            } else if (collision.gameObject.tag == "Lure") {
 
-            if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
+                if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
                 //================================================
                 SoundController.instance.SelectYOKAI("Hurt");
                 //================================================
-                LooseHp(1);
-                Destroy(collision.gameObject);
-                GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+                    LooseHp(1);
+                    Destroy(collision.gameObject);
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+                }
+            } else if (collision.gameObject.tag != "Ground") {
+                ContactPoint[] contacts = collision.contacts;
+                foreach (ContactPoint contact in contacts) {
+                    float coefInclination = Vector3.Angle(contact.normal, Vector3.up);
+                    if (coefInclination > 10f) {
+                        search = true;
+                        nextAction = durationOfResearch + Time.time;
+                        return;
+                    }
+                }
             }
         }
     }

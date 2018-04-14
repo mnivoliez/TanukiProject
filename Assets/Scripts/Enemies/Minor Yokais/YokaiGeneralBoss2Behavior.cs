@@ -131,13 +131,11 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
 
         if (collision.gameObject.tag == "Lure") {
 
-            if (collision.gameObject.GetComponent<Rigidbody>().velocity.y < 0) {
+            if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
                 //================================================
                 SoundController.instance.SelectYOKAI("Hurt");
                 //================================================
-                BeingHit();
                 LooseHp(1);
-                EndHit();
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
             }
