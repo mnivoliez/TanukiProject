@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class YokaiDetectAreav2 : MonoBehaviour {
 
-    YokaiAIv2Controller parent;
+    YokaiController parent;
 
     private void Start() {
-        parent = transform.parent.GetComponent<YokaiAIv2Controller>();
+        parent = transform.parent.GetComponent<YokaiController>();
     }
 
     private void OnTriggerStay(Collider other) {
 
-        if (!parent.comeBack) {
+        if (!parent.GetComeBack()) {
             if (other.gameObject.tag == "Lure") {
-                Debug.Log(other.gameObject.tag);
                 parent.SetTarget(other.gameObject);
             } else if (parent.GetTarget() == null && other.gameObject.tag == "Player") {
                 parent.SetTarget(other.gameObject);

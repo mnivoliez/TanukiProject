@@ -23,6 +23,7 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("DISTANT ATTACK")]
     [Space(8)]
+    [SerializeField] private GameObject tempLeafHead; //delete when leaf animation is done
     [SerializeField] private GameObject leafPrefab;
     [SerializeField] private GameObject spawnLeaf;
     [SerializeField] private float distantAttackRange = 8f;
@@ -146,7 +147,8 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void DoDistantAttack() {
-        leafHead.SetActive(false);
+        tempLeafHead.SetActive(false);
+
         GameObject leafBoomerang = Instantiate(leafPrefab, spawnLeaf.transform.position, leafPrefab.transform.rotation);
         MoveLeaf moveLeaf = leafBoomerang.GetComponent<MoveLeaf>();
         moveLeaf.SetSpawnPosition(spawnLeaf);
@@ -177,7 +179,7 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void StopDistantAttack() {
-        leafHead.SetActive(true);
+        tempLeafHead.SetActive(true);
     }
 
     public void DoInflate(bool inflate) {
@@ -213,8 +215,8 @@ public class InteractBehavior : MonoBehaviour {
 
             //gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, gameObject.transform.localScale / coefResize , Timestamp/tempMaxResize);
             gameObject.transform.localScale = gameObject.transform.localScale / coefResize;
-            gameObject.GetComponent<ShadowDirectController>().ResizeShadow(true, coefResize);
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOrbit>().ResizeDistanceCamera(true, coefResize);
+            //gameObject.GetComponent<ShadowDirectController>().ResizeShadow(true, coefResize);
+            //GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraOrbit>().ResizeDistanceCamera(true, coefResize);
             //ResizeDistanceCamera
             //GameObject.FindGameObjectWithTag("Hitodama").transform.localScale = GameObject.FindGameObjectWithTag("Hitodama").transform.localScale / coefResize;
         }

@@ -41,7 +41,7 @@
 
 	SubShader
 	{
-		Tags {"Queue"="AlphaTest" "RenderType"="TransparentCutout"}
+		Tags {"Queue"="AlphaTest" "RenderType"="Lantern"}
 
 	    Cull Off
 
@@ -56,6 +56,7 @@
 			#pragma fragment frag
 			#pragma target 3.0
 			#pragma multi_compile_fwdbase_fullshadows
+			#pragma multi_compile_fog
 			#pragma shader_feature _SIMPLE _LANTERN
 			#pragma shader_feature _ALPHAMODE _EMISSIVEMODE _MASKMODE
 			#pragma shader_feature _ISMASK_ON
@@ -81,6 +82,7 @@
 			#pragma fragment frag
 			#pragma target 3.0
 			#pragma multi_compile_fwdadd_fullshadows
+			#pragma multi_compile_fog
 			#pragma shader_feature _SIMPLE _LANTERN
 			#pragma shader_feature _ALPHAMODE _EMISSIVEMODE _MASKMODE
 			#pragma shader_feature _ISMASK_ON
