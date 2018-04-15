@@ -12,10 +12,10 @@
 		_SecondLColor	("", Color)		= (1,0,0,1)
 		_SecondFoamColor("", Color)		= (0,0,0,0.2)
 
-		_WaveDir 		("", Range(-360,360))	= 0
+		_TextureScale	("", Float)		= 1
+
 		_WaveSpeed 		("", Range(0,20))		= 1
-		[PowerSlider(1.5)]
-		_WaveAmount 	("", Range(0,20))	= 5
+		_WaveAmount 	("", Float)		= 5
 		[PowerSlider(2.0)]
 		_WaveHeight 	("", Range(0,2))	= 0.25
 
@@ -26,15 +26,41 @@
 		_Tessellation 	("", Range(1,3))	= 1
 		_Tess 			("", Float)			= 0
 
-		_NoiseTexture	("", 2D)			= "white" {}
-		_NoiseIntensity	("", Range(0,10))	= 1
+		_NoiseScale		("", Range(0,10))	= 1
+		_NoiseIntensity	("", Range(0,2))	= 1
+
+		_StepCount	("", Range(0,20))	= 10
+
+		_DistortStrength ("", Range(0,5))	= 1
 	}
 
 	SubShader
 	{
-		Tags {"Queue"="Transparent" "RenderType"="Transparent"}
+		Tags {"Queue"="Transparent"
+		"RenderType"="Transparent"
+		"IgnoreProjector"="True"}
 
         Cull Off
+		ZWrite Off
+
+        GrabPass {"_BackgroundTexture"}
+
+        Pass
+        {
+			Name "GrabPass"
+
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+			
+			#define GRAB_PASS
+            
+			#include "UnityCG.cginc"
+			#include "noiseSimplex.cginc"
+			#include "WorldBlendingWater.cginc"
+
+			ENDCG
+    	}
 
 		Pass
 		{
@@ -42,7 +68,6 @@
             Tags {"LightMode"="ForwardBase"}
 
             Blend SrcAlpha OneMinusSrcAlpha
-            ZWrite Off
 
 			CGPROGRAM
 
@@ -70,7 +95,6 @@
             Tags {"LightMode"="ForwardAdd"}
 
             Blend One One
-            ZWrite Off
 
 			CGPROGRAM
 			#pragma hull hull

@@ -25,7 +25,7 @@
 		[PowerSlider(2.0)] 
 		_RimPow			("", Range(0.01,20))= 1
 
-		_StepCount		("", Range(0,10))	= 3
+		_StepCount		("", Range(0,20))	= 3
 
 		[Toggle] _IsMask("", Float) = 0
 
