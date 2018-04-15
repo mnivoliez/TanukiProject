@@ -65,6 +65,7 @@ public class PathEditor : Editor {
 	void OnSceneGUI() {
 		offset = (Application.isPlaying) ? creator.startPos : creator.transform.position;
 		//Input();
+		HandleUtility.AddDefaultControl(0);
 		Draw();
 	}
 
