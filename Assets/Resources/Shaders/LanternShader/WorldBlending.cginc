@@ -15,6 +15,7 @@ struct v2f
 		float3 normalDir : TEXCOORD2;
 		float4 pos : SV_POSITION;
 		LIGHTING_COORDS(3,4)
+		UNITY_FOG_COORDS(5)
 	#endif
 
 	float2 uv0 : TEXCOORD0;
@@ -87,6 +88,7 @@ v2f vert (appdata v)
 	#if !defined(SHADOWCASTER_PASS)
 		o.normalDir = UnityObjectToWorldNormal(v.normal);
 		TRANSFER_VERTEX_TO_FRAGMENT(o);
+		UNITY_TRANSFER_FOG(o,o.pos);
 	#else
 		TRANSFER_SHADOW_CASTER(o);
 	#endif
@@ -186,9 +188,13 @@ half4 frag (v2f i) : SV_Target
 			emissive += (stepDiff * diffCol.rgb * _FirstLColor.rgb*_FirstLColor.a*25.0)
 				   + (1-stepDiff) * diffCol.rgb*_FirstDColor.rgb*_FirstDColor.a*25.0;
 		#endif
-		return half4(((directDiff + indirectDiff + spec + rim) * diffCol + emissive) * isMask, 1.0);
+		half4 finalCol = half4(((directDiff + indirectDiff + spec + rim) * diffCol + emissive) * isMask, 1.0);
+		UNITY_APPLY_FOG(i.fogCoord, finalCol);
+		return finalCol;
 	#elif defined(FORWARDADD_PASS)
-		return half4((directDiff * diffCol + attenColor/100) * isMask, 1.0);
+		half4 finalCol = half4((directDiff * diffCol + attenColor/100) * isMask, 1.0);
+		UNITY_APPLY_FOG_COLOR(i.fogCoord, finalCol, fixed4(0,0,0,0));
+		return finalCol;
 	#else
 		SHADOW_CASTER_FRAGMENT(i);
 	#endif

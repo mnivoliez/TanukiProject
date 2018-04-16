@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class YokaiGeneralBoss2Behavior : YokaiController {
     
@@ -129,7 +132,9 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
         if (collision.gameObject.tag == "Lure") {
 
             if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
-                SoundController.instance.PlayYokaiSingle(yokaiHurt);
+                //================================================
+                SoundController.instance.SelectYOKAI("Hurt");
+                //================================================
                 LooseHp(1);
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
@@ -165,7 +170,9 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             target = GameObject.FindGameObjectWithTag("Player");
-            SoundController.instance.PlayYokaiSingle(yokaiScream);
+            //================================================
+            SoundController.instance.SelectYOKAI("Scream");
+            //================================================
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
     }
@@ -182,6 +189,9 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
     }
 
     public override void Die() {
