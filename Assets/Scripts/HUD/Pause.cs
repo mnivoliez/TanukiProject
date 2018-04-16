@@ -44,11 +44,13 @@ public class Pause : MonoBehaviour {
 	void Update () {
 		if(Input.GetButtonDown("Cancel") && !VictorySwitch.Victory){
             if(!Paused){
+                SoundController.instance.SelectHUD("PauseEnabled");
 				PauseGame (true);
                 //showPaused();
             }
 			else if (Paused) {
-				UnpauseGame ();
+                SoundController.instance.SelectHUD("PauseDisabled");
+                UnpauseGame ();
             }
         }
 	}
