@@ -48,21 +48,28 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
         switch (state) {
             case MovementState.Jump:
                 animBody.SetBool("isInAir", true);
+                //animBody.SetTrigger("Jump");
                 break;
             case MovementState.PushUp:
                 animBody.SetBool("isInAir", true);
+                //animBody.SetTrigger ("Fall");
                 break;
             case MovementState.Fall:
                 animBody.SetBool("isInAir", true);
+                //animBody.SetTrigger("Fall");
                 break;
             case MovementState.DoubleJump:
                 animBody.SetTrigger("DoubleJump");
                 break;
             case MovementState.Idle:
                 animBody.SetBool("isInAir", false);
+                //animBody.ResetTrigger ("Fall");
+                //animBody.ResetTrigger ("Jump");
                 break;
             case MovementState.Run:
                 animBody.SetBool("isInAir", false);
+                //animBody.ResetTrigger("Fall");
+                //animBody.ResetTrigger("Jump");
                 break;
         }
     }
