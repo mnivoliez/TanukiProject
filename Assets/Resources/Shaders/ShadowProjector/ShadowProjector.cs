@@ -137,8 +137,6 @@ public class ShadowProjector : MonoBehaviour {
         RenderTexture.ReleaseTemporary(rt1);
     }
 
-    }
-
 	void RemoveBorder (RenderTexture src) {
 		Graphics.SetRenderTarget (src);
 
