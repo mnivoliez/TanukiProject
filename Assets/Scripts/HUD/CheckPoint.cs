@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class CheckPoint : MonoBehaviour {
 

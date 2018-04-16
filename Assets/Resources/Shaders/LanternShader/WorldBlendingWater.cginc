@@ -15,6 +15,7 @@
 struct v2f
 {
 	float4 pos : SV_POSITION;
+<<<<<<< HEAD
 	float2 uv : TEXCOORD0;
 	#if defined(GRAB_PASS)
 		float4 grabPos : TEXCOORD1;
@@ -25,6 +26,11 @@ struct v2f
 		float4 projPos : TEXCOORD5;
 		UNITY_FOG_COORDS(6)
 	#endif
+=======
+	LIGHTING_COORDS(3,4)
+	float4 projPos : TEXCOORD5;
+	UNITY_FOG_COORDS(6)
+>>>>>>> Latest_SM_SAVE
 };
 
 uniform half _WaveSpeed;
@@ -84,6 +90,7 @@ v2f vert (appdata v)
 {
 	v2f o;
 
+<<<<<<< HEAD
 	o.uv = -v.texcoord;
 	float wave = sin(o.uv.y * _WaveAmount + _Time.y*_WaveSpeed) * _WaveHeight + snoise(mul(unity_ObjectToWorld, v.vertex)/100*_NoiseScale + _Time.x*_WaveSpeed) * _NoiseIntensity;
 	v.vertex.y += wave;
@@ -100,6 +107,23 @@ v2f vert (appdata v)
 		TRANSFER_VERTEX_TO_FRAGMENT(o);
 		UNITY_TRANSFER_FOG(o,o.pos);
 	#endif
+=======
+	o.uv0 = v.texcoord0;
+	_WaveDir *= 0.0174532925;
+	float2 waveDir = float2(cos(_WaveDir), sin(_WaveDir));
+	float2 waves = sin((_Time.y * abs(waveDir.x) * _WaveSpeed - v.vertex.x * _WaveAmount * waveDir.x)
+					+ (_Time.y * abs(waveDir.y) * _WaveSpeed - v.vertex.z * _WaveAmount * waveDir.y));
+	float2 panner = (o.uv0 + _Time.x * waveDir * _WaveSpeed);
+	float4 noise = tex2Dlod(_NoiseTexture, float4(TRANSFORM_TEX (panner, _NoiseTexture).xy,0,0));
+	v.vertex.y += waves * _WaveHeight + ((noise.r-0.5) * _NoiseIntensity);
+	o.posWorld = mul(unity_ObjectToWorld, v.vertex);
+	o.pos = UnityObjectToClipPos(v.vertex);
+	o.normalDir = UnityObjectToWorldNormal(v.normal);
+	o.projPos = ComputeScreenPos (o.pos);
+    COMPUTE_EYEDEPTH(o.projPos.z);
+	TRANSFER_VERTEX_TO_FRAGMENT(o);
+	UNITY_TRANSFER_FOG(o,o.pos);
+>>>>>>> Latest_SM_SAVE
 	return o;
 }
 #if !defined(GRAB_PASS)
@@ -235,5 +259,15 @@ half4 frag (v2f i) : SV_Target
 			UNITY_APPLY_FOG_COLOR(i.fogCoord, finalCol, fixed4(0,0,0,0));
 			return finalCol;
 		#endif
+<<<<<<< HEAD
+=======
+		half4 finalCol = half4((directDiff + indirectDiff) * diffCol + emissive, opacity);
+		UNITY_APPLY_FOG(i.fogCoord, finalCol);
+		return finalCol;
+	#else
+		half4 finalCol = half4(directDiff * diffCol, opacity);
+		UNITY_APPLY_FOG_COLOR(i.fogCoord, finalCol, fixed4(0,0,0,0));
+		return finalCol;
+>>>>>>> Latest_SM_SAVE
 	#endif
 }

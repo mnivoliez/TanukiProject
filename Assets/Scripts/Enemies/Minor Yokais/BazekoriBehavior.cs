@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class BazekoriBehavior : YokaiController {
 
@@ -67,7 +70,9 @@ public class BazekoriBehavior : YokaiController {
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
-            SoundController.instance.PlayYokaiSingle(yokaiScream);
+            //================================================
+            SoundController.instance.SelectYOKAI("Scream");
+            //================================================
         }
 
     }
@@ -89,7 +94,9 @@ public class BazekoriBehavior : YokaiController {
         gameObject.GetComponent<Collider>().enabled = false;
         positionCollectable = transform.position;
         positionCollectable.y = positionCollectable.y + 1;
-        SoundController.instance.PlayYokaiSingle(absorbed);
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
     }
 
     public override void Die() {
@@ -128,8 +135,9 @@ public class BazekoriBehavior : YokaiController {
             else {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
-
-            SoundController.instance.PlayYokaiSingle(yokaiHurt);
+            //================================================
+            SoundController.instance.SelectYOKAI("Hurt");
+            //================================================
             LooseHp(damage);
         }
 
