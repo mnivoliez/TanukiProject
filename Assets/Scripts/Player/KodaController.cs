@@ -202,10 +202,10 @@ public class KodaController : MonoBehaviour {
     }
 
     /*private void OnGUI() {
-		GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
-		FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
-		Application.targetFrameRate = FPS;
-	}*/
+        GUI.Label(new Rect(0, 50, 200, 50), new GUIContent("Frames per second: " + 1 / Time.deltaTime));
+        FPS = int.Parse(GUI.TextField (new Rect (0, 100, 200, 50), FPS.ToString()));
+        Application.targetFrameRate = FPS;
+    }*/
 
     private void FixedUpdate() {
         //GC.Collect();
@@ -239,18 +239,32 @@ public class KodaController : MonoBehaviour {
         else if (movementState == MovementState.DoubleJump) {
             inputParams.hasDoubleJumped = true;
         }
+
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 1 = " + inputParams.jumpRequest + " " + Time.time);
         inputController.SetUserRequest(inputParams);
         UpdateMoveStateParameters(inputParams);
 
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 2 = " + inputParams.jumpRequest + " " + Time.time);
         // get updated inputParams
         inputParams = inputController.RetrieveUserRequest();
         UpdateInteractStateParameters(inputParams);
 
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 3 = " + inputParams.jumpRequest + " " + Time.time);
         movementState = moveStateCtrl.GetNewState(movementState, moveStateParameters);
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 4 = " + inputParams.jumpRequest + " " + Time.time);
         interactState = InteractStateCtrl.GetNewState(interactState, interactStateParameter);
 
+        // get updated inputParams
+        inputParams = inputController.RetrieveUserRequest();
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 5 = " + inputParams.jumpRequest + " " + Time.time);
         MoveAccordingToInput();
+        // get updated inputParams
+        inputParams = inputController.RetrieveUserRequest();
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 6 = " + inputParams.jumpRequest + " " + Time.time);
         ApplyMovement();
+        // get updated inputParams
+        inputParams = inputController.RetrieveUserRequest();
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 7 = " + inputParams.jumpRequest + " " + Time.time);
         InteractAccordingToInput();
 
         speed = Mathf.Sqrt(Mathf.Pow(inputParams.moveX, 2) + Mathf.Pow(inputParams.moveZ, 2));
@@ -776,12 +790,23 @@ public class KodaController : MonoBehaviour {
         moveStateParameters.velocity = body.velocity;
         moveStateParameters.moveX = inputParams.moveX;
         moveStateParameters.moveZ = inputParams.moveZ;
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 8 = " + inputParams.jumpRequest + " " + Time.time);
         moveStateParameters.jumpRequired =
             inputParams.jumpRequest &&
-            (movementState == MovementState.Idle ||
+            (
+                movementState == MovementState.Idle ||
                 movementState == MovementState.Run ||
-                (!inputParams.hasDoubleJumped && ((temporaryCapacity == Capacity.DoubleJump) || hasPermanentDoubleJumpCapacity) && interactState != InteractState.Carry));
+                (
+                    !inputParams.hasDoubleJumped && 
+                    (
+                        temporaryCapacity == Capacity.DoubleJump || 
+                        hasPermanentDoubleJumpCapacity
+                    ) && 
+                    interactState != InteractState.Carry
+                )
+            );
         moveStateParameters.grounded = IsGrounded();
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 9 = " + inputParams.jumpRequest + " " + Time.time);
         if (inputParams.jumpRequest) {
             //Debug.Log("movementState=" + movementState);
             //Debug.Log("interactState=" + interactState);
@@ -790,6 +815,7 @@ public class KodaController : MonoBehaviour {
             inputParams.jumpRequest = false;
             inputController.SetUserRequest(inputParams);
         }
+        //if(inputParams.jumpRequest) Debug.Log ("inputParams.jumpRequest 10 = " + inputParams.jumpRequest + " " + Time.time);
     }
 
     void UpdateInteractStateParameters(InputParams inputParams) {
@@ -934,7 +960,7 @@ public class KodaController : MonoBehaviour {
             //Debug.Log("AirStreamForce enter");
             interactStateParameter.canAirStream = true;
             /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
-			body.AddForce (Vector3.up * 80, ForceMode.Impulse);*/
+            body.AddForce (Vector3.up * 80, ForceMode.Impulse);*/
         }
     }
 
@@ -973,7 +999,7 @@ public class KodaController : MonoBehaviour {
                 body.velocity = new Vector3(body.velocity.x, 10f, body.velocity.z);
                 //Debug.Log("In Air Stream FORCE - GLIDE");
                 /*body.velocity = new Vector3 (body.velocity.x, 0, body.velocity.z);
-				body.AddForce (Vector3.up * 10, ForceMode.Impulse);*/
+                body.AddForce (Vector3.up * 10, ForceMode.Impulse);*/
             }
         }
         else if (collid.CompareTag("Yokai") && interactState == InteractState.Absorb && interactStateParameter.canAbsorb) {
