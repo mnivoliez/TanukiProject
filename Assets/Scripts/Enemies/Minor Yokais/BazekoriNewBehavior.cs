@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class BazekoriNewBehavior : YokaiController {
 
@@ -125,7 +128,9 @@ public class BazekoriNewBehavior : YokaiController {
         if (collision.gameObject.tag == "Lure") {
 
             if (Mathf.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
-                SoundController.instance.PlayYokaiSingle(yokaiHurt);
+                //================================================
+                SoundController.instance.SelectYOKAI("Hurt");
+                //================================================
                 LooseHp(1);
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
@@ -153,7 +158,9 @@ public class BazekoriNewBehavior : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
-            SoundController.instance.PlayYokaiSingle(yokaiHurt);
+            //================================================
+            SoundController.instance.SelectYOKAI("Hurt");
+            //================================================
             LooseHp(damage);
 
         }
@@ -182,7 +189,9 @@ public class BazekoriNewBehavior : YokaiController {
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             rendererMat.SetColor("_Color", hitColor);
-            SoundController.instance.PlayYokaiSingle(yokaiScream);
+            //================================================
+            SoundController.instance.SelectYOKAI("Scream");
+            //================================================
             target = GameObject.FindGameObjectWithTag("Player");
             agent.SetDestination(transform.position);
             comeBack = false;
@@ -203,7 +212,9 @@ public class BazekoriNewBehavior : YokaiController {
         positionCollectable = transform.position;
         positionCollectable.y = positionCollectable.y + 1;
         gameObject.GetComponent<Collider>().enabled = false;
-        SoundController.instance.PlayYokaiSingle(absorbed);
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
     }
 
     public override void Die() {

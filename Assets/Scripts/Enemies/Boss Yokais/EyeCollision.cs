@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class EyeCollision : MonoBehaviour {
 
@@ -32,6 +35,9 @@ public class EyeCollision : MonoBehaviour {
             else {
                 damage = collid.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
+            //================================================
+            SoundController.instance.SelectYOKAI("Hurt");
+            //================================================
             bossBehavior.BeingHit();
             bossBehavior.LooseHp(damage);
         }
