@@ -36,13 +36,9 @@
 
 	SubShader
 	{
-<<<<<<< HEAD
 		Tags {"Queue"="Transparent"
 		"RenderType"="Transparent"
 		"IgnoreProjector"="True"}
-=======
-		Tags {"Queue"="Transparent" "RenderType"="Transparent"}
->>>>>>> Latest_SM_SAVE
 
         Cull Off
 		ZWrite Off
