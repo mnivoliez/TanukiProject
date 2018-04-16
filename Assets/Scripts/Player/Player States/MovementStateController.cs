@@ -29,7 +29,7 @@ public class MovementStateController
     {
         if (debugEnabled)
         {
-            Debug.Log(message);
+			Debug.Log(message + " time=" + Time.time);
         }
     }
 
@@ -110,6 +110,7 @@ public class MovementStateController
         //FAll
         if (IsFalling(param))
         {
+			DebugLogLocal ("param.grounded=" + param.grounded);
             DebugLogLocal("Jump Fall");
             newState = MovementState.Fall;
         }
@@ -134,24 +135,23 @@ public class MovementStateController
             newState = MovementState.Run;
         }
 
-        // this is done for the bumper even if it looks weird
-        //DOUBLEJUMP
+        //DOUBLEJUMP -> on bumper
         if (IsGoingUp(param) && !param.inAirStream)
         {
-            DebugLogLocal("fall doublejump");
+            DebugLogLocal("fall doublejump 1");
             newState = MovementState.DoubleJump;
-        }
-
-        if (param.jumpRequired)
+		}
+		//PUSHUP -> in airstream
+		else if (IsGoingUp(param) && param.inAirStream)
+		{
+			DebugLogLocal("fall pushup");
+			newState = MovementState.PushUp;
+		}
+		// DOUBLEJUMP -> while in fall
+		else if (IsFalling(param) && param.jumpRequired)
         {
+            DebugLogLocal("fall doublejump 2");
             newState = MovementState.DoubleJump;
-        }
-
-        //PUSHUP
-        if (IsGoingUp(param) && param.inAirStream)
-        {
-            DebugLogLocal("fall pushup");
-            newState = MovementState.PushUp;
         }
 
         return newState;
@@ -185,9 +185,9 @@ public class MovementStateController
 
         //JUMP
         /*if (IsGoingUp(param) && !param.inAirStream) {
-			DebugLogLocal ("pushup jump");
-			newState = MovementState.Jump;
-		}*/
+            DebugLogLocal ("pushup jump");
+            newState = MovementState.Jump;
+        }*/
 
         return newState;
 
@@ -293,7 +293,7 @@ public class MovementStateController
         bool up =
             !param.grounded &&
             param.velocity.y > step_velocity &&
-            (Mathf.Abs(param.position_before_fall.y - param.position.y) > step_position || param.jumpRequired);
+            (Mathf.Abs(param.position_before_fall.y - param.position.y) > step_position);
 
         return up;
     }
@@ -303,9 +303,7 @@ public class MovementStateController
         bool fall =
             !param.grounded &&
             param.velocity.y < step_velocity &&
-            (Mathf.Abs(param.position_before_fall.y - param.position.y) > step_position || param.jumpRequired);
-
-        //Debug.Log ("param.grounded=" + param.grounded);
+            (Mathf.Abs(param.position_before_fall.y - param.position.y) > step_position);
 
         return fall;
     }
