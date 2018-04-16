@@ -43,13 +43,14 @@
 		"IgnoreProjector"="True"}
 
         Cull Off
-		ZWrite Off
 
         GrabPass {"_BackgroundTexture"}
 
         Pass
         {
 			Name "GrabPass"
+
+			Zwrite Off
 
             CGPROGRAM
             #pragma vertex vert
