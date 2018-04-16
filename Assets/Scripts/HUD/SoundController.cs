@@ -32,8 +32,10 @@ public class SoundController : MonoBehaviour {
     [Header("HUD")]
     [Space(10)]
     [SerializeField] private AudioClip HUDMainMenuTheme;
-    [SerializeField] private AudioClip HUDPauseTheme;
-    [SerializeField] private AudioClip HUDPauseEffect;
+    [SerializeField] private AudioClip HUDPauseOpenClose;
+    [SerializeField] private AudioClip HUDPauseNavigate;
+    [SerializeField] private AudioClip HUDPauseAccept;
+    [SerializeField] private AudioClip HUDPauseCancel;
 
     [Header("KODA")]
     [Space(10)]
@@ -66,9 +68,9 @@ public class SoundController : MonoBehaviour {
 
     [Header("YOKAI")]
     [Space(10)]
-    [SerializeField] protected AudioClip yokaiAbsorbed;
-    [SerializeField] protected AudioClip yokaiScream;
-    [SerializeField] protected AudioClip yokaiHurt;
+    [SerializeField] private AudioClip yokaiAbsorbed;
+    [SerializeField] private AudioClip yokaiScream;
+    [SerializeField] private AudioClip yokaiHurt;
 
     [Header("LANTERN")]
     [Space(10)]
@@ -176,12 +178,28 @@ public class SoundController : MonoBehaviour {
                 PlayHUDTheme(HUDMainMenuTheme, true);
                 break;
 
-            case "Pause":
-                PlayHUDTheme(HUDPauseTheme, true);
+            case "PauseEnabled":
+                AdjustAllMusicVolumeLow(0.5f);
                 break;
 
-            case "PauseEffect":
-                PlayHUDEffect(HUDPauseTheme);
+            case "PauseDisabled":
+                AdjustAllMusicVolumeHigh(1.0f);
+                break;
+
+            case "PauseOpenClose":
+                PlayHUDEffect(HUDPauseOpenClose);
+                break;
+
+            case "PauseNavigate":
+                PlayHUDEffect(HUDPauseNavigate);
+                break;
+
+            case "PauseAccept":
+                PlayHUDEffect(HUDPauseAccept);
+                break;
+
+            case "PauseCancel":
+                PlayHUDEffect(HUDPauseCancel);
                 break;
 
             default:
@@ -198,6 +216,38 @@ public class SoundController : MonoBehaviour {
     private void PlayHUDEffect(AudioClip clip) {
         fxHUD_Source.clip = clip;
         fxHUD_Source.Play();
+    }
+
+    private void AdjustAllMusicVolumeLow (float volumeLevel) {
+        SelectHUD("PauseOpenClose");
+
+        fxThemeSource.volume = volumeLevel;
+        fxHUD_Source.volume = volumeLevel;
+        fxLanternSource.volume = volumeLevel;
+
+        //fxHUD_Effect.volume = 0.0f;
+        fxKodaEffect.volume = 0.0f;
+        fxLeafEffect.volume = 0.0f;
+        fxYokaiEffect.volume = 0.0f;
+        fxLanternEffect.volume = 0.0f;
+        fxEnvironnementEffectQuick.volume = 0.0f;
+        fxEnvironnementEffectLong.volume = 0.0f;
+    }
+
+    private void AdjustAllMusicVolumeHigh(float volumeLevel) {
+        fxThemeSource.volume = volumeLevel;
+        fxHUD_Source.volume = volumeLevel;
+        fxLanternSource.volume = volumeLevel;
+
+        //fxHUD_Effect.volume = 1.0f;
+        fxKodaEffect.volume = 1.0f;
+        fxLeafEffect.volume = 1.0f;
+        fxYokaiEffect.volume = 1.0f;
+        fxLanternEffect.volume = 1.0f;
+        fxEnvironnementEffectQuick.volume = 1.0f;
+        fxEnvironnementEffectLong.volume = 1.0f;
+
+        SelectHUD("PauseOpenClose");
     }
 
     public void StopHUD() {
