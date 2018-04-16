@@ -10,7 +10,9 @@ public class WaterfallCreator : MonoBehaviour {
 	public float spacing = 1;
 	public float waterfallWidth = 1;
 	public bool autoUpdate;
-	public float tiling = 1;
+	[Header("UV")]
+	public float tilingU = 1;
+	public float tilingV = 1;
 
 	public void UpdateWaterfall() {
 		PathPlatform path = GetComponent<PathCreator>().path;
@@ -43,9 +45,9 @@ public class WaterfallCreator : MonoBehaviour {
 			verts[vertIndex] = points[i] + left*waterfallWidth/2f;
 			verts[vertIndex+1] = points[i] - left*waterfallWidth/2f;
 
-			float completionPercent = i/(points.Length-1f);
+			float completionPercent = i/(points.Length-1f) * tilingV;
 			uvs[vertIndex] = new Vector2(0, completionPercent);
-			uvs[vertIndex+1] = new Vector2(1, completionPercent);
+			uvs[vertIndex+1] = new Vector2(1*tilingU, completionPercent);
 
 			Vector3 up = Vector3.Cross(left, forward);
 
