@@ -7,14 +7,12 @@
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
-		LOD 100
 
 		Pass
 		{
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			#pragma multi_compile_fog
 			
 			#include "UnityCG.cginc"
 
@@ -41,9 +39,9 @@
 				return o;
 			}
 			fixed4 boxBlur(sampler2D tex, float2 uv, float4 size) {
-				fixed4 t = 	tex2D(tex, uv 	+ float2(-size.x, size.y)) 	+ tex2D(tex, uv  + float2(0, size.y)) 	+ tex2D(tex, uv + float2(size.x, size.y)) +
-							tex2D(tex, uv 	+ float2(-size.x, 0)) 		+ tex2D(tex, uv  + float2(0, 0)) 		+ tex2D(tex, uv + float2(size.x, 0)) +
-							tex2D(tex, uv 	+ float2(-size.x, -size.y)) + tex2D(tex, uv  + float2(0, -size.y)) 	+ tex2D(tex, uv + float2(size.x, -size.y));
+				fixed4 t = 	tex2D(tex, uv + float2(-size.x, size.y)) 	+ tex2D(tex, uv + float2(0, size.y)) 	+ tex2D(tex, uv + float2(size.x, size.y)) +
+							tex2D(tex, uv + float2(-size.x, 0)) 		+ tex2D(tex, uv + float2(0, 0)) 		+ tex2D(tex, uv + float2(size.x, 0)) +
+							tex2D(tex, uv + float2(-size.x, -size.y)) 	+ tex2D(tex, uv + float2(0, -size.y)) 	+ tex2D(tex, uv + float2(size.x, -size.y));
 				return t / 9;
 			}
 			

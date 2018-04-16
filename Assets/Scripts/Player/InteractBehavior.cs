@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class InteractBehavior : MonoBehaviour {
 
@@ -45,7 +48,7 @@ public class InteractBehavior : MonoBehaviour {
     private bool absorbing;
     [SerializeField] private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
-    [SerializeField] private AudioClip absorption;
+    private bool pressedAbsorbingOnce = false;
 
     [Header("LURE")]
     [Space(8)]
@@ -73,7 +76,6 @@ public class InteractBehavior : MonoBehaviour {
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
 		catchSlot = GameObject.FindGameObjectWithTag ("Hand");
-        //sakePot.SetActive(false);
         absorbing = false;
     }
 
@@ -248,14 +250,22 @@ public class InteractBehavior : MonoBehaviour {
                 centerButton.GetComponent<Image>().color = Color.grey;
                 absorptionGauge += 1;
                 inputParams.contextualButtonPressed = false;
-                SoundController.instance.PlaySingle(absorption);
+                if (!pressedAbsorbingOnce) {
+                    //================================================
+                    pressedAbsorbingOnce = true;
+                    SoundController.instance.SelectKODA("Absorption");
+                    //================================================
+                }
             }
 
             if (absorptionGauge > maxAbsorptionGauge) {
                 pairCapacity = AbsorbeYokai(absorbableObject);
                 DeactivateAbsorptionQTE();
                 ResetAbsorptionGauge();
-                SoundController.instance.StopSingle();
+                //================================================
+                pressedAbsorbingOnce = false;
+                SoundController.instance.StopKoda();
+                //================================================
             }
         }
         else {
@@ -270,7 +280,10 @@ public class InteractBehavior : MonoBehaviour {
         absorbing = false;
         ResetAbsorptionGauge();
         DeactivateAbsorptionQTE();
-        SoundController.instance.StopSingle();
+        //================================================
+        pressedAbsorbingOnce = false;
+        SoundController.instance.StopKoda();
+        //================================================
     }
     private void ResetAbsorptionGauge() {
         absorptionGauge = 0;
