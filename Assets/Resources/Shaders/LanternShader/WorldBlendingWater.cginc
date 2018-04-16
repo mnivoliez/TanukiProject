@@ -34,6 +34,8 @@ uniform half _WaveHeight;
 uniform half _NoiseScale;
 uniform half _NoiseIntensity;
 
+uniform half _WaterfallHeight;
+
 #if defined(GRAB_PASS)
 	sampler2D _BackgroundTexture;
 	uniform float _DistortStrength;
@@ -85,6 +87,7 @@ v2f vert (appdata v)
 	v2f o;
 
 	o.uv = -v.texcoord;
+	o.uv.y += (-mul(unity_ObjectToWorld, v.vertex).y) / _WaterfallHeight;
 	float wave = sin(o.uv.y * _WaveAmount + _Time.y*_WaveSpeed) * _WaveHeight + snoise(mul(unity_ObjectToWorld, v.vertex)/100*_NoiseScale + _Time.x*_WaveSpeed) * _NoiseIntensity;
 	v.vertex.y += wave;
 	o.pos = UnityObjectToClipPos(v.vertex);
@@ -191,9 +194,9 @@ half4 frag (v2f i) : SV_Target
 			float lrp = 1.0-saturate(len + ns * _Interpolation);
 		#endif
 
-		float2 panner = i.uv + _Time.x * _WaveSpeed/50;
-		fixed4 tex1 = tex2D(_FirstTexture, TRANSFORM_TEX (panner, _FirstTexture));
-		fixed4 tex2 = tex2D(_SecondTexture, TRANSFORM_TEX (panner, _FirstTexture));
+		i.uv.y += _Time.x * _WaveSpeed;
+		fixed4 tex1 = tex2D(_FirstTexture, i.uv);
+		fixed4 tex2 = tex2D(_SecondTexture, i.uv);
 
 		float3 attenColor = LIGHT_ATTENUATION(i) * _LightColor0.rgb;
 		float3 lightDir = normalize(lerp(_WorldSpaceLightPos0.xyz, _WorldSpaceLightPos0.xyz - i.posWorld.xyz, _WorldSpaceLightPos0.w));

@@ -32,6 +32,8 @@
 		_StepCount	("", Range(0,20))	= 10
 
 		_DistortStrength ("", Range(0,5))	= 1
+
+		_WaterfallHeight ("", Float)	= 1
 	}
 
 	SubShader

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BezierPlatform {
+public class Bezier {
 
 	public static Vector3 EvaluateQuadratic(Vector3 a, Vector3 b, Vector3 c, float t) {
 		Vector3 p0 = Vector3.Lerp(a, b, t);
