@@ -20,7 +20,6 @@ public class SesshoSekiBehavior : YokaiController {
     private bool positionToGoSet;
     private bool prepare;
     private bool search;
-    private bool comeBack;
     private float nextAction;
     private Renderer myRenderer;
     private float offsetRaycast = 1.0f;
