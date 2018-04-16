@@ -18,6 +18,10 @@ public class BazekoriNewBehavior : YokaiController {
     private bool bodyAttack = false;
     private bool isAttacking = false;
 
+    [SerializeField] private float zoneBehavior = 5f;
+    [SerializeField] private float rateBehavior = 4f;
+    private float nextRate = 0f;
+
     private Color initColor = new Color(202 / 255f, 54 / 255f, 255f / 255f, 0f);
     private Color hitColor = new Color(1f, 0, 0, 90f / 255f);
 
@@ -108,16 +112,19 @@ public class BazekoriNewBehavior : YokaiController {
             }
             else {
                 bodyAttack = false;
-                if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
-                    agent.stoppingDistance = 0.0f;
-                    agent.SetDestination(positionOrigin);
-                    animBody.SetBool("IsJumping", true);
-                }
-                else {
-                    comeBack = false;
-                    agent.stoppingDistance = stoppingDistance;
-                    animBody.SetBool("IsJumping", false);
-                    //transform.rotation = rotationOrigin;
+                if (comeBack) {
+                    if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
+                        agent.stoppingDistance = 0.0f;
+                        agent.SetDestination(positionOrigin);
+                        animBody.SetBool("IsJumping", true);
+                    } else {
+                        comeBack = false;
+                        agent.stoppingDistance = stoppingDistance;
+                        animBody.SetBool("IsJumping", false);
+                        //transform.rotation = rotationOrigin;
+                    }
+                } else {
+                    Behavior();
                 }
             }
         }
@@ -239,5 +246,16 @@ public class BazekoriNewBehavior : YokaiController {
             rotationSpeed += 2;
         }
 
+    }
+
+    public override void Behavior() {
+        if (Random.Range(0, 100) < 3) {
+            if (Time.time > nextRate) {
+                nextRate = Time.time + rateBehavior;
+                Vector3 direction = new Vector3(Random.Range(-zoneBehavior, zoneBehavior), Random.Range(-zoneBehavior, zoneBehavior), Random.Range(-zoneBehavior, zoneBehavior));
+                Vector3 positionBehavior = positionOrigin + direction;
+                agent.SetDestination(positionBehavior);
+            }
+        }
     }
 }
