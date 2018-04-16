@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class YokaiAIv2Controller : YokaiController {
 
@@ -115,7 +118,9 @@ public class YokaiAIv2Controller : YokaiController {
         if (collision.gameObject.tag == "Lure") {
 
             if (Math.Abs(collision.gameObject.GetComponent<Rigidbody>().velocity.y) > 0.5f) {
-                SoundController.instance.PlayYokaiSingle(yokaiHurt);
+                //================================================
+                SoundController.instance.SelectYOKAI("Hurt");
+                //================================================
                 LooseHp(1);
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
@@ -143,7 +148,9 @@ public class YokaiAIv2Controller : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
-            SoundController.instance.PlayYokaiSingle(yokaiHurt);
+            //================================================
+            SoundController.instance.SelectYOKAI("Hurt");
+            //================================================
             LooseHp(damage);
 
         }
@@ -161,7 +168,9 @@ public class YokaiAIv2Controller : YokaiController {
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             rendererMat.SetColor("_Color", hitColor);
-            SoundController.instance.PlayYokaiSingle(yokaiScream);
+            //================================================
+            SoundController.instance.SelectYOKAI("Scream");
+            //================================================
             target = GameObject.FindGameObjectWithTag("Player");
             agent.SetDestination(transform.position);
             comeBack = false;
@@ -182,7 +191,9 @@ public class YokaiAIv2Controller : YokaiController {
         isAbsorbed = true;
         positionCollectable = transform.position;
         gameObject.GetComponent<Collider>().enabled = false;
-        SoundController.instance.PlayYokaiSingle(absorbed);
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
     }
 
     public override void Die() {
