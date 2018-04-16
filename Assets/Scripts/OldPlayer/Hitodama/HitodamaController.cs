@@ -26,6 +26,8 @@ public class HitodamaController : MonoBehaviour {
     Color colorHitodama = new Color(10f / 255f, 250f / 255f, 250f / 255f, 1f);
     Color emissionColorHitodama = new Color(0, 0, 0, 1f);
     float newScaleHitodama;
+    bool isGuiding = false;
+    private GameObject targetStele;
 
     void Start() {
         rendererHitodama = GetComponent<Renderer>();
@@ -50,7 +52,12 @@ public class HitodamaController : MonoBehaviour {
             Destroy(lostHPObject, 2f);
             PlayerUpdateLife();
         }
-        transform.position = Vector3.Lerp(transform.position, spawnHitodama.transform.position, speed * Time.deltaTime);
+        if (!isGuiding) {
+            transform.position = Vector3.Lerp(transform.position, spawnHitodama.transform.position, speed * Time.deltaTime);
+        }
+        else {
+            transform.position = Vector3.Lerp(transform.position, targetStele.transform.position + Vector3.one, 0.5f * Time.deltaTime);
+        }
 
     }
 
@@ -115,6 +122,19 @@ public class HitodamaController : MonoBehaviour {
         }
         //emissionColorHitodama = emissionColorHitodama + (diffEmissionColor * hpPlayer);
         return emissionColorHitodama;
+    }
+
+    public void GoNextStele() {
+        
+
+    }
+
+    public void SetIsGuiding(bool guiding) {
+        isGuiding = guiding;
+    }
+
+    public void SetTargetStele(GameObject nextStele) {
+        targetStele = nextStele;
     }
 
 }

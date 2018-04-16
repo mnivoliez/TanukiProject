@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class SkipVideo : MonoBehaviour {
 
@@ -12,8 +15,10 @@ public class SkipVideo : MonoBehaviour {
 	private Animator anim;
 
 	void Start() {
-        SoundController.instance.StopMusic();
-		GameObject transitionImageInstance = GameObject.Find("TransitionImage");
+        //================================================
+        SoundController.instance.StopTheme();
+        //================================================
+        GameObject transitionImageInstance = GameObject.Find("TransitionImage");
 
 		Black = transitionImageInstance.GetComponent<Image> ();
 		anim = transitionImageInstance.GetComponent<Animator> ();
