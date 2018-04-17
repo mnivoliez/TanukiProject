@@ -101,7 +101,7 @@ public class PlayerHealth : MonoBehaviour {
         gameObject.transform.rotation = new Quaternion (0,0,0,0);
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
         animTransition.SetBool("Fade", false);
-        gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, Quaternion.identity);
+        gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, respawnPoint.transform.rotation);
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         playerHealthCurrent = playerHealthMax;
         gameObject.GetComponent<InputController>().SetFreezeInput(false);

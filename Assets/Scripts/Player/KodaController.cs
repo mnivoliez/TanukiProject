@@ -156,7 +156,7 @@ public class KodaController : MonoBehaviour {
 
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
-        Instantiate(CanvasPrefabPause).name = "PauseCanvas";
+        //Instantiate(CanvasPrefabPause).name = "PauseCanvas";
         Instantiate(SceneTransitionImage).name = "SceneTransitionImage";
         Instantiate(LoadingScreen).name = "LoadingScreen";
         Instantiate(DeathTransitionImage).name = "DeathTransitionImage";
@@ -393,6 +393,16 @@ public class KodaController : MonoBehaviour {
                             allowedToWalk = false;
                             //inclinationNormal = c.normal;
                         }
+
+
+                        // this condition is taken from OnCollisionEnter to avoid the Fall state
+                        // when we jump directly to the platform without passing over it
+                        // IF IT MAKES ISSUES REMOVE IT
+                        if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f && !_grounds.Contains(gO)) {
+                            _grounds.Add(gO);
+                        }
+
+
                         break;
                     }
                 }
