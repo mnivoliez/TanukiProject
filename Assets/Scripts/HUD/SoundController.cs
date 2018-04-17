@@ -35,7 +35,6 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip HUDPauseOpenClose;
     [SerializeField] private AudioClip HUDPauseNavigate;
     [SerializeField] private AudioClip HUDPauseAccept;
-    [SerializeField] private AudioClip HUDPauseCancel;
 
     [Header("KODA")]
     [Space(10)]
@@ -130,31 +129,37 @@ public class SoundController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name == "MainMenu") {
             StopTheme();
-            PlayTheme(HUDMainMenuTheme, true);
+            StopHUD();
+            PlayHUDTheme(HUDMainMenuTheme, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss1") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeBossZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss2") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeBossZ2, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeLightTuto, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeDarkZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeDarkZ2, true);
         }
     }
@@ -179,7 +184,7 @@ public class SoundController : MonoBehaviour {
                 break;
 
             case "PauseEnabled":
-                AdjustAllMusicVolumeLow(0.5f);
+                AdjustAllMusicVolumeLow(0.3f);
                 break;
 
             case "PauseDisabled":
@@ -198,10 +203,6 @@ public class SoundController : MonoBehaviour {
                 PlayHUDEffect(HUDPauseAccept);
                 break;
 
-            case "PauseCancel":
-                PlayHUDEffect(HUDPauseCancel);
-                break;
-
             default:
                 break;
         }        
@@ -209,13 +210,14 @@ public class SoundController : MonoBehaviour {
 
     private void PlayHUDTheme(AudioClip clip, bool loop) {
         fxHUD_Source.clip = clip;
+        //fxHUD_Source.volume = 0.2f;
         fxHUD_Source.Play();
         fxHUD_Source.loop = loop;
     }
 
     private void PlayHUDEffect(AudioClip clip) {
-        fxHUD_Source.clip = clip;
-        fxHUD_Source.Play();
+        fxHUD_Effect.clip = clip;
+        fxHUD_Effect.Play();
     }
 
     private void AdjustAllMusicVolumeLow (float volumeLevel) {

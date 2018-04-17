@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class SelectOnInput : MonoBehaviour {
 
@@ -21,10 +24,10 @@ public class SelectOnInput : MonoBehaviour {
 
     private void OnDisable() {
 		ButtonDeselected ();
-	}
+    }
 
 	public void ButtonDeselected() {
 		eventSystem.SetSelectedGameObject (null);
 		buttonSelected = false;
-	}
+    }
 }
