@@ -87,9 +87,6 @@ public class LanternShaderGUI : ShaderGUI {
 	GUIContent waveAmountGUI = new GUIContent ("Amount", "Amount of wave");
 	private MaterialProperty _WaveHeight = null;
 	GUIContent waveHeightGUI = new GUIContent ("Height", "Height of wave");
-	private MaterialProperty _Tessellation = null;
-	GUIContent tessellationGUI = new GUIContent ("Tessellation", "Number of mesh division");
-	private MaterialProperty _Tess = null;
 	private MaterialProperty _NoiseScale = null;
 	GUIContent noiseScaleGUI = new GUIContent ("Scale", "Noise Scale");
 	private MaterialProperty _NoiseIntensity = null;
@@ -146,8 +143,6 @@ public class LanternShaderGUI : ShaderGUI {
 			_WaveSpeed = ShaderGUI.FindProperty ("_WaveSpeed", props);
 			_WaveAmount = ShaderGUI.FindProperty ("_WaveAmount", props);
 			_WaveHeight = ShaderGUI.FindProperty ("_WaveHeight", props);
-			_Tessellation = ShaderGUI.FindProperty ("_Tessellation", props);
-			_Tess = ShaderGUI.FindProperty ("_Tess", props);
 
 			_NoiseScale = ShaderGUI.FindProperty ("_NoiseScale", props);
 			_NoiseIntensity = ShaderGUI.FindProperty ("_NoiseIntensity", props);
@@ -311,8 +306,6 @@ public class LanternShaderGUI : ShaderGUI {
 		editor.ShaderProperty (_WaveSpeed, waveSpeedGUI);
 		editor.ShaderProperty (_WaveAmount, waveAmountGUI);
 		editor.ShaderProperty (_WaveHeight, waveHeightGUI);
-		editor.ShaderProperty (_Tessellation, tessellationGUI);
-		_Tess.floatValue = _Tessellation.floatValue * 2 - 1;
 
 		GUILayout.Space(pixelSpace);
 		EditorGUILayout.LabelField ("Noise", EditorStyles.boldLabel);
@@ -329,9 +322,12 @@ public class LanternShaderGUI : ShaderGUI {
 	}
 
 	void TextureInline(MaterialProperty propTex, MaterialProperty propLCol, MaterialProperty propDCol, GUIContent tex, GUIContent lCol, GUIContent dCol) {
-		Rect rect = EditorGUILayout.GetControlRect ();
+		Rect rect;
 
-		if(propTex != null) editor.TexturePropertySingleLine(tex, propTex);
+		if(propTex != null)
+			rect = editor.TexturePropertySingleLine(tex, propTex);
+		else
+			rect = EditorGUILayout.GetControlRect ();
 
 		if (propLCol != null) {
 			Rect rect1 = new Rect (rect);

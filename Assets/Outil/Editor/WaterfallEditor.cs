@@ -8,6 +8,12 @@ public class RoadEditor : Editor {
 
 	WaterfallCreator creator;
 
+	public override void OnInspectorGUI() {
+		EditorGUILayout.IntField("Tris :", creator.numTris, EditorStyles.label);
+		EditorGUILayout.Space();
+		base.OnInspectorGUI();
+	}
+
 	void OnSceneGUI() {
 		if(creator.autoUpdate && Event.current.type == EventType.Repaint) {
 			creator.UpdateWaterfall();
