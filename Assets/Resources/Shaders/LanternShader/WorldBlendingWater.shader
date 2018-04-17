@@ -22,16 +22,14 @@
 		_Depth			("", Range(0,20))	= 10
 		_EdgeIntensity 	("", Range(0,1))	= 0.5
 
-		[IntRange]
-		_Tessellation 	("", Range(1,3))	= 1
-		_Tess 			("", Float)			= 0
-
-		_NoiseScale		("", Range(0,10))	= 1
+		_NoiseScale		("", Range(0,20))	= 1
 		_NoiseIntensity	("", Range(0,2))	= 1
 
 		_StepCount	("", Range(0,20))	= 10
 
 		_DistortStrength ("", Range(0,5))	= 1
+
+		_WaterfallHeight ("", Float)	= 1
 	}
 
 	SubShader
@@ -41,13 +39,14 @@
 		"IgnoreProjector"="True"}
 
         Cull Off
-		ZWrite Off
 
         GrabPass {"_BackgroundTexture"}
 
         Pass
         {
 			Name "GrabPass"
+
+			Zwrite Off
 
             CGPROGRAM
             #pragma vertex vert
@@ -71,11 +70,8 @@
 
 			CGPROGRAM
 
-			#pragma hull hull
-            #pragma domain domain
-            #pragma vertex tessvert
+            #pragma vertex vert
             #pragma fragment frag
-			#pragma target 5.0
 			#pragma multi_compile_fwdbase
 			#pragma multi_compile_fog
 			#pragma shader_feature _SIMPLE _LANTERN
@@ -97,11 +93,8 @@
             Blend One One
 
 			CGPROGRAM
-			#pragma hull hull
-            #pragma domain domain
-            #pragma vertex tessvert
+            #pragma vertex vert
             #pragma fragment frag
-			#pragma target 5.0
 			#pragma multi_compile_fwdadd
 			#pragma multi_compile_fog
 			#pragma shader_feature _SIMPLE _LANTERN
