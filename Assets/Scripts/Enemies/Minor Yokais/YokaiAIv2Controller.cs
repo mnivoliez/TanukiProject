@@ -21,6 +21,7 @@ public class YokaiAIv2Controller : YokaiController {
 
     [SerializeField] private float zoneBehavior = 5f;
     [SerializeField] private float rateBehavior = 1f;
+    [SerializeField] private bool canBeKilled;
     private float nextRate = 0f;
 
     private bool bodyAttack = false;
