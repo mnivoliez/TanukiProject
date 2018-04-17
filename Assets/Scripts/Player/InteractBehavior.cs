@@ -88,7 +88,7 @@ public class InteractBehavior : MonoBehaviour {
         //===========================
         if (absorbing) {
             absorptionTimer -= Time.deltaTime;
-            loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
+            //loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
             absorptionGauge -= 0.01f;
             if (absorptionTimer < 0) StopAbsorption();
         }
@@ -246,8 +246,8 @@ public class InteractBehavior : MonoBehaviour {
 
             centerButton.GetComponent<Image>().color = Color.white;
             if (inputParams.contextualButtonPressed) {
-                centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
-                centerButton.GetComponent<Image>().color = Color.grey;
+                //centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
+                //centerButton.GetComponent<Image>().color = Color.grey;
                 absorptionGauge += 1;
                 inputParams.contextualButtonPressed = false;
                 if (!pressedAbsorbingOnce) {
@@ -269,7 +269,7 @@ public class InteractBehavior : MonoBehaviour {
             }
         }
         else {
-            centerButton.GetComponent<Image>().color = Color.white;
+            //centerButton.GetComponent<Image>().color = Color.white;
             DoBeginAbsorption(absorbableObject);
         }
         input.SetUserRequest(inputParams);
@@ -288,8 +288,8 @@ public class InteractBehavior : MonoBehaviour {
     private void ResetAbsorptionGauge() {
         absorptionGauge = 0;
         absorptionTimer = 4f;
-        centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
-        centerButton.GetComponent<Image>().color = Color.white;
+        //centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
+        //centerButton.GetComponent<Image>().color = Color.white;
     }
 
     private void ActivateAbsorptionQTE() {
