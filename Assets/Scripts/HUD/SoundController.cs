@@ -129,31 +129,37 @@ public class SoundController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name == "MainMenu") {
             StopTheme();
+            StopHUD();
             PlayHUDTheme(HUDMainMenuTheme, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss1") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeBossZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss2") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeBossZ2, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeLightTuto, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeDarkZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
             StopTheme();
+            StopHUD();
             PlayTheme(themeDarkZ2, true);
         }
     }
