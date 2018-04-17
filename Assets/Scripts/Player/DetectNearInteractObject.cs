@@ -27,24 +27,21 @@ public class DetectNearInteractObject : MonoBehaviour {
         }
         //===========================
         if (nearestObject != null) {
-            float distanceObject = Vector3.Distance(nearestObject.transform.position, transform.position);
-            Vector3 offSetPoint = transform.position - transform.forward * offSet;
+            float distanceObject = Vector3.Distance(nearestObject.transform.position, direction.position);
+            Vector3 offSetPoint = direction.position - direction.forward * offSet;
             float angleObject = Vector3.Angle(direction.forward, (nearestObject.transform.position - offSetPoint));
             bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
             if(!isInCone) {
                 nearestObject = null;
                 rangeNearestObject = 0;
-            } else {
-                Debug.Log("The nearest object is: " + nearestObject);
-                Debug.Log("His angle is: "  + angleObject);
-            }
+            } 
         }
 	}
 
     void OnTriggerStay(Collider collider) {
 
-        float distanceObject = Vector3.Distance(collider.gameObject.transform.position, transform.position);
-        Vector3 offSetPoint = transform.position + transform.forward * -offSet;
+        float distanceObject = Vector3.Distance(collider.gameObject.transform.position, direction.position);
+        Vector3 offSetPoint = direction.position + direction.forward * -offSet;
         float angleObject = Vector3.Angle(direction.forward, (collider.gameObject.transform.position - offSetPoint));
         bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
 
