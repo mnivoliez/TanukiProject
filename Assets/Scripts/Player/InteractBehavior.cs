@@ -46,7 +46,7 @@ public class InteractBehavior : MonoBehaviour {
     [Header("ABSORB")]
     [Space(8)]
     private bool absorbing;
-    [SerializeField] private float absorptionTimer = 4f;
+    //[SerializeField] private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
     private bool pressedAbsorbingOnce = false;
 
@@ -87,10 +87,10 @@ public class InteractBehavior : MonoBehaviour {
         }
         //===========================
         if (absorbing) {
-            absorptionTimer -= Time.deltaTime;
+            //absorptionTimer -= Time.deltaTime;
             //loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
-            absorptionGauge -= 0.01f;
-            if (absorptionTimer < 0) StopAbsorption();
+            //absorptionGauge -= 0.01f;
+            //if (absorptionTimer < 0) StopAbsorption();
         }
     }
 
@@ -287,18 +287,16 @@ public class InteractBehavior : MonoBehaviour {
     }
     private void ResetAbsorptionGauge() {
         absorptionGauge = 0;
-        absorptionTimer = 4f;
+        //absorptionTimer = 4f;
         //centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
         //centerButton.GetComponent<Image>().color = Color.white;
     }
 
     private void ActivateAbsorptionQTE() {
         canvasQTE.SetActive(true);
-        //sakePot.SetActive(true);
     }
 
     private void DeactivateAbsorptionQTE() {
-        //sakePot.SetActive(false);
         canvasQTE.SetActive(false);
     }
 
