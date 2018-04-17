@@ -105,7 +105,6 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider collid) {
-
         //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
 
         //    collid.gameObject.GetComponent<YokaiController>().BeingHit();
