@@ -76,8 +76,6 @@ public static class Game {
             koda_health.SetHealthCurrent(playerData.hp);
             koda_health.SetHealthMax(playerData.hp_max);
 
-            koda_score.SetnbYokai(playerData.caught_yokai);
-
             koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
 
             //SceneManager.SetActiveScene(playerData.current_scene); // Working ONLY if the saved scene IS IN the SceneManager !
@@ -87,6 +85,7 @@ public static class Game {
             koda_power.SetPowerBall(playerData.power_ball);
             koda_power.SetPowerShrink(playerData.power_shrink);
 
+            koda_score.SetnbYokai(playerData.caught_yokai);
             selected_slot = playerData.selected_slot;
 
             Debug.Log("Game Loaded !");
@@ -118,8 +117,6 @@ public static class Game {
         playerData.hp_max = koda_health.GetHealthMax();
         playerData.hp = koda_health.GetHealthCurrent();
 
-        playerData.caught_yokai = koda_score.GetnbYokai();
-
         Transform check_point = koda_power.GetRespawnPointPosition();
         playerData.check_point_x = check_point.position.x;
         playerData.check_point_y = check_point.position.y;
@@ -132,6 +129,37 @@ public static class Game {
         playerData.power_ball = koda_power.GetPowerBall();
         playerData.power_shrink = koda_power.GetPowerShrink();
 
+        switch (playerData.current_scene) {
+            case "Z1-P1-complete":
+                playerData.caught_yokaiZ1P1 = koda_score.GetnbYokai();
+                break;
+
+            case "Z1-P2-complete":
+                playerData.caught_yokaiZ1P2 = koda_score.GetnbYokai();
+                break;
+
+            case "Z1-P3-complete":
+                playerData.caught_yokaiZ1P3 = koda_score.GetnbYokai();
+                break;
+
+            case "Z2-P1-complete":
+                playerData.caught_yokaiZ2P1 = koda_score.GetnbYokai();
+                break;
+
+            case "Z2-P2-complete":
+                playerData.caught_yokaiZ2P2 = koda_score.GetnbYokai();
+                break;
+
+            case "Z2-P3-complete":
+                playerData.caught_yokaiZ2P3 = koda_score.GetnbYokai();
+                break;
+
+            case "Scene_AirStream":
+                playerData.caught_yokai_test = koda_score.GetnbYokai();
+                break;
+        }
+
+        playerData.caught_yokai = koda_score.GetnbYokai();
         playerData.selected_slot = selected_slot;
 
         scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
@@ -142,7 +170,6 @@ public static class Game {
 public struct PlayerData {
     public float hp;
     public float hp_max;
-    public int caught_yokai;
 
     public int selected_slot;
 
@@ -155,6 +182,24 @@ public struct PlayerData {
     public bool power_lure;
     public bool power_ball;
     public bool power_shrink;
+
+    public int caught_yokaiZ1P1;
+    public int caught_yokaiZ1P2;
+    public int caught_yokaiZ1P3;
+    public int caught_yokaiZ2P1;
+    public int caught_yokaiZ2P2;
+    public int caught_yokaiZ2P3;
+    public int caught_yokai_test;
+
+    public int caught_yokai;
+
+    public bool visited_Z1P1;
+    public bool visited_Z1P2;
+    public bool visited_Z1P3;
+    public bool visited_Z2P1;
+    public bool visited_Z2P2;
+    public bool visited_Z2P3;
+    public bool visited_test;
 }
 
 /*public class Player
