@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class Pause : MonoBehaviour {
 
@@ -41,11 +44,13 @@ public class Pause : MonoBehaviour {
 	void Update () {
 		if(Input.GetButtonDown("Cancel") && !VictorySwitch.Victory){
             if(!Paused){
+                SoundController.instance.SelectHUD("PauseEnabled");
 				PauseGame (true);
                 //showPaused();
             }
 			else if (Paused) {
-				UnpauseGame ();
+                SoundController.instance.SelectHUD("PauseDisabled");
+                UnpauseGame ();
             }
         }
 	}
