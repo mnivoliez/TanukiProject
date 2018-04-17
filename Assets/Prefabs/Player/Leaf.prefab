@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 95938999048059308}
   - component: {fileID: 114785612233951986}
   - component: {fileID: 65845414262372188}
+  - component: {fileID: 54719991536064774}
   m_Layer: 11
   m_Name: Leaf
   m_TagString: Leaf
@@ -157,6 +158,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1736672275326432}
   m_Mesh: {fileID: 4300002, guid: fb1daebae267a1f44ae784e5fad29555, type: 3}
+--- !u!54 &54719991536064774
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1691137885492606}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &65845414262372188
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -199,5 +215,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disparitionEffect: {fileID: 1769207399488890, guid: 3e72000252b4dc64fa6c25b8b481bfcf,
     type: 2}
-  throwLeaf: {fileID: 8300000, guid: 63874fc25525fb64c931b3dd7aebe024, type: 3}
-  vanishLeaf: {fileID: 8300000, guid: 5fc2b6d25db1ef544a6f4e7ea6ebced3, type: 3}
