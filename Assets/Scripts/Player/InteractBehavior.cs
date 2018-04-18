@@ -362,7 +362,7 @@ public class InteractBehavior : MonoBehaviour {
         float z = inputVelocityAxis.z;
         float y = (float)Math.Sqrt(x*x + z*z) / 2f;
         Vector3 force = new Vector3(x, y, z) * throwCoef;
-        Debug.Log(force);
+        //Debug.Log(force);
         body.AddForce(force);
     }
 
