@@ -23,7 +23,7 @@ public class YokaiAIv2Controller : YokaiController {
     [SerializeField] private float rateBehavior = 1f;
     private float nextRate = 0f;
 
-    [SerializeField] private bool canBeKilled;
+    [SerializeField] public int yokaiID;
 
     private bool bodyAttack = false;
     private Rigidbody body;

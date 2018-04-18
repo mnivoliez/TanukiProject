@@ -192,17 +192,33 @@ public static class Game {
 
             playerData.caught_yokai = 0;
 
-            playerData.visited_Z1P1 = false;
-            playerData.visited_Z1P2 = false;
-            playerData.visited_Z1P3 = false;
-            playerData.visited_Z2P1 = false;
-            playerData.visited_Z2P2 = false;
-            playerData.visited_Z2P3 = false;
-            playerData.visited_test = false;
+            playerData.lightBoss1 = false;
+            playerData.lightBoss2 = false;
+
+            playerData.yokaiRemainingZ1P1 = new int[7];
+            Reset_Yokai_Scene(playerData.yokaiRemainingZ1P1, playerData.yokaiRemainingZ1P1.Length);
+            playerData.yokaiRemainingZ1P2 = new int[9];
+            Reset_Yokai_Scene(playerData.yokaiRemainingZ1P2, playerData.yokaiRemainingZ1P2.Length);
+            playerData.yokaiRemainingZ1P3 = new int[7];
+            Reset_Yokai_Scene(playerData.yokaiRemainingZ1P3, playerData.yokaiRemainingZ1P3.Length);
+            playerData.yokaiRemainingZ2P1 = new int[10];
+            Reset_Yokai_Scene(playerData.yokaiRemainingZ2P1, playerData.yokaiRemainingZ2P1.Length);
+            playerData.yokaiRemainingZ2P2 = new int[20];
+            Reset_Yokai_Scene(playerData.yokaiRemainingZ2P2, playerData.yokaiRemainingZ2P2.Length);
+            playerData.yokaiRemainingZ2P3 = new int[12];
+            Reset_Yokai_Scene(playerData.yokaiRemainingZ2P3, playerData.yokaiRemainingZ2P3.Length);
+            playerData.yokaiRemainingTEST = new int[3];
+            Reset_Yokai_Scene(playerData.yokaiRemainingTEST, playerData.yokaiRemainingTEST.Length);
 
             Save();
             Load_and_Post_Load();
             PreSave_Game_and_Save();
+        }
+    }
+
+    public static void Reset_Yokai_Scene(int[] yokaiRemaining, int nbrYokai) {
+        for(int i = 0; i < nbrYokai; i++) {
+            yokaiRemaining[i] = i;
         }
     }
 }
@@ -234,13 +250,16 @@ public struct PlayerData {
 
     public int caught_yokai;
 
-    public bool visited_Z1P1;
-    public bool visited_Z1P2;
-    public bool visited_Z1P3;
-    public bool visited_Z2P1;
-    public bool visited_Z2P2;
-    public bool visited_Z2P3;
-    public bool visited_test;
+    public bool lightBoss1;
+    public bool lightBoss2;
+
+    public int[] yokaiRemainingZ1P1;
+    public int[] yokaiRemainingZ1P2;
+    public int[] yokaiRemainingZ1P3;
+    public int[] yokaiRemainingZ2P1;
+    public int[] yokaiRemainingZ2P2;
+    public int[] yokaiRemainingZ2P3;
+    public int[] yokaiRemainingTEST;
 }
 
 /*public class Player
