@@ -667,7 +667,7 @@ public class KodaController : MonoBehaviour {
                     interactBehaviorCtrl.StopAbsorption();
                 }
                 if (interactStateParameter.finishedCarry && previousInteractState == InteractState.Carry) {
-                    interactBehaviorCtrl.StopCarry(catchableObject);
+                    interactBehaviorCtrl.StopCarry(catchableObject, inputVelocityAxis);
                     leafLock.parent = InteractState.Nothing;
                 }
 
