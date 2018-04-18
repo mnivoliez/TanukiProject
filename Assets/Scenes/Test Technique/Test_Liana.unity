@@ -1181,6 +1181,37 @@ Transform:
   m_Father: {fileID: 1361326928}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &58154931
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &58166964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1253,6 +1284,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &58909370
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!1 &59660253 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1279948954873962, guid: b251e98354a7edd4283921b96a5c5391,
@@ -19460,7 +19511,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1009279157}
+      objectReference: {fileID: 58154931}
     - target: {fileID: 119785275203550714, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: m_FarClipPlane
@@ -19470,7 +19521,7 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1415657922}
+      objectReference: {fileID: 58909370}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a95e21316b361044681464f5613ea9f0, type: 2}
   m_IsPrefabParent: 0
@@ -20138,37 +20189,6 @@ Transform:
   m_Father: {fileID: 58166967}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &1009279157
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &1016600642
 GameObject:
   m_ObjectHideFlags: 0
@@ -27576,26 +27596,6 @@ Transform:
   m_Father: {fileID: 425711564}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &1415657922
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!1 &1425312117 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1279948954873962, guid: b251e98354a7edd4283921b96a5c5391,
@@ -31935,7 +31935,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1679604314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06, y: 16.414, z: -12.08}
+  m_LocalPosition: {x: -0.08, y: 16.59, z: -12.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -31954,14 +31954,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path:
     points:
-    - {x: -1.9237301, y: 1.3277245, z: -0.15214348}
-    - {x: -0.33460534, y: 1.1769638, z: -0.34377193}
-    - {x: -0.73683274, y: -0.22002591, z: 0.34074584}
+    - {x: -1.8538154, y: 0.848526, z: -0.08662796}
+    - {x: -0.32996982, y: 0.61318207, z: -0.2776165}
+    - {x: -0.34046072, y: 0.17335892, z: 0.21020317}
     - {x: 1, y: 0, z: 0}
-    - {x: 2.43562, y: 0.1818676, z: -0.2816515}
-    - {x: 3.4233704, y: 0.9554224, z: -0.49257755}
-    - {x: 2.8275445, y: 2.0442257, z: -0.73768044}
-    - {x: 2.307664, y: 2.9942474, z: -0.9515419}
+    - {x: 2.4447026, y: -0.1868403, z: -0.22654977}
+    - {x: 4.455185, y: 1.881086, z: -0.8943753}
+    - {x: 3.4560375, y: 2.8027878, z: -0.99612427}
+    - {x: 2.392474, y: 3.7839127, z: -1.1044331}
     - {x: 0.3443799, y: 1.965538, z: -0.6017227}
     - {x: -0.8798469, y: 3.3089523, z: -0.7991524}
     isClosed: 0
