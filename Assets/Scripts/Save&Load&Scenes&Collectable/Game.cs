@@ -164,6 +164,47 @@ public static class Game {
 
         scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
     }
+
+    public static void Reset_Game() {
+        if (SceneManager.GetActiveScene().name == "Zone Tuto") {
+            playerData.hp = 3.0f;
+            playerData.hp_max = 3.0f;
+
+            playerData.selected_slot = 0;
+
+            playerData.current_scene = "Zone Tuto";
+            playerData.check_point_x = 124.19f;
+            playerData.check_point_y = 3.0f;
+            playerData.check_point_z = -39.71f;
+
+            playerData.power_jump = false;
+            playerData.power_lure = false;
+            playerData.power_ball = false;
+            playerData.power_shrink = false;
+
+            playerData.caught_yokaiZ1P1 = 0;
+            playerData.caught_yokaiZ1P2 = 0;
+            playerData.caught_yokaiZ1P3 = 0;
+            playerData.caught_yokaiZ2P1 = 0;
+            playerData.caught_yokaiZ2P2 = 0;
+            playerData.caught_yokaiZ2P3 = 0;
+            playerData.caught_yokai_test = 0;
+
+            playerData.caught_yokai = 0;
+
+            playerData.visited_Z1P1 = false;
+            playerData.visited_Z1P2 = false;
+            playerData.visited_Z1P3 = false;
+            playerData.visited_Z2P1 = false;
+            playerData.visited_Z2P2 = false;
+            playerData.visited_Z2P3 = false;
+            playerData.visited_test = false;
+
+            Save();
+            Load_and_Post_Load();
+            PreSave_Game_and_Save();
+        }
+    }
 }
 
 [Serializable] // Tells Unity that this script can be serialized—in other words, that we can save all the variables in this script. MUST BE IN ALL SCRIPTS THAT NEEDS TO BE SAVED !
