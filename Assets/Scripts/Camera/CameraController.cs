@@ -113,7 +113,7 @@ public class CameraController : MonoBehaviour {
             return;
         }
 
-		GetInputData();
+        GetInputData();
 
         ManagerCenterCamera();
 
@@ -221,7 +221,7 @@ public class CameraController : MonoBehaviour {
 		}
 		else if (wideCameraLocked)
 		{
-			lookatPosition = wideLookatPos;
+			lookatPosition = wideLookatPos + CameraOffset;
 		}
 		else
 		{
