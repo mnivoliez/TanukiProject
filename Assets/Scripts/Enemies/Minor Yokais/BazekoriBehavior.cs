@@ -71,7 +71,7 @@ public class BazekoriBehavior : YokaiController {
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             //================================================
-            SoundController.instance.SelectYOKAI("Scream");
+            SoundController.instance.SelectYOKAI("KO");
             //================================================
         }
 

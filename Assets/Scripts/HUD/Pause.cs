@@ -44,18 +44,17 @@ public class Pause : MonoBehaviour {
 	void Update () {
 		if(Input.GetButtonDown("Cancel") && !VictorySwitch.Victory){
             if(!Paused){
-                SoundController.instance.SelectHUD("PauseEnabled");
 				PauseGame (true);
                 //showPaused();
             }
 			else if (Paused) {
-                SoundController.instance.SelectHUD("PauseDisabled");
                 UnpauseGame ();
             }
         }
 	}
 
 	public void UnpauseGame() {
+        SoundController.instance.SelectHUD("PauseDisabled");
         PausePanel.SetActive (false);
         OptionsPanel.SetActive(false);
         ExitPanel.SetActive(false);
@@ -69,6 +68,7 @@ public class Pause : MonoBehaviour {
     }
 
 	public void PauseGame(bool showMenu) {
+        SoundController.instance.SelectHUD("PauseEnabled");
         Time.timeScale = 0;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
