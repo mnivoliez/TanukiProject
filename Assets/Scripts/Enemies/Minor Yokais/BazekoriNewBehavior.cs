@@ -59,12 +59,12 @@ public class BazekoriNewBehavior : YokaiController {
         }
         //===========================
         if (!isKnocked && !isAbsorbed) {
+            animBody.SetFloat("Speed", agent.velocity.magnitude);
             if (target != null) {
                 agent.stoppingDistance = stoppingDistance;
                 if (Vector3.Distance(transform.position, positionOrigin) > detectArea) {
                     comeBack = true;
                     target = null;
-                    animBody.SetBool("IsJumping", false);
                 }
                 else {
                     Vector3 relativePos = target.transform.position - transform.position;
@@ -81,12 +81,10 @@ public class BazekoriNewBehavior : YokaiController {
                             transform.rotation = rotation;
 
                             agent.SetDestination(target.transform.position);
-                            animBody.SetBool("IsJumping", true);
                         }
                     }
 
                     if(Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5 && !isAttacking) {
-                        animBody.SetBool("IsJumping", false);
                         bodyAttack = true;
                     }
 
@@ -116,12 +114,9 @@ public class BazekoriNewBehavior : YokaiController {
                     if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
                         agent.stoppingDistance = 0.0f;
                         agent.SetDestination(positionOrigin);
-                        animBody.SetBool("IsJumping", true);
                     } else {
                         comeBack = false;
                         agent.stoppingDistance = stoppingDistance;
-                        animBody.SetBool("IsJumping", false);
-                        //transform.rotation = rotationOrigin;
                     }
                 } else {
                     Behavior();
@@ -189,18 +184,20 @@ public class BazekoriNewBehavior : YokaiController {
         BeingHit();
         Invoke("EndHit", 0.3f);
         if (hp <= 0) {
-            animBody.SetBool("IsJumping", false);
             isKnocked = true;
+            animBody.SetFloat("Speed", 0);
             Vector3 posKnockedParticle = renderBody.gameObject.GetComponent<SkinnedMeshRenderer>().bounds.max;
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             rendererMat.SetColor("_Color", hitColor);
             //================================================
-            SoundController.instance.SelectYOKAI("Scream");
+            SoundController.instance.SelectYOKAI("KO");
             //================================================
             target = GameObject.FindGameObjectWithTag("Player");
-            agent.SetDestination(transform.position);
+            agent.SetDestination(transform.position+Vector3.up*0.1f);
+            agent.enabled = false;
+            //GetComponent<Collider>().enabled = false;
             comeBack = false;
         }
     }
