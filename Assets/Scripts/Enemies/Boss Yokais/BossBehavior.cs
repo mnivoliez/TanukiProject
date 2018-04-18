@@ -42,7 +42,7 @@ public class BossBehavior : MonoBehaviour {
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             rendererMat.color = new Color(150, 40, 150);
             //================================================
-            SoundController.instance.SelectYOKAI("Scream");
+            SoundController.instance.SelectYOKAI("KO");
             //================================================
         }
     }
