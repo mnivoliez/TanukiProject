@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour {
 
     [SerializeField] private GameObject respawnPoint;
     [SerializeField] private GameObject deathTransition;
+    [SerializeField] private GameObject CanvasHealth;
     private Image Black;
     private Animator animTransition;
     private Animator animPlayer;
@@ -23,7 +24,7 @@ public class PlayerHealth : MonoBehaviour {
 
 
     void Start() {
-        if(respawnPoint == null) {
+        if (respawnPoint == null) {
             respawnPoint = new GameObject();
             respawnPoint.transform.position = transform.position;
         }
@@ -74,13 +75,20 @@ public class PlayerHealth : MonoBehaviour {
                 PlayerDie();
             }
             else {
+                if (playerHealthCurrent == 1) {
+                    CanvasHealth.SetActive(true);
+                    StartCoroutine(LowHPEffect());
+                }
                 KnockBack();
             }
         }
-                
+
     }
 
     public void GainHP(float nbHP) {
+        if (playerHealthCurrent == 1) {
+            CanvasHealth.SetActive(false);
+        }
         playerHealthCurrent = playerHealthCurrent + nbHP;
         if (playerHealthCurrent > playerHealthMax) {
             playerHealthCurrent = playerHealthMax;
@@ -98,7 +106,8 @@ public class PlayerHealth : MonoBehaviour {
     IEnumerator Fading() {
         animTransition.SetBool("Fade", true);
         yield return new WaitUntil(() => Black.color.a == 1);
-        gameObject.transform.rotation = new Quaternion (0,0,0,0);
+        CanvasHealth.SetActive(false);
+        gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
         animTransition.SetBool("Fade", false);
         gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, respawnPoint.transform.rotation);
@@ -139,4 +148,29 @@ public class PlayerHealth : MonoBehaviour {
         knockBackCounter = 0;
         //GetComponent<Renderer>().sharedMaterial.SetFloat("_width", 0);
     }
+
+
+    IEnumerator LowHPEffect() {
+        float lerpAlpha1 = 0, lerpAlpha2 = 0, lerpAlpha3 = 0;
+        Image DyingScreen1 = CanvasHealth.transform.GetChild(0).GetComponent<Image>();
+        Image DyingScreen2 = CanvasHealth.transform.GetChild(1).GetComponent<Image>();
+        Image DyingScreen3 = CanvasHealth.transform.GetChild(2).GetComponent<Image>();
+        Color colorFade = Color.black;
+
+        while (/*playerHealthCurrent == 1*/ lerpAlpha2 > 0.9f) {
+
+            lerpAlpha1 = Mathf.Lerp(lerpAlpha1, 1, 0.3f);
+            colorFade.g = lerpAlpha1;
+            DyingScreen1.color = colorFade;
+            lerpAlpha2 = Mathf.Lerp(lerpAlpha2, 1, 0.05f);
+            colorFade.g = lerpAlpha2;
+            DyingScreen2.color = colorFade;
+            lerpAlpha3 = Mathf.Lerp(lerpAlpha3, 1, 0.2f);
+            colorFade.g = lerpAlpha3;
+            DyingScreen3.color = colorFade;
+
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
 }
