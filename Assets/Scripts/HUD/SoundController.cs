@@ -76,7 +76,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip lanternCatch;
     [SerializeField] private AudioClip lanternFallWater;
     [SerializeField] private AudioClip lanternDome;
-    private bool lanterClosestFoundPlay = false;
+    public bool lanterClosestFoundPlay = false;
 
     [Header("ENVIRONMENT QUICK")]
     [Space(10)]
@@ -403,6 +403,7 @@ public class SoundController : MonoBehaviour {
     public void StopLanternSource() {
         if (lanterClosestFoundPlay) {
             fxLanternSource.Stop();
+            lanterClosestFoundPlay = false;
         }
     }
 
