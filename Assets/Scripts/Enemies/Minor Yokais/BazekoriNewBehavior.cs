@@ -191,7 +191,7 @@ public class BazekoriNewBehavior : YokaiController {
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             rendererMat.SetColor("_Color", hitColor);
             //================================================
-            SoundController.instance.SelectYOKAI("Scream");
+            SoundController.instance.SelectYOKAI("KO");
             //================================================
             target = GameObject.FindGameObjectWithTag("Player");
             agent.SetDestination(transform.position);
