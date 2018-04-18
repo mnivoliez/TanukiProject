@@ -123,9 +123,10 @@ public class KodaController : MonoBehaviour {
 
     //QTE
     private float maxPowerUpGauge = 10f;
-    public GameObject canvasQTE;
-    public Transform loadingBar;
-    public Transform centerButton;
+    [SerializeField] private GameObject canvasQTE;
+    Image loadingBar;
+    [SerializeField] private GameObject doubleJump_Logo;
+    [SerializeField] private GameObject spawnLure_Logo;
 
     // Canvas UI
     [SerializeField] private GameObject CameraMinimap;
@@ -179,6 +180,7 @@ public class KodaController : MonoBehaviour {
         InteractStateCtrl = new InteractStateController();
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
+        loadingBar = canvasQTE.transform.GetChild(0).gameObject.GetComponent<Image>();
 
         direction = transform.Find("Direction");
 
@@ -393,6 +395,16 @@ public class KodaController : MonoBehaviour {
                             allowedToWalk = false;
                             //inclinationNormal = c.normal;
                         }
+
+
+                        // this condition is taken from OnCollisionEnter to avoid the Fall state
+                        // when we jump directly to the platform without passing over it
+                        // IF IT MAKES ISSUES REMOVE IT
+                        if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f && !_grounds.Contains(gO)) {
+                            _grounds.Add(gO);
+                        }
+
+
                         break;
                     }
                 }
@@ -1045,13 +1057,16 @@ public class KodaController : MonoBehaviour {
         }
         else {
             temporaryCapacity = pairCapacity.First;
+            canvasQTE.SetActive(true);
             switch (pairCapacity.First) {
 
                 case Capacity.DoubleJump:
-                    canvasQTE.SetActive(true);
+                    doubleJump_Logo.SetActive(true);
+
                     break;
 
-                case Capacity.Glide:
+                case Capacity.Lure:
+                    spawnLure_Logo.SetActive(true);
                     break;
             }
         }
@@ -1074,7 +1089,7 @@ public class KodaController : MonoBehaviour {
     }
 
     private void ProgressTimerCapacity() {
-        loadingBar.GetComponent<Image>().fillAmount = timerCapacity / maxPowerUpGauge;
+        loadingBar.fillAmount = timerCapacity / maxPowerUpGauge;
     }
 
     public void ResetPlayer() {
