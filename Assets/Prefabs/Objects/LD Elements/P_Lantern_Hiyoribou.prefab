@@ -125,7 +125,7 @@ Light:
   m_Type: 2
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
-  m_Range: 5
+  m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -161,15 +161,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a73615de7689c4eb1b982524fdac84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _min_radius: 5
-  _max_radius: 10
+  _min_radius: 10
+  _max_radius: 15
   _min_intensity: 1
-  _max_intensity: 1.5
+  _max_intensity: 2
   airLantern: {fileID: 1582363225754146, guid: 2377f3c171136da4f907d2caf9d38524, type: 2}
   timeoutRespawn: 2
-  lanterSound: {fileID: 8300000, guid: b259c947e2ec1b54a873ec01278ef241, type: 3}
-  lanterFallWater: {fileID: 8300000, guid: 62d61182122355a49b2372104e0054fc, type: 3}
-  lanterDome: {fileID: 8300000, guid: a7dfeeedb41e62f46bdd7cafae8a4a6b, type: 3}
 --- !u!135 &135806279425577154
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -180,5 +177,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4.5
+  m_Radius: 9.5
   m_Center: {x: 0, y: 0, z: 0}
