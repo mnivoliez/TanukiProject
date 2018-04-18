@@ -185,6 +185,7 @@ public class BazekoriNewBehavior : YokaiController {
         Invoke("EndHit", 0.3f);
         if (hp <= 0) {
             isKnocked = true;
+            animBody.SetFloat("Speed", 0);
             Vector3 posKnockedParticle = renderBody.gameObject.GetComponent<SkinnedMeshRenderer>().bounds.max;
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
@@ -194,8 +195,9 @@ public class BazekoriNewBehavior : YokaiController {
             SoundController.instance.SelectYOKAI("KO");
             //================================================
             target = GameObject.FindGameObjectWithTag("Player");
-            agent.SetDestination(transform.position);
+            agent.SetDestination(transform.position+Vector3.up*0.1f);
             agent.enabled = false;
+            //GetComponent<Collider>().enabled = false;
             comeBack = false;
         }
     }
