@@ -108,9 +108,9 @@ public class PlayerHealth : MonoBehaviour {
         yield return new WaitUntil(() => Black.color.a == 1);
         CanvasHealth.SetActive(false);
         gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+        gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, respawnPoint.transform.rotation);
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>().RecenterCamera();
         animTransition.SetBool("Fade", false);
-        gameObject.transform.SetPositionAndRotation(respawnPoint.transform.position, respawnPoint.transform.rotation);
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         playerHealthCurrent = playerHealthMax;
         gameObject.GetComponent<InputController>().SetFreezeInput(false);
@@ -151,23 +151,71 @@ public class PlayerHealth : MonoBehaviour {
 
 
     IEnumerator LowHPEffect() {
-        float lerpAlpha1 = 0, lerpAlpha2 = 0, lerpAlpha3 = 0;
+        float lerpAlpha1 = 0, lerpAlpha2 = 0.5f, lerpAlpha3 = 0;
         Image DyingScreen1 = CanvasHealth.transform.GetChild(0).GetComponent<Image>();
         Image DyingScreen2 = CanvasHealth.transform.GetChild(1).GetComponent<Image>();
         Image DyingScreen3 = CanvasHealth.transform.GetChild(2).GetComponent<Image>();
-        Color colorFade = Color.black;
+        RectTransform DS1RecTransform = CanvasHealth.transform.GetChild(0).GetComponent<RectTransform>();
+        RectTransform DS3RecTransform = CanvasHealth.transform.GetChild(2).GetComponent<RectTransform>();
+        Color colorFade = Color.white;
+        bool inverse = false;
+        float scaleDistort1 = 1;
+        Vector3 scaleDistortVector1 = Vector3.one;
+        float scaleDistort3 = 1;
+        Vector3 scaleDistortVector3 = Vector3.one;
 
-        while (/*playerHealthCurrent == 1*/ lerpAlpha2 > 0.9f) {
+        while (playerHealthCurrent == 1) {
 
-            lerpAlpha1 = Mathf.Lerp(lerpAlpha1, 1, 0.3f);
-            colorFade.g = lerpAlpha1;
-            DyingScreen1.color = colorFade;
-            lerpAlpha2 = Mathf.Lerp(lerpAlpha2, 1, 0.05f);
-            colorFade.g = lerpAlpha2;
-            DyingScreen2.color = colorFade;
-            lerpAlpha3 = Mathf.Lerp(lerpAlpha3, 1, 0.2f);
-            colorFade.g = lerpAlpha3;
-            DyingScreen3.color = colorFade;
+            if (lerpAlpha3 > 0.9f) {
+                inverse = true;
+            }
+
+            if (lerpAlpha3 < 0.35f) {
+                inverse = false;
+            }
+
+
+            if (inverse) {
+                //Alpha
+                lerpAlpha1 = Mathf.Lerp(lerpAlpha1, 0.1f, 0.3f);
+                colorFade.a = lerpAlpha1;
+                DyingScreen1.color = colorFade;
+                lerpAlpha2 = Mathf.Lerp(lerpAlpha2, 0.5f, 0.05f);
+                colorFade.a = lerpAlpha2;
+                DyingScreen2.color = colorFade;
+                lerpAlpha3 = Mathf.Lerp(lerpAlpha3, 0.3f, 0.2f);
+                colorFade.a = lerpAlpha3;
+                DyingScreen3.color = colorFade;
+                //Scale
+                scaleDistort1 = Mathf.Lerp(scaleDistort1, 1.1f, 0.05f);
+                scaleDistortVector1.Set(scaleDistort1, scaleDistort1, scaleDistort1);
+                DS1RecTransform.localScale = scaleDistortVector1;
+
+                scaleDistort3 = Mathf.Lerp(scaleDistort3, 1, 0.05f);
+                scaleDistortVector3.Set(scaleDistort3, scaleDistort3, scaleDistort3);
+                DS3RecTransform.localScale = scaleDistortVector3;
+
+            }
+            else {
+                //Alpha
+                lerpAlpha1 = Mathf.Lerp(lerpAlpha1, 1, 0.3f);
+                colorFade.a = lerpAlpha1;
+                DyingScreen1.color = colorFade;
+                lerpAlpha2 = Mathf.Lerp(lerpAlpha2, 1, 0.05f);
+                colorFade.a = lerpAlpha2;
+                DyingScreen2.color = colorFade;
+                lerpAlpha3 = Mathf.Lerp(lerpAlpha3, 1, 0.2f);
+                colorFade.a = lerpAlpha3;
+                DyingScreen3.color = colorFade;
+                //Scale
+                scaleDistort1 = Mathf.Lerp(scaleDistort1, 1, 0.05f);
+                scaleDistortVector1.Set(scaleDistort1, scaleDistort1, scaleDistort1);
+                DS1RecTransform.localScale = scaleDistortVector1;
+
+                scaleDistort3 = Mathf.Lerp(scaleDistort3, 1.1f, 0.05f);
+                scaleDistortVector3.Set(scaleDistort3, scaleDistort3, scaleDistort3);
+                DS3RecTransform.localScale = scaleDistortVector3;
+            }
 
             yield return new WaitForSeconds(0.05f);
         }
