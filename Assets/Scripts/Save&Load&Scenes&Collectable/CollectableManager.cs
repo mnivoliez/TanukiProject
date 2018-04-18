@@ -15,7 +15,7 @@ public class CollectableManager : MonoBehaviour {
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         Game.Reset_Game(); // Will reset ONLY if the current scene is "Zone Tuto"
-        FindYokaiGeneralAndEnable();
+        FindYokaiGeneralAndDisable();
     }
 
     void isPurified(string currentScene) {
