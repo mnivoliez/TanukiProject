@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour {
 	private Vector3 wideDeltaPos = new Vector3 (0, 8, -3.6f);
 	private Vector3 widePlayerPosition;
 	private Vector3 lookatPosition;
-	private Vector3 defaultLookatPosition;
+	private Vector3 normalLookatPos;
 
 	void Start() {
 		player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -112,7 +112,7 @@ public class CameraController : MonoBehaviour {
 			return;
 		}
 
-        GetInputData();
+		GetInputData();
 
 		ManagerCenterCamera();
 
@@ -147,7 +147,6 @@ public class CameraController : MonoBehaviour {
 	}
 
 	public void RecenterCamera() {
-        
 		wideCameraLocked = false;
 		centerTime = Time.time;
 
@@ -176,6 +175,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void ManagerCenterCamera() {
+		normalLookatPos = playerTanukiModel.position + CameraOffset;
 		Vector3 wideLookatPos = playerTanukiModel.position + Vector3.up * wideDeltaPos.y * 2 / 3;
 
 		if (centerCamera)
@@ -189,12 +189,12 @@ public class CameraController : MonoBehaviour {
 				camBase.position = Vector3.Lerp (centerCamPos, resetPos, Mathf.Clamp01 (diffTime) / timeToCenter);
 				camBase.rotation = Quaternion.Lerp (centerCamRot, Quaternion.identity, Mathf.Clamp01 (diffTime) / timeToCenter);
 
-				lookatPosition = Vector3.Lerp (lookatPosition, defaultLookatPosition, Mathf.Clamp01 (diffTime) / timeToCenter);
+				lookatPosition = Vector3.Lerp (lookatPosition, normalLookatPos, Mathf.Clamp01 (diffTime) / timeToCenter);
 			}
 			else
 			{
 				centerCamera = false;
-				lookatPosition = defaultLookatPosition;
+				lookatPosition = normalLookatPos;
 			}
 		}
 		else if (wideCamera)
@@ -208,14 +208,15 @@ public class CameraController : MonoBehaviour {
 				camBase.position = Vector3.Lerp (wideCamPos, resetPos, Mathf.Clamp01 (diffTime) / timeToCenter);
 				camBase.rotation = Quaternion.Lerp (wideCamRot, Quaternion.identity, Mathf.Clamp01 (diffTime) / timeToCenter);
 
-				lookatPosition = Vector3.Lerp (defaultLookatPosition, wideLookatPos, Mathf.Clamp01 (diffTime) / timeToCenter);
+				lookatPosition = Vector3.Lerp (lookatPosition, wideLookatPos, Mathf.Clamp01 (diffTime) / timeToCenter);
 			}
 			else
 			{
 				wideCamera = false;
+				lookatPosition = wideLookatPos;
+
 				wideCameraLocked = true;
 				widePlayerPosition = playerTanukiModel.position;
-				lookatPosition = wideLookatPos;
 			}
 		}
 		else if (wideCameraLocked)
@@ -224,7 +225,7 @@ public class CameraController : MonoBehaviour {
 		}
 		else
 		{
-			lookatPosition = defaultLookatPosition;
+			lookatPosition = normalLookatPos;
 		}
 	}
 
@@ -274,7 +275,6 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void RecalculateValues() {
-		defaultLookatPosition = playerTanukiModel.position + CameraOffset;
 		diffPos = camBase.position - playerTanukiModel.position;
 
 		// get new angle
