@@ -4,14 +4,11 @@ using UnityEngine;
 
 [RequireComponent(typeof(PathCreator))]
 public class StemController : MonoBehaviour {
-	
-	private PathCreator creator;
+
+    static System.Random rnd = new System.Random();
+    private PathCreator creator;
 	private PathPlatform path;
-	// Travel time between two waypoints in second
-	[SerializeField] private GameObject prefabStem1;
-	[SerializeField] private GameObject prefabStem2;
-	[SerializeField] private GameObject prefabStem3;
-	[SerializeField] private GameObject prefabStem4;
+	[SerializeField] private GameObject[] prefabsStem;
 
 	void Start() {
 		creator = GetComponent<PathCreator>();
@@ -22,42 +19,64 @@ public class StemController : MonoBehaviour {
 	void GenerateStem() {
 
         GameObject previousStem = null;
-        float waypointPeriod = 7f;
-        float percentBetweenWaypoints = 0;
+        Vector3 vecDir;
+        Vector3 downPreviousStem;
+        Vector3 vectoriel;
+        float angle;
         int nbSegment = path.NumSegments;
-        Vector3 positionStem = new Vector3();
         GameObject stem = null;
-        float sizeYStem = prefabStem1.GetComponent<MeshRenderer>().bounds.size.y;
+        int r = 0;
 
-        for (int i = 0; i < nbSegment; i++) {
-            float lenghtArcBezier = GetLengthArcBezier(i);
-            int nbPartStem = (int)(lenghtArcBezier / sizeYStem);
-            waypointPeriod = nbPartStem;
-            for (int j = 0; j <= nbPartStem; j++) {
-                if (j < nbPartStem) {
-                    percentBetweenWaypoints = j * (1f / waypointPeriod);
-                    stem = Instantiate(prefabStem1);
-                    positionStem = GetCurvesVector(i, percentBetweenWaypoints);
-                    stem.transform.position = positionStem;
-                    stem.name = "Segment" + i + "_Part" + j;
-                } else {
-                    positionStem = previousStem.transform.position;
-                }
+        float sizeYStem = prefabsStem[0].GetComponent<MeshRenderer>().bounds.size.y;
 
-                if (previousStem != null) {
-                    Vector3 vecDir = (stem.transform.position - previousStem.transform.position);
-                    Vector3 vecDirDegree = (180.0f / Mathf.PI) * vecDir;
-                    //previousStem.transform.LookAt(vecDir + previousStem.transform.up);
-                    Debug.Log(vecDirDegree);
-                    //previousStem.transform.rotation = Quaternion.FromToRotation(previousStem.transform.position, vecDir);
-                    previousStem.transform.rotation = Quaternion.Euler(vecDirDegree);
-                }
-                if (j < nbPartStem - 1) {
-                    previousStem = stem;
+        float partSizeStemMesh = sizeYStem * 0.20f;
+
+        Vector3[] points = path.CalculateEvenlySpacedPoints(sizeYStem - partSizeStemMesh);
+
+        foreach (Vector3 point in points) {
+
+            int rTemp = r;
+            if (prefabsStem.Length > 1) {
+                while (rTemp == r) {
+                    rTemp = rnd.Next(prefabsStem.Length);
                 }
             }
+            else {
+                rTemp = rnd.Next(prefabsStem.Length);
+            }
+
+            r = rTemp;
+
+            int rotationY = rnd.Next(360);
+
+            stem = Instantiate(prefabsStem[r]);
+            stem.transform.position = transform.position + point;
+
+            if (previousStem != null) {
+                vecDir = (stem.transform.position - previousStem.transform.position);
+                downPreviousStem = -previousStem.transform.up;
+                vectoriel = Vector3.Cross(downPreviousStem, vecDir);
+
+                angle = Vector3.SignedAngle(downPreviousStem, vecDir, vectoriel);
+
+                previousStem.transform.RotateAround(previousStem.transform.position, vectoriel, angle);
+                previousStem.transform.Rotate(transform.up, rotationY);
+            }
+
+            if (points[points.Length-1] != point) {
+                previousStem = stem;
+            }
         }
-	}
+
+        vecDir = (previousStem.transform.position - stem.transform.position);
+        downPreviousStem = stem.transform.up;
+        vectoriel = Vector3.Cross(downPreviousStem, vecDir);
+
+        angle = Vector3.SignedAngle(downPreviousStem, vecDir, vectoriel);
+
+        stem.transform.RotateAround(stem.transform.position, vectoriel, angle);
+        
+    }
 
     float GetLengthArcBezier(int index) {
         Vector3[] points = path.GetPointsInSegment(index);
