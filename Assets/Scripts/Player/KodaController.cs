@@ -106,7 +106,8 @@ public class KodaController : MonoBehaviour {
     private InteractStateParam interactStateParameter;
     private InteractStateController InteractStateCtrl;
 
-    private bool allowedToWalk;
+	private bool allowedToWalk;
+	private Vector3 normal_contact;
 
     private InputController inputController;
 
@@ -387,8 +388,9 @@ public class KodaController : MonoBehaviour {
 
                         coefInclination = Vector3.Angle(c.normal, Vector3.up);
                         //Debug.Log ("Ground=" + c.normal + " norm=" + c.normal.y + " angle=" + coefInclination + " name=" + gO.name + " " + Time.time);
-                        if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f) {
+						if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f /*|| Vector3.Distance(c.point, transform.position) < 0.5f*/) {
                             allowedToWalk = true;
+							normal_contact = c.normal;
                         }
                         else {
                             inclinationNormals.Add(c.normal);
@@ -404,21 +406,8 @@ public class KodaController : MonoBehaviour {
                             _grounds.Add(gO);
                         }
 
-
                         break;
                     }
-                }
-                //Debug.Log ("inclinationNormals.Count=" + inclinationNormals.Count + " " + Time.time);
-                if (allowedToWalk) {
-                    //direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
-                    float angleX = Mathf.Abs(gO.transform.rotation.eulerAngles.x);
-                    if (angleX > 180)
-                        angleX -= 360;
-                    float angleZ = Mathf.Abs(gO.transform.rotation.eulerAngles.z);
-                    if (angleZ > 180)
-                        angleZ -= 360;
-                    direction.RotateAround(direction.position, Vector3.right, angleX % 90);
-                    direction.RotateAround(direction.position, Vector3.forward, angleZ % 90);
                 }
             }
         }
@@ -609,13 +598,31 @@ public class KodaController : MonoBehaviour {
                 angle += 360;
 
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
-        }
+		}
+		//Debug.Log ("inclinationNormals.Count=" + inclinationNormals.Count + " " + Time.time);
+		direction.up = Vector3.up;
+		direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
+		if (allowedToWalk)
+		{
+			/*float angleX = Mathf.Abs(gO.transform.rotation.eulerAngles.x);
+            if (angleX > 180)
+				angleX = angleX % 360 - 360;
+            float angleZ = Mathf.Abs(gO.transform.rotation.eulerAngles.z);
+            if (angleZ > 180)
+				angleZ = angleZ % 360 - 360;
+            direction.RotateAround(direction.position, Vector3.right, angleX % 90);
+            direction.RotateAround(direction.position, Vector3.forward, angleZ % 90);*/
+
+			direction.forward = Vector3.ProjectOnPlane (direction.forward, normal_contact).normalized;
+			float angle_normal = Vector3.SignedAngle (direction.up, normal_contact, direction.forward);
+			direction.RotateAround (direction.position, direction.forward, angle_normal);
+		}
 
         // reset variables
-        allowedToWalk = true;
+        allowedToWalk = false;
         //inclinationNormal = Vector3.zero;
         inclinationNormals.Clear();
-        direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+		//direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
     }
 
     void InteractAccordingToInput() {
