@@ -68,7 +68,7 @@ public class SoundController : MonoBehaviour {
     [Header("YOKAI")]
     [Space(10)]
     [SerializeField] private AudioClip yokaiAbsorbed;
-    [SerializeField] private AudioClip yokaiScream;
+    [SerializeField] private AudioClip yokaiKO;
     [SerializeField] private AudioClip yokaiHurt;
 
     [Header("LANTERN")]
@@ -351,8 +351,8 @@ public class SoundController : MonoBehaviour {
                 PlayYokaiEffect(yokaiAbsorbed);
                 break;
 
-            case "Scream":
-                PlayYokaiEffect(yokaiScream);
+            case "KO":
+                PlayYokaiEffect(yokaiKO);
                 break;
 
             default:

@@ -21,8 +21,9 @@ public class YokaiAIv2Controller : YokaiController {
 
     [SerializeField] private float zoneBehavior = 5f;
     [SerializeField] private float rateBehavior = 1f;
-    [SerializeField] private bool canBeKilled;
     private float nextRate = 0f;
+
+    [SerializeField] private bool canBeKilled;
 
     private bool bodyAttack = false;
     private Rigidbody body;
@@ -173,7 +174,7 @@ public class YokaiAIv2Controller : YokaiController {
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
             rendererMat.SetColor("_Color", hitColor);
             //================================================
-            SoundController.instance.SelectYOKAI("Scream");
+            SoundController.instance.SelectYOKAI("KO");
             //================================================
             target = GameObject.FindGameObjectWithTag("Player");
             agent.SetDestination(transform.position);
