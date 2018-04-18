@@ -68,7 +68,7 @@ public class SoundController : MonoBehaviour {
     [Header("YOKAI")]
     [Space(10)]
     [SerializeField] private AudioClip yokaiAbsorbed;
-    [SerializeField] private AudioClip yokaiScream;
+    [SerializeField] private AudioClip yokaiKO;
     [SerializeField] private AudioClip yokaiHurt;
 
     [Header("LANTERN")]
@@ -76,7 +76,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip lanternCatch;
     [SerializeField] private AudioClip lanternFallWater;
     [SerializeField] private AudioClip lanternDome;
-    private bool lanterClosestFoundPlay = false;
+    public bool lanterClosestFoundPlay = false;
 
     [Header("ENVIRONMENT QUICK")]
     [Space(10)]
@@ -351,8 +351,8 @@ public class SoundController : MonoBehaviour {
                 PlayYokaiEffect(yokaiAbsorbed);
                 break;
 
-            case "Scream":
-                PlayYokaiEffect(yokaiScream);
+            case "KO":
+                PlayYokaiEffect(yokaiKO);
                 break;
 
             default:
@@ -403,6 +403,7 @@ public class SoundController : MonoBehaviour {
     public void StopLanternSource() {
         if (lanterClosestFoundPlay) {
             fxLanternSource.Stop();
+            lanterClosestFoundPlay = false;
         }
     }
 
