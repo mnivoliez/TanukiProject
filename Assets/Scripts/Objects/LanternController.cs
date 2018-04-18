@@ -18,11 +18,6 @@ public class LanternController : MonoBehaviour {
     [SerializeField] private GameObject airLantern;
     [SerializeField] private float timeoutRespawn = 2.0f;
 
-    [SerializeField] private AudioClip lanterSound;
-    [SerializeField] private AudioClip lanterFallWater;
-    [SerializeField] private AudioClip lanterDome;
-    private bool lanterClosestFoundPlay = false;
-
     private GameObject the_player;
     private Vector3 pos_player;
     private Rigidbody the_lantern;
@@ -108,26 +103,26 @@ public class LanternController : MonoBehaviour {
             vec_distance = pos_player - pos_lantern;
             numb_distance = Mathf.Sqrt(Mathf.Pow(vec_distance.x, 2) + Mathf.Pow(vec_distance.y, 2) + Mathf.Pow(vec_distance.z, 2));
             if (numb_distance < 60f) {
-                if (!dome_playing) {
+                if (!dome_playing && !SoundController.instance.lanterClosestFoundPlay) {
                     SoundController.instance.SelectLANTERN("Dome");
                     dome_playing = true;
-                    lanterClosestFoundPlay = true;
                 }
                 if (dome_playing) {
                     SoundController.instance.AdjustLanternSource(1 - (numb_distance / 60f));
                 }
             }
-            if (numb_distance >= 60f && lanterClosestFoundPlay) {
+            if (numb_distance >= 60f && SoundController.instance.lanterClosestFoundPlay && dome_playing) {
                 SoundController.instance.StopLanternSource();
                 dome_playing = false;
-                lanterClosestFoundPlay = false;
             }
-            //================================================
         }
+        //================================================
 
-
-        if (GetComponent<Rigidbody>() && GetComponent<Rigidbody>().IsSleeping())
+        if (GetComponent<Rigidbody>() && GetComponent<Rigidbody>().IsSleeping()) {
             GetComponent<Rigidbody>().WakeUp();
+            the_lantern = GetComponent<Rigidbody>();
+        }
+           
         if (shallRespawn) {
             if ((Time.time - timeoutRespawn) > elaspTimeBeforeRespawn) {
                 Respawn();
