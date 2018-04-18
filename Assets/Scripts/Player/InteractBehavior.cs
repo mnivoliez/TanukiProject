@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 //================================================
@@ -49,6 +50,11 @@ public class InteractBehavior : MonoBehaviour {
     //[SerializeField] private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
     private bool pressedAbsorbingOnce = false;
+
+    [Header("CARRY")]
+    [Space(8)]
+    [SerializeField][Range(2000, 10000)]
+    private int throwCoef = 5000;
 
     [Header("LURE")]
     [Space(8)]
@@ -346,11 +352,18 @@ public class InteractBehavior : MonoBehaviour {
         Destroy(objectToCarry.GetComponent<Rigidbody>());
     }
 
-    public void StopCarry(GameObject objectToCarry) {
+    public void StopCarry(GameObject objectToCarry, Vector3 inputVelocityAxis) {
         objectToCarry.transform.parent = null;
         Rigidbody body = objectToCarry.AddComponent(typeof(Rigidbody)) as Rigidbody;
         body.useGravity = true;
         body.mass = 100;
+        body.transform.position += inputVelocityAxis * 0.1f;
+        float x = inputVelocityAxis.x;
+        float z = inputVelocityAxis.z;
+        float y = (float)Math.Sqrt(x*x + z*z) / 2f;
+        Vector3 force = new Vector3(x, y, z) * throwCoef;
+        //Debug.Log(force);
+        body.AddForce(force);
     }
 
     public void ResetLeaf() {
