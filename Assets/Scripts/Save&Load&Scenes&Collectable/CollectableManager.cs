@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class CollectableManager : MonoBehaviour {
 
+    private GameObject KiyomoriLightHiyoribou;
     private GameObject[] gOList;
     private int yokaiGeneralCurrentScene = 0;
     //private GameObject[] yokais;
@@ -17,44 +18,46 @@ public class CollectableManager : MonoBehaviour {
         Game.Reset_Game(); // Will reset ONLY if the current scene is "Zone Tuto"
         Game.Load();
         FindYokaiGeneralAndDisable();
-        Game.Update_Game();
+        Game.Update_Game();        
     }
 
     void isPurified(string currentScene) {
+        KiyomoriLightHiyoribou = GameObject.Find("KiyomoriLightHiyoribou");
+
         switch (currentScene) {
             case "Z1-P1-complete":
                 if (Game.playerData.lightBoss1) {
-                    //LIGHT
+                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1000;
                 }
                 break;
 
             case "Z1-P2-complete":
                 if (Game.playerData.lightBoss1) {
-                    //LIGHT
+                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1000;
                 }
                 break;
 
             case "Z1-P3-complete":
                 if (Game.playerData.lightBoss1) {
-                    //LIGHT
+                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1000;
                 }
                 break;
 
             case "Z2-P1-complete":
                 if (Game.playerData.lightBoss2) {
-                    //LIGHT
+                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1000;
                 }
                 break;
 
             case "Z2-P2-complete":
                 if (Game.playerData.lightBoss2) {
-                    //LIGHT
+                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1000;
                 }
                 break;
 
             case "Z2-P3-complete":
                 if (Game.playerData.lightBoss2) {
-                    //LIGHT
+                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1000;
                 }
                 break;
         }

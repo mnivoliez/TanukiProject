@@ -14,6 +14,7 @@ public class LanternController : MonoBehaviour {
     [SerializeField] private float _max_radius;
     [SerializeField] private float _min_intensity;
     [SerializeField] private float _max_intensity;
+    [SerializeField] private bool Kiyomori_Light_Hiyoribou;
 
     [SerializeField] private GameObject airLantern;
     [SerializeField] private float timeoutRespawn = 2.0f;
