@@ -10,7 +10,7 @@ public class LanternController : MonoBehaviour {
     Light _light;
 
     private float _range;
-    [SerializeField] private float _min_radius;
+    [SerializeField] public float _min_radius;
     [SerializeField] private float _max_radius;
     [SerializeField] private float _min_intensity;
     [SerializeField] private float _max_intensity;
