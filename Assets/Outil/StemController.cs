@@ -8,6 +8,7 @@ public class StemController : MonoBehaviour {
     static System.Random rnd = new System.Random();
     private PathCreator creator;
 	private PathPlatform path;
+    [SerializeField] private float sizeStem = 3;
 	[SerializeField] private GameObject[] prefabsStem;
 
 	void Start() {
@@ -27,7 +28,11 @@ public class StemController : MonoBehaviour {
         GameObject stem = null;
         int r = 0;
 
-        float sizeYStem = prefabsStem[0].GetComponent<MeshRenderer>().bounds.size.y;
+        if (sizeStem <= 0) {
+            sizeStem = 1;
+        }
+
+        float sizeYStem = prefabsStem[0].GetComponent<MeshRenderer>().bounds.size.y * sizeStem;
 
         float partSizeStemMesh = sizeYStem * 0.20f;
 
@@ -51,6 +56,7 @@ public class StemController : MonoBehaviour {
 
             stem = Instantiate(prefabsStem[r]);
             stem.transform.position = transform.position + point;
+            stem.transform.localScale *= sizeStem;
 
             if (previousStem != null) {
                 vecDir = (stem.transform.position - previousStem.transform.position);

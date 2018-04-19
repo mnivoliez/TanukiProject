@@ -63,7 +63,9 @@ public class Zone2BossBehavior : YokaiController {
         rendererMat = corps.GetComponent<Renderer>().material;
         myRigidbody = GetComponent<Rigidbody>();
         myCollider = GetComponent<SphereCollider>();
-        Physics.IgnoreCollision(myCollider, river.GetComponent<Collider>(), true);
+        foreach (Transform child in river.transform) {
+            Physics.IgnoreCollision(myCollider, child.GetComponent<Collider>(), true);
+        }
         myRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         hpMax = hp;
         
@@ -92,6 +94,7 @@ public class Zone2BossBehavior : YokaiController {
         }
         //===========================
         if (Input.GetKeyDown("p")) {
+            Debug.Log("phase 2");
             hp = hpMax / 2;
             interPhase = true;
         }
