@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 4216619326354060}
   - component: {fileID: 82803418258900050}
   - component: {fileID: 114958942415768914}
+  - component: {fileID: 114757336972085638}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -1111,6 +1112,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114757336972085638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1393365947489626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a061f659f3427c469cfa58da460e800, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114958942415768914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1160,11 +1172,12 @@ MonoBehaviour:
   leafThrow: {fileID: 8300000, guid: 793f987deef30b14b8e5a84f909b8571, type: 3}
   leafVanish: {fileID: 8300000, guid: 366047fe36cc148418674d159443f594, type: 3}
   yokaiAbsorbed: {fileID: 8300000, guid: 399b7d5af75fce04fbb0514bfb73ce90, type: 3}
-  yokaiScream: {fileID: 8300000, guid: c0c1d0863cba86d4da8dededf5a0eae3, type: 3}
+  yokaiKO: {fileID: 8300000, guid: c0c1d0863cba86d4da8dededf5a0eae3, type: 3}
   yokaiHurt: {fileID: 8300000, guid: 4a82cdbfa9cb68f49adfd4f07cf37449, type: 3}
   lanternCatch: {fileID: 8300000, guid: b259c947e2ec1b54a873ec01278ef241, type: 3}
   lanternFallWater: {fileID: 8300000, guid: 62d61182122355a49b2372104e0054fc, type: 3}
   lanternDome: {fileID: 8300000, guid: a7dfeeedb41e62f46bdd7cafae8a4a6b, type: 3}
+  lanterClosestFoundPlay: 0
   envAirStream: {fileID: 8300000, guid: 70577dea7ea4ea64aa52c38f005dc1d9, type: 3}
   envBumper: {fileID: 8300000, guid: e50712acbce39df4a926b95f88c909aa, type: 3}
   envVines: {fileID: 0}
