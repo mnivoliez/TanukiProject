@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class Zone2BossBehavior : YokaiController {
 
@@ -246,6 +249,9 @@ public class Zone2BossBehavior : YokaiController {
 
     public override void LooseHp(float damage) {
         if (!isKnocked) {
+            //================================================
+            SoundController.instance.SelectYOKAI("Hurt");
+            //================================================
             hp -= damage;
 
             if (phasePattern == 1 && hp <= hpMax / 2) {
@@ -259,6 +265,9 @@ public class Zone2BossBehavior : YokaiController {
                 posKnockedParticle.z = transform.position.z;
                 Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
                 rendererMat.SetColor("_Globalcolor", new Color(255f / 255f, 255f / 255f, 255f / 255f));
+                //================================================
+                SoundController.instance.SelectYOKAI("KO");
+                //================================================
             }
         }
     }
@@ -287,6 +296,11 @@ public class Zone2BossBehavior : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
+        Game.playerData.lightBoss2 = true;
+        Game.PreSave_Game_and_Save();
     }
 
     public override void Die() {

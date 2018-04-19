@@ -18,10 +18,13 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void Load_Game() {
+        CanvasMenu.GetComponent<LoadSceneManager>().LoadByIndexMM(Game.playerData.current_scene);
+        MainPanel.SetActive(false);
+        //Debug.Log("Will load ... Soon™.");
+    }
 
-        Game.Load_From_Main_Menue();
-        /*MainPanel.SetActive(false);
-        OptionsPanel.SetActive(false);
-        ExitPanel.SetActive(false);*/
+    public void Load_Zone_Tuto() {
+        CanvasMenu.GetComponent<LoadSceneManager>().LoadByIndexMM("Zone Tuto");
+        MainPanel.SetActive(false);
     }
 }

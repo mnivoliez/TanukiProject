@@ -14,6 +14,7 @@ public class LanternController : MonoBehaviour {
     [SerializeField] private float _max_radius;
     [SerializeField] private float _min_intensity;
     [SerializeField] private float _max_intensity;
+    [SerializeField] private bool Kiyomori_Light_Hiyoribou;
 
     [SerializeField] private GameObject airLantern;
     [SerializeField] private float timeoutRespawn = 2.0f;
@@ -103,7 +104,7 @@ public class LanternController : MonoBehaviour {
             vec_distance = pos_player - pos_lantern;
             numb_distance = Mathf.Sqrt(Mathf.Pow(vec_distance.x, 2) + Mathf.Pow(vec_distance.y, 2) + Mathf.Pow(vec_distance.z, 2));
             if (numb_distance < 60f) {
-                if (!dome_playing && !SoundController.instance.lanterClosestFoundPlay) {
+                if (!dome_playing && !SoundController.instance.lanterClosestFoundPlay && !Kiyomori_Light_Hiyoribou) {
                     SoundController.instance.SelectLANTERN("Dome");
                     dome_playing = true;
                 }
