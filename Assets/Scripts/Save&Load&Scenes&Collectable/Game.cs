@@ -19,28 +19,6 @@ public static class Game {
 
     public static PlayerData playerData;
 
-    /*public static Game current;
-
-    void Awake() {
-        if (current == null) {
-            DontDestroyOnLoad(gameObject);
-            //this.scene_save_path = scene_path;
-            current = this;
-            //Debug.Log("Game Alive");
-        }
-        else if (current != this) {
-            //current.scene_save_path = scene_path;
-            Destroy(gameObject);
-            //Debug.Log("Game Dead");
-        }
-    }
-
-    private void Start() {
-        this.koda = GameObject.FindGameObjectWithTag("Player");
-        this.koda_health = koda.GetComponent<PlayerHealth>();
-        this.koda_power = koda.GetComponent<KodaController>();
-    }*/
-
     public static void PreSave_Game_and_Save() {
         Update_Game();
         Save();
@@ -75,9 +53,7 @@ public static class Game {
 
             koda_health.SetHealthCurrent(playerData.hp);
             koda_health.SetHealthMax(playerData.hp_max);
-
             koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
-
             //SceneManager.SetActiveScene(playerData.current_scene); // Working ONLY if the saved scene IS IN the SceneManager !
 
             koda_power.SetPowerJump(playerData.power_jump);
@@ -92,18 +68,8 @@ public static class Game {
         }
 
         else {
-            //SceneManager.LoadScene(playerData.current_scene);
-            //Load_and_Post_Load();
             Debug.Log("Trying to load a scene that is not supposed to exist in this game.");
         }
-    }
-
-    public static void Load_From_Main_Menue() {
-        /*
-         SceneManager.LoadScene(playerData.current_scene);
-         Load_and_Post_Load()
-         */
-        Debug.Log("Will load ... Soon™.");
     }
 
     public static void Update_Game() {
@@ -124,8 +90,8 @@ public static class Game {
 
         playerData.current_scene = SceneManager.GetActiveScene().name;
 
-        playerData.power_jump = koda_power.GetPowerJump();
-        playerData.power_lure = koda_power.GetPowerLure();
+        if (!playerData.lightBoss1) { playerData.power_jump = koda_power.GetPowerJump(); }
+        if (!playerData.lightBoss2) { playerData.power_lure = koda_power.GetPowerLure(); }
         playerData.power_ball = koda_power.GetPowerBall();
         playerData.power_shrink = koda_power.GetPowerShrink();
 
@@ -165,6 +131,38 @@ public static class Game {
         scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
     }
 
+    public static void yokai_Collectable_Caught(int yokaiID) {
+        switch (playerData.current_scene) {
+            case "Z1-P1-complete":
+                playerData.yokaiRemainingZ1P1[yokaiID] = -1;
+                break;
+
+            case "Z1-P2-complete":
+                playerData.yokaiRemainingZ1P2[yokaiID] = -1;
+                break;
+
+            case "Z1-P3-complete":
+                playerData.yokaiRemainingZ1P3[yokaiID] = -1;
+                break;
+
+            case "Z2-P1-complete":
+                playerData.yokaiRemainingZ2P1[yokaiID] = -1;
+                break;
+
+            case "Z2-P2-complete":
+                playerData.yokaiRemainingZ2P2[yokaiID] = -1;
+                break;
+
+            case "Z2-P3-complete":
+                playerData.yokaiRemainingZ2P3[yokaiID] = -1;
+                break;
+
+            case "Scene_AirStream":
+                playerData.yokaiRemainingTEST[yokaiID] = -1;
+                break;
+        }
+    }
+
     public static void Reset_Game() {
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             playerData.hp = 3.0f;
@@ -173,9 +171,9 @@ public static class Game {
             playerData.selected_slot = 0;
 
             playerData.current_scene = "Zone Tuto";
-            playerData.check_point_x = 124.19f;
-            playerData.check_point_y = 3.0f;
-            playerData.check_point_z = -39.71f;
+            playerData.check_point_x = 124.1946f;
+            playerData.check_point_y = 2.602453f;
+            playerData.check_point_z = -39.7136f;
 
             playerData.power_jump = false;
             playerData.power_lure = false;
@@ -210,8 +208,8 @@ public static class Game {
             playerData.yokaiRemainingTEST = new int[3];
             Reset_Yokai_Scene(playerData.yokaiRemainingTEST, playerData.yokaiRemainingTEST.Length);
 
-            Save();
-            Load_and_Post_Load();
+            scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
+
             PreSave_Game_and_Save();
         }
     }
@@ -261,22 +259,3 @@ public struct PlayerData {
     public int[] yokaiRemainingZ2P3;
     public int[] yokaiRemainingTEST;
 }
-
-/*public class Player
-{
-
-
-}
-
-[Serializable]
-class SaveData
-{
-    public PlayerData _player;
-    public Dictionary<String, LevelData> _levels;
-}
-
-[Serializable]
-class LevelData
-{
-    public List<Transform> _enemiesPos;
-}*/
