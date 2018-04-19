@@ -19,28 +19,6 @@ public static class Game {
 
     public static PlayerData playerData;
 
-    /*public static Game current;
-
-    void Awake() {
-        if (current == null) {
-            DontDestroyOnLoad(gameObject);
-            //this.scene_save_path = scene_path;
-            current = this;
-            //Debug.Log("Game Alive");
-        }
-        else if (current != this) {
-            //current.scene_save_path = scene_path;
-            Destroy(gameObject);
-            //Debug.Log("Game Dead");
-        }
-    }
-
-    private void Start() {
-        this.koda = GameObject.FindGameObjectWithTag("Player");
-        this.koda_health = koda.GetComponent<PlayerHealth>();
-        this.koda_power = koda.GetComponent<KodaController>();
-    }*/
-
     public static void PreSave_Game_and_Save() {
         Update_Game();
         Save();
@@ -90,16 +68,14 @@ public static class Game {
         }
 
         else {
-            //SceneManager.LoadScene(playerData.current_scene);
-            //Load_and_Post_Load();
             Debug.Log("Trying to load a scene that is not supposed to exist in this game.");
         }
     }
 
     public static void Load_From_Main_Menue() {
         /*
+         Load()
          SceneManager.LoadScene(playerData.current_scene);
-         Load_and_Post_Load()
          */
         Debug.Log("Will load ... Soon™.");
     }
@@ -239,9 +215,6 @@ public static class Game {
             Reset_Yokai_Scene(playerData.yokaiRemainingZ2P3, playerData.yokaiRemainingZ2P3.Length);
             playerData.yokaiRemainingTEST = new int[3];
             Reset_Yokai_Scene(playerData.yokaiRemainingTEST, playerData.yokaiRemainingTEST.Length);
-            //playerData.yokaiRemainingTEST[0] = -1;
-            //playerData.yokaiRemainingTEST[1] = -1;
-            //playerData.yokaiRemainingTEST[2] = -1;
 
             scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
 
@@ -294,22 +267,3 @@ public struct PlayerData {
     public int[] yokaiRemainingZ2P3;
     public int[] yokaiRemainingTEST;
 }
-
-/*public class Player
-{
-
-
-}
-
-[Serializable]
-class SaveData
-{
-    public PlayerData _player;
-    public Dictionary<String, LevelData> _levels;
-}
-
-[Serializable]
-class LevelData
-{
-    public List<Transform> _enemiesPos;
-}*/
