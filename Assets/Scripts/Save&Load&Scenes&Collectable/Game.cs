@@ -72,14 +72,6 @@ public static class Game {
         }
     }
 
-    public static void Load_From_Main_Menue() {
-        /*
-         Load()
-         SceneManager.LoadScene(playerData.current_scene);
-         */
-        Debug.Log("Will load ... Soon™.");
-    }
-
     public static void Update_Game() {
         //////////////////////////////////////////////////////////
         koda = GameObject.FindGameObjectWithTag("Player");
