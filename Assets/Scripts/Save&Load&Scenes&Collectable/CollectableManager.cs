@@ -22,7 +22,7 @@ public class CollectableManager : MonoBehaviour {
     }
 
     void isPurified(string currentScene) {
-        KiyomoriLightHiyoribou = GameObject.Find("KiyomoriLightHiyoribou");
+        KiyomoriLightHiyoribou = GameObject.Find("Kiyomori_Light_Hiyoribou");
 
         switch (currentScene) {
             case "Z1-P1-complete":
