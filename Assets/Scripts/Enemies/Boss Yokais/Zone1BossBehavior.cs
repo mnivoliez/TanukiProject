@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class Zone1BossBehavior : YokaiController {
 
@@ -160,6 +163,9 @@ public class Zone1BossBehavior : YokaiController {
                 isKnocked = true;
                 Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
                 rendererMat.color = hitColor;
+                //================================================
+                SoundController.instance.SelectYOKAI("KO");
+                //================================================
                 //rendererMat.SetColor("_Globalcolor", hitColor);
             }
             else {
@@ -203,6 +209,11 @@ public class Zone1BossBehavior : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
+        Game.playerData.lightBoss1 = true;
+        Game.PreSave_Game_and_Save();
     }
 
     public override void Die() {
