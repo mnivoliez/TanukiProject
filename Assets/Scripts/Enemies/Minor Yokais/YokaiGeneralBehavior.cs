@@ -154,7 +154,7 @@ public class YokaiGeneralBehavior : YokaiController {
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             //target = GameObject.FindGameObjectWithTag("Player");
             //================================================
-            SoundController.instance.SelectYOKAI("Scream");
+            SoundController.instance.SelectYOKAI("KO");
             //================================================
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }

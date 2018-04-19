@@ -244,7 +244,7 @@ public class SesshoSekiBehavior : YokaiController {
             rendererMat.SetColor("_FirstLColor", hitColor);
             target = GameObject.FindGameObjectWithTag("Player");
             //================================================
-            SoundController.instance.SelectYOKAI("Scream");
+            SoundController.instance.SelectYOKAI("KO");
             //================================================
         }
     }
