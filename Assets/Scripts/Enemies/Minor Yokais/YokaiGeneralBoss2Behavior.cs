@@ -82,8 +82,10 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
                 transform.rotation = rotation;
 
                 //go to target
+                
                 //if (Math.Round(positionToGo.x, 1) != Math.Round(transform.position.x, 1) || Math.Round(positionToGo.y, 1) != Math.Round(transform.position.y, 2) || Math.Round(positionToGo.z, 2) != Math.Round(transform.position.z, 2)) {
-                if ((int)positionToGo.x != (int)transform.position.x || Math.Round(positionToGo.y, 1) != Math.Round(transform.position.y, 1) || (int)positionToGo.z != (int)transform.position.z) {
+                if ((int)positionToGo.x != (int)transform.position.x || (int)positionToGo.y != (int)transform.position.y || (int)positionToGo.z != (int)transform.position.z) {
+                    
                     Vector3 normalize = relativePos.normalized;
                     body.velocity = normalize * currentSpeed;
                     currentSpeed = speed;
@@ -97,7 +99,7 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
                 if (bodyAttack) {
                     //attack target with rate
                     if (Time.time > nextBodyAttack) {
-                        target = GameObject.Find("Player");
+                        target = GameObject.FindGameObjectWithTag("Player");
                         nextBodyAttack = nextBodyAttack + rateBodyAttack;
                         target.GetComponent<PlayerHealth>().LooseHP(damage);
                     }
@@ -147,22 +149,6 @@ public class YokaiGeneralBoss2Behavior : YokaiController {
             bodyAttack = false;
         }
     }
-
-    /*void OnTriggerEnter(Collider other) {
-        if ((other.gameObject.tag == "Leaf" || other.gameObject.tag == "Lure") && !isKnocked) {
-            float damage = 1;
-            if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null) {
-                damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
-            }
-            else if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MeleeAttackTrigger>() != null) {
-                damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
-            }
-
-            BeingHit();
-            LooseHp(damage);
-            EndHit();
-        }
-    }*/
 
     public override void LooseHp(float damage) {
         hp = hp - damage;
