@@ -14,9 +14,10 @@ public class CollectableManager : MonoBehaviour {
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        Debug.Log("I am trying !");
         Game.Reset_Game(); // Will reset ONLY if the current scene is "Zone Tuto"
+        Game.Load();
         FindYokaiGeneralAndDisable();
+        Game.Update_Game();
     }
 
     void isPurified(string currentScene) {
@@ -66,7 +67,6 @@ public class CollectableManager : MonoBehaviour {
         for (int i = 0; i < gOList.Length; i++) {
             if (gOList[i].name.Contains("Yokai_General")) {
                 DisableYokai(SceneManager.GetActiveScene().name, gOList[i].GetComponent<YokaiAIv2Controller>().yokaiID, i);
-                Debug.Log("FoundYa !");
             }
         }
     }
@@ -109,7 +109,7 @@ public class CollectableManager : MonoBehaviour {
                 }
                 break;
 
-            case "AirStream":
+            case "Scene_AirStream":
                 if (Game.playerData.yokaiRemainingTEST[yokaiID] != yokaiID) {
                     gOList[gONbr].SetActive(false);
                 }
