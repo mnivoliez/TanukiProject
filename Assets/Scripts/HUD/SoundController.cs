@@ -127,7 +127,10 @@ public class SoundController : MonoBehaviour {
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        SelectTHEME();
+    }
 
+    public void SelectTHEME() {
         if (SceneManager.GetActiveScene().name == "MainMenu") {
             StopTheme();
             StopHUD();
@@ -138,6 +141,12 @@ public class SoundController : MonoBehaviour {
             StopTheme();
             StopHUD();
             PlayTheme(themeBossZ1, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
+            StopTheme();
+            StopHUD();
+            PlayTheme(themeDarkZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss2") {
@@ -177,10 +186,18 @@ public class SoundController : MonoBehaviour {
         }
     }
 
-    private void PlayTheme(AudioClip clip, bool loop) {
+    public void PlayTheme(AudioClip clip, bool loop) {
         fxThemeSource.clip = clip;
         fxThemeSource.Play();
         fxThemeSource.loop = loop;
+    }
+
+    public void FadeOnExitTheme() {
+        for(float i = 1.0f; i > 0.0f; i = i - 0.01f) {
+            fxThemeSource.volume = 0.0f;
+        }
+        StopTheme();
+        fxThemeSource.volume = 1.0f;
     }
 
     public void StopTheme() {
