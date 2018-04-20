@@ -192,12 +192,14 @@ public class SoundController : MonoBehaviour {
         fxThemeSource.loop = loop;
     }
 
-    public void FadeOnExitTheme() {
-        for(float i = 1.0f; i > 0.0f; i = i - 0.01f) {
-            fxThemeSource.volume = 0.0f;
+    public IEnumerator FadeOnExitTheme() {
+        while (fxThemeSource.volume > 0.0f) {
+            fxThemeSource.volume = fxThemeSource.volume - 0.01f;
+            yield return new WaitForSeconds(0.05f);
         }
         StopTheme();
         fxThemeSource.volume = 1.0f;
+        SelectTHEME();
     }
 
     public void StopTheme() {
