@@ -86,8 +86,4 @@ public class StemController : MonoBehaviour {
         return lenghtArcBezier;
     }
 
-	Vector3 GetCurvesVector (int index, float keyValue) {
-		Vector3[] points = path.GetPointsInSegment(index);
-		return transform.TransformDirection(Bezier.EvaluateQubic(points[0], points[1], points[2],points[3], keyValue)) + creator.startPos;
-	}
 }
