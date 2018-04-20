@@ -35,6 +35,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip HUDPauseOpenClose;
     [SerializeField] private AudioClip HUDPauseNavigate;
     [SerializeField] private AudioClip HUDPauseAccept;
+    [SerializeField] private AudioClip HUDTutoPictureClose;
 
     [Header("KODA")]
     [Space(10)]
@@ -126,7 +127,10 @@ public class SoundController : MonoBehaviour {
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        SelectTHEME();
+    }
 
+    public void SelectTHEME() {
         if (SceneManager.GetActiveScene().name == "MainMenu") {
             StopTheme();
             StopHUD();
@@ -137,6 +141,12 @@ public class SoundController : MonoBehaviour {
             StopTheme();
             StopHUD();
             PlayTheme(themeBossZ1, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
+            StopTheme();
+            StopHUD();
+            PlayTheme(themeDarkZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss2") {
@@ -157,17 +167,37 @@ public class SoundController : MonoBehaviour {
             PlayTheme(themeDarkZ1, true);
         }
 
+        if ((SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") && Game.playerData.lightBoss1) {
+            StopTheme();
+            StopHUD();
+            PlayTheme(themeLightZ1, true);
+        }
+
         if (SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
             StopTheme();
             StopHUD();
             PlayTheme(themeDarkZ2, true);
         }
+
+        if ((SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") && Game.playerData.lightBoss2) {
+            StopTheme();
+            StopHUD();
+            PlayTheme(themeLightZ2, true);
+        }
     }
 
-    private void PlayTheme(AudioClip clip, bool loop) {
+    public void PlayTheme(AudioClip clip, bool loop) {
         fxThemeSource.clip = clip;
         fxThemeSource.Play();
         fxThemeSource.loop = loop;
+    }
+
+    public void FadeOnExitTheme() {
+        for(float i = 1.0f; i > 0.0f; i = i - 0.01f) {
+            fxThemeSource.volume = 0.0f;
+        }
+        StopTheme();
+        fxThemeSource.volume = 1.0f;
     }
 
     public void StopTheme() {
@@ -201,6 +231,10 @@ public class SoundController : MonoBehaviour {
 
             case "PauseAccept":
                 PlayHUDEffect(HUDPauseAccept);
+                break;
+
+            case "TutoPictureExit":
+                PlayHUDEffect(HUDTutoPictureClose);
                 break;
 
             default:
