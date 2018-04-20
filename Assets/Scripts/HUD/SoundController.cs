@@ -35,6 +35,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip HUDPauseOpenClose;
     [SerializeField] private AudioClip HUDPauseNavigate;
     [SerializeField] private AudioClip HUDPauseAccept;
+    [SerializeField] private AudioClip HUDTutoPictureClose;
 
     [Header("KODA")]
     [Space(10)]
@@ -213,6 +214,10 @@ public class SoundController : MonoBehaviour {
 
             case "PauseAccept":
                 PlayHUDEffect(HUDPauseAccept);
+                break;
+
+            case "TutoPictureExit":
+                PlayHUDEffect(HUDTutoPictureClose);
                 break;
 
             default:

@@ -20,6 +20,9 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
             if (Input.GetButtonDown("Jump")) {
                 transform.GetChild(0).gameObject.SetActive(false);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(false);
+                //================================================
+                SoundController.instance.SelectHUD("TutoPictureExit");
+                //================================================
                 Destroy(gameObject);
             }
         }
