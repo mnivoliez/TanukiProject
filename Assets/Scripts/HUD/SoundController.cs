@@ -138,7 +138,7 @@ public class SoundController : MonoBehaviour {
             PlayHUDTheme(HUDMainMenuTheme, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Boss1") {
+        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1) {
             StopTheme();
             StopHUD();
             StartCoroutine(PlayThemeBoss(themeBossZ1, true));
@@ -147,10 +147,10 @@ public class SoundController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
             StopTheme();
             StopHUD();
-            PlayTheme(themeDarkZ1, true);
+            PlayTheme(themeLightZ1, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Boss2") {
+        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2) {
             StopTheme();
             StopHUD();
             StartCoroutine(PlayThemeBoss(themeBossZ2, true));
@@ -159,7 +159,7 @@ public class SoundController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
             StopTheme();
             StopHUD();
-            PlayTheme(themeDarkZ2, true);
+            PlayTheme(themeLightZ2, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
