@@ -214,8 +214,9 @@ public class Zone1BossBehavior : YokaiController {
         //================================================
         Game.playerData.lightBoss1 = true;
         Game.PreSave_Game_and_Save();
-        SoundController.instance.FadeOnExitTheme();
-        SoundController.instance.SelectTHEME();
+        //================================================
+        StartCoroutine(SoundController.instance.FadeOnExitTheme());
+        //================================================
     }
 
     public override void Die() {
