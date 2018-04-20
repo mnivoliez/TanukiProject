@@ -157,10 +157,22 @@ public class SoundController : MonoBehaviour {
             PlayTheme(themeDarkZ1, true);
         }
 
+        if ((SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") && Game.playerData.lightBoss1) {
+            StopTheme();
+            StopHUD();
+            PlayTheme(themeLightZ1, true);
+        }
+
         if (SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
             StopTheme();
             StopHUD();
             PlayTheme(themeDarkZ2, true);
+        }
+
+        if ((SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") && Game.playerData.lightBoss2) {
+            StopTheme();
+            StopHUD();
+            PlayTheme(themeLightZ2, true);
         }
     }
 
