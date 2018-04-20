@@ -41,5 +41,14 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
         }
     }
 
+    public void ActiveParchment() {
+        //================================================
+        SoundController.instance.SelectHUD("PauseOpenClose");
+        //================================================
+        isActive = true;
+        transform.GetChild(0).gameObject.SetActive(true);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(true);
+    }
+
 
 }
