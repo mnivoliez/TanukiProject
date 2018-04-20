@@ -10,13 +10,18 @@ public class WaterfallCreator : MonoBehaviour {
 	public int numTris;
 
 	public float spacingU = 1;
-	public int divisionV = 0;
-	public float waterfallWidth = 1;
+	public int divisionV = 2;
+	public float maxWaterfallWidth = 5;
 	public bool autoUpdate;
 	
 	[Header("UV")]
 	public float tilingU = 1;
 	public float tilingV = 1;
+
+	[Range(0,1)]
+	public float waterfallSpeed = 0;
+
+	public LayerMask raycastLayer = 1<<8;
 
 	public void UpdateWaterfall() {
 		PathPlatform path = GetComponent<PathCreator>().path;
@@ -33,6 +38,10 @@ public class WaterfallCreator : MonoBehaviour {
 		int vertIndex = 0;
 		int triIndex = 0;
 
+		float waterfallMul = 0;
+		float waterfallMulLerp = 0;
+		float uvProgress = 0;
+
 		for (int i = 0; i < points.Length; i++) {
 			Vector3 forward = Vector3.zero;
 			if(i < points.Length-1 || isClosed) {
@@ -48,13 +57,32 @@ public class WaterfallCreator : MonoBehaviour {
 
 			Vector3 up = Vector3.Cross(left, forward);
 
-			float completionPercent = i/(points.Length-1f) * tilingV;
-			//float v = 1-Mathf.Abs(2*completionPercent-1);
+			waterfallMul = (forward.y >= 0) ? 0 : -forward.y;
+			waterfallMulLerp = Mathf.Lerp(waterfallMulLerp, waterfallMul, waterfallSpeed);
+
+			float uvOffset = 1f/(points.Length-1f) * tilingV;
+
+			uvProgress += uvOffset - (uvOffset * waterfallMulLerp);
+
+			float leftDist = maxWaterfallWidth/2f;
+			float rightDist = maxWaterfallWidth/2f;
+
+			RaycastHit hit;
+			if(Physics.Raycast(transform.TransformPoint(points[i]), transform.TransformDirection(left), out hit, leftDist, raycastLayer)) {
+				leftDist = hit.distance;
+			}
+			if(Physics.Raycast(transform.TransformPoint(points[i]), transform.TransformDirection(-left), out hit, rightDist, raycastLayer)) {
+				rightDist = hit.distance;
+			}
+
+			leftDist += 2;
+			rightDist += 2;
 
 			for (int v = 0; v < divisionV+1; v++) {
+
 				float divPercent = v/(divisionV+1f);
-				verts[vertIndex] = points[i] + (left*waterfallWidth/2f) - (left*waterfallWidth*divPercent);
-				uvs[vertIndex] = new Vector2(divPercent*tilingU, completionPercent);
+				verts[vertIndex] = points[i] + (left*leftDist) - (left*rightDist*2*divPercent);
+				uvs[vertIndex] = new Vector2(divPercent*tilingU, uvProgress);
 				normals[vertIndex] = up;
 
 				if(i < points.Length-1 || isClosed) {
@@ -71,8 +99,8 @@ public class WaterfallCreator : MonoBehaviour {
 				triIndex +=6;
 			}
 
-			verts[vertIndex] = points[i] - (left*waterfallWidth/2f);
-			uvs[vertIndex] = new Vector2(1*tilingU, completionPercent);
+			verts[vertIndex] = points[i] - (left*rightDist);
+			uvs[vertIndex] = new Vector2(1*tilingU, uvProgress);
 			normals[vertIndex] = up;
 			vertIndex+=1;
 		}

@@ -93,8 +93,6 @@ public class LanternShaderGUI : ShaderGUI {
 	GUIContent noiseIntensityGUI = new GUIContent ("Intensity", "Noise Intensity");
 	private MaterialProperty _DistortStrength = null;
 	GUIContent distortStrengthGUI = new GUIContent ("Factor", "Distort Strength");
-	private MaterialProperty _WaterfallHeight = null;
-	GUIContent waterfallHeightGUI = new GUIContent ("Height", "Waterfall Height");
 
 	private int pixelSpace = 8;
 
@@ -148,8 +146,6 @@ public class LanternShaderGUI : ShaderGUI {
 			_NoiseIntensity = ShaderGUI.FindProperty ("_NoiseIntensity", props);
 
 			_DistortStrength = ShaderGUI.FindProperty ("_DistortStrength", props);
-
-			_WaterfallHeight = ShaderGUI.FindProperty ("_WaterfallHeight", props);
 		}
 	}
 
@@ -315,10 +311,6 @@ public class LanternShaderGUI : ShaderGUI {
 		GUILayout.Space(pixelSpace);
 		EditorGUILayout.LabelField ("Distortion", EditorStyles.boldLabel);
 		editor.ShaderProperty (_DistortStrength, distortStrengthGUI);
-
-		GUILayout.Space(pixelSpace);
-		EditorGUILayout.LabelField ("Waterfall", EditorStyles.boldLabel);
-		editor.ShaderProperty (_WaterfallHeight, waterfallHeightGUI);
 	}
 
 	void TextureInline(MaterialProperty propTex, MaterialProperty propLCol, MaterialProperty propDCol, GUIContent tex, GUIContent lCol, GUIContent dCol) {
