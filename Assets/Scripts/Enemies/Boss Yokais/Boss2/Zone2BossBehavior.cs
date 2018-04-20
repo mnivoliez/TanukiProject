@@ -29,10 +29,12 @@ public class Zone2BossBehavior : YokaiController {
     private GameObject player;
     private SphereCollider myCollider;
     private bool canBump;
+    private bool resize;
     private float delayToBump;
     private List<GameObject> lanternsInRange;
     private float throwRate;
     private GameObject[] lanterns;
+    private GameObject[] respawnsLantern;
 
     [SerializeField] private float timeToBump = 3;
     [SerializeField] private float timeToKnockBack;
@@ -54,6 +56,7 @@ public class Zone2BossBehavior : YokaiController {
         interPhase = false;
         nextThrow = 0;
         stop = false;
+        resize = false;
         currentRocksToThrow = nbRocksToThrow;
         spawnRock = transform.Find("SpawnRock");
         corps = transform.Find("corps").gameObject;
@@ -76,13 +79,15 @@ public class Zone2BossBehavior : YokaiController {
         GameObject[] gameObjects = FindObjectsOfType(typeof(GameObject)) as GameObject[];
 
         for (var i = 0; i < gameObjects.Length; i++) {
-            if (gameObjects[i].name.Contains("Yokai_General")) {
+            if (gameObjects[i].name.Contains("Yokai_Barrier")) {
                 yokais.Add(gameObjects[i]);
             } else if (gameObjects[i].name.Contains("YokaiSpeLure")) {
                 yokaisSpe.Add(gameObjects[i]);
             } else if (gameObjects[i].name.Contains("Oreille") || gameObjects[i].name == "Corps Caché") {
                 oreilles.Add(gameObjects[i]);
                 gameObjects[i].SetActive(false);
+            } else if (gameObjects[i].name.Contains("Tori")) {
+                Physics.IgnoreCollision(myCollider, gameObjects[i].GetComponent<Collider>(), true);
             }
         }
     }
@@ -124,13 +129,24 @@ public class Zone2BossBehavior : YokaiController {
                     lanternsInRange.RemoveAt(i);
                 }
             }
-            
-            if (interPhase) {
+
+            if (resize) {
+                if (transform.localScale.x > 5) {
+                    transform.localScale = new Vector3(transform.localScale.x - 0.05f, transform.localScale.y - 0.05f, transform.localScale.z - 0.05f);
+                } else {
+                    resize = false;
+                    isKnocked = true;
+                }
+            } else if (interPhase) {
                 if (yokais.Count > 0) {
                     GameObject objectToDestroy = yokais[yokais.Count - 1];
                     yokais.Remove(objectToDestroy);
                     Destroy(objectToDestroy);
                 } else {
+                    foreach (GameObject respawnLantern in respawnsLantern) {
+                        respawnLantern.SetActive(true);
+                    }
+
                     foreach (GameObject lantern in lanterns) {
                         lantern.GetComponent<LanternController>().Respawn();
                     }
@@ -141,9 +157,15 @@ public class Zone2BossBehavior : YokaiController {
             } else if (phasePattern == 1) {                                                     //PHASE 1
                 if (lanterns == null) {
                     lanterns = GameObject.FindGameObjectsWithTag("Lantern");
+                    respawnsLantern = GameObject.FindGameObjectsWithTag("LoveHotel");
                     foreach (GameObject lantern in lanterns) {
                         lantern.transform.position = positionLanternPhase1.transform.position;
                         Physics.IgnoreCollision(lantern.GetComponent<BoxCollider>(), myCollider);
+                    }
+
+                    foreach (GameObject respawnLantern in respawnsLantern) {
+                        respawnLantern.SetActive(false);
+                        Physics.IgnoreCollision(respawnLantern.GetComponent<Collider>(), myCollider, true);
                     }
                 }
 
@@ -224,6 +246,7 @@ public class Zone2BossBehavior : YokaiController {
     }
 
     void ThrowRock() {
+        Debug.Log("throw rock");
         GameObject theRock = Instantiate(prefabRock);
         theRock.transform.position = spawnRock.position;
         theRock.transform.LookAt(target.transform);
@@ -262,7 +285,9 @@ public class Zone2BossBehavior : YokaiController {
             }
 
             if (hp <= 0) {
-                isKnocked = true;
+                resize = true;
+                //isKnocked = true;
+                Physics.IgnoreCollision(target.GetComponent<Collider>(), myCollider, false);
                 Vector3 posKnockedParticle = corps.GetComponent<MeshRenderer>().bounds.max;
                 posKnockedParticle.x = transform.position.x;
                 posKnockedParticle.z = transform.position.z;
@@ -302,11 +327,8 @@ public class Zone2BossBehavior : YokaiController {
         //================================================
         SoundController.instance.SelectYOKAI("Absorbed");
         //================================================
-        //Game.playerData.lightBoss2 = true;
+        Game.playerData.lightBoss2 = true;
         Game.PreSave_Game_and_Save();
-        //================================================
-        StartCoroutine(SoundController.instance.FadeOnExitTheme()); //Will launch an other theme automatically
-        //================================================
     }
 
     public override void Die() {
