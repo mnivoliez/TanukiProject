@@ -123,6 +123,9 @@ public static class Game {
             case "Scene_AirStream":
                 playerData.caught_yokai_test = koda_score.GetnbYokai();
                 break;
+
+            default:
+                break;
         }
 
         playerData.caught_yokai = koda_score.GetnbYokai();
@@ -159,6 +162,9 @@ public static class Game {
 
             case "Scene_AirStream":
                 playerData.yokaiRemainingTEST[yokaiID] = -1;
+                break;
+
+            default:
                 break;
         }
     }
