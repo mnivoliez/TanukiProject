@@ -150,7 +150,7 @@ public class HitodamaController : MonoBehaviour {
 
     void CalculateHitodamaMovement() {
         Vector3 aimedPoint = path[nextPointIndex];
-        Debug.Log("Going to point " + nextPointIndex + " : " + aimedPoint + " at " + Vector3.Distance(aimedPoint, transform.position));
+        //Debug.Log("Going to point " + nextPointIndex + " : " + aimedPoint + " at " + Vector3.Distance(aimedPoint, transform.position));
         float step = Time.fixedDeltaTime * speed;
         transform.position = Vector3.MoveTowards(transform.position, aimedPoint, step);
         if(Vector3.Distance(aimedPoint, transform.position) < pointCheckDistanceRange) {
