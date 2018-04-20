@@ -136,7 +136,7 @@ public class Zone1BossBehavior : YokaiController {
     public override void LooseHp(float damage) {
 
         if (!onMovement || !isInvincible) {
-            hp -= damage;
+            hp -= 1;
 
             switch ((int)hp) {
 
