@@ -10,6 +10,9 @@ public class SteleBehavior : MonoBehaviour {
     private PathCreator creator;
 	private PathPlatform path;
 
+    [SerializeField] private float pathPointsSpacing = 1f;
+    [SerializeField] private float pathResolution = 1f;
+
     void Start() {
         if(nextStele) {
             creator = GetComponent<PathCreator>();
@@ -27,7 +30,12 @@ public class SteleBehavior : MonoBehaviour {
             else {
                 hitodama.SetIsGuiding(true);
                 hitodama.SetTargetStele(nextStele);
-                hitodama.SetPath(this.path, creator.startPos);
+                Vector3[] points = path.CalculateEvenlySpacedPoints(pathPointsSpacing, pathResolution);
+                for(int i = 0; i < points.Length; ++i)
+                {
+                    points[i] = transform.TransformDirection(points[i]) + transform.position;
+                }
+                hitodama.SetPath(points);
             }
         }
 
