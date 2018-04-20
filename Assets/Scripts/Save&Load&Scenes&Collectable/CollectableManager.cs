@@ -69,6 +69,9 @@ public class CollectableManager : MonoBehaviour {
                     KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
                 }
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -125,6 +128,9 @@ public class CollectableManager : MonoBehaviour {
                 if (Game.playerData.yokaiRemainingTEST[yokaiID] != yokaiID) {
                     gOList[gONbr].SetActive(false);
                 }
+                break;
+
+            default:
                 break;
         }
     }
