@@ -50,9 +50,10 @@ public class Zone1BossBehavior : YokaiController {
     [SerializeField] private float purchaseRate = 4f;
     private bool inAir;
     private DetectionRange detectArea;
-    private Color initialColor = new Color(215f/255f, 127f / 255f, 240f / 255f);
-    private Color hitColor = new Color(255f / 255f, 40f / 255f, 150f / 255f);
-    private Color chargeColor = new Color(255f / 255f, 70f / 255f, 70f / 255f);
+
+    private Color initialColor = new Color(202 / 255f, 54 / 255f, 255f / 255f, 0f);
+    private Color hitColor = new Color(1f, 0, 0, 50f / 255f);
+    private Color chargeColor = new Color(220f / 255f, 20f / 255f, 110f / 255f, 40f / 255f);
 
     void Start() {
 
@@ -87,11 +88,11 @@ public class Zone1BossBehavior : YokaiController {
                 else {
                     transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
                     cooldownPurchase += Time.deltaTime;
-                    if (cooldownPurchase > purchaseRate/2) {
-                        rendererMat.color = chargeColor;
+                    if (cooldownPurchase > purchaseRate / 2) {
+                        rendererMat.SetColor("_FirstDColor", chargeColor);
                         //rendererMat.SetColor("_Globalcolor", chargeColor);
                     }
-                    
+
                 }
             }
             else {
@@ -130,7 +131,7 @@ public class Zone1BossBehavior : YokaiController {
                 isInvincible = false;
             }
         }
-        
+
     }
 
     public override void LooseHp(float damage) {
@@ -140,20 +141,18 @@ public class Zone1BossBehavior : YokaiController {
 
             switch ((int)hp) {
 
-                case 7:
+                case 5:
                     arena1.SetActive(true);
                     break;
 
-                case 6:
+                case 4:
                     arena2.SetActive(true);
                     break;
 
-                case 5:
+                case 3:
                     arena3.SetActive(true);
-                    break;
-
-                case 4:
                     arena4.SetActive(true);
+                    ChangePlatform(2);
                     break;
 
             }
@@ -162,7 +161,7 @@ public class Zone1BossBehavior : YokaiController {
                 isInvincible = false;
                 isKnocked = true;
                 Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
-                rendererMat.color = hitColor;
+                rendererMat.SetColor("_FirstDColor", hitColor);
                 //================================================
                 SoundController.instance.SelectYOKAI("KO");
                 //================================================
@@ -174,7 +173,7 @@ public class Zone1BossBehavior : YokaiController {
                 //rendererMat.EnableKeyword("_EMISSION");
             }
 
-            if (hp < 4 && !isKnocked) {
+            if (hp < 3 && !isKnocked) {
                 if (!changingPhase) {
                     playableDirector.Play();
                     GameObject smokeParticleTransition = Instantiate(knockedParticle, arenaPhase1.transform.position, Quaternion.identity);
@@ -184,11 +183,11 @@ public class Zone1BossBehavior : YokaiController {
                     arenaPhase2.SetActive(true);
                     changingPhase = true;
                 }
-                
+
                 ChangePlatform(1);
             }
 
-            if (hp >= hpMax / 2) {
+            if (hp > hpMax / 2) {
                 ChangePlatform(0);
             }
         }
@@ -197,13 +196,13 @@ public class Zone1BossBehavior : YokaiController {
     public override void BeingHit() {
         Invoke("EndHit", 0.5f);
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
-        rendererMat.color = hitColor;
+        rendererMat.SetColor("_FirstDColor", hitColor);
         //rendererMat.SetColor("_Globalcolor", hitColor);
     }
 
     public override void EndHit() {
         //if (!isKnocked) rendererMat.SetColor("_Globalcolor", initialColor);
-        if (!isKnocked) rendererMat.color = Color.white;
+        if (!isKnocked) rendererMat.SetColor("_FirstDColor", initialColor);
     }
 
     public override void Absorbed() {
@@ -256,6 +255,15 @@ public class Zone1BossBehavior : YokaiController {
                 currentPlateform++;
             }
         }
+        else if (numPhase == 2) {
+            int nextPlatform = Random.Range(3, 5);
+
+            while (nextPlatform == currentPlateform) {
+                nextPlatform = Random.Range(3, 5);
+            }
+
+            currentPlateform = nextPlatform;
+        }
         else {
             int nextPlatform = Random.Range(0, 5);
 
@@ -294,7 +302,7 @@ public class Zone1BossBehavior : YokaiController {
     public void AttackTarget() {
 
         GameObject projectile = Instantiate(prefabProjectile, spawnProjectile.transform.position, Quaternion.identity);
-        Vector3 targetPos = new Vector3(target.transform.position.x, target.transform.position.y+1, target.transform.position.z);
+        Vector3 targetPos = new Vector3(target.transform.position.x, target.transform.position.y + 1, target.transform.position.z);
         projectile.transform.LookAt(targetPos);
         projectile.GetComponent<ProjectileBehavior>().SetDamage(projectileDamage);
         Destroy(projectile, 10f);
@@ -316,7 +324,7 @@ public class Zone1BossBehavior : YokaiController {
             cooldownPurchase = 0;
             cooldownFire = 0f;
             inAir = false;
-            rendererMat.color = Color.white;
+            rendererMat.SetColor("_FirstDColor", initialColor);
             //rendererMat.SetColor("_Globalcolor", initialColor);
             detectArea.ActivateCollider();
         }
