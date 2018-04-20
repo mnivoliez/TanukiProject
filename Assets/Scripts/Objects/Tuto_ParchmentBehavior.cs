@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class Tuto_ParchmentBehavior : MonoBehaviour {
 
@@ -25,7 +28,9 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player")){
-
+            //================================================
+            SoundController.instance.SelectHUD("PauseOpenClose");
+            //================================================
             isActive = true;
             transform.GetChild(0).gameObject.SetActive(true);
             other.gameObject.GetComponent<InputController>().SetFreezeInput(true);
