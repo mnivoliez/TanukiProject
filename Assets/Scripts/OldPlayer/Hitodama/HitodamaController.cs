@@ -28,14 +28,10 @@ public class HitodamaController : MonoBehaviour {
     float newScaleHitodama;
     bool isGuiding = false;
     private GameObject targetStele;
-    private PathPlatform path;
-    private Vector3 startPos;
-    [Range(0.1f, 10)] [Tooltip("Travel time between two waypoints in second")]
-	public float waypointPeriod = 1f;
-
-	private int fromWaypointIndex = 0;
-	private float percentBetweenWaypoints = 0;
-	private float nextMoveTime;
+    private Vector3[] path;
+    private int nextPointIndex = 0;
+    private bool inTrack = false;
+    [SerializeField] private float pointCheckDistanceRange = 0.5f;
 
     void Start() {
         rendererHitodama = GetComponent<Renderer>();
@@ -60,8 +56,9 @@ public class HitodamaController : MonoBehaviour {
             Destroy(lostHPObject, 2f);
             PlayerUpdateLife();
         }
-        if (isGuiding && path != null) {
-            CalculateHitodamaMovement();
+        if (isGuiding) {
+            if(inTrack) CalculateHitodamaMovement();
+            else transform.position = Vector3.Lerp(transform.position, targetStele.transform.position, speed * Time.deltaTime);
         }
         else {
             transform.position = Vector3.Lerp(transform.position, spawnHitodama.transform.position, speed * Time.deltaTime);
@@ -145,35 +142,21 @@ public class HitodamaController : MonoBehaviour {
         targetStele = nextStele;
     }
 
-    public void SetPath(PathPlatform path, Vector3 startPos) {
+    public void SetPath(Vector3[] path) {
         this.path = path;
-        this.startPos = startPos;
+        this.nextPointIndex = 0;
+        inTrack = true;
     }
 
     void CalculateHitodamaMovement() {
-
-		if (Time.time < nextMoveTime)
-			return;
-
-		percentBetweenWaypoints += Time.deltaTime * (1f/waypointPeriod);
-
-		if (percentBetweenWaypoints >= 1) {
-			fromWaypointIndex += 1;
-			
-			percentBetweenWaypoints--;
-			if (fromWaypointIndex >= path.NumSegments) {
-				fromWaypointIndex = 0;
-                path = null;
-                startPos = Vector3.zero;
-			}
-		}
-
-		transform.position = GetCurvesVector (fromWaypointIndex, percentBetweenWaypoints);
-	}
-
-    Vector3 GetCurvesVector (int index, float keyValue) {
-		Vector3[] points = path.GetPointsInSegment(index);
-		return transform.TransformDirection(Bezier.EvaluateQubic(points[0], points[1], points[2],points[3], keyValue)) + startPos;
+        Vector3 aimedPoint = path[nextPointIndex];
+        Debug.Log("Going to point " + nextPointIndex + " : " + aimedPoint + " at " + Vector3.Distance(aimedPoint, transform.position));
+        float step = Time.fixedDeltaTime * speed;
+        transform.position = Vector3.MoveTowards(transform.position, aimedPoint, step);
+        if(Vector3.Distance(aimedPoint, transform.position) < pointCheckDistanceRange) {
+            nextPointIndex += 1;
+            inTrack = nextPointIndex < path.Length;
+        }
 	}
 
 }
