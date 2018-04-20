@@ -1276,6 +1276,16 @@ Prefab:
       propertyPath: m_UseGravity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 135444547723367616, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333909541057452, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: speed
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
   m_IsPrefabParent: 0
@@ -2418,6 +2428,26 @@ Transform:
   m_PrefabParentObject: {fileID: 4389761631042078, guid: e93ab693adeaa4d4897ebd7c7595f466,
     type: 2}
   m_PrefabInternal: {fileID: 197937556}
+--- !u!21 &199055456
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!1001 &210069438
 Prefab:
   m_ObjectHideFlags: 0
@@ -3420,37 +3450,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4389730034063656, guid: fe78858b20646df408c13780c5409e0a,
     type: 2}
   m_PrefabInternal: {fileID: 287203393}
---- !u!84 &292796104
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1001 &299872597
 Prefab:
   m_ObjectHideFlags: 0
@@ -4297,6 +4296,23 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a98495119ee6af546b864b8498950e80, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &385360626 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1425960728579724, guid: 87dac111ad9daa3479b86e4d1f5867a5,
+    type: 2}
+  m_PrefabInternal: {fileID: 46961685}
+--- !u!114 &385360630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 385360626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9641c0c450d7549b6e74aedddbfc55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 2132195036}
 --- !u!1001 &395581830
 Prefab:
   m_ObjectHideFlags: 0
@@ -4707,6 +4723,16 @@ Prefab:
         type: 2}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 135444547723367616, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333909541057452, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: speed
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
@@ -8189,6 +8215,16 @@ Prefab:
       propertyPath: m_UseGravity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 135444547723367616, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333909541057452, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: speed
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
   m_IsPrefabParent: 0
@@ -10055,6 +10091,37 @@ Transform:
   m_PrefabParentObject: {fileID: 4982297453055336, guid: 3c7595beec4e7c74c9f8d48ebf924a6a,
     type: 2}
   m_PrefabInternal: {fileID: 889791312}
+--- !u!84 &889855392
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &891368727
 Prefab:
   m_ObjectHideFlags: 0
@@ -11605,7 +11672,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 292796104}
+      objectReference: {fileID: 889855392}
     - target: {fileID: 119785275203550714, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: m_FarClipPlane
@@ -11615,7 +11682,7 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1940538853}
+      objectReference: {fileID: 199055456}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a95e21316b361044681464f5613ea9f0, type: 2}
   m_IsPrefabParent: 0
@@ -14250,6 +14317,16 @@ Prefab:
         type: 2}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 135444547723367616, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333909541057452, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: speed
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
@@ -20683,6 +20760,16 @@ Prefab:
       propertyPath: m_UseGravity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 135444547723367616, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333909541057452, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: speed
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
   m_IsPrefabParent: 0
@@ -21120,6 +21207,16 @@ Prefab:
         type: 2}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 135444547723367616, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333909541057452, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: speed
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
@@ -21992,26 +22089,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4982297453055336, guid: 3c7595beec4e7c74c9f8d48ebf924a6a,
     type: 2}
   m_PrefabInternal: {fileID: 1936754292}
---- !u!21 &1940538853
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!43 &1942137565
 Mesh:
   m_ObjectHideFlags: 0
@@ -23637,9 +23714,36 @@ Prefab:
       propertyPath: m_UseGravity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 135444547723367616, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333909541057452, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: speed
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2056418472 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1425960728579724, guid: 87dac111ad9daa3479b86e4d1f5867a5,
+    type: 2}
+  m_PrefabInternal: {fileID: 150998492}
+--- !u!114 &2056418476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2056418472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9641c0c450d7549b6e74aedddbfc55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 2132195036}
 --- !u!1 &2057908342
 GameObject:
   m_ObjectHideFlags: 0
@@ -24375,10 +24479,12 @@ MonoBehaviour:
   distanceLimit: 0
   timeToBump: 6
   timeToKnockBack: 3
-  throwRateP1: 1.5
+  throwRateP1: 3
   throwRateP2: 1.5
   nbRocksToThrow: 6
   prefabRock: {fileID: 1258659169701658, guid: be07d156447af5446ba246dac83c45d0, type: 2}
+  prefabSmoke: {fileID: 1611510778676392, guid: 9d3fa92c9a5ef914fa318eefb0924a89,
+    type: 2}
   river: {fileID: 1032403709}
   positionLanternPhase1: {fileID: 2067323104}
 --- !u!54 &2132195038
@@ -24574,6 +24680,16 @@ Prefab:
         type: 2}
       propertyPath: m_IsKinematic
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 135444547723367616, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: m_Radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333909541057452, guid: 5e083c75cf78935428ef81066d1ffa5a,
+        type: 2}
+      propertyPath: speed
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e083c75cf78935428ef81066d1ffa5a, type: 2}
