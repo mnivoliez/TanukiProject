@@ -24,6 +24,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip themeLightTuto;
     [SerializeField] private AudioClip themeDarkZ1;
     [SerializeField] private AudioClip themeLightZ1;
+    [SerializeField] private AudioClip themePreBoss;
     [SerializeField] private AudioClip themeBossZ1;
     [SerializeField] private AudioClip themeDarkZ2;
     [SerializeField] private AudioClip themeLightZ2;
@@ -140,7 +141,7 @@ public class SoundController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Boss1") {
             StopTheme();
             StopHUD();
-            PlayTheme(themeBossZ1, true);
+            StartCoroutine(PlayThemeBoss(themeBossZ1, true));
         }
 
         if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
@@ -152,7 +153,13 @@ public class SoundController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Boss2") {
             StopTheme();
             StopHUD();
-            PlayTheme(themeBossZ2, true);
+            StartCoroutine(PlayThemeBoss(themeBossZ2, true));
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
+            StopTheme();
+            StopHUD();
+            PlayTheme(themeDarkZ2, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
@@ -186,18 +193,27 @@ public class SoundController : MonoBehaviour {
         }
     }
 
-    public void PlayTheme(AudioClip clip, bool loop) {
+    private void PlayTheme(AudioClip clip, bool loop) {
         fxThemeSource.clip = clip;
         fxThemeSource.Play();
         fxThemeSource.loop = loop;
     }
 
-    public void FadeOnExitTheme() {
-        for(float i = 1.0f; i > 0.0f; i = i - 0.01f) {
-            fxThemeSource.volume = 0.0f;
+    private IEnumerator PlayThemeBoss(AudioClip clip, bool loop) {
+        fxThemeSource.clip = themePreBoss;
+        fxThemeSource.Play();
+        yield return new WaitForSeconds(14.0f);
+        PlayTheme(clip, loop);
+    }
+
+    public IEnumerator FadeOnExitTheme() {
+        while (fxThemeSource.volume > 0.0f) {
+            fxThemeSource.volume = fxThemeSource.volume - 0.01f;
+            yield return new WaitForSeconds(0.05f);
         }
         StopTheme();
         fxThemeSource.volume = 1.0f;
+        SelectTHEME();
     }
 
     public void StopTheme() {

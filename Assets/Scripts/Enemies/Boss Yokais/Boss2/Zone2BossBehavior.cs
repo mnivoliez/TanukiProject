@@ -302,8 +302,11 @@ public class Zone2BossBehavior : YokaiController {
         //================================================
         SoundController.instance.SelectYOKAI("Absorbed");
         //================================================
-        Game.playerData.lightBoss2 = true;
+        //Game.playerData.lightBoss2 = true;
         Game.PreSave_Game_and_Save();
+        //================================================
+        StartCoroutine(SoundController.instance.FadeOnExitTheme()); //Will launch an other theme automatically
+        //================================================
     }
 
     public override void Die() {
