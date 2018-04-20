@@ -15,8 +15,10 @@ public class SteleBehavior : MonoBehaviour {
                 hitodama.SetIsGuiding(false);
             }
             else {
-                hitodama.SetIsGuiding(true);
-                hitodama.SetTargetStele(nextStele);
+                if (nextStele != null) {
+                    hitodama.SetIsGuiding(true);
+                    hitodama.SetTargetStele(nextStele);
+                }
             }
         }
 
