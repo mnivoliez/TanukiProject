@@ -56,8 +56,8 @@ public static class Game {
             koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
             //SceneManager.SetActiveScene(playerData.current_scene); // Working ONLY if the saved scene IS IN the SceneManager !
 
-            koda_power.SetPowerJump(playerData.power_jump);
-            koda_power.SetPowerLure(playerData.power_lure);
+            koda_power.SetPowerJump(playerData.lightBoss1);
+            koda_power.SetPowerLure(playerData.lightBoss2);
             koda_power.SetPowerBall(playerData.power_ball);
             koda_power.SetPowerShrink(playerData.power_shrink);
 
