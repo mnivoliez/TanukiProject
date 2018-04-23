@@ -18,6 +18,7 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
 
         if (isActive) {
             if (Input.GetButtonDown("Jump")) {
+                Pause.Paused = false;
                 transform.GetChild(0).gameObject.SetActive(false);
                 GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(false);
                 //================================================
@@ -34,6 +35,7 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
             //================================================
             SoundController.instance.SelectHUD("PauseOpenClose");
             //================================================
+            Pause.Paused = true;
             isActive = true;
             transform.GetChild(0).gameObject.SetActive(true);
             other.gameObject.GetComponent<InputController>().SetFreezeInput(true);

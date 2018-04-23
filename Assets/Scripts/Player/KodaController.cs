@@ -720,6 +720,9 @@ public class KodaController : MonoBehaviour {
             case InteractState.MeleeAttack:
                 if (interactStateParameter.canMeleeAttack && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoMeleeAttack();
+                    //================================================
+                    SoundController.instance.SelectLEAF("CloseCombat");
+                    //================================================
                     leafLock.isUsed = true;
                 }
                 break;

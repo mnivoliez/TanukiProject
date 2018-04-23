@@ -8,7 +8,6 @@ public class YokaiDetectAreav2 : MonoBehaviour {
 
     private void Start() {
         parent = transform.parent.GetComponent<YokaiController>();
-        Debug.Log("Papa: " + parent);
     }
 
     private void OnTriggerStay(Collider other) {
