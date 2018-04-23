@@ -28,6 +28,10 @@ public class HitodamaController : MonoBehaviour {
     float newScaleHitodama;
     bool isGuiding = false;
     private GameObject targetStele;
+    private Vector3[] path;
+    private int nextPointIndex = 0;
+    private bool inTrack = false;
+    [SerializeField] private float pointCheckDistanceRange = 0.5f;
 
     void Start() {
         rendererHitodama = GetComponent<Renderer>();
@@ -52,11 +56,12 @@ public class HitodamaController : MonoBehaviour {
             Destroy(lostHPObject, 2f);
             PlayerUpdateLife();
         }
-        if (!isGuiding) {
-            transform.position = Vector3.Lerp(transform.position, spawnHitodama.transform.position, speed * Time.deltaTime);
+        if (isGuiding) {
+            if(inTrack) CalculateHitodamaMovement();
+            else transform.position = Vector3.Lerp(transform.position, targetStele.transform.position + (-Vector3.forward + Vector3.up*2), speed * Time.deltaTime);
         }
         else {
-            transform.position = Vector3.Lerp(transform.position, targetStele.transform.position + Vector3.one, 0.5f * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, spawnHitodama.transform.position, speed * Time.deltaTime);
         }
 
     }
@@ -136,5 +141,22 @@ public class HitodamaController : MonoBehaviour {
     public void SetTargetStele(GameObject nextStele) {
         targetStele = nextStele;
     }
+
+    public void SetPath(Vector3[] path) {
+        this.path = path;
+        this.nextPointIndex = 0;
+        inTrack = true;
+    }
+
+    void CalculateHitodamaMovement() {
+        Vector3 aimedPoint = path[nextPointIndex];
+        //Debug.Log("Going to point " + nextPointIndex + " : " + aimedPoint + " at " + Vector3.Distance(aimedPoint, transform.position));
+        float step = Time.fixedDeltaTime * speed;
+        transform.position = Vector3.MoveTowards(transform.position, aimedPoint, step);
+        if(Vector3.Distance(aimedPoint, transform.position) < pointCheckDistanceRange) {
+            nextPointIndex += 1;
+            inTrack = nextPointIndex < path.Length;
+        }
+	}
 
 }
