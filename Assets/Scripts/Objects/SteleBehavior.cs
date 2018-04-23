@@ -8,7 +8,7 @@ public class SteleBehavior : MonoBehaviour {
     [SerializeField] private GameObject nextStele;
     [SerializeField] private bool lastStele;
     private PathCreator creator;
-	private PathPlatform path;
+    private PathPlatform path;
 
     [SerializeField] private float pathPointsSpacing = 1f;
     [SerializeField] private float pathResolution = 1f;
@@ -23,9 +23,9 @@ public class SteleBehavior : MonoBehaviour {
 
         if (nextStele) {
             creator = GetComponent<PathCreator>();
-		    path = creator.path;
+            path = creator.path;
         }
-	}
+    }
 
     private void Update() {
         if (isActive) {
@@ -39,8 +39,9 @@ public class SteleBehavior : MonoBehaviour {
                     transform.GetChild(currentTuto).gameObject.SetActive(true);
                 }
                 else {
+                    Pause.Paused = false;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(false);
-                    Destroy(gameObject);
+                    //Destroy(gameObject);
                 }
 
             }
@@ -51,12 +52,15 @@ public class SteleBehavior : MonoBehaviour {
 
         if (other.gameObject.CompareTag("Player")) {
 
-            //================================================
-            SoundController.instance.SelectHUD("PauseOpenClose");
-            //================================================
-            isActive = true;
-            transform.GetChild(0).gameObject.SetActive(true);
-            other.gameObject.GetComponent<InputController>().SetFreezeInput(true);
+            if (nbTuto != 0) {
+                other.gameObject.GetComponent<InputController>().SetFreezeInput(true);
+                isActive = true;
+                transform.GetChild(0).gameObject.SetActive(true);
+                //================================================
+                SoundController.instance.SelectHUD("PauseOpenClose");
+                //================================================
+                Pause.Paused = true;
+            }
 
             HitodamaController hitodama = GameObject.FindGameObjectWithTag("Hitodama").GetComponent<HitodamaController>();
             if (lastStele) {
@@ -66,8 +70,7 @@ public class SteleBehavior : MonoBehaviour {
                 hitodama.SetIsGuiding(true);
                 hitodama.SetTargetStele(nextStele);
                 Vector3[] points = path.CalculateEvenlySpacedPoints(pathPointsSpacing, pathResolution);
-                for(int i = 0; i < points.Length; ++i)
-                {
+                for (int i = 0; i < points.Length; ++i) {
                     points[i] = transform.TransformDirection(points[i]) + transform.position;
                 }
                 hitodama.SetPath(points);
