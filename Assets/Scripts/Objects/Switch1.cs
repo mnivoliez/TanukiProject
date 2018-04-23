@@ -17,15 +17,20 @@ public class Switch1 : MonoBehaviour {
     bool alreadyPlayed = false;
 
     private void Start() {
-        butterfly = gameObject.transform.GetChild(0).GetComponent<Animator>();
+		if (gameObject.transform.childCount != 0) {
+			butterfly = gameObject.transform.GetChild (0).GetComponent<Animator> ();
+		}
     }
 
     void OnCollisionEnter(Collision collider) {
         if (!alreadyPlayed) {
             if (collider.gameObject.CompareTag("Player")) {
                 alreadyPlayed = true;
-                StartCoroutine(FlyAway());
-                butterfly.SetTrigger("isFlying");
+				if (gameObject.transform.childCount != 0) 
+				{
+					butterfly.SetTrigger ("isFlying");
+					StartCoroutine(FlyAway());
+				}
                 foreach (SwitchObject obj in actionOnSwitch) {
                     if (obj.gameObject != null) {
                         obj.gameObject.SetActive(obj.action.Equals(ActionLantern.Activate));
@@ -38,9 +43,13 @@ public class Switch1 : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         if (!alreadyPlayed) {
             if (other.gameObject.CompareTag("Leaf")) {
-                alreadyPlayed = true;
-                butterfly.SetTrigger("isFlying");
-                StartCoroutine(FlyAway());
+				alreadyPlayed = true;
+				if (gameObject.transform.childCount != 0) 
+				{
+					butterfly.SetTrigger ("isFlying");
+					StartCoroutine(FlyAway());
+				}
+                
                 foreach (SwitchObject obj in actionOnSwitch) {
                     if (obj.gameObject != null) {
                         obj.gameObject.SetActive(obj.action.Equals(ActionLantern.Activate));
