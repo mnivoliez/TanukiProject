@@ -58,7 +58,7 @@ public class HitodamaController : MonoBehaviour {
         }
         if (isGuiding) {
             if(inTrack) CalculateHitodamaMovement();
-            else transform.position = Vector3.Lerp(transform.position, targetStele.transform.position, speed * Time.deltaTime);
+            else transform.position = Vector3.Lerp(transform.position, targetStele.transform.position + (-Vector3.forward + Vector3.up*2), speed * Time.deltaTime);
         }
         else {
             transform.position = Vector3.Lerp(transform.position, spawnHitodama.transform.position, speed * Time.deltaTime);

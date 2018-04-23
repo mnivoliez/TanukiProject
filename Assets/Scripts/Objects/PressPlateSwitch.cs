@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class PressPlateSwitch : MonoBehaviour {
     [SerializeField]
@@ -16,6 +19,9 @@ public class PressPlateSwitch : MonoBehaviour {
 
         if (collision.gameObject.CompareTag("Lure")) {
             if (!isPressedByLure) {
+                //================================================
+                SoundController.instance.SelectENVQuick("PressPlate");
+                //================================================
                 isPressedByLure = true;
                 collision.gameObject.transform.parent = gameObject.transform;
                 transform.position = transform.position + (Vector3.down * 0.1f);
@@ -47,6 +53,9 @@ public class PressPlateSwitch : MonoBehaviour {
     //Call by a Lure when is destroy
     public void UnpressPlate() {
         if (isPressedByLure) {
+            //================================================
+            SoundController.instance.SelectENVQuick("PressPlate");
+            //================================================
             transform.position = transform.position + (Vector3.up * 0.1f);
             isPressedByLure = false;
             foreach (SwitchObject obj in actionOnSwitch) {

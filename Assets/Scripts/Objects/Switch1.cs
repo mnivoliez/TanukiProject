@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public enum ActionLantern { Activate, Deactivate };
 
@@ -23,6 +26,9 @@ public class Switch1 : MonoBehaviour {
     void OnCollisionEnter(Collision collider) {
         if (!alreadyPlayed) {
             if (collider.gameObject.CompareTag("Player")) {
+                //================================================
+                SoundController.instance.SelectENVQuick("Switch");
+                //================================================
                 alreadyPlayed = true;
                 StartCoroutine(FlyAway());
                 butterfly.SetTrigger("isFlying");
@@ -38,6 +44,9 @@ public class Switch1 : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         if (!alreadyPlayed) {
             if (other.gameObject.CompareTag("Leaf")) {
+                //================================================
+                SoundController.instance.SelectENVQuick("Switch");
+                //================================================
                 alreadyPlayed = true;
                 butterfly.SetTrigger("isFlying");
                 StartCoroutine(FlyAway());

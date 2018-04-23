@@ -60,12 +60,14 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip kodaFallGround;
     [SerializeField] private AudioClip kodaFallWater;
     [SerializeField] private AudioClip kodaAbsorption;
+    [SerializeField] private AudioClip kodaHurt;
 
     [Header("LEAF")]
     [Space(10)]
     [SerializeField] private AudioClip leafUnfoldGlide;
     [SerializeField] private AudioClip leafThrow;
     [SerializeField] private AudioClip leafVanish;
+    [SerializeField] private AudioClip leafCC;
 
     [Header("YOKAI")]
     [Space(10)]
@@ -85,6 +87,9 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip envAirStream;
     [SerializeField] private AudioClip envBumper;
     [SerializeField] private AudioClip envVines;
+    [SerializeField] private AudioClip envPressPlate;
+    [SerializeField] private AudioClip envSwitch;
+    [SerializeField] private AudioClip envKaki;
 
     [Header("ENVIRONMENT LONG")]
     [Space(10)]
@@ -338,6 +343,10 @@ public class SoundController : MonoBehaviour {
                 PlayKodaEffect(kodaGlide);
                 break;
 
+            case "Hurt":
+                PlayKodaEffect(kodaHurt);
+                break;
+
             default:
                 break;
         }
@@ -376,6 +385,10 @@ public class SoundController : MonoBehaviour {
 
             case "Vanish":
                 PlayLeafEffect(leafVanish);
+                break;
+
+            case "CloseCombat":
+                PlayLeafEffect(leafCC);
                 break;
 
             default:
@@ -476,6 +489,18 @@ public class SoundController : MonoBehaviour {
 
             case "Vines":
                 PlayEnvironnementEffectQuick(envVines);
+                break;
+
+            case "Kaki":
+                PlayEnvironnementEffectQuick(envKaki);
+                break;
+
+            case "PressPlate":
+                PlayEnvironnementEffectQuick(envPressPlate);
+                break;
+
+            case "Switch":
+                PlayEnvironnementEffectQuick(envSwitch);
                 break;
 
             default:
