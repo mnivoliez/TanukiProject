@@ -136,7 +136,6 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private GameObject CameraMinimap;
     [SerializeField] private GameObject CanvasPrefabPause;
     [SerializeField] private GameObject SceneTransitionImage;
-    [SerializeField] private GameObject LoadingScreen;
     [SerializeField] private GameObject DeathTransitionImage;
     [SerializeField] private GameObject VictoryTransitionImage;
 
@@ -163,7 +162,7 @@ public class KodaController : MonoBehaviour {
         Instantiate(CameraMinimap).name = "MinimapCamera";
         //Instantiate(CanvasPrefabPause).name = "PauseCanvas";
         Instantiate(SceneTransitionImage).name = "SceneTransitionImage";
-        Instantiate(LoadingScreen).name = "LoadingScreen";
+        //Instantiate(LoadingScreen).name = "LoadingScreen";
         Instantiate(DeathTransitionImage).name = "DeathTransitionImage";
         Instantiate(VictoryTransitionImage).name = "VictoryTransitionImage";
     }
