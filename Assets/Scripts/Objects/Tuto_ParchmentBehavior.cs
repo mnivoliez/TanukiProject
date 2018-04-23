@@ -8,23 +8,32 @@ using UnityEngine;
 public class Tuto_ParchmentBehavior : MonoBehaviour {
 
     bool isActive;
-
+    int nbTuto = 0;
+    int currentTuto = 0;
 
 	void Start () {
-		
-	}
+        nbTuto = transform.childCount;
+        currentTuto = 0;
+    }
 	
 	void Update () {
 
         if (isActive) {
             if (Input.GetButtonDown("Jump")) {
+                transform.GetChild(currentTuto).gameObject.SetActive(false);
                 Pause.Paused = false;
-                transform.GetChild(0).gameObject.SetActive(false);
-                GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(false);
                 //================================================
                 SoundController.instance.SelectHUD("TutoPictureExit");
                 //================================================
-                Destroy(gameObject);
+                if (currentTuto < nbTuto-1 ) {
+                    currentTuto++;
+                    transform.GetChild(currentTuto).gameObject.SetActive(true);
+                }
+                else {
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(false);
+                    Destroy(gameObject);
+                }
+                
             }
         }
 		
