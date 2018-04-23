@@ -50,8 +50,9 @@ public class LureController : MonoBehaviour {
             GameObject smokeSpawn = Instantiate(prefabSpawnEffect, transform.position, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.5f;
             Destroy(smokeSpawn, 2f);
-            Destroy(gameObject);
+
             GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+            Destroy(gameObject);
         }
     }
 
@@ -77,7 +78,8 @@ public class LureController : MonoBehaviour {
             isActivatePlate = false;
             interactPlate = null;
         }
-        Destroy(gameObject);
+
         GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+        Destroy(gameObject);
     }
 }
