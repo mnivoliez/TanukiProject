@@ -326,6 +326,7 @@ public class InteractBehavior : MonoBehaviour {
             Vector3 spawnLurePosition = tanukiPlayer.position + new Vector3(0, lureSpawnHeight, 0) + (tanukiPlayer.forward * 2);
             GameObject smokeSpawn = Instantiate(smokeSpawner, spawnLurePosition, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
+            Destroy(smokeSpawn, 2f);
             clone = Instantiate(lure, spawnLurePosition, tanukiPlayer.rotation);
             //clone.transform.Translate(0, 3, 2);
         }
@@ -336,9 +337,9 @@ public class InteractBehavior : MonoBehaviour {
         if (lure != null) {
             GameObject smokeSpawn = Instantiate(smokeSpawner, lure.transform.position, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
-            Destroy(lure);
+            Destroy(smokeSpawn, 2f);
+            lure.GetComponent<LureController>().DestroyLure();
             tempLeafHead.SetActive(false);
-            //leafHead.SetActive(true);
         }
     }
 
