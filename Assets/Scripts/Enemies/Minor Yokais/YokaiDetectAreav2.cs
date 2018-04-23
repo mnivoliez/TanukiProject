@@ -12,6 +12,8 @@ public class YokaiDetectAreav2 : MonoBehaviour {
 
     private void OnTriggerStay(Collider other) {
 
+
+
         if (!parent.GetComeBack()) {
             if (other.gameObject.tag == "Lure") {
                 parent.SetTarget(other.gameObject);
