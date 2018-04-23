@@ -53,11 +53,11 @@ public class DetectRangeYokaiGeneral : MonoBehaviour {
     private void OnTriggerStay(Collider other) {
         if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Lure")))
         {
-            if (!objectsInArea.Contains(other.gameObject)) {
+            if (!objectsInArea.Contains(other.gameObject) && parentBehavior != null) {
                 if (!parentBehavior.TooFarAway(other.transform.position) && !parentBehavior.TooFarAway()) {
                     objectsInArea.Add(other.gameObject);
                 }
-            } else {
+            } else if (parentBehavior != null) {
                 if (parentBehavior.TooFarAway(other.transform.position) && parentBehavior.TooFarAway()) {
                     objectsInArea.Remove(other.gameObject);
                 }
