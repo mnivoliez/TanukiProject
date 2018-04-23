@@ -24,7 +24,6 @@ public class Zone1BossBehavior : YokaiController {
     [SerializeField] private GameObject arena1;
     [SerializeField] private GameObject arena2;
     [SerializeField] private GameObject arena3;
-    [SerializeField] private GameObject arena4;
 
     [SerializeField] private PlayableDirector playableDirector;
 
@@ -151,7 +150,6 @@ public class Zone1BossBehavior : YokaiController {
 
                 case 3:
                     arena3.SetActive(true);
-                    arena4.SetActive(true);
                     ChangePlatform(2);
                     break;
 
