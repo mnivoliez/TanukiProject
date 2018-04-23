@@ -80,6 +80,7 @@ public class KodaController : MonoBehaviour {
     private float speed = 10f;
     private float coefInclination;
     private List<GameObject> _grounds = new List<GameObject>();
+    private float ratio;
 
     //Orientation Camera player
     [Header("CAMERA")]
@@ -203,6 +204,8 @@ public class KodaController : MonoBehaviour {
             return;
         }
         //===========================
+
+        ratio = (40 * Time.deltaTime) / (Time.fixedDeltaTime / 0.02f);
 
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
@@ -446,7 +449,7 @@ public class KodaController : MonoBehaviour {
         if (coefInclination > 29.99f && coefInclination < slideAngleNormal + 0.01f) {
             body.velocity = new Vector3(0, body.velocity.y, 0);
         }
-        body.AddForce(Vector3.down * (220.0f / body.mass + 9.81f) * (40 * Time.deltaTime), ForceMode.Acceleration);
+        body.AddForce(Vector3.down * (220.0f / body.mass + 9.81f) * ratio, ForceMode.Acceleration);
         /* ou si maudit et pas en state jump / fall */
         //JUMP
         //Debug.Log("moveStateParameters.jumpRequired2=" + moveStateParameters.jumpRequired);
@@ -582,7 +585,8 @@ public class KodaController : MonoBehaviour {
     }
 
     private void ApplyMovement() {
-        transform.position += inputVelocityAxis * Time.deltaTime;
+        //transform.position += inputVelocityAxis * Time.deltaTime * ratio;
+        transform.position += inputVelocityAxis * Time.fixedDeltaTime;
 
         //Orientation du personnage
         orientationMove = (direction.forward * moveStateParameters.moveZ) + (direction.right * moveStateParameters.moveX);
@@ -687,13 +691,13 @@ public class KodaController : MonoBehaviour {
                         // add a force to counter gravity (glide effect)
 
                         //body.AddForce(Vector3.up * glideCounterForce, ForceMode.Force);
-                        body.AddForce(Vector3.up * (glideCounterForce / body.mass) * (40 * Time.deltaTime), ForceMode.Acceleration);
+                        body.AddForce(Vector3.up * (glideCounterForce / body.mass) * ratio, ForceMode.Acceleration);
                         if (body.velocity.y < -9) {
                             body.velocity = new Vector3(body.velocity.x, -9, body.velocity.z);
                         }
                         interactBehaviorCtrl.DoGlide();
                         if (interactStateParameter.canAirStream) {
-                            body.AddForce(Vector3.up * (airStreamForce / body.mass) * (40 * Time.deltaTime) + (Vector3.up * Mathf.Abs(body.velocity.y)), ForceMode.Acceleration);
+                            body.AddForce(Vector3.up * (airStreamForce / body.mass) * ratio + (Vector3.up * Mathf.Abs(body.velocity.y)), ForceMode.Acceleration);
                             if (body.velocity.y > 8.0f) {
                                 //Debug.Log ("STOP AIRSTREAM!!!");
                                 // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
