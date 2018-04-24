@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class PlayerHealth : MonoBehaviour {
 
@@ -67,6 +70,9 @@ public class PlayerHealth : MonoBehaviour {
 
     public void LooseHP(float dmg) {
         if (!isInvincible) {
+            //================================================
+            SoundController.instance.SelectKODA("Hurt");
+            //================================================
             animPlayer.SetTrigger("Hit");
             playerHealthCurrent = playerHealthCurrent - dmg;
             knockBackCounter = invincibleTime;
@@ -86,6 +92,9 @@ public class PlayerHealth : MonoBehaviour {
     }
 
     public void GainHP(float nbHP) {
+        //================================================
+        SoundController.instance.SelectENVQuick("Kaki");
+        //================================================
         if (playerHealthCurrent == 1) {
             CanvasHealth.SetActive(false);
         }
