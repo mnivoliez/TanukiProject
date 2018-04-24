@@ -15221,7 +15221,7 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1641777422}
+      objectReference: {fileID: 1719067159}
     - target: {fileID: 20144259831111884, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: far clip plane
@@ -15231,12 +15231,24 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1202087332}
+      objectReference: {fileID: 1078002160}
     - target: {fileID: 114167405134644822, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: hasPermanentDoubleJumpCapacity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114413189276461600, guid: a95e21316b361044681464f5613ea9f0,
+        type: 2}
+      propertyPath: landingParticlePrefab
+      value: 
+      objectReference: {fileID: 1759683653779222, guid: 9c62da9805eea234493025a0511be676,
+        type: 2}
+    - target: {fileID: 114413189276461600, guid: a95e21316b361044681464f5613ea9f0,
+        type: 2}
+      propertyPath: pawsProjectorPrefab
+      value: 
+      objectReference: {fileID: 1144277784283832, guid: 762be4c2ad525854dae3c279a2997f2d,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a95e21316b361044681464f5613ea9f0, type: 2}
   m_IsPrefabParent: 0
@@ -34032,7 +34044,7 @@ MonoBehaviour:
     - {x: 20.719868, y: -192.43149, z: 476.59518}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -34057,10 +34069,14 @@ MonoBehaviour:
   numTris: 1356
   spacingU: 2.83
   divisionV: 2
-  waterfallWidth: 20
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 0.5
   tilingV: 10
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!33 &549099469
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -61493,6 +61509,37 @@ Transform:
   m_Father: {fileID: 1963547863}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &1078002160
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &1083493167
 GameObject:
   m_ObjectHideFlags: 0
@@ -67200,37 +67247,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4389761631042078, guid: e93ab693adeaa4d4897ebd7c7595f466,
     type: 2}
   m_PrefabInternal: {fileID: 1322978513}
---- !u!84 &1202087332
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1001 &1206156490
 Prefab:
   m_ObjectHideFlags: 0
@@ -93021,26 +93037,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1060b67c9585c7a4fb7415e96e4dd484, type: 2}
   m_IsPrefabParent: 0
---- !u!21 &1641777422
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!1 &1643007694
 GameObject:
   m_ObjectHideFlags: 0
@@ -96717,6 +96713,26 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4bb29b4855111e541b2cb3a18406ff57, type: 2}
   m_IsPrefabParent: 0
+--- !u!21 &1719067159
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!1001 &1721529712
 Prefab:
   m_ObjectHideFlags: 0
