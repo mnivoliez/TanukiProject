@@ -477,7 +477,7 @@ public class KodaController : MonoBehaviour {
             inputVelocityAxis = (moveStateParameters.moveX * direction.right +
                                  moveStateParameters.moveZ * direction.forward);
             if (inputVelocityAxis.magnitude > 1)
-                inputVelocityAxis = inputVelocityAxis.normalized;
+				inputVelocityAxis.Normalize();
             inputVelocityAxis *= moveSpeed;
         }
         else {
@@ -626,7 +626,14 @@ public class KodaController : MonoBehaviour {
         }
 
         // reset variables
-        allowedToWalk = false;
+		if (IsGrounded ())
+		{
+			allowedToWalk = false;
+		}
+		else
+		{
+			allowedToWalk = true;
+		}
         //inclinationNormal = Vector3.zero;
         inclinationNormals.Clear();
         //direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
