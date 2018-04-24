@@ -96,6 +96,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip envCorruptedWater;
     [SerializeField] private AudioClip envFireWall;
     [SerializeField] private AudioClip envWaterfall;
+    [SerializeField] private AudioClip envWind;
 
     [Header("BARE NECECITIES")]
     [Space(10)]
@@ -524,6 +525,14 @@ public class SoundController : MonoBehaviour {
 
             case "WaterFall":
                 PlayEnvironnementEffectLong(envWaterfall);
+                break;
+
+            case "FireWall":
+                PlayEnvironnementEffectLong(envFireWall);
+                break;
+
+            case "Wind":
+                PlayEnvironnementEffectLong(envWind);
                 break;
 
             default:
