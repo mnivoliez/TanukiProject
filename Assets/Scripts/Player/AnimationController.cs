@@ -17,6 +17,8 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
     public Transform playerTransform;
 
+    public Transform glideTransform;
+
     private float smoothVertSpeed;
 
     void Start() {
@@ -46,6 +48,7 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
             case MovementState.Fall:
                 animBody.SetBool("isInAir", true);
                 emissionRun.enabled = false;
+                glideTransform.gameObject.SetActive(false);
                 break;
             case MovementState.DoubleJump:
                 animBody.SetTrigger("DoubleJump");
@@ -58,6 +61,7 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
             case MovementState.Run:
                 animBody.SetBool("isInAir", false);
                 emissionRun.enabled = true;
+                glideTransform.gameObject.SetActive(false);
                 break;
         }
     }
@@ -77,6 +81,7 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
             case InteractState.Glide:
                 animBody.SetBool("isGliding", true);
+                glideTransform.gameObject.SetActive(true);
                 break;
 
             case InteractState.MeleeAttack:
