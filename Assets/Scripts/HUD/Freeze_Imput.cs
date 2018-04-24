@@ -2,18 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+struct TimelineObject {
+    public GameObject gameObject;
+}
+
 public class Freeze_Imput : MonoBehaviour {
 
     [SerializeField] private bool isfreeze;
+    [SerializeField] private bool deleteTimeline;
+    [SerializeField] private TimelineObject[] timelineObject;
+
     private InputController playerInput;
 
 	void Start () {
         playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>();
-        
-	}
+        if (deleteTimeline) {
+            foreach (TimelineObject obj in timelineObject) {
+                if (obj.gameObject != null) {
+                    Destroy(obj.gameObject, 3f);
+                }
+            }
+        }
+    }
 	
 
-	void Update () {
+	void FixedUpdate () {
         //===========================
         if (Pause.Paused) {
             return;
@@ -21,4 +35,5 @@ public class Freeze_Imput : MonoBehaviour {
         //===========================
         playerInput.SetFreezeInput(isfreeze);
     }
+
 }

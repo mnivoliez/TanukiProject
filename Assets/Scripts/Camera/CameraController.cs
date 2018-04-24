@@ -37,6 +37,7 @@ public class CameraController : MonoBehaviour {
     private Transform camBase;
     private Transform player;
     private Transform playerTanukiModel;
+	private InputController inputController;
 
     private float cameraDistance = 10f;
 
@@ -77,6 +78,8 @@ public class CameraController : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerTanukiModel = player.Find("TanukiPlayer");
         camBase = transform.parent;
+
+		inputController = player.GetComponent<InputController> ();
 
         currentCameraDistance = defaultCameraDistance;
         currentCameraAngleYRot = 0f;
@@ -230,7 +233,7 @@ public class CameraController : MonoBehaviour {
     }
 
     private void GetCameraMovement() {
-        InputParams inputParams = player.GetComponent<InputController>().RetrieveUserRequest();
+        InputParams inputParams = inputController.RetrieveUserRequest();
 
         if (currentCameraDistance <= maxCameraDistance && currentCameraDistance >= minCameraDistance) // we are inside the range
         {
