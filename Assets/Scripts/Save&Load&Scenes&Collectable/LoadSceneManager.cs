@@ -61,10 +61,14 @@ public class LoadSceneManager : MonoBehaviour {
     // The coroutine runs on its own at the same time as Update() and takes an integer indicating which scene to load.
     IEnumerator LoadAsyncScene(string sceneNameToLoad) {
 
-        StartCoroutine(FadeIn());
-        yield return new WaitForSeconds(1);
+        if (anim != null) {
+            StartCoroutine(FadeIn());
+            yield return new WaitForSeconds(1);
+        }
         loadingMainPanel.SetActive(true);
-        transitionImageInstance.gameObject.SetActive(false);
+        if (anim != null) {
+            transitionImageInstance.gameObject.SetActive(false);
+        }
         yield return new WaitForSeconds(2);
         AsyncOperation async_Load = SceneManager.LoadSceneAsync(sceneNameToLoad);
 
