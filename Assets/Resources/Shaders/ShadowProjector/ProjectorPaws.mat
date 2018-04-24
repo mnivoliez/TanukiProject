@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ProjectorPaws
-  m_Shader: {fileID: 4800000, guid: 5a264612416f939409b4e5f90e169f86, type: 3}
+  m_Shader: {fileID: 4800000, guid: 89dfcfc8671684e40a638ec0e568971d, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -18,11 +18,17 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _ShadowTex:
-        m_Texture: {fileID: 2800000, guid: 550f097a6b034754fb34a7dd8496d8db, type: 3}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2813bf244347c7142be752c22da1a42f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
+    - _ShadowTex:
+        m_Texture: {fileID: 2800000, guid: 2813bf244347c7142be752c22da1a42f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _InvFade: 1
     m_Colors:
     - _PawProgress: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowColor: {r: 1, g: 1, b: 1, a: 0.503}
+    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
