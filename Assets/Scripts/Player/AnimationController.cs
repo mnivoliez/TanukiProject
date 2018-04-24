@@ -18,12 +18,14 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
     public Transform playerTransform;
 
     public Transform glideTransform;
+    private ParticleSystem.EmissionModule emissionGlide;
 
     private float smoothVertSpeed;
 
     void Start() {
         animBody = GetComponent<Animator>();
         emissionRun = runParticleTransform.gameObject.GetComponent<ParticleSystem>().emission;
+        emissionGlide = glideTransform.gameObject.GetComponent<ParticleSystem>().emission;
     }
 
     public void UpdateState(MovementState state, float speed, float lateralBend, float verticalSpeed) {
@@ -48,7 +50,6 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
             case MovementState.Fall:
                 animBody.SetBool("isInAir", true);
                 emissionRun.enabled = false;
-                glideTransform.gameObject.SetActive(false);
                 break;
             case MovementState.DoubleJump:
                 animBody.SetTrigger("DoubleJump");
@@ -61,7 +62,6 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
             case MovementState.Run:
                 animBody.SetBool("isInAir", false);
                 emissionRun.enabled = true;
-                glideTransform.gameObject.SetActive(false);
                 break;
         }
     }
@@ -81,7 +81,7 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
             case InteractState.Glide:
                 animBody.SetBool("isGliding", true);
-                glideTransform.gameObject.SetActive(true);
+                emissionGlide.enabled = true;
                 break;
 
             case InteractState.MeleeAttack:
@@ -121,6 +121,7 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
         switch (state) {
             case InteractState.Glide:
                 animBody.SetBool("isGliding", false);
+                emissionGlide.enabled = false;
                 break;
 
             case InteractState.MeleeAttack:
