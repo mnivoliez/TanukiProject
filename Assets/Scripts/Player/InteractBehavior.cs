@@ -321,10 +321,12 @@ public class InteractBehavior : MonoBehaviour {
     public GameObject DoSpawnLure() {
         GameObject clone = null;
         if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
-            leafHead.SetActive(false);
+            tempLeafHead.SetActive(false);
+            //leafHead.SetActive(false);
             Vector3 spawnLurePosition = tanukiPlayer.position + new Vector3(0, lureSpawnHeight, 0) + (tanukiPlayer.forward * 2);
             GameObject smokeSpawn = Instantiate(smokeSpawner, spawnLurePosition, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
+            Destroy(smokeSpawn, 2f);
             clone = Instantiate(lure, spawnLurePosition, tanukiPlayer.rotation);
             //clone.transform.Translate(0, 3, 2);
         }
@@ -335,13 +337,15 @@ public class InteractBehavior : MonoBehaviour {
         if (lure != null) {
             GameObject smokeSpawn = Instantiate(smokeSpawner, lure.transform.position, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
-            Destroy(lure);
-            leafHead.SetActive(true);
+            Destroy(smokeSpawn, 2f);
+            lure.GetComponent<LureController>().DestroyLure();
+            tempLeafHead.SetActive(false);
         }
     }
 
     public void CheckExistingLure(GameObject lure) {
         if (lure == null && leafHead.activeSelf == false) {
+            tempLeafHead.SetActive(true);
             leafHead.SetActive(true);
         }
     }
@@ -367,7 +371,8 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void ResetLeaf() {
-        leafHead.SetActive(true);
+        tempLeafHead.SetActive(true);
+        //leafHead.SetActive(true);
         leafHand.SetActive(false);
         ParachuteLeaf.SetBlendShapeWeight(0, 0);
         //sakePot.SetActive(false);
