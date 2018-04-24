@@ -18,6 +18,7 @@ public class CollectableManager : MonoBehaviour {
         Game.Reset_Game(); // Will reset ONLY if the current scene is "Zone Tuto"
         Game.Load();
         if (SceneManager.GetActiveScene().name != "MainMenu") {
+            FindYokaiGeneralAndSetID();
             FindYokaiGeneralAndDisable();
             Game.Update_Game();
             isPurified(Game.playerData.current_scene);
@@ -75,8 +76,19 @@ public class CollectableManager : MonoBehaviour {
         }
     }
 
-    void FindYokaiGeneralAndDisable() {
+    void FindYokaiGeneralAndSetID() {
         yokaiGeneralCurrentScene = 0;
+        gOList = (GameObject[])FindObjectsOfType(typeof(GameObject));
+
+        for (int i = 0; i < gOList.Length; i++) {
+            if (gOList[i].name.Contains("Yokai_General")) {
+                gOList[i].GetComponent<YokaiAIv2Controller>().yokaiID = yokaiGeneralCurrentScene;
+                yokaiGeneralCurrentScene = yokaiGeneralCurrentScene + 1;
+            }
+        }
+    }
+
+    void FindYokaiGeneralAndDisable() {
         gOList = (GameObject[])FindObjectsOfType(typeof(GameObject));
 
         for (int i = 0; i < gOList.Length; i++) {

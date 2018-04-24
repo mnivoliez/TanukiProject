@@ -201,7 +201,7 @@ public static class Game {
 
             playerData.yokaiRemainingZ1P1 = new int[7];
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P1, playerData.yokaiRemainingZ1P1.Length);
-            playerData.yokaiRemainingZ1P2 = new int[9];
+            playerData.yokaiRemainingZ1P2 = new int[14];
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P2, playerData.yokaiRemainingZ1P2.Length);
             playerData.yokaiRemainingZ1P3 = new int[7];
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P3, playerData.yokaiRemainingZ1P3.Length);
