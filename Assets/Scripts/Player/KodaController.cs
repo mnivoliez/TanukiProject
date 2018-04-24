@@ -73,6 +73,8 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private GameObject interactArea;
     [SerializeField] private float fieldOfView = 45f;
 
+    private PlayerHealth playerHealth;
+    private DetectNearInteractObject detectNearInteractObject;
     private List<Vector3> inclinationNormals;
     private GameObject catchableObject;
     private GameObject objectToCarry;
@@ -80,6 +82,7 @@ public class KodaController : MonoBehaviour {
     private float speed = 10f;
     private float coefInclination;
     private List<GameObject> _grounds = new List<GameObject>();
+    private float ratio;
 
     //Orientation Camera player
     [Header("CAMERA")]
@@ -106,8 +109,8 @@ public class KodaController : MonoBehaviour {
     private InteractStateParam interactStateParameter;
     private InteractStateController InteractStateCtrl;
 
-	private bool allowedToWalk;
-	private Vector3 normal_contact;
+    private bool allowedToWalk;
+    private Vector3 normal_contact;
 
     private InputController inputController;
 
@@ -133,7 +136,6 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private GameObject CameraMinimap;
     [SerializeField] private GameObject CanvasPrefabPause;
     [SerializeField] private GameObject SceneTransitionImage;
-    [SerializeField] private GameObject LoadingScreen;
     [SerializeField] private GameObject DeathTransitionImage;
     [SerializeField] private GameObject VictoryTransitionImage;
 
@@ -160,7 +162,7 @@ public class KodaController : MonoBehaviour {
         Instantiate(CameraMinimap).name = "MinimapCamera";
         //Instantiate(CanvasPrefabPause).name = "PauseCanvas";
         Instantiate(SceneTransitionImage).name = "SceneTransitionImage";
-        Instantiate(LoadingScreen).name = "LoadingScreen";
+        //Instantiate(LoadingScreen).name = "LoadingScreen";
         Instantiate(DeathTransitionImage).name = "DeathTransitionImage";
         Instantiate(VictoryTransitionImage).name = "VictoryTransitionImage";
     }
@@ -181,6 +183,8 @@ public class KodaController : MonoBehaviour {
         InteractStateCtrl = new InteractStateController();
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
+        playerHealth = GetComponent<PlayerHealth>();
+        detectNearInteractObject = interactArea.GetComponent<DetectNearInteractObject> ();
         loadingBar = canvasQTE.transform.GetChild(0).gameObject.GetComponent<Image>();
 
         direction = transform.Find("Direction");
@@ -203,6 +207,8 @@ public class KodaController : MonoBehaviour {
             return;
         }
         //===========================
+
+        ratio = (40 * Time.deltaTime) / (Time.fixedDeltaTime / 0.02f);
 
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
@@ -302,12 +308,12 @@ public class KodaController : MonoBehaviour {
             if (lanternNearest != null) {
                 if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
                     //Debug.Log("die distance");
-                    GetComponent<PlayerHealth>().PlayerDie();
+                    playerHealth.PlayerDie();
                     runOnWater = false;
                 }
             }
             else {
-                GetComponent<PlayerHealth>().PlayerDie();
+                playerHealth.PlayerDie();
                 runOnWater = false;
             }
         }
@@ -388,9 +394,9 @@ public class KodaController : MonoBehaviour {
 
                         coefInclination = Vector3.Angle(c.normal, Vector3.up);
                         //Debug.Log ("Ground=" + c.normal + " norm=" + c.normal.y + " angle=" + coefInclination + " name=" + gO.name + " " + Time.time);
-						if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f /*|| Vector3.Distance(c.point, transform.position) < 0.5f*/) {
+                        if (coefInclination >= 0.0f && coefInclination < slideAngle + 0.01f /*|| Vector3.Distance(c.point, transform.position) < 0.5f*/) {
                             allowedToWalk = true;
-							normal_contact = c.normal;
+                            normal_contact = c.normal;
                         }
                         else {
                             inclinationNormals.Add(c.normal);
@@ -446,7 +452,7 @@ public class KodaController : MonoBehaviour {
         if (coefInclination > 29.99f && coefInclination < slideAngleNormal + 0.01f) {
             body.velocity = new Vector3(0, body.velocity.y, 0);
         }
-        body.AddForce(Vector3.down * (220.0f / body.mass + 9.81f) * (40 * Time.deltaTime), ForceMode.Acceleration);
+        body.AddForce(Vector3.down * (220.0f / body.mass + 9.81f) * ratio, ForceMode.Acceleration);
         /* ou si maudit et pas en state jump / fall */
         //JUMP
         //Debug.Log("moveStateParameters.jumpRequired2=" + moveStateParameters.jumpRequired);
@@ -582,7 +588,8 @@ public class KodaController : MonoBehaviour {
     }
 
     private void ApplyMovement() {
-        transform.position += inputVelocityAxis * Time.deltaTime;
+        //transform.position += inputVelocityAxis * Time.deltaTime * ratio;
+        transform.position += inputVelocityAxis * Time.fixedDeltaTime;
 
         //Orientation du personnage
         orientationMove = (direction.forward * moveStateParameters.moveZ) + (direction.right * moveStateParameters.moveX);
@@ -598,31 +605,31 @@ public class KodaController : MonoBehaviour {
                 angle += 360;
 
             playerModel.rotation = Quaternion.Slerp(playerModel.rotation, newRotation, rotateSpeed * Time.fixedDeltaTime);
-		}
-		//Debug.Log ("inclinationNormals.Count=" + inclinationNormals.Count + " " + Time.time);
-		direction.up = Vector3.up;
-		direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
-		if (allowedToWalk)
-		{
-			/*float angleX = Mathf.Abs(gO.transform.rotation.eulerAngles.x);
+        }
+        //Debug.Log ("inclinationNormals.Count=" + inclinationNormals.Count + " " + Time.time);
+        direction.up = Vector3.up;
+        direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
+        if (allowedToWalk)
+        {
+            /*float angleX = Mathf.Abs(gO.transform.rotation.eulerAngles.x);
             if (angleX > 180)
-				angleX = angleX % 360 - 360;
+                angleX = angleX % 360 - 360;
             float angleZ = Mathf.Abs(gO.transform.rotation.eulerAngles.z);
             if (angleZ > 180)
-				angleZ = angleZ % 360 - 360;
+                angleZ = angleZ % 360 - 360;
             direction.RotateAround(direction.position, Vector3.right, angleX % 90);
             direction.RotateAround(direction.position, Vector3.forward, angleZ % 90);*/
 
-			direction.forward = Vector3.ProjectOnPlane (direction.forward, normal_contact).normalized;
-			float angle_normal = Vector3.SignedAngle (direction.up, normal_contact, direction.forward);
-			direction.RotateAround (direction.position, direction.forward, angle_normal);
-		}
+            direction.forward = Vector3.ProjectOnPlane (direction.forward, normal_contact).normalized;
+            float angle_normal = Vector3.SignedAngle (direction.up, normal_contact, direction.forward);
+            direction.RotateAround (direction.position, direction.forward, angle_normal);
+        }
 
         // reset variables
         allowedToWalk = false;
         //inclinationNormal = Vector3.zero;
         inclinationNormals.Clear();
-		//direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+        //direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
     }
 
     void InteractAccordingToInput() {
@@ -687,13 +694,13 @@ public class KodaController : MonoBehaviour {
                         // add a force to counter gravity (glide effect)
 
                         //body.AddForce(Vector3.up * glideCounterForce, ForceMode.Force);
-                        body.AddForce(Vector3.up * (glideCounterForce / body.mass) * (40 * Time.deltaTime), ForceMode.Acceleration);
+                        body.AddForce(Vector3.up * (glideCounterForce / body.mass) * ratio, ForceMode.Acceleration);
                         if (body.velocity.y < -9) {
                             body.velocity = new Vector3(body.velocity.x, -9, body.velocity.z);
                         }
                         interactBehaviorCtrl.DoGlide();
                         if (interactStateParameter.canAirStream) {
-                            body.AddForce(Vector3.up * (airStreamForce / body.mass) * (40 * Time.deltaTime) + (Vector3.up * Mathf.Abs(body.velocity.y)), ForceMode.Acceleration);
+                            body.AddForce(Vector3.up * (airStreamForce / body.mass) * ratio + (Vector3.up * Mathf.Abs(body.velocity.y)), ForceMode.Acceleration);
                             if (body.velocity.y > 8.0f) {
                                 //Debug.Log ("STOP AIRSTREAM!!!");
                                 // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
@@ -716,6 +723,9 @@ public class KodaController : MonoBehaviour {
             case InteractState.MeleeAttack:
                 if (interactStateParameter.canMeleeAttack && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoMeleeAttack();
+                    //================================================
+                    SoundController.instance.SelectLEAF("CloseCombat");
+                    //================================================
                     leafLock.isUsed = true;
                 }
                 break;
@@ -766,7 +776,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.Absorb:
-                GameObject nearestObject = interactArea.GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = detectNearInteractObject.GetNearestObject();
                 if (nearestObject == null || !nearestObject.CompareTag("Yokai")) {
                     interactStateParameter.yokaiStillInRange = false;
                 }
@@ -880,7 +890,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.ContextualAction:
-                GameObject nearestObject = interactArea.GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = detectNearInteractObject.GetNearestObject();
 
                 if (interactState == InteractState.Carry) {
                     interactStateParameter.finishedCarry = true;
@@ -1040,7 +1050,7 @@ public class KodaController : MonoBehaviour {
         else if (collid.CompareTag("LoveHotel")) {
             InputParams inputParams = inputController.RetrieveUserRequest();
             if (inputParams.contextualButtonPressed && interactState == InteractState.Activate) {
-                LanternStandController stand = collid.gameObject.GetComponent<LanternStandController>();
+                LanternStandController stand = collid.GetComponent<LanternStandController>();
                 stand.RecallLantern();
                 inputParams.contextualButtonPressed = false;
                 inputController.SetUserRequest(inputParams);

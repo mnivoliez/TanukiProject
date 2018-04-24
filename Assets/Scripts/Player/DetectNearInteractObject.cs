@@ -29,7 +29,7 @@ public class DetectNearInteractObject : MonoBehaviour {
         if (nearestObject != null) {
             float distanceObject = Vector3.Distance(nearestObject.transform.position, direction.position);
             Vector3 offSetPoint = direction.position - direction.forward * offSet;
-            float angleObject = Vector3.Angle(direction.forward, (nearestObject.transform.position - offSetPoint));
+            float angleObject = Vector3.Angle(direction.forward, nearestObject.transform.position - offSetPoint);
             bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
             if(!isInCone) {
                 nearestObject = null;
@@ -39,18 +39,20 @@ public class DetectNearInteractObject : MonoBehaviour {
 	}
 
     void OnTriggerStay(Collider collider) {
-
+        
         float distanceObject = Vector3.Distance(collider.gameObject.transform.position, direction.position);
-        Vector3 offSetPoint = direction.position + direction.forward * -offSet;
+        Vector3 offSetPoint = direction.position - direction.forward * offSet;
         float angleObject = Vector3.Angle(direction.forward, (collider.gameObject.transform.position - offSetPoint));
         bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
 
-        bool needDetectObject =  isInCone && (collider.gameObject.layer == LayerMask.NameToLayer("Catchable")
-            || collider.gameObject.layer == LayerMask.NameToLayer("Activable")
-            || (collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked()) );
+        bool needDetectObject =  isInCone &&
+            (collider.gameObject.layer == LayerMask.NameToLayer("Catchable")
+                || collider.gameObject.layer == LayerMask.NameToLayer("Activable")
+                || (collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked())
+            );
 
         if (needDetectObject) {
-
+            Debug.Log(collider.gameObject.layer + " " + LayerMask.LayerToName(collider.gameObject.layer));
             if (nearestObject == null) {
                 rangeNearestObject = distanceObject;
                 nearestObject = collider.gameObject;
@@ -61,7 +63,7 @@ public class DetectNearInteractObject : MonoBehaviour {
                 float distanceDiff = rangeNearestObject - distanceObject;
 
                 // if it is within the prioritize zone, we will check the prioritized status of the new object over the stored one.
-                bool withinPrioritizationRange = System.Math.Abs(distanceDiff) > prioritizationRange;
+                bool withinPrioritizationRange = System.Math.Abs(distanceDiff) < prioritizationRange;
                 if(withinPrioritizationRange) {
                     bool storedObjectIsCatchable = nearestObject.layer == LayerMask.NameToLayer("Catchable");
                     bool newObjectIsCatchable = collider.gameObject.layer == LayerMask.NameToLayer("Catchable");

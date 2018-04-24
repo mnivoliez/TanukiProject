@@ -199,6 +199,7 @@ public class YokaiAIv2Controller : YokaiController {
         //================================================
         SoundController.instance.SelectYOKAI("Absorbed");
         //================================================
+        Game.yokai_Collectable_Caught(yokaiID);
     }
 
     public override void Die() {
@@ -235,4 +236,5 @@ public class YokaiAIv2Controller : YokaiController {
             }
         }
     }
+
 }
