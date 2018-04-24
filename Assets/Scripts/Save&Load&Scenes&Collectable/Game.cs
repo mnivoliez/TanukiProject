@@ -173,6 +173,7 @@ public static class Game {
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             playerData.hp = 3.0f;
             playerData.hp_max = 3.0f;
+            playerData.talisman = 0;
 
             playerData.selected_slot = 0;
 
@@ -231,6 +232,7 @@ public static class Game {
 public struct PlayerData {
     public float hp;
     public float hp_max;
+    public int talisman;
 
     public int selected_slot;
 
