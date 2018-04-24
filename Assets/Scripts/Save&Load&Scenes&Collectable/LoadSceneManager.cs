@@ -16,17 +16,20 @@ public class LoadSceneManager : MonoBehaviour {
     private Canvas canvasLoading;
     private GameObject loadingMainPanel;
 
+    GameObject transitionImageInstance;
+    GameObject loadingScreen;
+
     private bool loadScene = false;
 
 
     void Start() {
-        GameObject transitionImageInstance = GameObject.Find("SceneTransitionImage");
+        transitionImageInstance = GameObject.Find("SceneTransitionImage");
         if (transitionImageInstance != null) {
             Black = transitionImageInstance.GetComponent<Image>();
             anim = transitionImageInstance.GetComponent<Animator>();
         }
 
-        GameObject loadingScreen = GameObject.Find("LoadingScreen");
+        loadingScreen = GameObject.Find("LoadingScreen");
         if (loadingScreen != null) {
             canvasLoading = loadingScreen.GetComponent<Canvas>();
             loadingMainPanel = canvasLoading.transform.GetChild(0).gameObject;
@@ -58,22 +61,23 @@ public class LoadSceneManager : MonoBehaviour {
     // The coroutine runs on its own at the same time as Update() and takes an integer indicating which scene to load.
     IEnumerator LoadAsyncScene(string sceneNameToLoad) {
 
+        StartCoroutine(FadeIn());
+        yield return new WaitForSeconds(1);
+        loadingMainPanel.SetActive(true);
+        transitionImageInstance.gameObject.SetActive(false);
+        yield return new WaitForSeconds(2);
+        AsyncOperation async_Load = SceneManager.LoadSceneAsync(sceneNameToLoad);
+
+        // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
+        while (!async_Load.isDone) {
+            yield return null;
+        }
+    }
+
+    IEnumerator FadeIn() {
         if (anim != null) {
             anim.SetBool("Fade", true);
             yield return new WaitUntil(() => Black.color.a == 1);
         }
-
-        if (loadingMainPanel != null) {
-            loadingMainPanel.SetActive(true);
-            yield return new WaitForSeconds(3);
-        }
-
-        AsyncOperation async = SceneManager.LoadSceneAsync(sceneNameToLoad);
-
-        // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
-        while (!async.isDone) {
-            yield return null;
-        }
-
     }
 }

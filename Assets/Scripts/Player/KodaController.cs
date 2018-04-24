@@ -73,6 +73,8 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private GameObject interactArea;
     [SerializeField] private float fieldOfView = 45f;
 
+    private PlayerHealth playerHealth;
+    private DetectNearInteractObject detectNearInteractObject;
     private List<Vector3> inclinationNormals;
     private GameObject catchableObject;
     private GameObject objectToCarry;
@@ -134,7 +136,6 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private GameObject CameraMinimap;
     [SerializeField] private GameObject CanvasPrefabPause;
     [SerializeField] private GameObject SceneTransitionImage;
-    [SerializeField] private GameObject LoadingScreen;
     [SerializeField] private GameObject DeathTransitionImage;
     [SerializeField] private GameObject VictoryTransitionImage;
 
@@ -161,7 +162,7 @@ public class KodaController : MonoBehaviour {
         Instantiate(CameraMinimap).name = "MinimapCamera";
         //Instantiate(CanvasPrefabPause).name = "PauseCanvas";
         Instantiate(SceneTransitionImage).name = "SceneTransitionImage";
-        Instantiate(LoadingScreen).name = "LoadingScreen";
+        //Instantiate(LoadingScreen).name = "LoadingScreen";
         Instantiate(DeathTransitionImage).name = "DeathTransitionImage";
         Instantiate(VictoryTransitionImage).name = "VictoryTransitionImage";
     }
@@ -182,6 +183,8 @@ public class KodaController : MonoBehaviour {
         InteractStateCtrl = new InteractStateController();
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
+        playerHealth = GetComponent<PlayerHealth>();
+        detectNearInteractObject = interactArea.GetComponent<DetectNearInteractObject> ();
         loadingBar = canvasQTE.transform.GetChild(0).gameObject.GetComponent<Image>();
 
         direction = transform.Find("Direction");
@@ -305,12 +308,12 @@ public class KodaController : MonoBehaviour {
             if (lanternNearest != null) {
                 if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
                     //Debug.Log("die distance");
-                    GetComponent<PlayerHealth>().PlayerDie();
+                    playerHealth.PlayerDie();
                     runOnWater = false;
                 }
             }
             else {
-                GetComponent<PlayerHealth>().PlayerDie();
+                playerHealth.PlayerDie();
                 runOnWater = false;
             }
         }
@@ -720,6 +723,9 @@ public class KodaController : MonoBehaviour {
             case InteractState.MeleeAttack:
                 if (interactStateParameter.canMeleeAttack && !leafLock.isUsed) {
                     interactBehaviorCtrl.DoMeleeAttack();
+                    //================================================
+                    SoundController.instance.SelectLEAF("CloseCombat");
+                    //================================================
                     leafLock.isUsed = true;
                 }
                 break;
@@ -770,7 +776,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case InteractState.Absorb:
-                GameObject nearestObject = interactArea.GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = detectNearInteractObject.GetNearestObject();
                 if (nearestObject == null || !nearestObject.CompareTag("Yokai")) {
                     interactStateParameter.yokaiStillInRange = false;
                 }
@@ -884,7 +890,7 @@ public class KodaController : MonoBehaviour {
                 break;
 
             case ActionRequest.ContextualAction:
-                GameObject nearestObject = interactArea.GetComponent<DetectNearInteractObject>().GetNearestObject();
+                GameObject nearestObject = detectNearInteractObject.GetNearestObject();
 
                 if (interactState == InteractState.Carry) {
                     interactStateParameter.finishedCarry = true;
@@ -1044,7 +1050,7 @@ public class KodaController : MonoBehaviour {
         else if (collid.CompareTag("LoveHotel")) {
             InputParams inputParams = inputController.RetrieveUserRequest();
             if (inputParams.contextualButtonPressed && interactState == InteractState.Activate) {
-                LanternStandController stand = collid.gameObject.GetComponent<LanternStandController>();
+                LanternStandController stand = collid.GetComponent<LanternStandController>();
                 stand.RecallLantern();
                 inputParams.contextualButtonPressed = false;
                 inputController.SetUserRequest(inputParams);
