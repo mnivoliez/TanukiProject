@@ -44,12 +44,12 @@ public class DetectNearInteractObject : MonoBehaviour {
         Vector3 offSetPoint = direction.position - direction.forward * offSet;
         float angleObject = Vector3.Angle(direction.forward, (collider.gameObject.transform.position - offSetPoint));
         bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
+                    
+        bool newObjectIsCatchable = collider.gameObject.layer == LayerMask.NameToLayer("Catchable");
+        bool newObjectIsActivable = collider.gameObject.layer == LayerMask.NameToLayer("Activable");
+        bool newObjectIsAbsorbable = collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked();
 
-        bool needDetectObject =  isInCone &&
-            (collider.gameObject.layer == LayerMask.NameToLayer("Catchable")
-                || collider.gameObject.layer == LayerMask.NameToLayer("Activable")
-                || (collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked())
-            );
+        bool needDetectObject =  isInCone && (newObjectIsCatchable || newObjectIsActivable || newObjectIsAbsorbable);
 
         if (needDetectObject) {
             Debug.Log(collider.gameObject.layer + " " + LayerMask.LayerToName(collider.gameObject.layer));
@@ -64,18 +64,9 @@ public class DetectNearInteractObject : MonoBehaviour {
 
                 // if it is within the prioritize zone, we will check the prioritized status of the new object over the stored one.
                 bool withinPrioritizationRange = System.Math.Abs(distanceDiff) < prioritizationRange;
-                if(withinPrioritizationRange) {
-                    bool storedObjectIsCatchable = nearestObject.layer == LayerMask.NameToLayer("Catchable");
-                    bool newObjectIsCatchable = collider.gameObject.layer == LayerMask.NameToLayer("Catchable");
-                    bool bothCatchable = storedObjectIsCatchable && newObjectIsCatchable;
-                    bool bothNonCatchable = !storedObjectIsCatchable && !newObjectIsCatchable;
-                    if(!storedObjectIsCatchable && newObjectIsCatchable) {
-                       rangeNearestObject = distanceObject;
-                       nearestObject = collider.gameObject;
-                    } else if(distanceDiff > 0 && (bothCatchable || bothNonCatchable)) {
-                       rangeNearestObject = distanceObject;
-                       nearestObject = collider.gameObject;
-                    } 
+                if(withinPrioritizationRange && newObjectIsCatchable) {
+                    rangeNearestObject = distanceObject;
+                    nearestObject = collider.gameObject;
                 } else if( distanceDiff > 0) {
                     rangeNearestObject = distanceObject;
                     nearestObject = collider.gameObject;
