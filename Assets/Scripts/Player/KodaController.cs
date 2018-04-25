@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 //================================================
@@ -158,6 +159,8 @@ public class KodaController : MonoBehaviour {
 
     InputParams inputParams;
 
+    private bool levelIsLight = false;
+
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
         //Instantiate(CanvasPrefabPause).name = "PauseCanvas";
@@ -168,6 +171,9 @@ public class KodaController : MonoBehaviour {
     }
 
     private void Start() {
+        if(Game.playerData.lightBoss1 && (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete" || SceneManager.GetActiveScene().name == "Boss1")) { levelIsLight = true; }
+        if (Game.playerData.lightBoss2 && (SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete" || SceneManager.GetActiveScene().name == "Boss2")) { levelIsLight = true; }
+
         VictorySwitch.Victory = false;
 
         leafLock = new LeafLock(false, InteractState.Nothing);
@@ -184,7 +190,7 @@ public class KodaController : MonoBehaviour {
         inputController = GetComponent<InputController>();
         interactBehaviorCtrl = GetComponent<InteractBehavior>();
         playerHealth = GetComponent<PlayerHealth>();
-        detectNearInteractObject = interactArea.GetComponent<DetectNearInteractObject> ();
+        detectNearInteractObject = interactArea.GetComponent<DetectNearInteractObject>();
         loadingBar = canvasQTE.transform.GetChild(0).gameObject.GetComponent<Image>();
 
         direction = transform.Find("Direction");
@@ -305,16 +311,18 @@ public class KodaController : MonoBehaviour {
                     distance = dis;
                 }
             }
-            if (lanternNearest != null) {
-                if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
-                    //Debug.Log("die distance");
+            if (!levelIsLight) {
+                if (lanternNearest != null) {
+                    if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
+                        //Debug.Log("die distance");
+                        playerHealth.PlayerDie();
+                        runOnWater = false;
+                    }
+                }
+                else {
                     playerHealth.PlayerDie();
                     runOnWater = false;
                 }
-            }
-            else {
-                playerHealth.PlayerDie();
-                runOnWater = false;
             }
         }
     }
@@ -477,7 +485,7 @@ public class KodaController : MonoBehaviour {
             inputVelocityAxis = (moveStateParameters.moveX * direction.right +
                                  moveStateParameters.moveZ * direction.forward);
             if (inputVelocityAxis.magnitude > 1)
-                inputVelocityAxis = inputVelocityAxis.normalized;
+                inputVelocityAxis.Normalize();
             inputVelocityAxis *= moveSpeed;
         }
         else {
@@ -608,9 +616,8 @@ public class KodaController : MonoBehaviour {
         }
         //Debug.Log ("inclinationNormals.Count=" + inclinationNormals.Count + " " + Time.time);
         direction.up = Vector3.up;
-        direction.rotation = Quaternion.AngleAxis (Camera.main.transform.eulerAngles.y, Vector3.up);
-        if (allowedToWalk)
-        {
+        direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+        if (allowedToWalk) {
             /*float angleX = Mathf.Abs(gO.transform.rotation.eulerAngles.x);
             if (angleX > 180)
                 angleX = angleX % 360 - 360;
@@ -620,13 +627,18 @@ public class KodaController : MonoBehaviour {
             direction.RotateAround(direction.position, Vector3.right, angleX % 90);
             direction.RotateAround(direction.position, Vector3.forward, angleZ % 90);*/
 
-            direction.forward = Vector3.ProjectOnPlane (direction.forward, normal_contact).normalized;
-            float angle_normal = Vector3.SignedAngle (direction.up, normal_contact, direction.forward);
-            direction.RotateAround (direction.position, direction.forward, angle_normal);
+            direction.forward = Vector3.ProjectOnPlane(direction.forward, normal_contact).normalized;
+            float angle_normal = Vector3.SignedAngle(direction.up, normal_contact, direction.forward);
+            direction.RotateAround(direction.position, direction.forward, angle_normal);
         }
 
         // reset variables
-        allowedToWalk = false;
+        if (IsGrounded()) {
+            allowedToWalk = false;
+        }
+        else {
+            allowedToWalk = true;
+        }
         //inclinationNormal = Vector3.zero;
         inclinationNormals.Clear();
         //direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
@@ -825,11 +837,11 @@ public class KodaController : MonoBehaviour {
                 movementState == MovementState.Idle ||
                 movementState == MovementState.Run ||
                 (
-                    !inputParams.hasDoubleJumped && 
+                    !inputParams.hasDoubleJumped &&
                     (
-                        temporaryCapacity == Capacity.DoubleJump || 
+                        temporaryCapacity == Capacity.DoubleJump ||
                         hasPermanentDoubleJumpCapacity
-                    ) && 
+                    ) &&
                     interactState != InteractState.Carry
                 )
             );
