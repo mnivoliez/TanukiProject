@@ -215,8 +215,6 @@ public static class Game {
             Reset_Yokai_Scene(playerData.yokaiRemainingTEST, playerData.yokaiRemainingTEST.Length);
 
             scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
-
-            PreSave_Game_and_Save();
         }
     }
 

@@ -11,7 +11,8 @@ public class LanternShaderGUI : ShaderGUI {
 
 	private enum ShaderType {
 		Base,
-		Water
+		Water,
+		Tanuki
 	}
 
 	private enum AlphaMode {
@@ -21,6 +22,7 @@ public class LanternShaderGUI : ShaderGUI {
 	}
 
 	private string shaderName = "Custom/Lantern/WorldBlending";
+	private string shaderNameWater = "Custom/Lantern/WorldBlendingWater";
 
 	private MaterialProperty _Mode = null;
 
@@ -94,6 +96,11 @@ public class LanternShaderGUI : ShaderGUI {
 	private MaterialProperty _DistortStrength = null;
 	GUIContent distortStrengthGUI = new GUIContent ("Factor", "Distort Strength");
 
+	private MaterialProperty _EmissiveColor = null;
+	GUIContent emissiveColorGUI = new GUIContent ("Color", "Emissive Color");
+	private MaterialProperty _EmissiveIntensity = null;
+	GUIContent emissiveIntensityGUI = new GUIContent ("Mul", "Emissive Intensity");
+
 	private int pixelSpace = 8;
 
 	private MaterialEditor editor;
@@ -101,20 +108,18 @@ public class LanternShaderGUI : ShaderGUI {
 
 	private ShaderType shaderType;
 
-	public void FindProperties (MaterialProperty[] props) {
-		_Mode = ShaderGUI.FindProperty ("_Mode", props);
+	public void FindProperties (MaterialProperty[] props, int id) {		
+		if (id == 0) {
+			_Mode = ShaderGUI.FindProperty ("_Mode", props);
 
-		_FirstTexture = FindProperty ("_FirstTexture", props);
-		_FirstLColor = FindProperty ("_FirstLColor", props);
-		_SecondTexture = FindProperty ("_SecondTexture", props);
-		_SecondLColor = FindProperty ("_SecondLColor", props);
-
-		_StepCount = ShaderGUI.FindProperty ("_StepCount", props);
-		
-		if (ShaderType.Base == shaderType) {
 			_AlphaMode = ShaderGUI.FindProperty ("_AlphaMode", props);
 			_AlphaModeEmiL = ShaderGUI.FindProperty ("_AlphaModeEmiL", props);
 			_AlphaModeEmiD = ShaderGUI.FindProperty ("_AlphaModeEmiD", props);
+
+			_FirstTexture = FindProperty ("_FirstTexture", props);
+			_FirstLColor = FindProperty ("_FirstLColor", props);
+			_SecondTexture = FindProperty ("_SecondTexture", props);
+			_SecondLColor = FindProperty ("_SecondLColor", props);
 
 			_FirstDColor = FindProperty ("_FirstDColor", props);
 			_SecondDColor = ShaderGUI.FindProperty ("_SecondDColor", props);
@@ -124,6 +129,8 @@ public class LanternShaderGUI : ShaderGUI {
 			_RimIntensity = FindProperty ("_RimIntensity", props);
 			_RimPow = FindProperty ("_RimPow", props);
 
+			_StepCount = ShaderGUI.FindProperty ("_StepCount", props);
+
 			_IsMask = ShaderGUI.FindProperty ("_IsMask", props);
 			
 			_MaskTexture = ShaderGUI.FindProperty ("_MaskTexture", props);
@@ -131,7 +138,14 @@ public class LanternShaderGUI : ShaderGUI {
 			_MaskREmi = ShaderGUI.FindProperty ("_MaskREmi", props);
 			_MaskGColor = ShaderGUI.FindProperty ("_MaskGColor", props);
 			_MaskGEmi = ShaderGUI.FindProperty ("_MaskGEmi", props);
-		} else {
+		} else if(id == 1) {
+			_Mode = ShaderGUI.FindProperty ("_Mode", props);
+
+			_FirstTexture = FindProperty ("_FirstTexture", props);
+			_FirstLColor = FindProperty ("_FirstLColor", props);
+			_SecondTexture = FindProperty ("_SecondTexture", props);
+			_SecondLColor = FindProperty ("_SecondLColor", props);
+
 			_FirstFoamColor = FindProperty ("_FirstFoamColor", props);
 			_SecondFoamColor = FindProperty ("_SecondFoamColor", props);
 
@@ -142,10 +156,26 @@ public class LanternShaderGUI : ShaderGUI {
 			_WaveAmount = ShaderGUI.FindProperty ("_WaveAmount", props);
 			_WaveHeight = ShaderGUI.FindProperty ("_WaveHeight", props);
 
+			_StepCount = ShaderGUI.FindProperty ("_StepCount", props);
+
 			_NoiseScale = ShaderGUI.FindProperty ("_NoiseScale", props);
 			_NoiseIntensity = ShaderGUI.FindProperty ("_NoiseIntensity", props);
 
 			_DistortStrength = ShaderGUI.FindProperty ("_DistortStrength", props);
+		} else {
+			_FirstTexture = FindProperty ("_FirstTexture", props);
+			_FirstLColor = FindProperty ("_FirstLColor", props);
+			_FirstDColor = FindProperty ("_FirstDColor", props);
+
+			_SpecIntensity = FindProperty ("_SpecIntensity", props);
+			_SpecPow = FindProperty ("_SpecPow", props);
+			_RimIntensity = FindProperty ("_RimIntensity", props);
+			_RimPow = FindProperty ("_RimPow", props);
+
+			_EmissiveColor = FindProperty ("_EmissiveColor", props);
+			_EmissiveIntensity = FindProperty ("_EmissiveIntensity", props);
+
+			_StepCount = ShaderGUI.FindProperty ("_StepCount", props);
 		}
 	}
 
@@ -153,56 +183,48 @@ public class LanternShaderGUI : ShaderGUI {
 		this.editor = editor;
 		this.target = editor.target as Material;
 
-		if (target.shader.name.Equals (shaderName))
+		if (target.shader.name.Equals (shaderName)) {
+			FindProperties (properties, 0);
 			shaderType = ShaderType.Base;
-		else
+			DoWorld();
+		} else if (target.shader.name.Equals (shaderNameWater)) {
+			FindProperties (properties, 1);
 			shaderType = ShaderType.Water;
-
-		FindProperties (properties);
-
-		DoBase ();
+			DoWater();
+		} else {
+			FindProperties (properties, 2);
+			shaderType = ShaderType.Tanuki;
+			DoTanuki();
+		}
 	}
 
-	void DoBase() {
+	void DoWorld () {
 		EditorGUI.BeginChangeCheck ();
 		editor.ShaderProperty (_Mode, _Mode.displayName);
-		if (shaderType == ShaderType.Base) {
-			GUILayout.Space(pixelSpace);
-			editor.ShaderProperty (_AlphaMode, isAlphaModeGUI);
-		}
+		GUILayout.Space(pixelSpace);
+		editor.ShaderProperty (_AlphaMode, isAlphaModeGUI);
 		bool hasChanged = EditorGUI.EndChangeCheck ();
 
-		if(shaderType == ShaderType.Base) {
-			if((AlphaMode)_AlphaMode.floatValue == AlphaMode.Emissive) {
-				if((BlendMode)_Mode.floatValue == BlendMode.Lantern)
-					TextureInline(null, _AlphaModeEmiL, _AlphaModeEmiD, null, alphaModeEmiLGUI, alphaModeEmiDGUI);
-				else
-					editor.ShaderProperty (_AlphaModeEmiL, alphaModeEmiLGUI);
-			}
+		if((AlphaMode)_AlphaMode.floatValue == AlphaMode.Emissive) {
+			if((BlendMode)_Mode.floatValue == BlendMode.Lantern)
+				TextureInline(null, _AlphaModeEmiL, _AlphaModeEmiD, null, alphaModeEmiLGUI, alphaModeEmiDGUI);
+			else
+				editor.ShaderProperty (_AlphaModeEmiL, alphaModeEmiLGUI);
 		}
 		
 		if ((BlendMode)_Mode.floatValue == BlendMode.Simple) {
 			DoSimpleArea ();
-			if (shaderType == ShaderType.Base) {
-				DoSpecArea ();
-			} else {
-				DoWaterArea ();
-			}
+			DoSpecArea ();
 			DoToonArea ();
 			if (hasChanged)	SetKeywords (false, false);
 		} else {
 			DoLanternArea ();
-			if (shaderType == ShaderType.Base) {
-				DoSpecArea ();
-				DoMaskStartArea ();
-				if (_IsMask.floatValue == 1) {
-					DoMaskEndArea ();
-					if (hasChanged)	SetKeywords (true, true);
-				} else {
-					if (hasChanged) SetKeywords (true, false);
-				}
+			DoSpecArea ();
+			DoMaskStartArea ();
+			if (_IsMask.floatValue == 1) {
+				DoMaskEndArea ();
+				if (hasChanged)	SetKeywords (true, true);
 			} else {
-				DoWaterArea ();
 				if (hasChanged) SetKeywords (true, false);
 			}
 			DoToonArea ();
@@ -210,11 +232,39 @@ public class LanternShaderGUI : ShaderGUI {
 		GUILayout.Space(pixelSpace);
 	}
 
+	void DoWater() {
+		EditorGUI.BeginChangeCheck ();
+		editor.ShaderProperty (_Mode, _Mode.displayName);
+		GUILayout.Space(pixelSpace);
+		bool hasChanged = EditorGUI.EndChangeCheck ();
+		
+		if ((BlendMode)_Mode.floatValue == BlendMode.Simple) {
+			DoSimpleArea ();
+			DoWaterArea ();
+			DoToonArea ();
+			if (hasChanged)	SetKeywords (false, false);
+		} else {
+			DoLanternArea ();
+			DoWaterArea ();
+			if (hasChanged) SetKeywords (true, false);
+			DoToonArea ();
+		}
+		GUILayout.Space(pixelSpace);
+	}
+
+	void DoTanuki() {		
+		DoSimpleArea ();
+		DoSpecArea ();
+		DoEmissiveArea();
+		DoToonArea ();
+		GUILayout.Space(pixelSpace);
+	}
+
 	void DoSimpleArea () {
 		GUILayout.Space(pixelSpace);
 
 		EditorGUILayout.LabelField ("Texture", EditorStyles.boldLabel);
-		if (shaderType == ShaderType.Base) {
+		if (shaderType == ShaderType.Base || shaderType == ShaderType.Tanuki) {
 			firstTextureGUI.text = "Tex";
 			TextureInline (_FirstTexture, _FirstLColor, _FirstDColor, firstTextureGUI, firstLColorGUI, firstDColorGUI);
 			GUILayout.Space(pixelSpace/2);
@@ -244,7 +294,6 @@ public class LanternShaderGUI : ShaderGUI {
 			TextureInline (_SecondTexture, _SecondLColor, _SecondFoamColor, secondTextureWaterGUI, secondColorWaterGUI, secondColorFoamGUI);
 		}
 		
-
 	}
 
 	void DoSpecArea() {
@@ -255,6 +304,12 @@ public class LanternShaderGUI : ShaderGUI {
 		GUILayout.Space(pixelSpace);
 		EditorGUILayout.LabelField ("Rim", EditorStyles.boldLabel);
 		TwoPropertyInline (_RimIntensity, _RimPow, rimIntensityGUI, rimPowerGUI);
+	}
+
+	void DoEmissiveArea() {
+		GUILayout.Space(pixelSpace);
+		EditorGUILayout.LabelField ("Emissive", EditorStyles.boldLabel);
+		TwoPropertyInline(_EmissiveColor, _EmissiveIntensity, emissiveColorGUI, emissiveIntensityGUI);
 	}
 
 	void DoToonArea () {
@@ -373,15 +428,21 @@ public class LanternShaderGUI : ShaderGUI {
 	}
 
 	void SetKeywords (bool isLantern, bool isMask) {
-		SetKeyword ("_SIMPLE", !isLantern);
-		SetKeyword ("_LANTERN", isLantern);
-		SetKeyword ("_ISMASK_ON", isMask);
-		
-		if (shaderType == ShaderType.Base) {
-			AlphaMode alphaMode = (AlphaMode)_AlphaMode.floatValue;
-			SetKeyword ("_ALPHAMODE", alphaMode == AlphaMode.Alpha);
-			SetKeyword ("_EMISSIVEMODE", alphaMode == AlphaMode.Emissive);
-			SetKeyword ("_MASKMODE", alphaMode == AlphaMode.Mask);
+		if(shaderType != ShaderType.Tanuki) {
+			SetKeyword ("_SIMPLE", !isLantern);
+			SetKeyword ("_LANTERN", isLantern);
+			SetKeyword ("_ISMASK_ON", isMask);
+			
+			if (shaderType == ShaderType.Base) {
+				AlphaMode alphaMode = (AlphaMode)_AlphaMode.floatValue;
+				SetKeyword ("_ALPHAMODE", alphaMode == AlphaMode.Alpha);
+				SetKeyword ("_EMISSIVEMODE", alphaMode == AlphaMode.Emissive);
+				SetKeyword ("_MASKMODE", alphaMode == AlphaMode.Mask);
+
+				target.SetOverrideTag("RenderType", (alphaMode == AlphaMode.Alpha) ? "LanternAlpha" : "Lantern" );
+			}
+		} else {
+			target.SetOverrideTag("RenderType", "Opaque");
 		}
 	}
 }
