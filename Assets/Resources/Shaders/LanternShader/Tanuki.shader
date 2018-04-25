@@ -11,6 +11,8 @@
 		_EmissiveSpeed		("", Float)		= 1
 		_EmissiveStrength	("", Range(0,0.5))		= 0
 
+		_InvincibilityColor ("", Color)		= (1,1,1,1)
+
 		[PowerSlider(2.0)] 
 		_SpecIntensity	("", Range(0,30))	= 0
 		[PowerSlider(2.0)] 
