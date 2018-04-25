@@ -31,6 +31,12 @@ public class FireBarrierController : MonoBehaviour {
             renderBarrier.material.SetFloat("_Height", counter);
 
             if (counter > 2) {
+                if (isAlreadyPlayed) {
+                    isAlreadyPlayed = false;
+                    //================================================
+                    SoundController.instance.StopFireWallEffect();
+                    //================================================
+                }
                 Destroy(gameObject.transform.parent.gameObject);
             }
         }
@@ -38,7 +44,6 @@ public class FireBarrierController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        Debug.Log("distance: " + Mathf.Abs((target.transform.position - transform.position).magnitude));
         if (Mathf.Abs((target.transform.position - transform.position).magnitude) < 30f) {
             if (!isAlreadyPlayed) {
                 isAlreadyPlayed = true;
@@ -49,7 +54,6 @@ public class FireBarrierController : MonoBehaviour {
         }
         else {
             if (isAlreadyPlayed) {
-                Debug.Log("COUCOU");
                 isAlreadyPlayed = false;
                 //================================================
                 SoundController.instance.StopFireWallEffect();
