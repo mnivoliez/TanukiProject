@@ -53,6 +53,8 @@ public class SoundController : MonoBehaviour {
 
     [SerializeField] private AudioClip kodaFootStepWater1;
     [SerializeField] private AudioClip kodaFootStepWater2;
+    [SerializeField] private AudioClip kodaFootStepWater3;
+    [SerializeField] private AudioClip kodaFootStepWater4;
 
     private AudioClip[] allKodaJumpSound;
     private AudioClip[] allKodaFootStepGroundSound;
@@ -148,7 +150,7 @@ public class SoundController : MonoBehaviour {
     private void Start() {
         allKodaJumpSound = new AudioClip[] { kodaJump1, kodaJump2, kodaJump3 };
         allKodaFootStepGroundSound = new AudioClip[] { kodaFootStepGround1, kodaFootStepGround2, kodaFootStepGround3 };
-        allKodaFootStepWaterSound = new AudioClip[] { kodaFootStepWater1, kodaFootStepWater2 };
+        allKodaFootStepWaterSound = new AudioClip[] { kodaFootStepWater1, kodaFootStepWater2, kodaFootStepWater3 };
     }
 
     void OnEnable() {
