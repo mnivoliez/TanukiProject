@@ -12,7 +12,9 @@ public class CheckPoint : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
 
         if(other.CompareTag("Player")) {
-
+            //================================================
+            SoundController.instance.SelectENVQuick("Checkpoint");
+            //================================================
             Game.PreSave_Game_and_Save();
             StartCoroutine(SavingLogo());
             //Debug.Log(Application.persistentDataPath);
