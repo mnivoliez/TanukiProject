@@ -30,6 +30,9 @@ public class BazekoriNewBehavior : YokaiController {
     [SerializeField] private Renderer renderBody;
     private Animator animBody;
 
+    [SerializeField]
+    private GameObject AttackPrefab;
+
     private void Start() {
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
@@ -259,5 +262,9 @@ public class BazekoriNewBehavior : YokaiController {
                 agent.SetDestination(positionBehavior);
             }
         }
+    }
+
+    public void AttackFX() {
+        Instantiate(AttackPrefab, transform.position + transform.forward*2.5f, transform.rotation);
     }
 }
