@@ -116,6 +116,8 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip envKaki;
     [SerializeField] private AudioClip envVineWallRetracting;
     [SerializeField] private AudioClip envFireWallExtinguished;
+    [SerializeField] private AudioClip envCheckpoint;
+    [SerializeField] private AudioClip envFruitLoot;
 
     [Header("ENVIRONMENT LONG")]
     [Space(10)]
@@ -776,6 +778,14 @@ public class SoundController : MonoBehaviour {
 
             case "Switch":
                 PlayEnvironnementEffectQuick(envSwitch);
+                break;
+
+            case "Checkpoint":
+                PlayEnvironnementEffectQuick(envCheckpoint);
+                break;
+
+            case "FruitLoot":
+                PlayEnvironnementEffectQuick(envFruitLoot);
                 break;
 
             default:
