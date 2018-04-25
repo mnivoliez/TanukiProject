@@ -517,12 +517,12 @@ Transform:
   m_Children:
   - {fileID: 4279708}
   - {fileID: 108799070}
+  - {fileID: 1126655078}
   - {fileID: 2035299014}
   - {fileID: 1136447108}
   - {fileID: 1479641804}
   - {fileID: 2076887220}
   - {fileID: 252099092}
-  - {fileID: 1126655078}
   - {fileID: 88021350}
   - {fileID: 1742734628}
   - {fileID: 1965313016}
@@ -42420,26 +42420,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4451109365322330, guid: fa4c975346a38ce4ab54f1b5b0750e8d,
     type: 2}
   m_PrefabInternal: {fileID: 719375451}
---- !u!21 &719980105
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!1001 &720674960
 Prefab:
   m_ObjectHideFlags: 0
@@ -51238,12 +51218,12 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1294631703}
+      objectReference: {fileID: 1369137531}
     - target: {fileID: 119785275203550714, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 719980105}
+      objectReference: {fileID: 1452943853}
     - target: {fileID: 20144259831111884, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: far clip plane
@@ -51253,7 +51233,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1294631703}
+      objectReference: {fileID: 1369137531}
     - target: {fileID: 114167405134644822, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: hasPermanentDoubleJumpCapacity
@@ -56040,7 +56020,9 @@ GameObject:
   - component: {fileID: 891391150}
   - component: {fileID: 891391149}
   - component: {fileID: 891391148}
-  m_Layer: 0
+  - component: {fileID: 891391153}
+  - component: {fileID: 891391154}
+  m_Layer: 23
   m_Name: P_PathFirefly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56138,9 +56120,9 @@ MonoBehaviour:
     - {x: -21.46524, y: 13.015123, z: -48.14406}
     - {x: -26.622482, y: 12.688257, z: -35.884094}
     - {x: -30.108551, y: 12.46731, z: -27.596897}
-    - {x: -16.986588, y: 16.0006, z: -31.702469}
-    - {x: -18.09092, y: 15.2638645, z: -18.875854}
-    - {x: -18.737146, y: 14.832746, z: -11.3700485}
+    - {x: -16.986588, y: 16.0006, z: -50.829453}
+    - {x: -18.09092, y: 15.2638645, z: -38.00284}
+    - {x: -18.737146, y: 14.832746, z: -30.497032}
     - {x: -24.43863, y: 14.489008, z: -6.3488846}
     - {x: -19.190033, y: 13.014582, z: -1.1195984}
     - {x: -15.907829, y: 12.092551, z: 2.1505294}
@@ -56219,7 +56201,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1253266325
+  randomSeed: 1202891710
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -59546,6 +59528,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &891391153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 891391147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e93b7eef144234428aa42d576fa4675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &891391154
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 891391147}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &893162254
 Prefab:
   m_ObjectHideFlags: 0
@@ -75452,7 +75457,7 @@ Transform:
   - {fileID: 2087321265}
   - {fileID: 1282128000}
   m_Father: {fileID: 5704193}
-  m_RootOrder: 7
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1126838235
 Prefab:
@@ -78850,7 +78855,9 @@ GameObject:
   - component: {fileID: 1193773848}
   - component: {fileID: 1193773847}
   - component: {fileID: 1193773846}
-  m_Layer: 0
+  - component: {fileID: 1193773851}
+  - component: {fileID: 1193773852}
+  m_Layer: 23
   m_Name: P_PathFirefly (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79023,7 +79030,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 271938099
+  randomSeed: 1299806243
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -82350,6 +82357,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1193773851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1193773845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e93b7eef144234428aa42d576fa4675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &1193773852
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1193773845}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1194131301
 Prefab:
   m_ObjectHideFlags: 0
@@ -87055,37 +87085,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4451109365322330, guid: fa4c975346a38ce4ab54f1b5b0750e8d,
     type: 2}
   m_PrefabInternal: {fileID: 1293881952}
---- !u!84 &1294631703
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &1295018898
 GameObject:
   m_ObjectHideFlags: 0
@@ -92130,6 +92129,37 @@ Transform:
   m_PrefabParentObject: {fileID: 4588023347668978, guid: 45f8afb02641ab045a76f68478a90921,
     type: 2}
   m_PrefabInternal: {fileID: 1362195259}
+--- !u!84 &1369137531
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &1370238123
 Prefab:
   m_ObjectHideFlags: 0
@@ -92269,7 +92299,9 @@ GameObject:
   - component: {fileID: 1372971262}
   - component: {fileID: 1372971261}
   - component: {fileID: 1372971260}
-  m_Layer: 0
+  - component: {fileID: 1372971265}
+  - component: {fileID: 1372971266}
+  m_Layer: 23
   m_Name: P_PathFirefly (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92445,7 +92477,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 966559543
+  randomSeed: 1351682965
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -95772,6 +95804,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1372971265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1372971259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e93b7eef144234428aa42d576fa4675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &1372971266
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1372971259}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1376099063
 Prefab:
   m_ObjectHideFlags: 0
@@ -98840,6 +98895,26 @@ Transform:
   m_PrefabParentObject: {fileID: 4588023347668978, guid: 45f8afb02641ab045a76f68478a90921,
     type: 2}
   m_PrefabInternal: {fileID: 1451083341}
+--- !u!21 &1452943853
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!1001 &1458179267
 Prefab:
   m_ObjectHideFlags: 0
