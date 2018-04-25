@@ -15,10 +15,10 @@ public class PathPlatform {
 
 	public PathPlatform (Vector3 center) {
 		points = new List<Vector3> {
+			center + Vector3.left*2,
 			center + Vector3.left,
-			center + Vector3.left*.5f,
-			center + Vector3.right*.5f,
-			center + Vector3.right
+			center + Vector3.right,
+			center + Vector3.right*2
 		};
 	}
 
@@ -160,7 +160,7 @@ public class PathPlatform {
 			float t = 0;
 			while(t <= 1) {
 				t += 1f/divisions;
-				Vector3 pointOnCurve = Bezier.EvaluateQubic(p[0], p[1], p[2], p[3], t);
+				Vector3 pointOnCurve = Bezier.Evaluate(p[0], p[1], p[2], p[3], t);
 				dstSinceLastEvenPoint += Vector3.Distance(previousPoint, pointOnCurve);
 
 				while (dstSinceLastEvenPoint >= spacing) {

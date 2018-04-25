@@ -22,7 +22,7 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
         if (isActive) {
             if (Input.GetButtonDown("Jump")) {
                 transform.GetChild(currentTuto).gameObject.SetActive(false);
-                Pause.Paused = false;
+
                 //================================================
                 SoundController.instance.SelectHUD("TutoPictureExit");
                 //================================================
@@ -31,7 +31,11 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
                     transform.GetChild(currentTuto).gameObject.SetActive(true);
                 }
                 else {
+                    
                     GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(false);
+                    Pause.Paused = false;
+                    isActive = false;
+                    Time.timeScale = 1;
                     if (!isStele) {
                         Destroy(gameObject);
                     }
@@ -48,6 +52,7 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
             SoundController.instance.SelectHUD("PauseOpenClose");
             //================================================
             Pause.Paused = true;
+            Time.timeScale = 0;
             isActive = true;
             currentTuto = 0;
             transform.GetChild(0).gameObject.SetActive(true);
@@ -63,6 +68,7 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
         isActive = true;
         transform.GetChild(0).gameObject.SetActive(true);
         GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(true);
+        Time.timeScale = 0;
     }
 
 
