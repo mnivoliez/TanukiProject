@@ -21,7 +21,9 @@ GameObject:
   - component: {fileID: 4515366805065776}
   - component: {fileID: 198151001607122634}
   - component: {fileID: 199301848497694304}
-  m_Layer: 0
+  - component: {fileID: 114339609050427292}
+  - component: {fileID: 135545412931576526}
+  m_Layer: 23
   m_Name: P_PathFirefly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,6 +43,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114339609050427292
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1123474660560218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e93b7eef144234428aa42d576fa4675, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &135545412931576526
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1123474660560218}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &198151001607122634
 ParticleSystem:
   m_ObjectHideFlags: 1
