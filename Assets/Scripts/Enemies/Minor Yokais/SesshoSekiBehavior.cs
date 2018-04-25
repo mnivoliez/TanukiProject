@@ -28,6 +28,7 @@ public class SesshoSekiBehavior : YokaiController {
 
     [SerializeField] private float durationOfPreparation = 2;
     [SerializeField] private float durationOfResearch = 2;
+	[SerializeField] private float heightMinSuicide = 1.2f;
 
     private Color initColor = new Color(97f / 255f, 88f / 255f, 99f / 255f, 84f / 255f);
     private Color chargeColor = new Color(210f / 255f, 210f / 255f, 70f / 255f, 80f / 255f);
@@ -159,6 +160,17 @@ public class SesshoSekiBehavior : YokaiController {
                     relativePos = positionToGo - transform.position;
                     relativePos.y = 0;
                 }
+
+				RaycastHit hitGround = new RaycastHit ();
+				Vector3 nextPosition = transform.position + relativePos.normalized * 3;
+				if (Physics.Raycast (nextPosition, Vector3.down, out hitGround, 10.0f, layerMask)) {
+					Debug.Log (hitGround.collider.gameObject.name + ": " + hitGround.distance);
+					if (hitGround.distance > heightMinSuicide) {
+						positionToGo = transform.position;
+						relativePos = positionToGo - transform.position;
+						relativePos.y = 0;
+					}
+				}
 
                 Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
                 rotation.x = transform.rotation.x;
