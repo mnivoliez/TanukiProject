@@ -57,7 +57,7 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
                 break;
             case MovementState.Idle:
                 animBody.SetBool("isInAir", false);
-                emissionRun.enabled = true;
+                emissionRun.enabled = false;
                 break;
             case MovementState.Run:
                 animBody.SetBool("isInAir", false);
