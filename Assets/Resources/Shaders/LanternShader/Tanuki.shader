@@ -8,6 +8,8 @@
 
 		_EmissiveColor		("", Color)		= (1,1,1,1)
 		_EmissiveIntensity	("", Range(0,1))= 1
+		_EmissiveSpeed		("", Float)		= 1
+		_EmissiveStrength	("", Range(0,0.5))		= 0
 
 		[PowerSlider(2.0)] 
 		_SpecIntensity	("", Range(0,30))	= 0

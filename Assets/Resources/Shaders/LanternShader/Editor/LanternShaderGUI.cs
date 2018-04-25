@@ -100,6 +100,10 @@ public class LanternShaderGUI : ShaderGUI {
 	GUIContent emissiveColorGUI = new GUIContent ("Color", "Emissive Color");
 	private MaterialProperty _EmissiveIntensity = null;
 	GUIContent emissiveIntensityGUI = new GUIContent ("Mul", "Emissive Intensity");
+	private MaterialProperty _EmissiveSpeed = null;
+	GUIContent emissiveSpeedGUI = new GUIContent ("Speed", "Emissive Speed");
+	private MaterialProperty _EmissiveStrength = null;
+	GUIContent emissiveStrengthGUI = new GUIContent ("Strength", "Emissive Strength");
 
 	private int pixelSpace = 8;
 
@@ -174,6 +178,8 @@ public class LanternShaderGUI : ShaderGUI {
 
 			_EmissiveColor = FindProperty ("_EmissiveColor", props);
 			_EmissiveIntensity = FindProperty ("_EmissiveIntensity", props);
+			_EmissiveSpeed = FindProperty ("_EmissiveSpeed", props);
+			_EmissiveStrength = FindProperty ("_EmissiveStrength", props);
 
 			_StepCount = ShaderGUI.FindProperty ("_StepCount", props);
 		}
@@ -310,6 +316,8 @@ public class LanternShaderGUI : ShaderGUI {
 		GUILayout.Space(pixelSpace);
 		EditorGUILayout.LabelField ("Emissive", EditorStyles.boldLabel);
 		TwoPropertyInline(_EmissiveColor, _EmissiveIntensity, emissiveColorGUI, emissiveIntensityGUI);
+		editor.ShaderProperty (_EmissiveSpeed, emissiveSpeedGUI);
+		editor.ShaderProperty (_EmissiveStrength, emissiveStrengthGUI);
 	}
 
 	void DoToonArea () {
