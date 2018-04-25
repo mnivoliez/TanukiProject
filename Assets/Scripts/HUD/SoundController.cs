@@ -20,6 +20,7 @@ public class SoundController : MonoBehaviour {
     public AudioSource fxLanternSource;
     public AudioSource fxLanternEffect;
     public AudioSource fxEnvironnementFireflies;
+    public AudioSource fxEnvironnementFireWall;
     public AudioSource fxEnvironnementEffectQuick;
     public AudioSource fxEnvironnementEffectLong;
 
@@ -567,7 +568,7 @@ public class SoundController : MonoBehaviour {
     public void SelectFIREFLIES(string FIREFLIE) {
         switch (FIREFLIE) {
             case "Fireflies":
-                PlayFireflieEffect(envFireflies);
+                PlayFirefliesEffect(envFireflies, true);
                 break;
 
             default:
@@ -575,9 +576,76 @@ public class SoundController : MonoBehaviour {
         }
     }
 
-    private void PlayFireflieEffect(AudioClip clip) {
+    private void PlayFirefliesEffect(AudioClip clip, bool loop) {
         fxEnvironnementFireflies.clip = clip;
+        StartCoroutine(FadeOnEnterFireflies(loop));
+    }
+
+    public void StopFirefliesEffect() {
+        StartCoroutine(FadeOnExitFireflies());
+    }
+
+    public IEnumerator FadeOnEnterFireflies(bool loop) {
+        fxEnvironnementFireflies.volume = 0.0f;
         fxEnvironnementFireflies.Play();
+        fxEnvironnementFireflies.loop = loop;
+        while (fxEnvironnementFireflies.volume < 1.0f) {
+            fxEnvironnementFireflies.volume = fxEnvironnementFireflies.volume + 0.1f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        fxEnvironnementFireflies.volume = 1.0f;
+    }
+
+    public IEnumerator FadeOnExitFireflies() {
+        while (fxEnvironnementFireflies.volume > 0.0f) {
+            fxEnvironnementFireflies.volume = fxEnvironnementFireflies.volume - 0.1f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        fxEnvironnementFireflies.Stop();
+        fxEnvironnementFireflies.volume = 1.0f;
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
+    public void SelectFIREWALL(string FIREWALL) {
+        switch (FIREWALL) {
+            case "FireWall":
+                PlayFireWallEffect(envFireWall, true);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayFireWallEffect(AudioClip clip, bool loop) {
+        fxEnvironnementFireWall.clip = clip;
+        StartCoroutine(FadeOnEnterFireWall(loop));
+    }
+
+    public void StopFireWallEffect() {
+        StartCoroutine(FadeOnExitFireWall());
+    }
+
+    public IEnumerator FadeOnEnterFireWall(bool loop) {
+        fxEnvironnementFireWall.volume = 0.0f;
+        fxEnvironnementFireWall.Play();
+        fxEnvironnementFireWall.loop = loop;
+        while (fxEnvironnementFireWall.volume < 1.0f) {
+            fxEnvironnementFireWall.volume = fxEnvironnementFireWall.volume + 0.1f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        fxEnvironnementFireWall.volume = 1.0f;
+    }
+
+    public IEnumerator FadeOnExitFireWall() {
+        while (fxEnvironnementFireWall.volume > 0.0f) {
+            fxEnvironnementFireWall.volume = fxEnvironnementFireWall.volume - 0.1f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        fxEnvironnementFireWall.Stop();
+        fxEnvironnementFireWall.volume = 1.0f;
     }
 
     //===================================================================================================================================================================================
