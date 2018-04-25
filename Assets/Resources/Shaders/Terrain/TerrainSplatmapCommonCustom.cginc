@@ -49,10 +49,8 @@ void SplatmapVert(inout appdata_full v, out Input data)
 void SplatmapMix(Input IN, out half4 splat_control, out half weight, out fixed4 mixedDiffuse, inout fixed3 mixedNormal, out float emissive)
 {
     float len = -100;
-    if(_LanternCount != 0) {
-        for(int id = 0; id < _LanternCount; id++) {
-            len = max(len, _DistancesLantern[id] - length(_CentersLantern[id].xyz - IN.worldPos.xyz));
-        }
+    for(int id = 0; id < _LanternCount; id++) {
+        len = max(len, _DistancesLantern[id] - length(_CentersLantern[id].xyz - IN.worldPos.xyz));
     }
 
     float3 wrldPos = IN.worldPos.xyz * _Freq;

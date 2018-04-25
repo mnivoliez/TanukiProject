@@ -100,10 +100,8 @@ half4 frag (v2f i) : SV_Target
 {
 	#if defined(_LANTERN)
 		float len = -100;
-		if(_LanternCount != 0) {
-		    for(int id = 0; id < _LanternCount; id++) {
-		        len = max(len, _DistancesLantern[id] - length(_CentersLantern[id].xyz - i.posWorld.xyz));
-		    }
+		for(int id = 0; id < _LanternCount; id++) {
+			len = max(len, _DistancesLantern[id] - length(_CentersLantern[id].xyz - i.posWorld.xyz));
 		}
 
 		float3 wrldPos = i.posWorld.xyz * _Freq;
