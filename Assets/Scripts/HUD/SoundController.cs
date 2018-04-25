@@ -14,14 +14,17 @@ public class SoundController : MonoBehaviour {
     public AudioSource fxKodaEffect;
     public AudioSource fxLeafEffect;
     public AudioSource fxYokaiEffect;
+    public AudioSource fxYokaiAkashitaEffect;
+    public AudioSource fxYokaiBazekoriEffect;
+    public AudioSource fxYokaiSesshosekiEffect;
     public AudioSource fxLanternSource;
     public AudioSource fxLanternEffect;
+    public AudioSource fxEnvironnementFireflies;
     public AudioSource fxEnvironnementEffectQuick;
     public AudioSource fxEnvironnementEffectLong;
 
     [Header("THEMES")]
     [Space(10)]
-    [SerializeField] private AudioClip themeLightTuto;
     [SerializeField] private AudioClip themeDarkZ1;
     [SerializeField] private AudioClip themeLightZ1;
     [SerializeField] private AudioClip themePreBoss;
@@ -51,6 +54,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip kodaFootStepWater1;
     [SerializeField] private AudioClip kodaFootStepWater2;
     [SerializeField] private AudioClip kodaFootStepWater3;
+    [SerializeField] private AudioClip kodaFootStepWater4;
 
     private AudioClip[] allKodaJumpSound;
     private AudioClip[] allKodaFootStepGroundSound;
@@ -75,6 +79,19 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip yokaiKO;
     [SerializeField] private AudioClip yokaiHurt;
 
+    [Header("YOKAI - AKASHITA")]
+    [Space(10)]
+    [SerializeField] private AudioClip yokaiAkashitaAttack;
+
+    [Header("YOKAI - BAZEKORI")]
+    [Space(10)]
+    [SerializeField] private AudioClip yokaiBazekoriAttack;
+
+    [Header("YOKAI - SESSHOSEKI")]
+    [Space(10)]
+    [SerializeField] private AudioClip yokaiSesshosekiDigIn;
+    [SerializeField] private AudioClip yokaiSesshosekiDigOut;
+
     [Header("LANTERN")]
     [Space(10)]
     [SerializeField] private AudioClip lanternCatch;
@@ -82,21 +99,28 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip lanternDome;
     public bool lanterClosestFoundPlay = false;
 
+    [Header("FIREFLIES")]
+    [Space(10)]
+    [SerializeField] private AudioClip envFireflies;
+
     [Header("ENVIRONMENT QUICK")]
     [Space(10)]
     [SerializeField] private AudioClip envAirStream;
     [SerializeField] private AudioClip envBumper;
-    [SerializeField] private AudioClip envVines;
     [SerializeField] private AudioClip envPressPlate;
     [SerializeField] private AudioClip envSwitch;
     [SerializeField] private AudioClip envKaki;
+    [SerializeField] private AudioClip envVineWallRetracting;
+    [SerializeField] private AudioClip envFireWallExtinguished;
 
     [Header("ENVIRONMENT LONG")]
     [Space(10)]
     [SerializeField] private AudioClip envCorruptedWater;
     [SerializeField] private AudioClip envFireWall;
-    [SerializeField] private AudioClip envWaterfall;
     [SerializeField] private AudioClip envWind;
+    [SerializeField] private AudioClip envWaterFallClose;
+    [SerializeField] private AudioClip envWaterFallMedium;
+    [SerializeField] private AudioClip envWaterFallFar;
 
     [Header("BARE NECECITIES")]
     [Space(10)]
@@ -171,7 +195,8 @@ public class SoundController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             StopTheme();
             StopHUD();
-            PlayTheme(themeLightTuto, true);
+            PlayTheme(themeLightZ1, true);
+            SelectENVLong("Wind");
         }
 
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
@@ -432,6 +457,67 @@ public class SoundController : MonoBehaviour {
     //===================================================================================================================================================================================
     //===================================================================================================================================================================================
 
+    public void SelectYOKAIAKASHITA(string YOKAI) {
+        switch (YOKAI) {
+            case "Attack":
+                PlayYokaiAkashitaEffect(yokaiAkashitaAttack);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayYokaiAkashitaEffect(AudioClip clip) {
+        fxYokaiAkashitaEffect.clip = clip;
+        fxYokaiAkashitaEffect.Play();
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
+    public void SelectYOKAIBAZEKORI(string YOKAI) {
+        switch (YOKAI) {
+            case "Attack":
+                PlayYokaiBazekoriEffect(yokaiBazekoriAttack);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayYokaiBazekoriEffect(AudioClip clip) {
+        fxYokaiBazekoriEffect.clip = clip;
+        fxYokaiBazekoriEffect.Play();
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
+    public void SelectYOKAISESSHOSEKI(string YOKAI) {
+        switch (YOKAI) {
+            case "DigIn":
+                PlayYokaiSesshosekiEffect(yokaiSesshosekiDigIn);
+                break;
+
+            case "DigOut":
+                PlayYokaiSesshosekiEffect(yokaiSesshosekiDigOut);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayYokaiSesshosekiEffect(AudioClip clip) {
+        fxYokaiSesshosekiEffect.clip = clip;
+        fxYokaiSesshosekiEffect.Play();
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
     public void SelectLANTERN(string LANTERN) {
         switch (LANTERN) {
             case "Catch":
@@ -478,6 +564,25 @@ public class SoundController : MonoBehaviour {
     //===================================================================================================================================================================================
     //===================================================================================================================================================================================
 
+    public void SelectFIREFLIES(string FIREFLIE) {
+        switch (FIREFLIE) {
+            case "Fireflies":
+                PlayFireflieEffect(envFireflies);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayFireflieEffect(AudioClip clip) {
+        fxEnvironnementFireflies.clip = clip;
+        fxEnvironnementFireflies.Play();
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
     public void SelectENVQuick(string ENV) {
         switch (ENV) {
             case "AirStream":
@@ -488,8 +593,12 @@ public class SoundController : MonoBehaviour {
                 PlayEnvironnementEffectQuick(envBumper);
                 break;
 
-            case "Vines":
-                PlayEnvironnementEffectQuick(envVines);
+            case "VineWallRetracting":
+                PlayEnvironnementEffectQuick(envVineWallRetracting);
+                break;
+
+            case "FireWallExtinguished":
+                PlayEnvironnementEffectQuick(envFireWallExtinguished);
                 break;
 
             case "Kaki":
@@ -523,16 +632,24 @@ public class SoundController : MonoBehaviour {
                 PlayEnvironnementEffectLong(envCorruptedWater);
                 break;
 
-            case "WaterFall":
-                PlayEnvironnementEffectLong(envWaterfall);
-                break;
-
             case "FireWall":
                 PlayEnvironnementEffectLong(envFireWall);
                 break;
 
             case "Wind":
                 PlayEnvironnementEffectLong(envWind);
+                break;
+
+            case "WaterFallClose":
+                PlayEnvironnementEffectLong(envWaterFallClose);
+                break;
+
+            case "WaterFallMedium":
+                PlayEnvironnementEffectLong(envWaterFallMedium);
+                break;
+
+            case "WaterFallFar":
+                PlayEnvironnementEffectLong(envWaterFallFar);
                 break;
 
             default:

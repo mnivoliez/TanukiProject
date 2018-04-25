@@ -63,6 +63,65 @@ fixed4 frag(v2f i) : SV_Target {
     float lrp = 1.0-saturate(len + ns * _Interpolation);
     fixed4 tex1 = tex2D( _FirstTexture, i.uv);
     fixed4 tex2 = tex2D( _SecondTexture, i.uv);
+    return EncodeDepthNormal (i.nz.w, i.nz.xyz);
+}
+ENDCG
+    }
+}
+
+SubShader {
+    Tags { "RenderType"="LanternAlpha" }
+    Cull Off
+    Pass {
+CGPROGRAM
+#pragma vertex vert
+#pragma fragment frag
+#include "UnityCG.cginc"
+#include "noiseSimplex.cginc"
+
+uniform sampler2D _FirstTexture;
+uniform sampler2D _SecondTexture;
+float4 _FirstTexture_ST;
+
+uniform half _Freq;
+uniform half _Speed;
+uniform half _Interpolation;
+
+uniform int _LanternCount;
+uniform float4 _CentersLantern[20];
+uniform float _DistancesLantern[20];
+
+struct v2f {
+    float4 pos : SV_POSITION;
+    float2 uv : TEXCOORD0;
+    float4 nz : TEXCOORD1;
+    float4 posWorld : TEXCOORD2;
+    UNITY_VERTEX_OUTPUT_STEREO
+};
+v2f vert( appdata_base v ) {
+    v2f o;
+    UNITY_SETUP_INSTANCE_ID(v);
+    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+    o.pos = UnityObjectToClipPos(v.vertex);
+    o.posWorld = mul(unity_ObjectToWorld, v.vertex);
+    o.uv = TRANSFORM_TEX(v.texcoord, _FirstTexture);
+    o.nz.xyz = COMPUTE_VIEW_NORMAL;
+    o.nz.w = COMPUTE_DEPTH_01;
+    return o;
+}
+fixed4 frag(v2f i) : SV_Target {
+    float len = -100;
+    if(_LanternCount != 0) {
+        for(int id = 0; id < _LanternCount; id++) {
+            len = max(len, _DistancesLantern[id] - length(_CentersLantern[id].xyz - i.posWorld.xyz));
+        }
+    }
+    float3 wrldPos = i.posWorld.xyz * _Freq;
+    wrldPos.y += _Time.x * _Speed;
+    float ns = snoise(wrldPos);
+    float lrp = 1.0-saturate(len + ns * _Interpolation);
+    fixed4 tex1 = tex2D( _FirstTexture, i.uv);
+    fixed4 tex2 = tex2D( _SecondTexture, i.uv);
     clip(lerp(tex1.a, tex2.a, lrp)-0.5);
     return EncodeDepthNormal (i.nz.w, i.nz.xyz);
 }

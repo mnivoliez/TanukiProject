@@ -36,6 +36,7 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
                     Pause.Paused = false;
                     isActive = false;
                     Time.timeScale = 1;
+                    nbTuto = 0;
                     if (!isStele) {
                         Destroy(gameObject);
                     }
@@ -48,15 +49,16 @@ public class Tuto_ParchmentBehavior : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
-            //================================================
-            SoundController.instance.SelectHUD("PauseOpenClose");
-            //================================================
-            Pause.Paused = true;
-            Time.timeScale = 0;
-            isActive = true;
-            currentTuto = 0;
-            transform.GetChild(0).gameObject.SetActive(true);
-            other.gameObject.GetComponent<InputController>().SetFreezeInput(true);
+            if (nbTuto != 0) {
+                other.gameObject.GetComponent<InputController>().SetFreezeInput(true);
+                isActive = true;
+                transform.GetChild(0).gameObject.SetActive(true);
+                //================================================
+                SoundController.instance.SelectHUD("PauseOpenClose");
+                //================================================
+                Pause.Paused = true;
+                Time.timeScale = 0;
+            }
 
         }
     }
