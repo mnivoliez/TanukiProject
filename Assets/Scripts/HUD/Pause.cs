@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class Pause : MonoBehaviour {
 
@@ -14,6 +17,7 @@ public class Pause : MonoBehaviour {
     private GameObject PausePanel;
     private GameObject OptionsPanel;
     private GameObject ExitPanel;
+    private GameObject LoadingCanva;
 
     public Text score_to_display;
 
@@ -34,48 +38,60 @@ public class Pause : MonoBehaviour {
         ExitPanel = CanvasPause.transform.GetChild(2).gameObject;
 
         Cursor.lockState = CursorLockMode.Locked;
+        LoadingCanva = GameObject.Find("LoadingScreen");
         UnpauseGame ();
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Cancel") && !VictorySwitch.Victory){
+
+        if (Input.GetButtonDown("Cancel") && !VictorySwitch.Victory) {
             if(!Paused){
 				PauseGame (true);
                 //showPaused();
             }
 			else if (Paused) {
-				UnpauseGame ();
+                UnpauseGame ();
             }
         }
 	}
 
 	public void UnpauseGame() {
-        PausePanel.SetActive (false);
-        OptionsPanel.SetActive(false);
-        ExitPanel.SetActive(false);
-        Time.timeScale = 1;
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+        if (!LoadingCanva.transform.GetChild(0).gameObject.activeInHierarchy) { 
+            //================================================
+            SoundController.instance.SelectHUD("PauseDisabled");
+            //================================================
+            PausePanel.SetActive (false);
+            OptionsPanel.SetActive(false);
+            ExitPanel.SetActive(false);
+            Time.timeScale = 1;
+		    Cursor.lockState = CursorLockMode.Locked;
+		    Cursor.visible = false;
 
-        CanvasPause.enabled = false;
-        transform.GetChild(0).gameObject.SetActive(false);
-        Paused = false;
+            CanvasPause.enabled = false;
+            transform.GetChild(0).gameObject.SetActive(false);
+            Paused = false;
+        }
     }
 
 	public void PauseGame(bool showMenu) {
-        Time.timeScale = 0;
-		Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
+        if (!LoadingCanva.transform.GetChild(0).gameObject.activeInHierarchy) {
+            //================================================
+            SoundController.instance.SelectHUD("PauseEnabled");
+            //================================================
+            Time.timeScale = 0;
+		    Cursor.lockState = CursorLockMode.None;
+		    Cursor.visible = true;
 
-		if (showMenu)
-		{
-            PausePanel.SetActive(true);
-            CanvasPause.enabled = true;
-			transform.GetChild (0).gameObject.SetActive (true);
-            Update_Pause_Menu_data();
+		    if (showMenu)
+		    {
+                PausePanel.SetActive(true);
+                CanvasPause.enabled = true;
+			    transform.GetChild (0).gameObject.SetActive (true);
+                Update_Pause_Menu_data();
+            }
+            Paused = true;
         }
-        Paused = true;
     }
 
     public void Load_Game() {

@@ -8,37 +8,30 @@ public class PathEditor : Editor {
 
 	Vector3 offset;
 
-	int index;
-
 	PathCreator creator;
 	PathPlatform Path {
 		get { return creator.path; }
 	}
 
-	const float segmentSelectDistanceThreshold = .1f;
+	const float segmentSelectDistanceThreshold = 10f;
 	int selectedSegmentIndex = -1;
 
 	public override void OnInspectorGUI() {
+		if(GUILayout.Button("Reset")){
+			Undo.RecordObject(creator, "Reset");
+			creator.CreatePath();
+		}
+		
 		base.OnInspectorGUI();
+
+		EditorGUILayout.Space();
+		EditorGUILayout.LabelField ("Path", EditorStyles.boldLabel);
 
 		EditorGUI.BeginChangeCheck();
 
-		if(GUILayout.Button("Add")){
+		if(GUILayout.Button("Add Point")){
 			Undo.RecordObject(creator, "Add Segment");
 			Path.AddSegmentAtLast();
-		}
-
-		index = EditorGUILayout.IntField ("Index", index);
-		index = Mathf.Clamp(index, 0, Path.NumSegments);
-
-		if(GUILayout.Button("Insert")){
-			Undo.RecordObject(creator, "Insert Segment");
-			Path.SplitAfterSegment(index);
-		}
-
-		if(GUILayout.Button("Remove")){
-			Undo.RecordObject(creator, "Remove Segment");
-			Path.DeleteSegment(index*3);
 		}
 
 		bool isClosed = GUILayout.Toggle(Path.IsClosed, "Closed");
@@ -52,9 +45,10 @@ public class PathEditor : Editor {
 			Undo.RecordObject(creator, "Toggle Auto Set Controls");
 			Path.AutoSetControPoints = autoSetControlPoints;
 		}
-		if(GUILayout.Button("Reset")){
-			Undo.RecordObject(creator, "Reset");
-			creator.CreatePath();
+
+		if(GUILayout.Button("Flatten")){
+			Undo.RecordObject(creator, "Flatten");
+			Path.FlattenAllPoints();
 		}
 
 		if(EditorGUI.EndChangeCheck()) {
@@ -64,33 +58,34 @@ public class PathEditor : Editor {
 
 	void OnSceneGUI() {
 		offset = (Application.isPlaying) ? creator.startPos : creator.transform.position;
-		//Input();
+		Input();
 		Draw();
 	}
 
 	void Input() {
 		Event guiEvent = Event.current;
-		Vector3 mousePos = HandleUtility.GUIPointToWorldRay(guiEvent.mousePosition).origin;
+		Vector2 mousePos = guiEvent.mousePosition;
 
 		if(guiEvent.type == EventType.MouseDown && guiEvent.button == 0 && guiEvent.shift) {
 			if(selectedSegmentIndex != -1) {
 				Undo.RecordObject(creator, "Split Segment");
-				Path.SplitSegment(mousePos, selectedSegmentIndex);
-			} else if(!Path.IsClosed){
+				Vector3 pos = GetCloserPointInSegment(mousePos, selectedSegmentIndex);
+				Path.SplitSegment(WorldToLocal(pos), selectedSegmentIndex);
+			}/* else if(!Path.IsClosed){
 				Undo.RecordObject(creator, "Add Segment");
 				Path.AddSegment(mousePos);
-			}
+			}*/
 		}
 
 		if(guiEvent.type == EventType.MouseDown && guiEvent.button == 1) {
-			float minDstToAnchor = creator.anchorDiameter *.5f;
+			float minDst = float.MaxValue;
 			int closestAnchorIndex = -1;
-
 			for (int i = 0; i < Path.NumPoints; i+=3) {
-				float dst = Vector3.Distance(mousePos, Path[i]);
-				if(dst < minDstToAnchor) {
-					minDstToAnchor = dst;
+				float dstToAnchor = (creator.anchorDiameter*.5f)/HandleUtility.GetHandleSize(LocalToWorld(Path[i]))*100;
+				float dst = Vector2.Distance(mousePos, HandleUtility.WorldToGUIPoint(LocalToWorld(Path[i])));
+				if(dst < dstToAnchor && dst < minDst) {
 					closestAnchorIndex = i;
+					minDst = dst;
 				}
 			}
 			if(closestAnchorIndex != -1) {
@@ -104,8 +99,11 @@ public class PathEditor : Editor {
 			int newSelectedSegmentIndex = -1;
 
 			for (int i = 0; i < Path.NumSegments; i++) {
-				Vector3[] point = Path.GetPointsInSegment(i);
-				float dst = HandleUtility.DistancePointBezier(mousePos, point[0], point[3], point[1], point[2]);
+				Vector3[] points = LocalToWorld(Path.GetPointsInSegment(i));
+				float dst = HandleUtility.DistancePointBezier(mousePos, HandleUtility.WorldToGUIPoint(points[0]),
+																		HandleUtility.WorldToGUIPoint(points[3]),
+																		HandleUtility.WorldToGUIPoint(points[1]),
+																		HandleUtility.WorldToGUIPoint(points[2]));
 				if(dst < minDstToSegment) {
 					minDstToSegment = dst;
 					newSelectedSegmentIndex = i;
@@ -117,18 +115,20 @@ public class PathEditor : Editor {
 				HandleUtility.Repaint();
 			}
 		}
+
+		HandleUtility.AddDefaultControl(0);
 	}
 
 	void Draw() {
 		for (int i = 0; i < Path.NumSegments; i++) {
-			Vector3[] points = Path.GetPointsInSegment(i);
+			Vector3[] points = LocalToWorld(Path.GetPointsInSegment(i));
 			if(creator.displayControlPoints) {
 				Handles.color = Color.black;
-				Handles.DrawDottedLine(LocalToWorld(points[1]), LocalToWorld(points[0]), 4f);
-				Handles.DrawDottedLine(LocalToWorld(points[2]), LocalToWorld(points[3]), 4f);
+				Handles.DrawDottedLine(points[1], points[0], 4f);
+				Handles.DrawDottedLine(points[2], points[3], 4f);
 			}
 			Color segmentCol = (i == selectedSegmentIndex && Event.current.shift) ? creator.selectedSegmentColor : creator.segmentColor;
-			Handles.DrawBezier(LocalToWorld(points[0]), LocalToWorld(points[3]), LocalToWorld(points[1]), LocalToWorld(points[2]), segmentCol, null, 2);
+			Handles.DrawBezier(points[0], points[3], points[1], points[2], segmentCol, null, 2);
 		}
 
 		Handles.color = Color.red;
@@ -137,13 +137,14 @@ public class PathEditor : Editor {
 				Handles.color = (i%3==0)?creator.anchorColor:creator.controlColor;
 				float handleSize = (i%3==0)?creator.anchorDiameter:creator.controlDiamater;
 				Vector3 newPos;
+				Vector3 pathId = LocalToWorld(Path[i]);
 				if(creator.displayTranslateHandles)
-					newPos = Handles.PositionHandle(LocalToWorld(Path[i]), Quaternion.identity);
+					newPos = Handles.PositionHandle(pathId, Quaternion.identity);
 				else
-					newPos = Handles.FreeMoveHandle(LocalToWorld(Path[i]), Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
-				if(LocalToWorld(Path[i]) != newPos) {
+					newPos = Handles.FreeMoveHandle(pathId, Quaternion.identity, handleSize, Vector3.zero, Handles.SphereHandleCap);
+				if(pathId != newPos) {
 					Undo.RecordObject(creator, "Move Point");
-					Path.MovePoint(i, creator.transform.InverseTransformDirection(newPos - offset));
+					Path.MovePoint(i, WorldToLocal(newPos), creator.selection);
 				}
 			}
 		}
@@ -156,7 +157,35 @@ public class PathEditor : Editor {
 		}
 	}
 
+	Vector3 WorldToLocal(Vector3 pos) {
+		return creator.transform.InverseTransformDirection(pos - offset);
+	}
+
 	Vector3 LocalToWorld(Vector3 pos) {
 		return creator.transform.TransformDirection(pos) + offset;
+	}
+
+	Vector3[] LocalToWorld(Vector3[] points) {
+		for (int i = 0; i < points.Length; i++) {
+			points[i] = creator.transform.TransformDirection(points[i]) + offset;
+		}
+		return points;
+	}
+
+	Vector3 GetCloserPointInSegment(Vector2 mousePos, int segmentIndex) {
+		Vector3[] points = LocalToWorld(Path.GetPointsInSegment(segmentIndex));
+
+		return Bezier.EvaluateQubic(points[0], points[1], points[2], points[3], GetPercentOnBezier(points, mousePos, 0.5f, 0.25f, 10));
+	}
+
+	float GetPercentOnBezier(Vector3[] points, Vector2 mousePos, float t, float offset, int count) {
+		if(count <= 0) return t;
+
+		Vector2 bezierPosLeft = HandleUtility.WorldToGUIPoint(Bezier.EvaluateQubic(points[0], points[1], points[2], points[3], t-offset));
+		Vector2 bezierPosRight = HandleUtility.WorldToGUIPoint(Bezier.EvaluateQubic(points[0], points[1], points[2], points[3], t+offset));
+		float dstLeft = Vector2.Distance(mousePos, bezierPosLeft);
+		float dstRight = Vector2.Distance(mousePos, bezierPosRight);
+		
+		return GetPercentOnBezier(points, mousePos, (dstLeft < dstRight) ? t-offset : t+offset, offset/2, --count);
 	}
 }

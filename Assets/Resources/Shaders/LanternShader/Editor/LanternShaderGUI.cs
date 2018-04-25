@@ -80,22 +80,21 @@ public class LanternShaderGUI : ShaderGUI {
 	private MaterialProperty _Depth = null;
 	GUIContent depthGUI = new GUIContent ("Depth", "Depth of water detection");
 	private MaterialProperty _EdgeIntensity = null;
-	GUIContent edgeItensityGUI = new GUIContent ("Edge Intensity", "Intensity of edge detection");
-	private MaterialProperty _WaveDir = null;
-	GUIContent waveDirGUI = new GUIContent ("Angle", "Direction of wave. 0 is local X+");
+	GUIContent edgeIntensityGUI = new GUIContent ("Edge Intensity", "Intensity of edge detection");
 	private MaterialProperty _WaveSpeed = null;
 	GUIContent waveSpeedGUI = new GUIContent ("Speed", "Speed of wave");
 	private MaterialProperty _WaveAmount = null;
 	GUIContent waveAmountGUI = new GUIContent ("Amount", "Amount of wave");
 	private MaterialProperty _WaveHeight = null;
 	GUIContent waveHeightGUI = new GUIContent ("Height", "Height of wave");
-	private MaterialProperty _Tessellation = null;
-	GUIContent tessellationGUI = new GUIContent ("Tessellation", "Number of mesh division");
-	private MaterialProperty _Tess = null;
-	private MaterialProperty _NoiseTexture = null;
-	GUIContent noiseTextureGUI = new GUIContent ("Tex", "Noise (R)");
+	private MaterialProperty _NoiseScale = null;
+	GUIContent noiseScaleGUI = new GUIContent ("Scale", "Noise Scale");
 	private MaterialProperty _NoiseIntensity = null;
-	GUIContent noiseIntensityGUI = new GUIContent ("", "Noise Intensity");
+	GUIContent noiseIntensityGUI = new GUIContent ("Intensity", "Noise Intensity");
+	private MaterialProperty _DistortStrength = null;
+	GUIContent distortStrengthGUI = new GUIContent ("Factor", "Distort Strength");
+	private MaterialProperty _WaterfallHeight = null;
+	GUIContent waterfallHeightGUI = new GUIContent ("Height", "Waterfall Height");
 
 	private int pixelSpace = 8;
 
@@ -111,6 +110,8 @@ public class LanternShaderGUI : ShaderGUI {
 		_FirstLColor = FindProperty ("_FirstLColor", props);
 		_SecondTexture = FindProperty ("_SecondTexture", props);
 		_SecondLColor = FindProperty ("_SecondLColor", props);
+
+		_StepCount = ShaderGUI.FindProperty ("_StepCount", props);
 		
 		if (ShaderType.Base == shaderType) {
 			_AlphaMode = ShaderGUI.FindProperty ("_AlphaMode", props);
@@ -124,8 +125,6 @@ public class LanternShaderGUI : ShaderGUI {
 			_SpecPow = FindProperty ("_SpecPow", props);
 			_RimIntensity = FindProperty ("_RimIntensity", props);
 			_RimPow = FindProperty ("_RimPow", props);
-
-			_StepCount = ShaderGUI.FindProperty ("_StepCount", props);
 
 			_IsMask = ShaderGUI.FindProperty ("_IsMask", props);
 			
@@ -141,15 +140,16 @@ public class LanternShaderGUI : ShaderGUI {
 			_Depth = ShaderGUI.FindProperty ("_Depth", props);
 			_EdgeIntensity = ShaderGUI.FindProperty ("_EdgeIntensity", props);
 
-			_WaveDir = ShaderGUI.FindProperty ("_WaveDir", props);
 			_WaveSpeed = ShaderGUI.FindProperty ("_WaveSpeed", props);
 			_WaveAmount = ShaderGUI.FindProperty ("_WaveAmount", props);
 			_WaveHeight = ShaderGUI.FindProperty ("_WaveHeight", props);
-			_Tessellation = ShaderGUI.FindProperty ("_Tessellation", props);
-			_Tess = ShaderGUI.FindProperty ("_Tess", props);
 
-			_NoiseTexture = ShaderGUI.FindProperty ("_NoiseTexture", props);
+			_NoiseScale = ShaderGUI.FindProperty ("_NoiseScale", props);
 			_NoiseIntensity = ShaderGUI.FindProperty ("_NoiseIntensity", props);
+
+			_DistortStrength = ShaderGUI.FindProperty ("_DistortStrength", props);
+
+			_WaterfallHeight = ShaderGUI.FindProperty ("_WaterfallHeight", props);
 		}
 	}
 
@@ -189,16 +189,15 @@ public class LanternShaderGUI : ShaderGUI {
 			DoSimpleArea ();
 			if (shaderType == ShaderType.Base) {
 				DoSpecArea ();
-				DoToonArea ();
 			} else {
 				DoWaterArea ();
 			}
+			DoToonArea ();
 			if (hasChanged)	SetKeywords (false, false);
 		} else {
 			DoLanternArea ();
 			if (shaderType == ShaderType.Base) {
 				DoSpecArea ();
-				DoToonArea ();
 				DoMaskStartArea ();
 				if (_IsMask.floatValue == 1) {
 					DoMaskEndArea ();
@@ -210,6 +209,7 @@ public class LanternShaderGUI : ShaderGUI {
 				DoWaterArea ();
 				if (hasChanged) SetKeywords (true, false);
 			}
+			DoToonArea ();
 		}
 		GUILayout.Space(pixelSpace);
 	}
@@ -221,13 +221,12 @@ public class LanternShaderGUI : ShaderGUI {
 		if (shaderType == ShaderType.Base) {
 			firstTextureGUI.text = "Tex";
 			TextureInline (_FirstTexture, _FirstLColor, _FirstDColor, firstTextureGUI, firstLColorGUI, firstDColorGUI);
+			GUILayout.Space(pixelSpace/2);
+			editor.TextureScaleOffsetProperty (_FirstTexture);
 		} else {
 			firstTextureWaterGUI.text = "Tex";
 			TextureInline (_FirstTexture, _FirstLColor, _FirstFoamColor, firstTextureWaterGUI, firstColorWaterGUI, firstColorFoamGUI);
 		}
-		
-		GUILayout.Space(pixelSpace/2);
-		editor.TextureScaleOffsetProperty (_FirstTexture);
 	}
 
 	void DoLanternArea () {
@@ -239,6 +238,8 @@ public class LanternShaderGUI : ShaderGUI {
 			GUILayout.Space(pixelSpace);
 			EditorGUILayout.LabelField ("Dark Texture", EditorStyles.boldLabel);
 			TextureInline (_SecondTexture, _SecondLColor, _SecondDColor, secondTextureGUI, secondLColorGUI, secondDColorGUI);
+			GUILayout.Space(pixelSpace/2);
+			editor.TextureScaleOffsetProperty (_FirstTexture);
 		} else {
 			EditorGUILayout.LabelField ("Light Texture", EditorStyles.boldLabel);
 			TextureInline (_FirstTexture, _FirstLColor, _FirstFoamColor, firstTextureWaterGUI, firstColorWaterGUI, firstColorFoamGUI);
@@ -246,9 +247,8 @@ public class LanternShaderGUI : ShaderGUI {
 			EditorGUILayout.LabelField ("Dark Texture", EditorStyles.boldLabel);
 			TextureInline (_SecondTexture, _SecondLColor, _SecondFoamColor, secondTextureWaterGUI, secondColorWaterGUI, secondColorFoamGUI);
 		}
+		
 
-		GUILayout.Space(pixelSpace/2);
-		editor.TextureScaleOffsetProperty (_FirstTexture);
 	}
 
 	void DoSpecArea() {
@@ -300,27 +300,34 @@ public class LanternShaderGUI : ShaderGUI {
 		GUILayout.Space(pixelSpace);
 		EditorGUILayout.LabelField ("Edge", EditorStyles.boldLabel);
 		editor.ShaderProperty (_Depth, depthGUI);
-		editor.ShaderProperty (_EdgeIntensity, edgeItensityGUI);
+		editor.ShaderProperty (_EdgeIntensity, edgeIntensityGUI);
 		GUILayout.Space(pixelSpace);
 		EditorGUILayout.LabelField ("Wave", EditorStyles.boldLabel);
-		editor.ShaderProperty (_WaveDir, waveDirGUI);
 		editor.ShaderProperty (_WaveSpeed, waveSpeedGUI);
 		editor.ShaderProperty (_WaveAmount, waveAmountGUI);
 		editor.ShaderProperty (_WaveHeight, waveHeightGUI);
-		editor.ShaderProperty (_Tessellation, tessellationGUI);
-		_Tess.floatValue = _Tessellation.floatValue * 2 - 1;
 
 		GUILayout.Space(pixelSpace);
 		EditorGUILayout.LabelField ("Noise", EditorStyles.boldLabel);
-		TextureInline (_NoiseTexture, _NoiseIntensity, noiseTextureGUI, noiseIntensityGUI);
-		GUILayout.Space(pixelSpace/2);
-		editor.TextureScaleOffsetProperty (_NoiseTexture);
+		editor.ShaderProperty (_NoiseScale, noiseScaleGUI);
+		editor.ShaderProperty (_NoiseIntensity, noiseIntensityGUI);
+
+		GUILayout.Space(pixelSpace);
+		EditorGUILayout.LabelField ("Distortion", EditorStyles.boldLabel);
+		editor.ShaderProperty (_DistortStrength, distortStrengthGUI);
+
+		GUILayout.Space(pixelSpace);
+		EditorGUILayout.LabelField ("Waterfall", EditorStyles.boldLabel);
+		editor.ShaderProperty (_WaterfallHeight, waterfallHeightGUI);
 	}
 
 	void TextureInline(MaterialProperty propTex, MaterialProperty propLCol, MaterialProperty propDCol, GUIContent tex, GUIContent lCol, GUIContent dCol) {
-		Rect rect = EditorGUILayout.GetControlRect ();
+		Rect rect;
 
-		if(propTex != null) editor.TexturePropertySingleLine(tex, propTex);
+		if(propTex != null)
+			rect = editor.TexturePropertySingleLine(tex, propTex);
+		else
+			rect = EditorGUILayout.GetControlRect ();
 
 		if (propLCol != null) {
 			Rect rect1 = new Rect (rect);

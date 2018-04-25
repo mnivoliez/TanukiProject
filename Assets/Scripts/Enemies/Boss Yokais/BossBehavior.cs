@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class BossBehavior : MonoBehaviour {
 
@@ -38,6 +41,9 @@ public class BossBehavior : MonoBehaviour {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             rendererMat.color = new Color(150, 40, 150);
+            //================================================
+            SoundController.instance.SelectYOKAI("KO");
+            //================================================
         }
     }
 
@@ -54,6 +60,9 @@ public class BossBehavior : MonoBehaviour {
     public void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
     }
 
     void Die() {

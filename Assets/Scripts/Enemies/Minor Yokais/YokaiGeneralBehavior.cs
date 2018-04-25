@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class YokaiGeneralBehavior : YokaiController {
 
@@ -135,7 +138,9 @@ public class YokaiGeneralBehavior : YokaiController {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
-            SoundController.instance.PlayYokaiSingle(yokaiHurt);
+            //================================================
+            SoundController.instance.SelectYOKAI("Hurt");
+            //================================================
             BeingHit();
             LooseHp(damage);
             EndHit();
@@ -148,7 +153,9 @@ public class YokaiGeneralBehavior : YokaiController {
             isKnocked = true;
             Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
             //target = GameObject.FindGameObjectWithTag("Player");
-            SoundController.instance.PlayYokaiSingle(yokaiScream);
+            //================================================
+            SoundController.instance.SelectYOKAI("KO");
+            //================================================
             //rendererMat.color = new Color(150f / 255f, 40f / 255f, 150f / 255f);
         }
     }
@@ -165,7 +172,9 @@ public class YokaiGeneralBehavior : YokaiController {
     public override void Absorbed() {
         isAbsorbed = true;
         gameObject.GetComponent<Collider>().enabled = false;
-        SoundController.instance.PlayYokaiSingle(absorbed);
+        //================================================
+        SoundController.instance.SelectYOKAI("Absorbed");
+        //================================================
     }
 
     public override void Die() {

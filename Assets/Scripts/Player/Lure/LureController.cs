@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LureController : MonoBehaviour
-{
+public class LureController : MonoBehaviour {
 
     [SerializeField]
     private float gravityScale = 1.0f;
@@ -16,6 +15,8 @@ public class LureController : MonoBehaviour
     [SerializeField] private GameObject prefabSpawnEffect;
 
     private Vector3 gravity;
+    private bool isActivatePlate = false;
+    private GameObject interactPlate;
 
     Rigidbody body;
 
@@ -23,14 +24,12 @@ public class LureController : MonoBehaviour
         gravity = -gravityGlobal * gravityScale * Vector3.up;
     }
 
-    private void OnEnable()
-    {
+    private void OnEnable() {
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
     }
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() {
         //===========================
         if (Pause.Paused) {
             return;
@@ -39,35 +38,48 @@ public class LureController : MonoBehaviour
         body.AddForce(gravity * (40 * Time.deltaTime), ForceMode.Acceleration);
     }
 
-    public void BeingHit()
-    {
+    public void BeingHit() {
         health--;
-        
+
         if (health <= 0) {
+            if (isActivatePlate) {
+                interactPlate.GetComponent<PressPlateSwitch>().UnpressPlate();
+                isActivatePlate = false;
+                interactPlate = null;
+            }
             GameObject smokeSpawn = Instantiate(prefabSpawnEffect, transform.position, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.5f;
-            Destroy(gameObject);
+            Destroy(smokeSpawn, 2f);
+
             GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+            Destroy(gameObject);
         }
     }
 
-    void OnCollisionEnter(Collision collider)
-    {
+    void OnCollisionEnter(Collision collider) {
         /*if (collider.gameObject.tag == "Yokai")
         {
             BeingHit();
         }
         else */
 
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Water"))
-        {
-            Destroy();
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Water")) {
+            DestroyLure();
+        }
+        if (collider.gameObject.CompareTag("Plate")) {
+            isActivatePlate = true;
+            interactPlate = collider.gameObject;
         }
     }
 
-    void Destroy()
-    {
-        Destroy(gameObject);
+    public void DestroyLure() {
+        if (isActivatePlate) {
+            interactPlate.GetComponent<PressPlateSwitch>().UnpressPlate();
+            isActivatePlate = false;
+            interactPlate = null;
+        }
+
         GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().ResetLeafLock();
+        Destroy(gameObject);
     }
 }

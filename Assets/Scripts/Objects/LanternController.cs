@@ -1,24 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 [ExecuteInEditMode]
 public class LanternController : MonoBehaviour {
     Light _light;
 
     private float _range;
-    [SerializeField] private float _min_radius;
+    [SerializeField] public float _min_radius;
     [SerializeField] private float _max_radius;
     [SerializeField] private float _min_intensity;
     [SerializeField] private float _max_intensity;
+    [SerializeField] private bool Kiyomori_Light_Hiyoribou;
 
     [SerializeField] private GameObject airLantern;
     [SerializeField] private float timeoutRespawn = 2.0f;
-
-    [SerializeField] private AudioClip lanterSound;
-    [SerializeField] private AudioClip lanterFallWater;
-    [SerializeField] private AudioClip lanterDome;
-    private bool lanterClosestFoundPlay = false;
 
     private GameObject the_player;
     private Vector3 pos_player;
@@ -74,14 +73,15 @@ public class LanternController : MonoBehaviour {
 
         }
         else {
-            _range = _max_radius;
-            _light.intensity = _max_intensity;
             if (transform.parent.tag == "Hand") {
+                _range = _max_radius;
+                _light.intensity = _max_intensity;
                 is_being_played = true;
                 if (is_being_played && !token_play_once) {
                     token_play_once = true;
-                    //AudioSource.PlayClipAtPoint(lanterSound, transform.position, 1.0f);
-                    SoundController.instance.PlayLanternSingle(lanterSound);
+                    //================================================
+                    SoundController.instance.SelectLANTERN("Catch");
+                    //================================================
                 }
             }
         }
@@ -96,35 +96,34 @@ public class LanternController : MonoBehaviour {
         }
         //===========================
 
-        //the_player = GameObject.FindGameObjectWithTag("Player");
-        //the_lantern = GetComponent<Rigidbody>();
 
+        //================================================
         if (the_lantern != null) {
             pos_player = the_player.transform.position;
             pos_lantern = the_lantern.transform.position;
             vec_distance = pos_player - pos_lantern;
             numb_distance = Mathf.Sqrt(Mathf.Pow(vec_distance.x, 2) + Mathf.Pow(vec_distance.y, 2) + Mathf.Pow(vec_distance.z, 2));
-            //Debug.Log(numb_distance);
             if (numb_distance < 60f) {
-                if (!dome_playing) {
-                    SoundController.instance.PlayLanternSource(lanterDome);
+                if (!dome_playing && !SoundController.instance.lanterClosestFoundPlay && !Kiyomori_Light_Hiyoribou) {
+                    SoundController.instance.SelectLANTERN("Dome");
                     dome_playing = true;
-                    lanterClosestFoundPlay = true;
                 }
                 if (dome_playing) {
                     SoundController.instance.AdjustLanternSource(1 - (numb_distance / 60f));
                 }
             }
-            if (numb_distance >= 60f && lanterClosestFoundPlay) {
+            if (numb_distance >= 60f && SoundController.instance.lanterClosestFoundPlay && dome_playing) {
                 SoundController.instance.StopLanternSource();
                 dome_playing = false;
-                lanterClosestFoundPlay = false;
             }
         }
+        //================================================
 
-
-        if (GetComponent<Rigidbody>() && GetComponent<Rigidbody>().IsSleeping())
+        if (GetComponent<Rigidbody>() && GetComponent<Rigidbody>().IsSleeping()) {
             GetComponent<Rigidbody>().WakeUp();
+            the_lantern = GetComponent<Rigidbody>();
+        }
+           
         if (shallRespawn) {
             if ((Time.time - timeoutRespawn) > elaspTimeBeforeRespawn) {
                 Respawn();
@@ -134,8 +133,9 @@ public class LanternController : MonoBehaviour {
 
     private void OnCollisionStay(Collision collision) {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Water")) {
-
-            SoundController.instance.PlayLanternSingle(lanterFallWater);
+            //================================================
+            SoundController.instance.SelectLANTERN("FallWater");
+            //================================================
 
             if (shallRespawn == false) {
                 GameObject air = Instantiate(airLantern, transform.position, Quaternion.identity);

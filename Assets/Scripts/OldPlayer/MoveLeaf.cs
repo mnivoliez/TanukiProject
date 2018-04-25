@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class MoveLeaf : MonoBehaviour {
 
@@ -12,8 +15,6 @@ public class MoveLeaf : MonoBehaviour {
     private Vector3 targetPosition = Vector3.zero;
     private bool arrived = false;
     [SerializeField] private GameObject disparitionEffect;
-    [SerializeField] private AudioClip throwLeaf;
-    [SerializeField] private AudioClip vanishLeaf;
     private Renderer renderLeaf;
     private Renderer renderStem;
 
@@ -52,7 +53,9 @@ public class MoveLeaf : MonoBehaviour {
         GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().StopDistantAttackState();
         GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
         FXDisappear.transform.localScale = FXDisappear.transform.localScale / 10f;
-        SoundController.instance.PlayLeafSingle(vanishLeaf);
+        //================================================
+        SoundController.instance.SelectLEAF("Vanish");
+        //================================================
         Destroy(FXDisappear, 1f);
         Destroy(gameObject);
     }
@@ -71,7 +74,9 @@ public class MoveLeaf : MonoBehaviour {
             yield return new WaitForSeconds(0.000001f);
         }
         GameObject FXDisappear = Instantiate(disparitionEffect, transform.position, Quaternion.identity);
-        SoundController.instance.PlayLeafSingle(vanishLeaf);
+        //================================================
+        SoundController.instance.SelectLEAF("Vanish");
+        //================================================
         arrived = false;
         GameObject.FindGameObjectWithTag("Player").GetComponent<KodaController>().StopDistantAttackState();
         Destroy(FXDisappear, 1f);
@@ -81,7 +86,9 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     public void SetSpawnPosition(GameObject spPos) {
-        SoundController.instance.PlayLeafSingle(throwLeaf);
+        //================================================
+        SoundController.instance.SelectLEAF("Throw");
+        //================================================
         spawnLeaf = spPos;
     }
 
@@ -98,7 +105,6 @@ public class MoveLeaf : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider collid) {
-
         //if (collid.gameObject.CompareTag("Yokai") && !collid.gameObject.GetComponent<YokaiController>().GetIsKnocked()) {
 
         //    collid.gameObject.GetComponent<YokaiController>().BeingHit();

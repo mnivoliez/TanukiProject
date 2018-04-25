@@ -50,7 +50,7 @@ public class MovingRockZ2P3Killing : MonoBehaviour {
 
             position_movingrock.y = position_movingrock_origin.y / 2.0f * Mathf.Cos(x * pi) + position_movingrock_origin.y / 2.0f;
             transform.position = position_movingrock;
-            x = x + 0.002f;
+            x = x + 0.003f;
         }
 
     }
