@@ -21,6 +21,7 @@ public class ShadowProjector : MonoBehaviour {
 
 	[Header ("Shadow")]
 	public Color shadowColor = Color.black;
+	public Texture falloffTexture;
 
 	[Header ("Blur")]
 	[Range (0, 20)]
@@ -53,6 +54,8 @@ public class ShadowProjector : MonoBehaviour {
 		eraseBorder = new Material (Shader.Find ("Custom/Projector/EraseShadow"));
 		blurMat = new Material (Shader.Find ("Custom/Projector/Blur"));
 		projMaterial = new Material (Shader.Find ("Custom/Projector/ProjectorShadow"));
+		projMaterial.SetTexture ("_FalloffTex", falloffTexture);
+		projMaterial.SetColor ("_ShadowColor", shadowColor);
 
 		playerLayerMask = LayerMask.GetMask ("PlayerShadow");
 		groundLayerMask = LayerMask.GetMask ("Ground");
@@ -116,7 +119,6 @@ public class ShadowProjector : MonoBehaviour {
 		RemoveBorder (cameraTexture);
 
 		projMaterial.SetTexture ("_ShadowTex", cameraTexture);
-		projMaterial.SetColor ("_ShadowColor", shadowColor);
 	}
     //@TODO : Try to understand why it creates memory leaks !
 	void BlurTexture (RenderTexture src) {
