@@ -8,14 +8,18 @@ public class PathFireflyBehavior : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
 
         if (other.gameObject.CompareTag("Player")) {
-            //Joue le son des lucioles
+            //================================================
+            SoundController.instance.SelectFIREFLIES("Fireflies");
+            //================================================
         }
 
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
-            //Coupe le son en fade out
+            //================================================
+            SoundController.instance.StopFirefliesEffect();
+            //================================================
         }
     }
 }

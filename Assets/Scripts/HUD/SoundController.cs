@@ -16,10 +16,14 @@ public class SoundController : MonoBehaviour {
     public AudioSource fxYokaiEffect;
     public AudioSource fxYokaiAkashitaEffect;
     public AudioSource fxYokaiBazekoriEffect;
-    public AudioSource fxYokaiSesshosekiEffect;
+    public AudioSource fxYokaiSesshosekiBossEffect;
     public AudioSource fxLanternSource;
     public AudioSource fxLanternEffect;
+    public AudioSource fxEnvironnementCorruptedWater;
+    public AudioSource fxEnvironnementCorruptedForest;
+    public AudioSource fxEnvironnementWaterFall;
     public AudioSource fxEnvironnementFireflies;
+    public AudioSource fxEnvironnementFireWall;
     public AudioSource fxEnvironnementEffectQuick;
     public AudioSource fxEnvironnementEffectLong;
 
@@ -87,7 +91,7 @@ public class SoundController : MonoBehaviour {
     [Space(10)]
     [SerializeField] private AudioClip yokaiBazekoriAttack;
 
-    [Header("YOKAI - SESSHOSEKI")]
+    [Header("YOKAI - SESSHOSEKI BOSS")]
     [Space(10)]
     [SerializeField] private AudioClip yokaiSesshosekiDigIn;
     [SerializeField] private AudioClip yokaiSesshosekiDigOut;
@@ -112,10 +116,13 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip envKaki;
     [SerializeField] private AudioClip envVineWallRetracting;
     [SerializeField] private AudioClip envFireWallExtinguished;
+    [SerializeField] private AudioClip envCheckpoint;
+    [SerializeField] private AudioClip envFruitLoot;
 
     [Header("ENVIRONMENT LONG")]
     [Space(10)]
     [SerializeField] private AudioClip envCorruptedWater;
+    [SerializeField] private AudioClip envCorruptedForest;
     [SerializeField] private AudioClip envFireWall;
     [SerializeField] private AudioClip envWind;
     [SerializeField] private AudioClip envWaterFallClose;
@@ -163,63 +170,55 @@ public class SoundController : MonoBehaviour {
 
     public void SelectTHEME() {
         if (SceneManager.GetActiveScene().name == "MainMenu") {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayHUDTheme(HUDMainMenuTheme, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             StartCoroutine(PlayThemeBoss(themeBossZ1, true));
         }
 
         if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             StartCoroutine(PlayThemeBoss(themeBossZ2, true));
         }
 
         if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ2, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
-            StopTheme();
-            StopHUD();
-            PlayTheme(themeLightZ1, true);
+            KillAll();
             SelectENVLong("Wind");
+            PlayTheme(themeLightZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
-            StopTheme();
-            StopHUD();
+            KillAll();
+            SelectENVCORRFOREST("CorruptedForest");
             PlayTheme(themeDarkZ1, true);
         }
 
         if ((SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") && Game.playerData.lightBoss1) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
-            StopTheme();
-            StopHUD();
+            KillAll();
+            SelectENVCORRFOREST("CorruptedForest");
             PlayTheme(themeDarkZ2, true);
         }
 
         if ((SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") && Game.playerData.lightBoss2) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ2, true);
         }
     }
@@ -249,6 +248,27 @@ public class SoundController : MonoBehaviour {
 
     public void StopTheme() {
         fxThemeSource.Stop();
+    }
+
+    private void KillAll() {
+        fxThemeSource.Stop();
+        fxHUD_Source.Stop();
+        fxHUD_Effect.Stop();
+        fxKodaEffect.Stop();
+        fxLeafEffect.Stop();
+        fxYokaiEffect.Stop();
+        fxYokaiAkashitaEffect.Stop();
+        fxYokaiBazekoriEffect.Stop();
+        fxYokaiSesshosekiBossEffect.Stop();
+        fxLanternSource.Stop();
+        fxLanternEffect.Stop();
+        fxEnvironnementCorruptedWater.Stop();
+        fxEnvironnementCorruptedForest.Stop();
+        fxEnvironnementWaterFall.Stop();
+        fxEnvironnementFireflies.Stop();
+        fxEnvironnementFireWall.Stop();
+        fxEnvironnementEffectQuick.Stop();
+        fxEnvironnementEffectLong.Stop();
     }
 
     //===================================================================================================================================================================================
@@ -495,14 +515,14 @@ public class SoundController : MonoBehaviour {
     //===================================================================================================================================================================================
     //===================================================================================================================================================================================
 
-    public void SelectYOKAISESSHOSEKI(string YOKAI) {
+    public void SelectYOKAISESSHOSEKIBOSS(string YOKAI) {
         switch (YOKAI) {
             case "DigIn":
-                PlayYokaiSesshosekiEffect(yokaiSesshosekiDigIn);
+                PlayYokaiSesshosekiBossEffect(yokaiSesshosekiDigIn);
                 break;
 
             case "DigOut":
-                PlayYokaiSesshosekiEffect(yokaiSesshosekiDigOut);
+                PlayYokaiSesshosekiBossEffect(yokaiSesshosekiDigOut);
                 break;
 
             default:
@@ -510,9 +530,9 @@ public class SoundController : MonoBehaviour {
         }
     }
 
-    private void PlayYokaiSesshosekiEffect(AudioClip clip) {
-        fxYokaiSesshosekiEffect.clip = clip;
-        fxYokaiSesshosekiEffect.Play();
+    private void PlayYokaiSesshosekiBossEffect(AudioClip clip) {
+        fxYokaiSesshosekiBossEffect.clip = clip;
+        fxYokaiSesshosekiBossEffect.Play();
     }
 
     //===================================================================================================================================================================================
@@ -564,10 +584,10 @@ public class SoundController : MonoBehaviour {
     //===================================================================================================================================================================================
     //===================================================================================================================================================================================
 
-    public void SelectFIREFLIES(string FIREFLIE) {
-        switch (FIREFLIE) {
-            case "Fireflies":
-                PlayFireflieEffect(envFireflies);
+    public void SelectENVCORRWATER(string ENV) {
+        switch (ENV) {
+            case "CorruptedWater":
+                PlayEnvironnementCorrWATER(envCorruptedWater, true);
                 break;
 
             default:
@@ -575,9 +595,156 @@ public class SoundController : MonoBehaviour {
         }
     }
 
-    private void PlayFireflieEffect(AudioClip clip) {
+    private void PlayEnvironnementCorrWATER(AudioClip clip, bool loop) {
+        fxEnvironnementCorruptedWater.clip = clip;
+        fxEnvironnementCorruptedWater.Play();
+        fxEnvironnementCorruptedWater.loop = loop;
+    }
+
+    public void StopEnvironnementCorrWater() {
+        fxEnvironnementCorruptedWater.Stop();
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
+    public void SelectENVCORRFOREST(string ENV) {
+        switch (ENV) {
+            case "CorruptedForest":
+                PlayEnvironnementCorrForest(envCorruptedForest, true);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayEnvironnementCorrForest(AudioClip clip, bool loop) {
+        fxEnvironnementCorruptedForest.clip = clip;
+        fxEnvironnementCorruptedForest.Play();
+        fxEnvironnementCorruptedForest.loop = loop;
+    }
+
+    public void StopEnvironnementCorrForest() {
+        fxEnvironnementCorruptedForest.Stop();
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
+    public void SelectENVWATERFALL(string ENV) {
+        switch (ENV) {
+            case "WaterFallClose":
+                PlayEnvironnementWaterFall(envWaterFallClose, true);
+                break;
+
+            case "WaterFallMedium":
+                PlayEnvironnementWaterFall(envWaterFallMedium, true);
+                break;
+
+            case "WaterFallFar":
+                PlayEnvironnementWaterFall(envWaterFallFar, true);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayEnvironnementWaterFall(AudioClip clip, bool loop) {
+        fxEnvironnementWaterFall.clip = clip;
+        fxEnvironnementWaterFall.Play();
+        fxEnvironnementWaterFall.loop = loop;
+    }
+
+    public void StopEnvironnementWaterFall() {
+        fxEnvironnementWaterFall.Stop();
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
+    public void SelectFIREFLIES(string FIREFLIE) {
+        switch (FIREFLIE) {
+            case "Fireflies":
+                PlayFirefliesEffect(envFireflies, true);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayFirefliesEffect(AudioClip clip, bool loop) {
         fxEnvironnementFireflies.clip = clip;
+        StartCoroutine(FadeOnEnterFireflies(loop));
+    }
+
+    public void StopFirefliesEffect() {
+        StartCoroutine(FadeOnExitFireflies());
+    }
+
+    public IEnumerator FadeOnEnterFireflies(bool loop) {
+        fxEnvironnementFireflies.volume = 0.0f;
         fxEnvironnementFireflies.Play();
+        fxEnvironnementFireflies.loop = loop;
+        while (fxEnvironnementFireflies.volume < 1.0f) {
+            fxEnvironnementFireflies.volume = fxEnvironnementFireflies.volume + 0.1f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        fxEnvironnementFireflies.volume = 1.0f;
+    }
+
+    public IEnumerator FadeOnExitFireflies() {
+        while (fxEnvironnementFireflies.volume > 0.0f) {
+            fxEnvironnementFireflies.volume = fxEnvironnementFireflies.volume - 0.1f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        fxEnvironnementFireflies.Stop();
+        fxEnvironnementFireflies.volume = 1.0f;
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
+    public void SelectFIREWALL(string FIREWALL) {
+        switch (FIREWALL) {
+            case "FireWall":
+                PlayFireWallEffect(envFireWall, true);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayFireWallEffect(AudioClip clip, bool loop) {
+        fxEnvironnementFireWall.clip = clip;
+        StartCoroutine(FadeOnEnterFireWall(loop));
+    }
+
+    public void StopFireWallEffect() {
+        StartCoroutine(FadeOnExitFireWall());
+    }
+
+    public IEnumerator FadeOnEnterFireWall(bool loop) {
+        fxEnvironnementFireWall.volume = 0.0f;
+        fxEnvironnementFireWall.Play();
+        fxEnvironnementFireWall.loop = loop;
+        while (fxEnvironnementFireWall.volume < 1.0f) {
+            fxEnvironnementFireWall.volume = fxEnvironnementFireWall.volume + 0.1f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        fxEnvironnementFireWall.volume = 1.0f;
+    }
+
+    public IEnumerator FadeOnExitFireWall() {
+        while (fxEnvironnementFireWall.volume > 0.0f) {
+            fxEnvironnementFireWall.volume = fxEnvironnementFireWall.volume - 0.1f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        fxEnvironnementFireWall.Stop();
+        fxEnvironnementFireWall.volume = 1.0f;
     }
 
     //===================================================================================================================================================================================
@@ -613,6 +780,14 @@ public class SoundController : MonoBehaviour {
                 PlayEnvironnementEffectQuick(envSwitch);
                 break;
 
+            case "Checkpoint":
+                PlayEnvironnementEffectQuick(envCheckpoint);
+                break;
+
+            case "FruitLoot":
+                PlayEnvironnementEffectQuick(envFruitLoot);
+                break;
+
             default:
                 break;
         }
@@ -628,28 +803,12 @@ public class SoundController : MonoBehaviour {
 
     public void SelectENVLong(string ENV) {
         switch (ENV) {
-            case "CorruptedWater":
-                PlayEnvironnementEffectLong(envCorruptedWater);
-                break;
-
             case "FireWall":
-                PlayEnvironnementEffectLong(envFireWall);
+                PlayEnvironnementEffectLong(envFireWall, true);
                 break;
 
             case "Wind":
-                PlayEnvironnementEffectLong(envWind);
-                break;
-
-            case "WaterFallClose":
-                PlayEnvironnementEffectLong(envWaterFallClose);
-                break;
-
-            case "WaterFallMedium":
-                PlayEnvironnementEffectLong(envWaterFallMedium);
-                break;
-
-            case "WaterFallFar":
-                PlayEnvironnementEffectLong(envWaterFallFar);
+                PlayEnvironnementEffectLong(envWind, true);
                 break;
 
             default:
@@ -657,9 +816,10 @@ public class SoundController : MonoBehaviour {
         }
     }
 
-    private void PlayEnvironnementEffectLong(AudioClip clip) {
+    private void PlayEnvironnementEffectLong(AudioClip clip, bool loop) {
         fxEnvironnementEffectLong.clip = clip;
         fxEnvironnementEffectLong.Play();
+        fxEnvironnementEffectLong.loop = loop;
     }
 
     public void StopEnvironnementEffectLong() {

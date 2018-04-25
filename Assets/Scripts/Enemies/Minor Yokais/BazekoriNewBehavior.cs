@@ -171,6 +171,9 @@ public class BazekoriNewBehavior : YokaiController {
     private void ActivateAttackTrigger() {
         attackRange.SetActive(true);
         Invoke("DeactivateAttackTrigger", 1f);
+        //================================================
+        SoundController.instance.SelectYOKAIBAZEKORI("Attack");
+        //================================================
     }
 
     private void DeactivateAttackTrigger() {
@@ -224,6 +227,9 @@ public class BazekoriNewBehavior : YokaiController {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5) {
             if (UnityEngine.Random.Range(0, 10) > 5.9f) {
                 Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
+                //================================================
+                SoundController.instance.SelectENVQuick("FruitLoot");
+                //================================================
             }
             target.GetComponent<Animator>().SetBool("IsAbsorbing", false);
             Destroy(gameObject);

@@ -10,14 +10,17 @@ public class FireBarrierController : MonoBehaviour {
     bool disappear = false;
     Renderer renderBarrier;
     float counter = 0.8f;
+    GameObject target;
+    bool isAlreadyPlayed = false;
 
-    void Start () {
-        nbYokaiNeededText.text = ""+nbYokaiNeeded;
+    void Start() {
+        nbYokaiNeededText.text = "" + nbYokaiNeeded;
         renderBarrier = gameObject.transform.parent.GetComponent<Renderer>();
+        target = GameObject.FindGameObjectWithTag("Player");
     }
-	
 
-	void Update () {
+
+    void Update() {
         //===========================
         if (Pause.Paused) {
             return;
@@ -27,17 +30,42 @@ public class FireBarrierController : MonoBehaviour {
             counter += Time.deltaTime;
             renderBarrier.material.SetFloat("_Height", counter);
 
-            if(counter > 2) {
+            if (counter > 2) {
                 Destroy(gameObject.transform.parent.gameObject);
             }
         }
-		
-	}
+
+    }
+
+    private void FixedUpdate() {
+        Debug.Log("distance: " + Mathf.Abs((target.transform.position - transform.position).magnitude));
+        if (Mathf.Abs((target.transform.position - transform.position).magnitude) < 30f) {
+            if (!isAlreadyPlayed) {
+                isAlreadyPlayed = true;
+                //================================================
+                SoundController.instance.SelectFIREWALL("FireWall");
+                //================================================
+            }
+        }
+        else {
+            if (isAlreadyPlayed) {
+                Debug.Log("COUCOU");
+                isAlreadyPlayed = false;
+                //================================================
+                SoundController.instance.StopFireWallEffect();
+                //================================================
+            }
+        }
+
+    }
 
     void OnTriggerEnter(Collider collid) {
         if (collid.gameObject.CompareTag("Player")) {
 
-            if(collid.gameObject.GetComponent<PlayerCollectableController>().GetnbYokai() >= nbYokaiNeeded) {
+            if (collid.gameObject.GetComponent<PlayerCollectableController>().GetnbYokai() >= nbYokaiNeeded) {
+                //================================================
+                SoundController.instance.SelectENVQuick("FireWallExtinguished");
+                //================================================
                 disappear = true;
                 nbYokaiNeededText.text = " ";
             }
