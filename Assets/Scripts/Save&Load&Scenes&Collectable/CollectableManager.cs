@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CollectableManager : MonoBehaviour {
+    public static GameObject LoadingScreen;
 
     private GameObject KiyomoriLightHiyoribou;
     private GameObject[] gOList;
@@ -17,12 +18,24 @@ public class CollectableManager : MonoBehaviour {
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         Game.Reset_Game(); // Will reset ONLY if the current scene is "Zone Tuto"
         Game.Load();
-        if (SceneManager.GetActiveScene().name != "MainMenu") {
+        
+        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Zone Tuto" && SceneManager.GetActiveScene().name != "Sandbox GGS") {
             FindYokaiGeneralAndSetID();
             FindYokaiGeneralAndDisable();
             Game.Update_Game();
             isPurified(Game.playerData.current_scene);
+            Game.Save();
         }
+        StartCoroutine(SavingLogo());
+    }
+
+    IEnumerator SavingLogo() {
+        LoadingScreen = GameObject.Find("LoadingScreen");
+        if (LoadingScreen != null) {
+            LoadingScreen.transform.GetChild(1).gameObject.SetActive(true);
+            yield return new WaitForSeconds(3);
+            LoadingScreen.transform.GetChild(1).gameObject.SetActive(false);
+        }        
     }
 
     void isPurified(string currentScene) {
