@@ -6,7 +6,7 @@ using UnityEditor;
 [CustomEditor(typeof(PathCreator))]
 public class PathEditor : Editor {
 
-	Vector3 offset;
+	Transform startTransform;
 
 	PathCreator creator;
 	PathPlatform Path {
@@ -57,7 +57,7 @@ public class PathEditor : Editor {
 	}
 
 	void OnSceneGUI() {
-		offset = (Application.isPlaying) ? creator.startPos : creator.transform.position;
+		startTransform = (Application.isPlaying) ? creator.startTransform : creator.transform;
 		Input();
 		Draw();
 	}
@@ -136,6 +136,7 @@ public class PathEditor : Editor {
 			if(i%3 == 0 || creator.displayControlPoints) {
 				Handles.color = (i%3==0)?creator.anchorColor:creator.controlColor;
 				float handleSize = (i%3==0)?creator.anchorDiameter:creator.controlDiamater;
+				if(i == 0) handleSize *=2;
 				Vector3 newPos;
 				Vector3 pathId = LocalToWorld(Path[i]);
 				if(creator.displayTranslateHandles)
@@ -158,16 +159,16 @@ public class PathEditor : Editor {
 	}
 
 	Vector3 WorldToLocal(Vector3 pos) {
-		return creator.transform.InverseTransformDirection(pos - offset);
+		return startTransform.InverseTransformPoint(pos);
 	}
 
 	Vector3 LocalToWorld(Vector3 pos) {
-		return creator.transform.TransformDirection(pos) + offset;
+		return startTransform.TransformPoint(pos);
 	}
 
 	Vector3[] LocalToWorld(Vector3[] points) {
 		for (int i = 0; i < points.Length; i++) {
-			points[i] = creator.transform.TransformDirection(points[i]) + offset;
+			points[i] = startTransform.TransformPoint(points[i]);
 		}
 		return points;
 	}
@@ -175,14 +176,14 @@ public class PathEditor : Editor {
 	Vector3 GetCloserPointInSegment(Vector2 mousePos, int segmentIndex) {
 		Vector3[] points = LocalToWorld(Path.GetPointsInSegment(segmentIndex));
 
-		return Bezier.EvaluateQubic(points[0], points[1], points[2], points[3], GetPercentOnBezier(points, mousePos, 0.5f, 0.25f, 10));
+		return Bezier.Evaluate(points[0], points[1], points[2], points[3], GetPercentOnBezier(points, mousePos, 0.5f, 0.25f, 10));
 	}
 
 	float GetPercentOnBezier(Vector3[] points, Vector2 mousePos, float t, float offset, int count) {
 		if(count <= 0) return t;
 
-		Vector2 bezierPosLeft = HandleUtility.WorldToGUIPoint(Bezier.EvaluateQubic(points[0], points[1], points[2], points[3], t-offset));
-		Vector2 bezierPosRight = HandleUtility.WorldToGUIPoint(Bezier.EvaluateQubic(points[0], points[1], points[2], points[3], t+offset));
+		Vector2 bezierPosLeft = HandleUtility.WorldToGUIPoint(Bezier.Evaluate(points[0], points[1], points[2], points[3], t-offset));
+		Vector2 bezierPosRight = HandleUtility.WorldToGUIPoint(Bezier.Evaluate(points[0], points[1], points[2], points[3], t+offset));
 		float dstLeft = Vector2.Distance(mousePos, bezierPosLeft);
 		float dstRight = Vector2.Distance(mousePos, bezierPosRight);
 		
