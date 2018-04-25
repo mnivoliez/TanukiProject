@@ -39,8 +39,11 @@ public class SteleBehavior : MonoBehaviour {
                     transform.GetChild(currentTuto).gameObject.SetActive(true);
                 }
                 else {
+                    isActive = false;
                     Pause.Paused = false;
                     GameObject.FindGameObjectWithTag("Player").GetComponent<InputController>().SetFreezeInput(false);
+                    Time.timeScale = 1;
+                    nbTuto = 0;
                     //Destroy(gameObject);
                 }
 
@@ -60,6 +63,7 @@ public class SteleBehavior : MonoBehaviour {
                 SoundController.instance.SelectHUD("PauseOpenClose");
                 //================================================
                 Pause.Paused = true;
+                Time.timeScale = 0;
             }
 
             HitodamaController hitodama = GameObject.FindGameObjectWithTag("Hitodama").GetComponent<HitodamaController>();
