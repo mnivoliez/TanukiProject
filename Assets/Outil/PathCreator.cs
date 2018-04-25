@@ -7,7 +7,7 @@ public class PathCreator : MonoBehaviour {
 	[HideInInspector]
 	public PathPlatform path;
 	[HideInInspector]
-	public Vector3 startPos;
+	public Transform startTransform;
 
 	[Header("Display")]
 	public Color anchorColor = Color.black;
@@ -24,7 +24,11 @@ public class PathCreator : MonoBehaviour {
 	public PathPlatform.PathSelection selection = PathPlatform.PathSelection.Aligned;
 
 	public void Start() {
-		startPos = transform.position;
+		startTransform = new GameObject(this.name+"Start").transform;
+		startTransform.parent = this.transform.parent;
+		startTransform.position = this.transform.position;
+		startTransform.rotation = this.transform.rotation;
+		this.transform.parent = startTransform;
 	}
 
 	public void CreatePath() {

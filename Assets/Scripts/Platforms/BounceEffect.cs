@@ -19,13 +19,9 @@ public class BounceEffect : MonoBehaviour {
             //temp_orientation.y = temp_orientation.y / Mathf.Abs(temp_orientation.y);
 			temp_orientation.y = (temp_orientation.y==0)?0:temp_orientation.y / Mathf.Abs(temp_orientation.y);
             temp_orientation.z = 0;
-            try {
-                //================================================
-                SoundController.instance.SelectENVQuick("Bumber");
-                //================================================
-            }
-            catch {
-            }
+            //================================================
+            SoundController.instance.SelectENVQuick("Bumper");
+            //================================================
             Koda.velocity = Vector3.zero;
             Koda.AddForce(temp_orientation * coeffRebond, ForceMode.Impulse); // 200 = coeffRebond
         }

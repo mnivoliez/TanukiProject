@@ -4,72 +4,64 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovementStateReceiver {
 
-    //Animation
+    public GameObject landingParticlePrefab;
+
+    public Transform runParticleTransform;
+    private ParticleSystem.EmissionModule emissionRun;
+
+    public GameObject pawsProjectorPrefab;
+    public Transform leftFoot;
+    public Transform rightFoot;
+
     private Animator animBody;
+
+    public Transform playerTransform;
+
+    public Transform glideTransform;
+    private ParticleSystem.EmissionModule emissionGlide;
 
     private float smoothVertSpeed;
 
     void Start() {
         animBody = GetComponent<Animator>();
+        emissionRun = runParticleTransform.gameObject.GetComponent<ParticleSystem>().emission;
+        emissionGlide = glideTransform.gameObject.GetComponent<ParticleSystem>().emission;
     }
 
     public void UpdateState(MovementState state, float speed, float lateralBend, float verticalSpeed) {
-
         animBody.SetFloat("Speed", speed);
 
         animBody.SetFloat("LateralBend", lateralBend);
 
         smoothVertSpeed = Mathf.Lerp(smoothVertSpeed, verticalSpeed, .3f);
         animBody.SetFloat("VerticalSpeed", smoothVertSpeed);
-
-        //if(Input.GetKeyDown(KeyCode.F)) animBody.SetTrigger("InstantAttack");
-        //if(Input.GetKeyDown(KeyCode.G)) animBody.SetTrigger("DistantAttack");
-        //if(Input.GetKeyDown(KeyCode.H)) animBody.SetBool("IsAbsorbing", !animBody.GetBool("IsAbsorbing"));
-        //if(Input.GetKeyDown(KeyCode.J)) animBody.SetTrigger("Hit");
-        //if(Input.GetKeyDown(KeyCode.K)) animBody.SetTrigger("Death");
-
-        //currentState = state;
-        //switch (state) {
-
-
-        //    case MovementState.Jump:
-
-
-        //        break;
-
-        //    case MovementState.DoubleJump:
-
-        //        break;
-        //}
-        int layer = 1 << 10 + 1 << 8;
     }
 
     public void OnStateEnter(MovementState state) {
         switch (state) {
             case MovementState.Jump:
                 animBody.SetBool("isInAir", true);
-                //animBody.SetTrigger("Jump");
+                emissionRun.enabled = false;
                 break;
             case MovementState.PushUp:
                 animBody.SetBool("isInAir", true);
-                //animBody.SetTrigger ("Fall");
+                emissionRun.enabled = false;
                 break;
             case MovementState.Fall:
                 animBody.SetBool("isInAir", true);
-                //animBody.SetTrigger("Fall");
+                emissionRun.enabled = false;
                 break;
             case MovementState.DoubleJump:
                 animBody.SetTrigger("DoubleJump");
+                emissionRun.enabled = false;
                 break;
             case MovementState.Idle:
                 animBody.SetBool("isInAir", false);
-                //animBody.ResetTrigger ("Fall");
-                //animBody.ResetTrigger ("Jump");
+                emissionRun.enabled = true;
                 break;
             case MovementState.Run:
                 animBody.SetBool("isInAir", false);
-                //animBody.ResetTrigger("Fall");
-                //animBody.ResetTrigger("Jump");
+                emissionRun.enabled = true;
                 break;
         }
     }
@@ -89,16 +81,15 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
             case InteractState.Glide:
                 animBody.SetBool("isGliding", true);
+                emissionGlide.enabled = true;
                 break;
 
             case InteractState.MeleeAttack:
                 animBody.SetTrigger("InstantAttack");
-                //animBody.SetLayerWeight (1, 1);
                 break;
 
             case InteractState.DistantAttack:
                 animBody.SetTrigger("DistantAttack");
-                //animBody.SetLayerWeight (1, 1);
                 break;
 
             case InteractState.SpawnLure:
@@ -119,7 +110,6 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
             case InteractState.Absorb:
                 animBody.SetBool("IsAbsorbing", true);
-                //animBody.SetLayerWeight(1, 1);
                 break;
 
             case InteractState.Nothing:
@@ -131,6 +121,7 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
         switch (state) {
             case InteractState.Glide:
                 animBody.SetBool("isGliding", false);
+                emissionGlide.enabled = false;
                 break;
 
             case InteractState.MeleeAttack:
@@ -163,4 +154,12 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
         }
     }
 
+	public void Landing() {
+		Instantiate(landingParticlePrefab, new Vector3(transform.position.x, transform.position.y+.5f, transform.position.z), Quaternion.identity);
+	}
+
+    public void CreatePaw(string str) {
+        Transform tr = str.Equals("Left") ? leftFoot :  rightFoot;
+        Instantiate(pawsProjectorPrefab, tr.position, playerTransform.rotation);
+    }
 }

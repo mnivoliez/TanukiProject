@@ -195,8 +195,7 @@ public class BazekoriNewBehavior : YokaiController {
             SoundController.instance.SelectYOKAI("KO");
             //================================================
             target = GameObject.FindGameObjectWithTag("Player");
-            agent.SetDestination(transform.position+Vector3.one*0.1f);
-            agent.enabled = false;
+            agent.radius = 0.05f;
             //GetComponent<Collider>().enabled = false;
             comeBack = false;
         }
