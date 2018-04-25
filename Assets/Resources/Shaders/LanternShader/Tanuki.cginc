@@ -33,6 +33,10 @@ float4 _FirstTexture_ST;
 
 	uniform fixed4 _EmissiveColor;
 	uniform fixed _EmissiveIntensity;
+	uniform half _EmissiveSpeed;
+	uniform half _EmissiveStrength;
+
+	uniform half4 _InvincibilityColor;
 
 	uniform half _SpecIntensity;
 	uniform half _SpecPow;
@@ -80,6 +84,7 @@ half4 frag (v2f i) : SV_Target
 
 		float3 directDiff = (brightDiff + dimDiff) * attenColor;
 
+		float mask = tex.a * _EmissiveColor.a * _EmissiveIntensity;
 		float3 diffCol = tex.rgb;
 
 		#if defined(FORWARDBASE_PASS)
@@ -98,11 +103,12 @@ half4 frag (v2f i) : SV_Target
 
 	#if defined(FORWARDBASE_PASS)
 	    float3 indirectDiff = ShadeSH9(float4(i.normalDir, 1));
-		half mask = tex.a * _EmissiveColor.a * _EmissiveIntensity * 25.0;
-		half3 emissive = tex.rgb * (1-mask) + mask * _EmissiveColor.rgb;
+		half3 emissive = (sin(_Time.y*_EmissiveSpeed)/(1/_EmissiveStrength)+(1-_EmissiveStrength)) * tex.a * _EmissiveColor.rgb * _EmissiveColor.a *25 * _EmissiveIntensity;
+		half3 worldNoise = snoise(i.posWorld.xyz - half3(0,_Time.y*1.5,0));
+		emissive += (sin(_Time.y*10)/4+.75) * (worldNoise*.5+.5) * _InvincibilityColor.rgb * _InvincibilityColor.a;
 		emissive += (stepDiff * diffCol.rgb * _FirstLColor.rgb*_FirstLColor.a*25.0)
-				   + (1-stepDiff) * diffCol.rgb * _FirstDColor.rgb*_FirstDColor.a*25.0;
-		half4 finalCol = half4(((directDiff + indirectDiff + spec + rim) * diffCol), 1.0);
+				+ (1-stepDiff) * diffCol.rgb * _FirstDColor.rgb*_FirstDColor.a*25.0;
+		half4 finalCol = half4(((directDiff + indirectDiff + spec + rim) * diffCol + emissive), 1.0);
 		UNITY_APPLY_FOG(i.fogCoord, finalCol);
 		return finalCol;
 	#elif defined(FORWARDADD_PASS)
