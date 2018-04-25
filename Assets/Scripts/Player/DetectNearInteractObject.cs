@@ -64,10 +64,9 @@ public class DetectNearInteractObject : MonoBehaviour {
 
                 // if it is within the prioritize zone, we will check the prioritized status of the new object over the stored one.
                 bool withinPrioritizationRange = System.Math.Abs(distanceDiff) < prioritizationRange;
-                if(withinPrioritizationRange && newObjectIsCatchable) {
-                    rangeNearestObject = distanceObject;
-                    nearestObject = collider.gameObject;
-                } else if( distanceDiff > 0) {
+
+                bool storedObjectIsCatchable = nearestObject.layer == LayerMask.NameToLayer("Catchable");
+                if( (withinPrioritizationRange && newObjectIsCatchable) || (distanceDiff > 0 && !storedObjectIsCatchable) ) {
                     rangeNearestObject = distanceObject;
                     nearestObject = collider.gameObject;
                 } 
