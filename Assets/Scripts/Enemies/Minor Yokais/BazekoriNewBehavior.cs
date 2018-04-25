@@ -171,6 +171,9 @@ public class BazekoriNewBehavior : YokaiController {
     private void ActivateAttackTrigger() {
         attackRange.SetActive(true);
         Invoke("DeactivateAttackTrigger", 1f);
+        //================================================
+        SoundController.instance.SelectYOKAIBAZEKORI("Attack");
+        //================================================
     }
 
     private void DeactivateAttackTrigger() {

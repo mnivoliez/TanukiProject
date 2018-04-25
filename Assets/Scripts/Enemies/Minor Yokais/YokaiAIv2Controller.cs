@@ -91,6 +91,9 @@ public class YokaiAIv2Controller : YokaiController {
                         if (Time.time > nextBodyAttack) {
                             nextBodyAttack = Time.time + rateBodyAttack;
                             if (target.tag == "Player") {
+                                //================================================
+                                SoundController.instance.SelectYOKAIAKASHITA("Attack");
+                                //================================================
                                 target.GetComponent<PlayerHealth>().LooseHP(damageBody);
                             } else if (target.tag == "Lure") {
                                 target.GetComponent<LureController>().BeingHit();
