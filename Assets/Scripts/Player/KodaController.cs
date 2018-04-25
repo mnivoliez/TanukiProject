@@ -272,10 +272,10 @@ public class KodaController : MonoBehaviour {
         //================================================
         if (previousMovementState == MovementState.Fall && (movementState == MovementState.Idle || movementState == MovementState.Run)) {
             if (!runOnWater) {
-                SoundController.instance.SelectKODA("fallGround");
+                SoundController.instance.SelectKODA("FallGround");
             }
             if (runOnWater) {
-                SoundController.instance.SelectKODA("fallWater");
+                SoundController.instance.SelectKODA("FallWater");
             }
         }
         //================================================
