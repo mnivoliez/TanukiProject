@@ -20,8 +20,6 @@ uniform half _WaveHeight;
 uniform half _NoiseScale;
 uniform half _NoiseIntensity;
 
-uniform half _WaterfallHeight;
-
 #if defined(GRAB_PASS)
 	sampler2D _BackgroundTexture;
 	uniform float _DistortStrength;
@@ -68,7 +66,6 @@ v2f vert (appdata_base v)
 	v2f o;
 
 	o.uv = -v.texcoord;
-	o.uv.y += (-mul(unity_ObjectToWorld, v.vertex).y) / _WaterfallHeight;
 	float wave = sin(o.uv.y * _WaveAmount + _Time.y*_WaveSpeed) * _WaveHeight + snoise(mul(unity_ObjectToWorld, v.vertex)/100*_NoiseScale + _Time.x*_WaveSpeed) * _NoiseIntensity;
 	v.vertex.y += wave;
 	o.pos = UnityObjectToClipPos(v.vertex);
