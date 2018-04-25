@@ -50,11 +50,11 @@ public class PlatformControllers : MonoBehaviour {
 					isReverse = true;
 					fromWaypointIndex = path.NumSegments-1;
 				}
-				UpdateWaitTime ();
+				UpdateWaitTime();
 			} else if (fromWaypointIndex < 0) {
 				isReverse = false;
 				fromWaypointIndex = 0;
-				UpdateWaitTime ();
+				UpdateWaitTime();
 			}
 		}
 
@@ -66,9 +66,7 @@ public class PlatformControllers : MonoBehaviour {
 	}
 
     void OnCollisionEnter(Collision col) {
-
         col.transform.parent = transform.parent;
-
     }
 
     void OnCollisionExit(Collision col) {
@@ -77,7 +75,6 @@ public class PlatformControllers : MonoBehaviour {
 
     Vector3 GetCurvesVector (int index, float keyValue) {
 		Vector3[] points = path.GetPointsInSegment(index);
-		return transform.TransformDirection(BezierPlatform.EvaluateQubic(points[0], points[1], points[2],points[3], keyValue)) + creator.startPos;
+		return transform.TransformDirection(Bezier.EvaluateQubic(points[0], points[1], points[2],points[3], keyValue)) + creator.startPos;
 	}
-
 }

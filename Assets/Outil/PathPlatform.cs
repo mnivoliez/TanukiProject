@@ -4,6 +4,8 @@ using System.Collections.Generic;
 [System.Serializable]
 public class PathPlatform {
 
+	public enum PathSelection {Aligned, Auto, Free};
+
 	[SerializeField, HideInInspector]
 	List<Vector3> points;
 	[SerializeField, HideInInspector]
@@ -91,10 +93,6 @@ public class PathPlatform {
 		}
 	}
 
-	public void SplitAfterSegment(int segmentIndex) {
-		SplitSegment((points[segmentIndex*3] + points[segmentIndex*3+3])/2f, segmentIndex);
-	}
-
 	public void DeleteSegment(int anchorIndex) {
 		if(NumSegments > 2 || !isClosed && NumSegments > 1) {
 			if(anchorIndex == 0) {
@@ -114,7 +112,7 @@ public class PathPlatform {
 		return new Vector3[] {points[i*3], points[i*3+1], points[i*3+2], points[LoopIndex(i*3+3)] };
 	}
 
-	public void MovePoint(int i, Vector3 pos) {
+	public void MovePoint(int i, Vector3 pos, PathSelection selection) {
 		Vector3 deltaMove = pos-points[i];
 
 		if(i%3 == 0 || !autoSetControlPoints) {
@@ -131,17 +129,57 @@ public class PathPlatform {
 						points[LoopIndex(i-1)] +=deltaMove;
 					}
 				} else {
-					bool isNextPointAnchor = (i+1) % 3 == 0;
-					int correspondingControlIndex = isNextPointAnchor?i+2:i-2;
-					int anchorIndex = isNextPointAnchor?i+1:i-1;
+					if(selection != PathSelection.Free) {
+						bool isNextPointAnchor = (i+1) % 3 == 0;
+						int correspondingControlIndex = isNextPointAnchor?i+2:i-2;
+						int anchorIndex = isNextPointAnchor?i+1:i-1;
 
-					if(correspondingControlIndex >= 0 && correspondingControlIndex < points.Count || isClosed) {
-						float dst = (points[LoopIndex(anchorIndex)] - points[LoopIndex(correspondingControlIndex)]).magnitude;
-						Vector3 dir = (points[LoopIndex(anchorIndex)] - pos).normalized;
-						points[LoopIndex(correspondingControlIndex)] = points[LoopIndex(anchorIndex)] + dir * dst;
+						if(correspondingControlIndex >= 0 && correspondingControlIndex < points.Count || isClosed) {
+							int indexToMirror = (selection == PathSelection.Auto) ? i : correspondingControlIndex;
+							float dst = (points[LoopIndex(anchorIndex)] - points[LoopIndex(indexToMirror)]).magnitude;
+							Vector3 dir = (points[LoopIndex(anchorIndex)] - pos).normalized;
+							points[LoopIndex(correspondingControlIndex)] = points[LoopIndex(anchorIndex)] + dir * dst;
+						}
 					}
 				}
 			}
+		}
+	}
+
+	public Vector3[] CalculateEvenlySpacedPoints(float spacing, float resolution = 1) {
+		List<Vector3> evenlySpacedPoints = new List<Vector3>();
+		evenlySpacedPoints.Add(points[0]);
+		Vector3 previousPoint = points[0];
+		float dstSinceLastEvenPoint = 0;
+
+		for (int segmentIndex = 0; segmentIndex < NumSegments; segmentIndex++) {
+			Vector3[] p = GetPointsInSegment(segmentIndex);
+			float controlNetLength = Vector3.Distance(p[0], p[1]) + Vector3.Distance(p[1], p[2]) + Vector3.Distance(p[2], p[3]);
+			float estimedCurveLength = Vector3.Distance(p[0], p[3]) + controlNetLength/2f;
+			int divisions = Mathf.CeilToInt(estimedCurveLength * resolution * 10);
+			float t = 0;
+			while(t <= 1) {
+				t += 1f/divisions;
+				Vector3 pointOnCurve = Bezier.EvaluateQubic(p[0], p[1], p[2], p[3], t);
+				dstSinceLastEvenPoint += Vector3.Distance(previousPoint, pointOnCurve);
+
+				while (dstSinceLastEvenPoint >= spacing) {
+					float overshootDst = dstSinceLastEvenPoint - spacing;
+					Vector3 newEvenlySpacedPoint = pointOnCurve + (previousPoint - pointOnCurve).normalized * overshootDst;
+					evenlySpacedPoints.Add(newEvenlySpacedPoint);
+					dstSinceLastEvenPoint = overshootDst;
+					previousPoint = newEvenlySpacedPoint;
+				}
+				previousPoint = pointOnCurve;
+			}
+		}
+
+		return evenlySpacedPoints.ToArray();
+	}
+
+	public void FlattenAllPoints() {
+		for (int i = 0; i < NumPoints; i++) {
+			points[i] = new Vector3(points[i].x, 0, points[i].z);
 		}
 	}
 	

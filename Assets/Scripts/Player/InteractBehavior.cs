@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class InteractBehavior : MonoBehaviour {
 
@@ -43,9 +47,14 @@ public class InteractBehavior : MonoBehaviour {
     [Header("ABSORB")]
     [Space(8)]
     private bool absorbing;
-    [SerializeField] private float absorptionTimer = 4f;
+    //[SerializeField] private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
-    [SerializeField] private AudioClip absorption;
+    private bool pressedAbsorbingOnce = false;
+
+    [Header("CARRY")]
+    [Space(8)]
+    [SerializeField][Range(2000, 10000)]
+    private int throwCoef = 5000;
 
     [Header("LURE")]
     [Space(8)]
@@ -73,7 +82,6 @@ public class InteractBehavior : MonoBehaviour {
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
 		catchSlot = GameObject.FindGameObjectWithTag ("Hand");
-        //sakePot.SetActive(false);
         absorbing = false;
     }
 
@@ -85,10 +93,10 @@ public class InteractBehavior : MonoBehaviour {
         }
         //===========================
         if (absorbing) {
-            absorptionTimer -= Time.deltaTime;
-            loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
-            absorptionGauge -= 0.01f;
-            if (absorptionTimer < 0) StopAbsorption();
+            //absorptionTimer -= Time.deltaTime;
+            //loadingBar.GetComponent<Image>().fillAmount = absorptionTimer * 25 / 100;
+            //absorptionGauge -= 0.01f;
+            //if (absorptionTimer < 0) StopAbsorption();
         }
     }
 
@@ -244,22 +252,30 @@ public class InteractBehavior : MonoBehaviour {
 
             centerButton.GetComponent<Image>().color = Color.white;
             if (inputParams.contextualButtonPressed) {
-                centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
-                centerButton.GetComponent<Image>().color = Color.grey;
+                //centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
+                //centerButton.GetComponent<Image>().color = Color.grey;
                 absorptionGauge += 1;
                 inputParams.contextualButtonPressed = false;
-                SoundController.instance.PlaySingle(absorption);
+                if (!pressedAbsorbingOnce) {
+                    //================================================
+                    pressedAbsorbingOnce = true;
+                    SoundController.instance.SelectKODA("Absorption");
+                    //================================================
+                }
             }
 
             if (absorptionGauge > maxAbsorptionGauge) {
                 pairCapacity = AbsorbeYokai(absorbableObject);
                 DeactivateAbsorptionQTE();
                 ResetAbsorptionGauge();
-                SoundController.instance.StopSingle();
+                //================================================
+                pressedAbsorbingOnce = false;
+                SoundController.instance.StopKoda();
+                //================================================
             }
         }
         else {
-            centerButton.GetComponent<Image>().color = Color.white;
+            //centerButton.GetComponent<Image>().color = Color.white;
             DoBeginAbsorption(absorbableObject);
         }
         input.SetUserRequest(inputParams);
@@ -270,22 +286,23 @@ public class InteractBehavior : MonoBehaviour {
         absorbing = false;
         ResetAbsorptionGauge();
         DeactivateAbsorptionQTE();
-        SoundController.instance.StopSingle();
+        //================================================
+        pressedAbsorbingOnce = false;
+        SoundController.instance.StopKoda();
+        //================================================
     }
     private void ResetAbsorptionGauge() {
         absorptionGauge = 0;
-        absorptionTimer = 4f;
-        centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
-        centerButton.GetComponent<Image>().color = Color.white;
+        //absorptionTimer = 4f;
+        //centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(50f, 50f);
+        //centerButton.GetComponent<Image>().color = Color.white;
     }
 
     private void ActivateAbsorptionQTE() {
         canvasQTE.SetActive(true);
-        //sakePot.SetActive(true);
     }
 
     private void DeactivateAbsorptionQTE() {
-        //sakePot.SetActive(false);
         canvasQTE.SetActive(false);
     }
 
@@ -304,10 +321,12 @@ public class InteractBehavior : MonoBehaviour {
     public GameObject DoSpawnLure() {
         GameObject clone = null;
         if (leafHead.activeSelf && GameObject.FindGameObjectWithTag("Lure") == null) {
-            leafHead.SetActive(false);
+            tempLeafHead.SetActive(false);
+            //leafHead.SetActive(false);
             Vector3 spawnLurePosition = tanukiPlayer.position + new Vector3(0, lureSpawnHeight, 0) + (tanukiPlayer.forward * 2);
             GameObject smokeSpawn = Instantiate(smokeSpawner, spawnLurePosition, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
+            Destroy(smokeSpawn, 2f);
             clone = Instantiate(lure, spawnLurePosition, tanukiPlayer.rotation);
             //clone.transform.Translate(0, 3, 2);
         }
@@ -318,13 +337,15 @@ public class InteractBehavior : MonoBehaviour {
         if (lure != null) {
             GameObject smokeSpawn = Instantiate(smokeSpawner, lure.transform.position, Quaternion.identity);
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
-            Destroy(lure);
-            leafHead.SetActive(true);
+            Destroy(smokeSpawn, 2f);
+            lure.GetComponent<LureController>().DestroyLure();
+            tempLeafHead.SetActive(false);
         }
     }
 
     public void CheckExistingLure(GameObject lure) {
         if (lure == null && leafHead.activeSelf == false) {
+            tempLeafHead.SetActive(true);
             leafHead.SetActive(true);
         }
     }
@@ -335,15 +356,23 @@ public class InteractBehavior : MonoBehaviour {
         Destroy(objectToCarry.GetComponent<Rigidbody>());
     }
 
-    public void StopCarry(GameObject objectToCarry) {
+    public void StopCarry(GameObject objectToCarry, Vector3 inputVelocityAxis) {
         objectToCarry.transform.parent = null;
         Rigidbody body = objectToCarry.AddComponent(typeof(Rigidbody)) as Rigidbody;
         body.useGravity = true;
         body.mass = 100;
+        body.transform.position += inputVelocityAxis * 0.1f;
+        float x = inputVelocityAxis.x;
+        float z = inputVelocityAxis.z;
+        float y = (float)Math.Sqrt(x*x + z*z) / 2f;
+        Vector3 force = new Vector3(x, y, z) * throwCoef;
+        //Debug.Log(force);
+        body.AddForce(force);
     }
 
     public void ResetLeaf() {
-        leafHead.SetActive(true);
+        tempLeafHead.SetActive(true);
+        //leafHead.SetActive(true);
         leafHand.SetActive(false);
         ParachuteLeaf.SetBlendShapeWeight(0, 0);
         //sakePot.SetActive(false);

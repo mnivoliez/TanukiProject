@@ -14,7 +14,7 @@ FIANI Hanna
 GOMEZ Gwendoline
 OTHENIN Jérémy
 NIVOLIEZ Mathieu
-XHUAN HIEN Mai
+MAI Xuan Hien
 
 Level Designer:
 BOST Vincent

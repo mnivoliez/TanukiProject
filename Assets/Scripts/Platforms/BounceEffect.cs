@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class BounceEffect : MonoBehaviour {
 
     [SerializeField] private int coeffRebond = 200;
-    [SerializeField] private AudioClip bumperSound;
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.CompareTag("Player")) {
@@ -18,7 +20,9 @@ public class BounceEffect : MonoBehaviour {
 			temp_orientation.y = (temp_orientation.y==0)?0:temp_orientation.y / Mathf.Abs(temp_orientation.y);
             temp_orientation.z = 0;
             try {
-                SoundController.instance.PlaySingle(bumperSound);
+                //================================================
+                SoundController.instance.SelectENVQuick("Bumber");
+                //================================================
             }
             catch {
             }

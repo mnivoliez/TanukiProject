@@ -11,7 +11,10 @@ public class DetectNearInteractObject : MonoBehaviour {
     private float fieldOfView = 45f;
     [SerializeField]
     private float rangeInteract = 4f;
-    private float offSet = 0.5f;
+    [SerializeField]
+    private float prioritizationRange = 0.2f;
+    [SerializeField]
+    private float offSet = 0f;
 
     [SerializeField]
     private Transform direction;
@@ -23,38 +26,60 @@ public class DetectNearInteractObject : MonoBehaviour {
             return;
         }
         //===========================
-        if (nearestObject != null
-            && nearestObject.layer == LayerMask.NameToLayer("Catchable")
-            && Vector3.Distance(nearestObject.gameObject.transform.position, transform.position) > 4
-            && Vector3.Angle(direction.forward, (nearestObject.gameObject.transform.position - transform.position)) > fieldOfView) {
-            nearestObject = null;
-            rangeNearestObject = 0;
+        if (nearestObject != null) {
+            float distanceObject = Vector3.Distance(nearestObject.transform.position, direction.position);
+            Vector3 offSetPoint = direction.position - direction.forward * offSet;
+            float angleObject = Vector3.Angle(direction.forward, nearestObject.transform.position - offSetPoint);
+            bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
+            if(!isInCone) {
+                nearestObject = null;
+                rangeNearestObject = 0;
+            } 
         }
 	}
 
     void OnTriggerStay(Collider collider) {
-
-        float distanceObject = Vector3.Distance(collider.gameObject.transform.position, transform.position);
-        Vector3 offSetPoint = transform.position + transform.forward * -offSet;
+        
+        float distanceObject = Vector3.Distance(collider.gameObject.transform.position, direction.position);
+        Vector3 offSetPoint = direction.position - direction.forward * offSet;
         float angleObject = Vector3.Angle(direction.forward, (collider.gameObject.transform.position - offSetPoint));
         bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
 
-        bool needDetectObject =  isInCone && (collider.gameObject.layer == LayerMask.NameToLayer("Catchable")
-            || collider.gameObject.layer == LayerMask.NameToLayer("Activable")
-            || (collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked()) );
+        bool needDetectObject =  isInCone &&
+            (collider.gameObject.layer == LayerMask.NameToLayer("Catchable")
+                || collider.gameObject.layer == LayerMask.NameToLayer("Activable")
+                || (collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked())
+            );
 
         if (needDetectObject) {
-
+            Debug.Log(collider.gameObject.layer + " " + LayerMask.LayerToName(collider.gameObject.layer));
             if (nearestObject == null) {
                 rangeNearestObject = distanceObject;
                 nearestObject = collider.gameObject;
             } else  {
-                bool isNearest =  rangeNearestObject > distanceObject;
-                bool isPrioritize = nearestObject.layer != LayerMask.NameToLayer("Catchable") && collider.gameObject.layer == LayerMask.NameToLayer("Catchable");
-                if (nearestObject.name != null && (isNearest || isPrioritize)) {
+                //the new object should be prioritize if he is catchable and the previous object is not. The prioritization should work only in a short range.
+
+                // if the range is positive, the new object is closer, else it's more distant.
+                float distanceDiff = rangeNearestObject - distanceObject;
+
+                // if it is within the prioritize zone, we will check the prioritized status of the new object over the stored one.
+                bool withinPrioritizationRange = System.Math.Abs(distanceDiff) < prioritizationRange;
+                if(withinPrioritizationRange) {
+                    bool storedObjectIsCatchable = nearestObject.layer == LayerMask.NameToLayer("Catchable");
+                    bool newObjectIsCatchable = collider.gameObject.layer == LayerMask.NameToLayer("Catchable");
+                    bool bothCatchable = storedObjectIsCatchable && newObjectIsCatchable;
+                    bool bothNonCatchable = !storedObjectIsCatchable && !newObjectIsCatchable;
+                    if(!storedObjectIsCatchable && newObjectIsCatchable) {
+                       rangeNearestObject = distanceObject;
+                       nearestObject = collider.gameObject;
+                    } else if(distanceDiff > 0 && (bothCatchable || bothNonCatchable)) {
+                       rangeNearestObject = distanceObject;
+                       nearestObject = collider.gameObject;
+                    } 
+                } else if( distanceDiff > 0) {
                     rangeNearestObject = distanceObject;
                     nearestObject = collider.gameObject;
-                }
+                } 
             }
         }
     }
