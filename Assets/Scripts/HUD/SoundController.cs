@@ -164,63 +164,53 @@ public class SoundController : MonoBehaviour {
 
     public void SelectTHEME() {
         if (SceneManager.GetActiveScene().name == "MainMenu") {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayHUDTheme(HUDMainMenuTheme, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             StartCoroutine(PlayThemeBoss(themeBossZ1, true));
         }
 
         if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             StartCoroutine(PlayThemeBoss(themeBossZ2, true));
         }
 
         if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ2, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ1, true);
             SelectENVLong("Wind");
         }
 
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeDarkZ1, true);
         }
 
         if ((SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") && Game.playerData.lightBoss1) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ1, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeDarkZ2, true);
         }
 
         if ((SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") && Game.playerData.lightBoss2) {
-            StopTheme();
-            StopHUD();
+            KillAll();
             PlayTheme(themeLightZ2, true);
         }
     }
@@ -250,6 +240,24 @@ public class SoundController : MonoBehaviour {
 
     public void StopTheme() {
         fxThemeSource.Stop();
+    }
+
+    private void KillAll() {
+        fxThemeSource.Stop();
+        fxHUD_Source.Stop();
+        fxHUD_Effect.Stop();
+        fxKodaEffect.Stop();
+        fxLeafEffect.Stop();
+        fxYokaiEffect.Stop();
+        fxYokaiAkashitaEffect.Stop();
+        fxYokaiBazekoriEffect.Stop();
+        fxYokaiSesshosekiEffect.Stop();
+        fxLanternSource.Stop();
+        fxLanternEffect.Stop();
+        fxEnvironnementFireflies.Stop();
+        fxEnvironnementFireWall.Stop();
+        fxEnvironnementEffectQuick.Stop();
+        fxEnvironnementEffectLong.Stop();
     }
 
     //===================================================================================================================================================================================
@@ -697,27 +705,27 @@ public class SoundController : MonoBehaviour {
     public void SelectENVLong(string ENV) {
         switch (ENV) {
             case "CorruptedWater":
-                PlayEnvironnementEffectLong(envCorruptedWater);
+                PlayEnvironnementEffectLong(envCorruptedWater, true);
                 break;
 
             case "FireWall":
-                PlayEnvironnementEffectLong(envFireWall);
+                PlayEnvironnementEffectLong(envFireWall, true);
                 break;
 
             case "Wind":
-                PlayEnvironnementEffectLong(envWind);
+                PlayEnvironnementEffectLong(envWind, true);
                 break;
 
             case "WaterFallClose":
-                PlayEnvironnementEffectLong(envWaterFallClose);
+                PlayEnvironnementEffectLong(envWaterFallClose, true);
                 break;
 
             case "WaterFallMedium":
-                PlayEnvironnementEffectLong(envWaterFallMedium);
+                PlayEnvironnementEffectLong(envWaterFallMedium, true);
                 break;
 
             case "WaterFallFar":
-                PlayEnvironnementEffectLong(envWaterFallFar);
+                PlayEnvironnementEffectLong(envWaterFallFar, true);
                 break;
 
             default:
@@ -725,9 +733,10 @@ public class SoundController : MonoBehaviour {
         }
     }
 
-    private void PlayEnvironnementEffectLong(AudioClip clip) {
+    private void PlayEnvironnementEffectLong(AudioClip clip, bool loop) {
         fxEnvironnementEffectLong.clip = clip;
         fxEnvironnementEffectLong.Play();
+        fxEnvironnementEffectLong.loop = loop;
     }
 
     public void StopEnvironnementEffectLong() {
