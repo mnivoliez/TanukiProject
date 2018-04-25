@@ -19,6 +19,7 @@ public class SoundController : MonoBehaviour {
     public AudioSource fxYokaiSesshosekiEffect;
     public AudioSource fxLanternSource;
     public AudioSource fxLanternEffect;
+    public AudioSource fxEnvironnementFireflies;
     public AudioSource fxEnvironnementEffectQuick;
     public AudioSource fxEnvironnementEffectLong;
 
@@ -95,6 +96,10 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip lanternFallWater;
     [SerializeField] private AudioClip lanternDome;
     public bool lanterClosestFoundPlay = false;
+
+    [Header("FIREFLIES")]
+    [Space(10)]
+    [SerializeField] private AudioClip envFireflies;
 
     [Header("ENVIRONMENT QUICK")]
     [Space(10)]
@@ -552,6 +557,25 @@ public class SoundController : MonoBehaviour {
 
     public void AdjustLanternSource(float setVol) {
         fxLanternSource.volume = setVol;
+    }
+
+    //===================================================================================================================================================================================
+    //===================================================================================================================================================================================
+
+    public void SelectFIREFLIES(string FIREFLIE) {
+        switch (FIREFLIE) {
+            case "Fireflies":
+                PlayFireflieEffect(envFireflies);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void PlayFireflieEffect(AudioClip clip) {
+        fxEnvironnementFireflies.clip = clip;
+        fxEnvironnementFireflies.Play();
     }
 
     //===================================================================================================================================================================================
