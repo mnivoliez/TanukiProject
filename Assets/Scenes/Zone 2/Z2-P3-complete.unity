@@ -294,6 +294,36 @@ Transform:
   m_PrefabParentObject: {fileID: 4451109365322330, guid: fa4c975346a38ce4ab54f1b5b0750e8d,
     type: 2}
   m_PrefabInternal: {fileID: 14432625}
+--- !u!1 &35613794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1235099574383644, guid: 0f204ec6a0742824a8cca04de8b125df,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 35613795}
+  m_Layer: 0
+  m_Name: RespawnPointBack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &35613795
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4062456521121228, guid: 0f204ec6a0742824a8cca04de8b125df,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 35613794}
+  m_LocalRotation: {x: 0, y: 0.60876137, z: 0, w: 0.7933534}
+  m_LocalPosition: {x: -102.11, y: 0.74, z: -24.31}
+  m_LocalScale: {x: 1.5000007, y: 1.5, z: 1.5000007}
+  m_Children: []
+  m_Father: {fileID: 1988566804}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 75, z: 0}
 --- !u!1 &60230871
 GameObject:
   m_ObjectHideFlags: 0
@@ -2617,7 +2647,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_LocalScale.x
@@ -3008,7 +3038,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_LocalScale.x
@@ -4602,7 +4632,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_LocalScale.x
@@ -6119,7 +6149,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 504392495}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 85, y: 22.9, z: 2.7}
+  m_LocalPosition: {x: 85, y: 22.9, z: 15.21}
   m_LocalScale: {x: 30, y: 25, z: 1}
   m_Children: []
   m_Father: {fileID: 939537663}
@@ -7432,37 +7462,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4451109365322330, guid: fa4c975346a38ce4ab54f1b5b0750e8d,
     type: 2}
   m_PrefabInternal: {fileID: 652722481}
---- !u!84 &653788421
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &659245733
 GameObject:
   m_ObjectHideFlags: 0
@@ -10301,6 +10300,26 @@ Transform:
   m_PrefabParentObject: {fileID: 4478646346494500, guid: 9ceca553386e6d24ebbebdfe39eb7f97,
     type: 2}
   m_PrefabInternal: {fileID: 2118618927}
+--- !u!21 &875724455
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!1 &878271120
 GameObject:
   m_ObjectHideFlags: 0
@@ -10598,7 +10617,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_LocalScale.x
@@ -11122,7 +11141,7 @@ Transform:
   - {fileID: 1780559547}
   - {fileID: 402042311}
   m_Father: {fileID: 1988566804}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &957570224
 Prefab:
@@ -11161,7 +11180,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_LocalScale.x
@@ -14731,7 +14750,7 @@ Transform:
   - {fileID: 974946429}
   - {fileID: 84495310}
   m_Father: {fileID: 1988566804}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &1224904849
 Prefab:
@@ -17697,6 +17716,37 @@ Transform:
   m_PrefabParentObject: {fileID: 4451109365322330, guid: fa4c975346a38ce4ab54f1b5b0750e8d,
     type: 2}
   m_PrefabInternal: {fileID: 1398005533}
+--- !u!84 &1398239851
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &1406243936
 Prefab:
   m_ObjectHideFlags: 0
@@ -19422,26 +19472,6 @@ Transform:
   m_Father: {fileID: 1222930828}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &1572329025
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!4 &1576521792 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4324728155266612, guid: bb512f7f7e2a79d419b8bc7f0ac91d60,
@@ -23308,7 +23338,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1988566804}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1974153119
 GameObject:
@@ -23576,6 +23606,7 @@ Transform:
   m_LocalPosition: {x: 82.61, y: 1.7, z: -106.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 35613795}
   - {fileID: 1966398004}
   - {fileID: 1222930828}
   - {fileID: 939537663}
@@ -23670,7 +23701,7 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1572329025}
+      objectReference: {fileID: 875724455}
     - target: {fileID: 20144259831111884, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: far clip plane
@@ -23680,7 +23711,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 653788421}
+      objectReference: {fileID: 1398239851}
     - target: {fileID: 114939442216126860, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: lureSpawnHeight
@@ -24000,7 +24031,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4515366805065776, guid: fab9d778ff91849489032a8314a78c49, type: 2}
       propertyPath: m_LocalScale.x
