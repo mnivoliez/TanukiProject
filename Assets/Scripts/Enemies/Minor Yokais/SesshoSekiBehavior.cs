@@ -28,6 +28,7 @@ public class SesshoSekiBehavior : YokaiController {
 
     [SerializeField] private float durationOfPreparation = 2;
     [SerializeField] private float durationOfResearch = 2;
+	[SerializeField] private float heightMinSuicide = 1.2f;
 
     [SerializeField] private GameObject runFx;
     private ParticleSystem.EmissionModule emissionRun;
@@ -167,6 +168,17 @@ public class SesshoSekiBehavior : YokaiController {
                     relativePos.y = 0;
                     emissionRun.enabled = true;
                 }
+
+				RaycastHit hitGround = new RaycastHit ();
+				Vector3 nextPosition = transform.position + relativePos.normalized * 3;
+				if (Physics.Raycast (nextPosition, Vector3.down, out hitGround, 10.0f, layerMask)) {
+					Debug.Log (hitGround.collider.gameObject.name + ": " + hitGround.distance);
+					if (hitGround.distance > heightMinSuicide) {
+						positionToGo = transform.position;
+						relativePos = positionToGo - transform.position;
+						relativePos.y = 0;
+					}
+				}
 
                 Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
                 rotation.x = transform.rotation.x;
