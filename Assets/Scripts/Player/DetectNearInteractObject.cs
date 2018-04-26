@@ -52,7 +52,7 @@ public class DetectNearInteractObject : MonoBehaviour {
         bool needDetectObject =  isInCone && (newObjectIsCatchable || newObjectIsActivable || newObjectIsAbsorbable);
 
         if (needDetectObject) {
-            Debug.Log(collider.gameObject.layer + " " + LayerMask.LayerToName(collider.gameObject.layer));
+            //Debug.Log(collider.gameObject.layer + " " + LayerMask.LayerToName(collider.gameObject.layer));
             if (nearestObject == null) {
                 rangeNearestObject = distanceObject;
                 nearestObject = collider.gameObject;
