@@ -252,23 +252,41 @@ public class SoundController : MonoBehaviour {
 
     private void KillAll() {
         fxThemeSource.Stop();
+        fxThemeSource.volume = 1.0f;
         fxHUD_Source.Stop();
+        fxHUD_Source.volume = 1.0f;
         fxHUD_Effect.Stop();
+        fxHUD_Effect.volume = 1.0f;
         fxKodaEffect.Stop();
+        fxKodaEffect.volume = 1.0f;
         fxLeafEffect.Stop();
+        fxLeafEffect.volume = 1.0f;
         fxYokaiEffect.Stop();
+        fxYokaiEffect.volume = 1.0f;
         fxYokaiAkashitaEffect.Stop();
+        fxYokaiAkashitaEffect.volume = 1.0f;
         fxYokaiBazekoriEffect.Stop();
+        fxYokaiBazekoriEffect.volume = 1.0f;
         fxYokaiSesshosekiBossEffect.Stop();
+        fxYokaiSesshosekiBossEffect.volume = 1.0f;
         fxLanternSource.Stop();
+        fxLanternSource.volume = 1.0f;
         fxLanternEffect.Stop();
+        fxLanternEffect.volume = 1.0f;
         fxEnvironnementCorruptedWater.Stop();
+        fxEnvironnementCorruptedWater.volume = 1.0f;
         fxEnvironnementCorruptedForest.Stop();
+        fxEnvironnementCorruptedForest.volume = 1.0f;
         fxEnvironnementWaterFall.Stop();
+        fxEnvironnementWaterFall.volume = 1.0f;
         fxEnvironnementFireflies.Stop();
+        fxEnvironnementFireflies.volume = 1.0f;
         fxEnvironnementFireWall.Stop();
+        fxEnvironnementFireWall.volume = 1.0f;
         fxEnvironnementEffectQuick.Stop();
+        fxEnvironnementEffectQuick.volume = 1.0f;
         fxEnvironnementEffectLong.Stop();
+        fxEnvironnementEffectLong.volume = 1.0f;
     }
 
     //===================================================================================================================================================================================
