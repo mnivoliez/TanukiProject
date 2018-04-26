@@ -105,11 +105,6 @@ public class Zone2BossBehavior : YokaiController {
             return;
         }
         //===========================
-        if (Input.GetKeyDown("p")) {
-            Debug.Log("phase 2");
-            hp = hpMax / 2;
-            interPhase = true;
-        }
     }
 	
 	// Update is called once per frame
