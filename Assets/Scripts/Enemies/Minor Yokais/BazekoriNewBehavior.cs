@@ -30,6 +30,12 @@ public class BazekoriNewBehavior : YokaiController {
     [SerializeField] private Renderer renderBody;
     private Animator animBody;
 
+    [SerializeField]
+    private GameObject AttackPrefab;
+
+    [SerializeField]
+    private GameObject LandingPrefab;
+
     private void Start() {
         positionOrigin = transform.position;
         rotationOrigin = transform.rotation;
@@ -227,6 +233,9 @@ public class BazekoriNewBehavior : YokaiController {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5) {
             if (UnityEngine.Random.Range(0, 10) > 5.9f) {
                 Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
+                //================================================
+                SoundController.instance.SelectENVQuick("FruitLoot");
+                //================================================
             }
             target.GetComponent<Animator>().SetBool("IsAbsorbing", false);
             Destroy(gameObject);
@@ -256,5 +265,14 @@ public class BazekoriNewBehavior : YokaiController {
                 agent.SetDestination(positionBehavior);
             }
         }
+    }
+
+    public void AttackFX() {
+        Instantiate(AttackPrefab, transform.position + transform.forward*2.5f, transform.rotation);
+    }
+
+    public void LandingFX() {
+        GameObject go = Instantiate(LandingPrefab, new Vector3(transform.position.x, transform.position.y+.5f, transform.position.z), transform.rotation);
+        go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
     }
 }
