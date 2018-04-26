@@ -723,7 +723,7 @@ public class KodaController : MonoBehaviour {
                         }
                         interactBehaviorCtrl.DoGlide();
                         if (interactStateParameter.canAirStream) {
-                            body.AddForce(Vector3.up * (airStreamForce / body.mass) * ratio + (Vector3.up * Mathf.Abs(body.velocity.y)), ForceMode.Acceleration);
+                            body.AddForce((Vector3.up * (airStreamForce / body.mass) + (Vector3.up * Mathf.Abs(body.velocity.y)) * ratio), ForceMode.Acceleration);
                             if (body.velocity.y > 8.0f) {
                                 //Debug.Log ("STOP AIRSTREAM!!!");
                                 // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
