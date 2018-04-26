@@ -642,6 +642,61 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
+--- !u!1 &44166159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 44166162}
+  - component: {fileID: 44166161}
+  - component: {fileID: 44166160}
+  m_Layer: 14
+  m_Name: TPEntry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &44166160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 44166159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb9bee9587d20d4392c0f9daeca2f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneNameToLoad: Z2-P3-complete
+  sceneNameToUnload: Boss2
+--- !u!65 &44166161
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 44166159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 12.346212, y: 13.371044, z: 2.0548172}
+  m_Center: {x: -0.22630215, y: 3.7524815, z: 0.5274086}
+--- !u!4 &44166162
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 44166159}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -21.03, y: 2.98, z: -94.83}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 31
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &46961685
 Prefab:
   m_ObjectHideFlags: 0
@@ -1064,10 +1119,14 @@ MonoBehaviour:
   numTris: 102
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 43.13
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &99508388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1090,7 +1149,7 @@ MonoBehaviour:
     - {x: 44.003883, y: -49.022247, z: -12.417085}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1593,10 +1652,14 @@ MonoBehaviour:
   numTris: 84
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 30
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &148074637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1619,7 +1682,7 @@ MonoBehaviour:
     - {x: 44.003914, y: -33.12552, z: -12.41707}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2428,6 +2491,26 @@ Transform:
   m_PrefabParentObject: {fileID: 4389761631042078, guid: e93ab693adeaa4d4897ebd7c7595f466,
     type: 2}
   m_PrefabInternal: {fileID: 197937556}
+--- !u!21 &206858461
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!1001 &210069438
 Prefab:
   m_ObjectHideFlags: 0
@@ -4292,7 +4375,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9641c0c450d7549b6e74aedddbfc55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: {fileID: 2132195036}
 --- !u!1001 &395581830
 Prefab:
   m_ObjectHideFlags: 0
@@ -7642,10 +7724,14 @@ MonoBehaviour:
   numTris: 72
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 22.3
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &716852870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7668,7 +7754,7 @@ MonoBehaviour:
     - {x: -29.958439, y: -36.91957, z: -0.5791905}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -9067,10 +9153,14 @@ MonoBehaviour:
   numTris: 72
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 22.3
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &840598177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9093,7 +9183,7 @@ MonoBehaviour:
     - {x: -29.958439, y: -36.91957, z: -0.5791905}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -9205,10 +9295,14 @@ MonoBehaviour:
   numTris: 72
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 22.3
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &851093486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9231,7 +9325,7 @@ MonoBehaviour:
     - {x: -29.958439, y: -36.91957, z: -0.5791905}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -11721,7 +11815,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1986824285}
+      objectReference: {fileID: 1143220951}
     - target: {fileID: 119785275203550714, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: m_FarClipPlane
@@ -11731,7 +11825,7 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 1359904735}
+      objectReference: {fileID: 206858461}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a95e21316b361044681464f5613ea9f0, type: 2}
   m_IsPrefabParent: 0
@@ -11986,10 +12080,14 @@ MonoBehaviour:
   numTris: 54
   spacingU: 7
   divisionV: 2
-  waterfallWidth: 67.61
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1051982163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12009,7 +12107,7 @@ MonoBehaviour:
     - {x: -6.932975, y: -0.44563675, z: -6.919913}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -13204,10 +13302,14 @@ MonoBehaviour:
   numTris: 84
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 30
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1130653029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13230,7 +13332,7 @@ MonoBehaviour:
     - {x: 44.003914, y: -33.12552, z: -12.41707}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -13384,6 +13486,37 @@ Transform:
   m_PrefabParentObject: {fileID: 4389761631042078, guid: e93ab693adeaa4d4897ebd7c7595f466,
     type: 2}
   m_PrefabInternal: {fileID: 1140343334}
+--- !u!84 &1143220951
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!43 &1165730064
 Mesh:
   m_ObjectHideFlags: 0
@@ -14020,10 +14153,14 @@ MonoBehaviour:
   numTris: 54
   spacingU: 7
   divisionV: 2
-  waterfallWidth: 67.61
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1175034110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14043,7 +14180,7 @@ MonoBehaviour:
     - {x: -6.932975, y: -0.44563675, z: -6.919913}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -15489,10 +15626,14 @@ MonoBehaviour:
   numTris: 150
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 43.13
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1318957054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15515,7 +15656,7 @@ MonoBehaviour:
     - {x: 44.003883, y: -49.022247, z: -12.417085}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -15885,26 +16026,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4504195671440370, guid: 72a1e773fc568fc43b31b2ce8e3c568a,
     type: 2}
   m_PrefabInternal: {fileID: 1355010339}
---- !u!21 &1359904735
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!1001 &1368335641
 Prefab:
   m_ObjectHideFlags: 0
@@ -16353,10 +16474,14 @@ MonoBehaviour:
   numTris: 198
   spacingU: 50
   divisionV: 10
-  waterfallWidth: 500
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1430561361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16376,7 +16501,7 @@ MonoBehaviour:
     - {x: 426.96664, y: 0, z: 0}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -18279,10 +18404,14 @@ MonoBehaviour:
   numTris: 60
   spacingU: 7
   divisionV: 2
-  waterfallWidth: 67.61
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1582923863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18302,7 +18431,7 @@ MonoBehaviour:
     - {x: -6.932975, y: -0.44563675, z: -6.919913}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -19559,10 +19688,14 @@ MonoBehaviour:
   numTris: 102
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 43.13
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1698779669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19585,7 +19718,7 @@ MonoBehaviour:
     - {x: 44.003883, y: -49.022247, z: -12.417085}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -21725,10 +21858,14 @@ MonoBehaviour:
   numTris: 72
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 22.3
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1912993757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21751,7 +21888,7 @@ MonoBehaviour:
     - {x: -29.958439, y: -36.91957, z: -0.5791905}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -21863,10 +22000,14 @@ MonoBehaviour:
   numTris: 54
   spacingU: 7
   divisionV: 2
-  waterfallWidth: 67.61
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1918528833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21886,7 +22027,7 @@ MonoBehaviour:
     - {x: -6.818516, y: -0.44563675, z: 2.4207516}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -22842,10 +22983,14 @@ MonoBehaviour:
   numTris: 98
   spacingU: 10
   divisionV: 6
-  waterfallWidth: 94.49
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1980051724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22865,7 +23010,7 @@ MonoBehaviour:
     - {x: 18.89679, y: 0, z: -7.329468}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -22948,37 +23093,6 @@ Transform:
   m_Father: {fileID: 1961002188}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 48.460003, z: 0}
---- !u!84 &1986824285
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &1996437297
 GameObject:
   m_ObjectHideFlags: 0
@@ -23040,10 +23154,14 @@ MonoBehaviour:
   numTris: 72
   spacingU: 5
   divisionV: 2
-  waterfallWidth: 22.3
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1996437301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23066,7 +23184,7 @@ MonoBehaviour:
     - {x: -29.958439, y: -36.91957, z: -0.5791905}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -23652,10 +23770,14 @@ MonoBehaviour:
   numTris: 66
   spacingU: 7
   divisionV: 2
-  waterfallWidth: 67.61
+  maxWaterfallWidth: 5
   autoUpdate: 1
   tilingU: 1
   tilingV: 1
+  waterfallSpeed: 0
+  raycastLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &2043228640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23675,7 +23797,7 @@ MonoBehaviour:
     - {x: -6.932975, y: -0.44563675, z: -6.919913}
     isClosed: 0
     autoSetControlPoints: 0
-  startPos: {x: 0, y: 0, z: 0}
+  startTransform: {fileID: 0}
   anchorColor: {r: 0, g: 0, b: 0, a: 1}
   controlColor: {r: 1, g: 1, b: 1, a: 1}
   segmentColor: {r: 1, g: 0, b: 0, a: 1}
@@ -23843,7 +23965,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9641c0c450d7549b6e74aedddbfc55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: {fileID: 2132195036}
 --- !u!1 &2057908342
 GameObject:
   m_ObjectHideFlags: 0
