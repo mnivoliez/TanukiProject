@@ -7,7 +7,8 @@ public enum Capacity {
 }
 
 public abstract class YokaiController : MonoBehaviour {
-    
+
+    [SerializeField] public Transform[] GameobjectMesh;
 
     protected bool isAbsorbed = false;
     protected bool isKnocked = false;
