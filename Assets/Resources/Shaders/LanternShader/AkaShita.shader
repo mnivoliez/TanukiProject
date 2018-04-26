@@ -1,17 +1,10 @@
-﻿Shader "Custom/Lantern/Tanuki"
+﻿Shader "Custom/Lantern/AkaShita"
 {
 	Properties
 	{
 		_FirstTexture	("", 2D)			= "white" {}
 		_FirstLColor	("", Color)			= (1,1,1,0)
 		_FirstDColor	("", Color)			= (0,0,0,0)
-
-		_EmissiveColor		("", Color)		= (1,1,1,1)
-		_EmissiveIntensity	("", Range(0,1))= 1
-		_EmissiveSpeed		("", Float)		= 1
-		_EmissiveStrength	("", Range(0,0.5))		= 0
-
-		_InvincibilityColor ("", Color)		= (1,1,1,1)
 
 		[PowerSlider(2.0)] 
 		_SpecIntensity	("", Range(0,30))	= 0
@@ -23,6 +16,9 @@
 		_RimPow			("", Range(0.01,20))= 1
 
 		_StepCount		("", Range(0,20))	= 3
+
+		_TargetPos 		("", Vector) = (0,0,0,0)
+		_AbsorptionPercent ("", Float) = 0
 	}
 
 	SubShader
@@ -49,7 +45,7 @@
 			#include "UnityCG.cginc"
 			#include "noiseSimplex.cginc"
 			#include "AutoLight.cginc"
-			#include "Tanuki.cginc"
+			#include "AkaShita.cginc"
 
 			ENDCG
 		}
@@ -72,7 +68,7 @@
 			#include "UnityCG.cginc"
 			#include "noiseSimplex.cginc"
 			#include "AutoLight.cginc"
-			#include "Tanuki.cginc"
+			#include "AkaShita.cginc"
 
 			ENDCG
 		}
@@ -92,10 +88,10 @@
 
 			#include "UnityCG.cginc"
 			#include "noiseSimplex.cginc"
-			#include "Tanuki.cginc"
+			#include "AkaShita.cginc"
 
 			ENDCG
 		}
 	}
-	CustomEditor "LanternShaderGUI"
+//	CustomEditor "LanternShaderGUI"
 }
