@@ -8,12 +8,12 @@ using UnityEngine.AI;
 
 public class Zone2BossBehavior : YokaiController {
 
-    private GameObject corps;
+    [SerializeField] private GameObject corps;
     private List<GameObject> oreilles;
     
     private Rigidbody myRigidbody;
     private float nextThrow;
-    private Transform spawnRock;
+    [SerializeField] private Transform spawnRock;
     private bool stop;
     private int phasePattern = 0;
     private bool interPhase;
@@ -45,9 +45,10 @@ public class Zone2BossBehavior : YokaiController {
     [SerializeField] private GameObject prefabSmoke;
     [SerializeField] private GameObject river;
     [SerializeField] private GameObject positionLanternPhase1;
+    [SerializeField] private GameObject FXBump;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         lanternsInRange = new List<GameObject>();
         canBump = false;
         delayToBump = timeToBump;
@@ -58,9 +59,6 @@ public class Zone2BossBehavior : YokaiController {
         nextThrow = 0;
         stop = false;
         currentRocksToThrow = nbRocksToThrow;
-        spawnRock = transform.Find("SpawnRock");
-        corps = transform.Find("corps").gameObject;
-        
 
         SetTarget(GameObject.FindGameObjectWithTag("Player"));
         player = target;
@@ -154,8 +152,10 @@ public class Zone2BossBehavior : YokaiController {
                     lanterns = GameObject.FindGameObjectsWithTag("Lantern");
                     respawnsLantern = GameObject.FindGameObjectsWithTag("LoveHotel");
                     foreach (GameObject lantern in lanterns) {
-                        lantern.transform.position = positionLanternPhase1.transform.position;
-                        Physics.IgnoreCollision(lantern.GetComponent<BoxCollider>(), myCollider);
+                        if (lantern.name != "Kiyomori_Light_Hiyoribou") {
+                            lantern.transform.position = positionLanternPhase1.transform.position;
+                            Physics.IgnoreCollision(lantern.GetComponent<BoxCollider>(), myCollider);
+                        }
                     }
 
                     foreach (GameObject respawnLantern in respawnsLantern) {
@@ -187,6 +187,7 @@ public class Zone2BossBehavior : YokaiController {
                     KnockBack(startPosition, endPosition);
                 } else if (canBump) {
                     if (delayToBump > 0) {
+                        FXBump.SetActive(true);
                         oreilles[0].GetComponent<Renderer>().material.SetColor("_FirstLColor", Color.yellow);
                         myRigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
                         if (target != null) {
@@ -194,6 +195,7 @@ public class Zone2BossBehavior : YokaiController {
                         }
                         delayToBump -= Time.fixedDeltaTime;
                     } else {
+                        FXBump.SetActive(false);
                         BumpTarget();
                         oreilles[0].GetComponent<Renderer>().material.SetColor("_FirstLColor", defaultColor);
                     }
@@ -242,7 +244,6 @@ public class Zone2BossBehavior : YokaiController {
     }
 
     void ThrowRock() {
-        Debug.Log("throw rock");
         GameObject theRock = Instantiate(prefabRock);
         theRock.transform.position = spawnRock.position;
         theRock.transform.LookAt(target.transform);
@@ -281,6 +282,12 @@ public class Zone2BossBehavior : YokaiController {
             }
 
             if (hp <= 0) {
+
+                //================================================
+                StartCoroutine(SoundController.instance.FadeOnExitTheme()); //Will launch an other theme automatically
+                Game.playerData.Boss2KO = true;
+                //================================================
+
                 transform.localScale = new Vector3(5, 5, 5);
                 Instantiate(prefabSmoke, transform.position, Quaternion.identity);
                 isKnocked = true;
@@ -298,10 +305,7 @@ public class Zone2BossBehavior : YokaiController {
     }
 
     public override void BeingHit() {
-        //================================================
-        StartCoroutine(SoundController.instance.FadeOnExitTheme()); //Will launch an other theme automatically
-        Game.playerData.Boss2KO = true;
-        //================================================
+        
         Invoke("EndHit", 0.5f);
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
         rendererMat.SetColor("_FirstLColor", Color.red);
