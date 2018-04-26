@@ -71,6 +71,7 @@ public class Zone1BossBehavior : YokaiController {
             return;
         }
         //===========================
+
         if (!isKnocked) {
             transform.GetChild(0).transform.LookAt(target.transform);
 
@@ -221,8 +222,7 @@ public class Zone1BossBehavior : YokaiController {
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
-            
-            //endingTimeline.SetActive(true);
+            endingTimeline.SetActive(true);
             //GameObject.Find("VictoryTrigger").GetComponent<VictorySwitch>().VictoryScreen();
             Destroy(gameObject);
         }
