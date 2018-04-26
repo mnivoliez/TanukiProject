@@ -26,25 +26,26 @@ public class DetectNearInteractObject : MonoBehaviour {
             return;
         }
         //===========================
+
         if (nearestObject != null) {
             float distanceObject = Vector3.Distance(nearestObject.transform.position, direction.position);
             Vector3 offSetPoint = direction.position - direction.forward * offSet;
             float angleObject = Vector3.Angle(direction.forward, nearestObject.transform.position - offSetPoint);
             bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
-            if(!isInCone) {
+            if (!isInCone) {
                 nearestObject = null;
                 rangeNearestObject = 0;
-            } 
+            }
         }
-	}
+    }
 
     void OnTriggerStay(Collider collider) {
-        
+
         float distanceObject = Vector3.Distance(collider.gameObject.transform.position, direction.position);
         Vector3 offSetPoint = direction.position - direction.forward * offSet;
         float angleObject = Vector3.Angle(direction.forward, (collider.gameObject.transform.position - offSetPoint));
         bool isInCone = distanceObject < rangeInteract && angleObject < fieldOfView;
-                    
+
         bool newObjectIsCatchable = collider.gameObject.layer == LayerMask.NameToLayer("Catchable");
         bool newObjectIsActivable = collider.gameObject.layer == LayerMask.NameToLayer("Activable");
         bool newObjectIsAbsorbable = collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked();
