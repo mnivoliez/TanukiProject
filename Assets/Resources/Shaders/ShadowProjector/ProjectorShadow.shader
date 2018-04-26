@@ -17,6 +17,7 @@
 
 			struct v2f {
 				float4 uvShadow : TEXCOORD0;
+				float4 uvFalloff : TEXCOORD1;
 				float4 pos : SV_POSITION;
 			};
 
@@ -30,17 +31,21 @@
 				v2f o;
 				o.pos = UnityObjectToClipPos (vertex);
 				o.uvShadow = mul (unity_Projector, vertex);
-				o.uvShadow.z = mul( unity_ProjectorClip, vertex).x;
+				//o.uvShadow.z = mul( unity_ProjectorClip, vertex);
+				o.uvFalloff = mul (unity_ProjectorClip, vertex);
 				return o;
 			}
 
-			sampler2D _ShadowTex;
+			uniform sampler2D _ShadowTex;
 			uniform fixed4 _ShadowColor;
+			uniform sampler2D _FalloffTex;
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				half shadow = tex2Dproj(_ShadowTex, UNITY_PROJ_COORD(i.uvShadow));
-				return 1 - (1-shadow) * (1-(i.uvShadow.z*_Offset)) * (1-_ShadowColor);
+				fixed shadow = tex2Dproj(_ShadowTex, UNITY_PROJ_COORD(i.uvShadow));
+				fixed falloff = tex2Dproj (_FalloffTex, UNITY_PROJ_COORD(i.uvFalloff)).a;
+				fixed res = lerp(1, shadow, falloff);
+				return 1 - (1-res) * (1-(i.uvFalloff.x*_Offset)) * (1-_ShadowColor);
 			}
 			ENDCG
 		}
