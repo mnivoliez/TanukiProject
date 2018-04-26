@@ -231,7 +231,7 @@ public class BazekoriNewBehavior : YokaiController {
 
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.5) {
-            if (UnityEngine.Random.Range(0, 10) > 5.9f) {
+            if (Random.Range(0, 10) > 5.9f) {
                 Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
                 //================================================
                 SoundController.instance.SelectENVQuick("FruitLoot");
@@ -257,6 +257,7 @@ public class BazekoriNewBehavior : YokaiController {
     }
 
     public override void Behavior() {
+
         if (Random.Range(0, 100) < 3) {
             if (Time.time > nextRate) {
                 nextRate = Time.time + rateBehavior;
