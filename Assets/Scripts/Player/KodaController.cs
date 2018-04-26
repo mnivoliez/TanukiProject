@@ -140,6 +140,16 @@ public class KodaController : MonoBehaviour {
     [SerializeField] private GameObject DeathTransitionImage;
     [SerializeField] private GameObject VictoryTransitionImage;
 
+    // PowerUp
+    [Tooltip("0 : Body & 1 : Accessorizes")]
+    [SerializeField] private Material[] mats = new Material[2];
+    [Tooltip("0 : Double Jump, 1 : Lure")]
+    [SerializeField] private Texture[] textures = new Texture[2];
+    [Tooltip("0 : Double Jump, 1 : Lure")]
+    [SerializeField] private Color[] colors = new Color[2];
+    [SerializeField] private float lerpBtwColor = .1f;
+
+
     //Animation
     private AnimationController animBody;
     private InteractBehavior interactBehaviorCtrl;
@@ -160,6 +170,7 @@ public class KodaController : MonoBehaviour {
     InputParams inputParams;
 
     private bool levelIsLight = false;
+
 
     void Awake() {
         Instantiate(CameraMinimap).name = "MinimapCamera";
@@ -1091,11 +1102,12 @@ public class KodaController : MonoBehaviour {
 
                 case Capacity.DoubleJump:
                     doubleJump_Logo.SetActive(true);
-
+                    SetPowerUpMaterials(1);
                     break;
 
                 case Capacity.Lure:
                     spawnLure_Logo.SetActive(true);
+                    SetPowerUpMaterials(2);
                     break;
             }
         }
@@ -1105,8 +1117,42 @@ public class KodaController : MonoBehaviour {
         maxPowerUpGauge = pairCapacity.Second;
     }
 
+    private void SetPowerUpMaterials(int texId) {
+        float intensity = (texId == 0) ? 0 : 1;
+        if(texId > 0) {
+            mats[0].SetColor("_EmissiveColor", colors[texId-1]);
+            mats[0].SetTexture("_FirstTexture", textures[texId-1]);
+        }
+        StartCoroutine(UpdateEmissiveMaterial(mats[0], intensity));
+    }
+
+    IEnumerator UpdateEmissiveMaterial(Material mat, float target) {
+        while((target == 0 ? -1 : 1)*mat.GetFloat("_EmissiveIntensity") < target) {
+            float value = mat.GetFloat("_EmissiveIntensity") +lerpBtwColor * (target == 0 ? -1 : 1);
+            mat.SetFloat("_EmissiveIntensity" , Mathf.Clamp01(value));
+            yield return new WaitForSeconds(lerpBtwColor);
+        }
+    }
+
+    IEnumerator UpdateInvincibilityMaterial(Material mat, float target) {
+        while((target == 0 ? -1 : 1)*mat.GetColor("_InvincibilityColor").a < target) {
+            Color color = mat.GetColor("_InvincibilityColor");
+            color.a = Mathf.Clamp01(color.a + lerpBtwColor * (target == 0 ? -1 :1));
+            mat.SetColor("_InvincibilityColor" , color);
+            yield return new WaitForSeconds(lerpBtwColor);
+        }
+    }
+
+    public void SetInvincibility(bool toggle) {
+        for (int i = 0; i < mats.Length; i++) {
+            StartCoroutine(UpdateInvincibilityMaterial(mats[i], toggle ? 1 : 0));
+        }
+    }
+
     private void StopTemporaryCapacity() {
         timerCapacity = 0;
+
+        SetPowerUpMaterials(0);
 
         if (temporaryCapacity == Capacity.Lure) {
             interactBehaviorCtrl.DestroyLure(actualLure);

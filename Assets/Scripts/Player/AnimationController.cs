@@ -177,10 +177,10 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
     public void FootGrounded(string footStr) {
         Transform tr = footStr.Equals("Left") ? leftFoot :  rightFoot;
-        Vector3 offsetUp = new Vector3(tr.position.x, tr.position.y+.1f, tr.position.z);
+        Vector3 offsetUp = new Vector3(tr.position.x, tr.position.y+.2f, tr.position.z);
         RaycastHit hit;
-        if(Physics.Raycast(offsetUp, Vector3.down, out hit, .15f, 1<<4)) {
-            Instantiate(waterWavePrefab, offsetUp, playerTransform.rotation);
+        if(Physics.Raycast(offsetUp, Vector3.down, out hit, .25f, 1<<4)) {
+            Instantiate(waterWavePrefab, new Vector3(hit.point.x, hit.point.y+.25f, hit.point.z), playerTransform.rotation);
             emissionRun.enabled = false;
         } else if(!animBody.GetBool("isInAir")){
             Instantiate(pawsProjectorPrefab, tr.position, playerTransform.rotation);
