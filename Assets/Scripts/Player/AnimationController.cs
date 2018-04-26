@@ -10,6 +10,7 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
     private ParticleSystem.EmissionModule emissionRun;
 
     public GameObject pawsProjectorPrefab;
+    public GameObject waterWavePrefab;
     public Transform leftFoot;
     public Transform rightFoot;
 
@@ -22,6 +23,8 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
     public Transform absorbTransform;
     private ParticleSystem.EmissionModule emissionAbsorb;
+
+    private bool isRunningOnWater = false;
 
     private float smoothVertSpeed;
 
@@ -163,11 +166,26 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
     }
 
 	public void Landing() {
-		Instantiate(landingParticlePrefab, new Vector3(transform.position.x, transform.position.y+.5f, transform.position.z), Quaternion.identity);
+        Vector3 offsetDown = new Vector3(transform.position.x, transform.position.y+.1f, transform.position.z);
+        if(Physics.Raycast(offsetDown, Vector3.down, .15f, 1<<4)) {
+            GameObject go = Instantiate(waterWavePrefab, offsetDown, playerTransform.rotation) as GameObject;
+            go.transform.localScale = new Vector3(3,3,3);
+        } else {
+		    Instantiate(landingParticlePrefab, new Vector3(transform.position.x, transform.position.y+.5f, transform.position.z), Quaternion.identity);
+        }
 	}
 
-    public void CreatePaw(string str) {
-        Transform tr = str.Equals("Left") ? leftFoot :  rightFoot;
-        Instantiate(pawsProjectorPrefab, tr.position, playerTransform.rotation);
+    public void FootGrounded(string footStr) {
+        Transform tr = footStr.Equals("Left") ? leftFoot :  rightFoot;
+        Vector3 offsetUp = new Vector3(tr.position.x, tr.position.y+.1f, tr.position.z);
+        RaycastHit hit;
+        if(Physics.Raycast(offsetUp, Vector3.down, out hit, .15f, 1<<4)) {
+            Instantiate(waterWavePrefab, offsetUp, playerTransform.rotation);
+            emissionRun.enabled = false;
+        } else if(!animBody.GetBool("isInAir")){
+            Instantiate(pawsProjectorPrefab, tr.position, playerTransform.rotation);
+            emissionRun.enabled = true;
+        }
     }
+
 }
