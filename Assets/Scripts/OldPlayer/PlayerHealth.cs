@@ -25,8 +25,11 @@ public class PlayerHealth : MonoBehaviour {
     //[SerializeField] private GameObject Tanuki_Body;
     //private Material matAuraIFrame;
 
+    private KodaController kodaCtrl;
+
 
     void Start() {
+        kodaCtrl = GetComponent<KodaController>();
         if (respawnPoint == null) {
             respawnPoint = new GameObject();
             respawnPoint.transform.position = transform.position;
@@ -52,6 +55,7 @@ public class PlayerHealth : MonoBehaviour {
         }
         else {
             isInvincible = false;
+            kodaCtrl.SetInvincibility(false);
             //matAuraIFrame.SetFloat("_Edge", 0f);
             //matAuraIFrame.SetFloat("_RimPower", 10f);
             //matAuraIFrame.SetFloat("_Outline", 0.002f);
@@ -77,6 +81,7 @@ public class PlayerHealth : MonoBehaviour {
             playerHealthCurrent = playerHealthCurrent - dmg;
             knockBackCounter = invincibleTime;
             isInvincible = true;
+            kodaCtrl.SetInvincibility(true);
             if (playerHealthCurrent <= 0) {
                 PlayerDie();
             }
