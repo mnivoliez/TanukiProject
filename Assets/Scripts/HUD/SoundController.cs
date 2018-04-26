@@ -232,7 +232,8 @@ public class SoundController : MonoBehaviour {
     private IEnumerator PlayThemeBoss(AudioClip clip, bool loop) {
         fxThemeSource.clip = themePreBoss;
         fxThemeSource.Play();
-        yield return new WaitForSeconds(16.0f);
+        fxThemeSource.loop = false;
+        yield return new WaitForSeconds(14.0f);
         PlayTheme(clip, loop);
     }
 
@@ -264,40 +265,77 @@ public class SoundController : MonoBehaviour {
     private void KillAll() {
         fxThemeSource.Stop();
         fxThemeSource.volume = 1.0f;
+        fxThemeSource.loop = false;
+
         fxHUD_Source.Stop();
         fxHUD_Source.volume = 1.0f;
+        fxHUD_Source.loop = false;
+
         fxHUD_Effect.Stop();
         fxHUD_Effect.volume = 1.0f;
+        fxHUD_Effect.loop = false;
+
         fxKodaEffect.Stop();
         fxKodaEffect.volume = 1.0f;
+        fxHUD_Effect.loop = false;
+
         fxLeafEffect.Stop();
         fxLeafEffect.volume = 1.0f;
+        fxLeafEffect.loop = false;
+
         fxYokaiEffect.Stop();
         fxYokaiEffect.volume = 1.0f;
+        fxYokaiEffect.loop = false;
+
         fxYokaiAkashitaEffect.Stop();
         fxYokaiAkashitaEffect.volume = 1.0f;
+        fxYokaiAkashitaEffect.loop = false;
+
         fxYokaiBazekoriEffect.Stop();
         fxYokaiBazekoriEffect.volume = 1.0f;
+        fxYokaiBazekoriEffect.loop = false;
+
         fxYokaiSesshosekiBossEffect.Stop();
         fxYokaiSesshosekiBossEffect.volume = 1.0f;
+        fxYokaiSesshosekiBossEffect.loop = false;
+
         fxLanternSource.Stop();
         fxLanternSource.volume = 1.0f;
+        fxLanternSource.loop = false;
+
         fxLanternEffect.Stop();
         fxLanternEffect.volume = 1.0f;
+        fxLanternEffect.loop = false;
+
         fxEnvironnementCorruptedWater.Stop();
         fxEnvironnementCorruptedWater.volume = 1.0f;
+        fxEnvironnementCorruptedWater.loop = false;
+
         fxEnvironnementCorruptedForest.Stop();
         fxEnvironnementCorruptedForest.volume = 1.0f;
+        fxEnvironnementCorruptedForest.loop = false;
+
         fxEnvironnementWaterFall.Stop();
         fxEnvironnementWaterFall.volume = 1.0f;
+        fxEnvironnementWaterFall.loop = false;
+
         fxEnvironnementFireflies.Stop();
         fxEnvironnementFireflies.volume = 1.0f;
+        fxEnvironnementFireflies.loop = false;
+
         fxEnvironnementFireWall.Stop();
         fxEnvironnementFireWall.volume = 1.0f;
+        fxEnvironnementFireWall.loop = false;
+
         fxEnvironnementEffectQuick.Stop();
         fxEnvironnementEffectQuick.volume = 1.0f;
+        fxEnvironnementEffectQuick.loop = false;
+
         fxEnvironnementEffectLong.Stop();
         fxEnvironnementEffectLong.volume = 1.0f;
+        fxEnvironnementEffectLong.loop = false;
+
+        lanterClosestFoundPlay = false;
     }
 
     //===================================================================================================================================================================================
