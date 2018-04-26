@@ -69,7 +69,12 @@ public class Zone2BossBehavior : YokaiController {
         myCollider = GetComponent<SphereCollider>();
         defaultColor = rendererMat.GetColor("_FirstLColor");
         foreach (Transform child in river.transform) {
-            Physics.IgnoreCollision(myCollider, child.GetComponent<Collider>(), true);
+			Collider colliderChild = child.GetComponent<Collider> ();
+			if (colliderChild != null) {
+				Physics.IgnoreCollision (myCollider, colliderChild, true);
+			} else {
+				Physics.IgnoreCollision (myCollider, child.GetComponentInChildren<Collider> (), true);
+			}
         }
         myRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         hpMax = hp;
