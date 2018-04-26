@@ -197,7 +197,7 @@ public static class Game {
             playerData.caught_yokaiZ2P3 = 0;
             playerData.caught_yokai_test = 0;
 
-            playerData.caught_yokai = 0;
+            //playerData.caught_yokai = 0;
 
             playerData.lightBoss1 = false;
             playerData.Boss1KO = false;
