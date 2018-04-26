@@ -225,7 +225,7 @@ public class KodaController : MonoBehaviour {
         }
         //===========================
 
-        ratio = (40 * Time.deltaTime) / (Time.fixedDeltaTime / 0.02f);
+        ratio = (40 * Time.deltaTime);
 
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
