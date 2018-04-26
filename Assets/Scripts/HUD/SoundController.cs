@@ -237,13 +237,24 @@ public class SoundController : MonoBehaviour {
     }
 
     public IEnumerator FadeOnExitTheme() {
-        while (fxThemeSource.volume > 0.0f) {
-            fxThemeSource.volume = fxThemeSource.volume - 0.01f;
+        
+        while (fxThemeSource.volume > 0.1f) {
+            fxThemeSource.volume -= 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
         StopTheme();
         fxThemeSource.volume = 1.0f;
         SelectTHEME();
+    }
+
+    public IEnumerator FadeOnEnterTheme() {
+        StopTheme();
+        fxThemeSource.volume = 0.0f;
+        SelectTHEME();
+        while (fxThemeSource.volume < 0.9f) {
+            fxThemeSource.volume += 0.05f;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
     public void StopTheme() {
@@ -706,16 +717,16 @@ public class SoundController : MonoBehaviour {
         fxEnvironnementFireflies.volume = 0.0f;
         fxEnvironnementFireflies.Play();
         fxEnvironnementFireflies.loop = loop;
-        while (fxEnvironnementFireflies.volume < 1.0f) {
-            fxEnvironnementFireflies.volume = fxEnvironnementFireflies.volume + 0.1f;
+        while (fxEnvironnementFireflies.volume < 0.9f) {
+            fxEnvironnementFireflies.volume += 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
         fxEnvironnementFireflies.volume = 1.0f;
     }
 
     public IEnumerator FadeOnExitFireflies() {
-        while (fxEnvironnementFireflies.volume > 0.0f) {
-            fxEnvironnementFireflies.volume = fxEnvironnementFireflies.volume - 0.1f;
+        while (fxEnvironnementFireflies.volume > 0.1f) {
+            fxEnvironnementFireflies.volume -= 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
         fxEnvironnementFireflies.Stop();
@@ -749,16 +760,16 @@ public class SoundController : MonoBehaviour {
         fxEnvironnementFireWall.volume = 0.0f;
         fxEnvironnementFireWall.Play();
         fxEnvironnementFireWall.loop = loop;
-        while (fxEnvironnementFireWall.volume < 1.0f) {
-            fxEnvironnementFireWall.volume = fxEnvironnementFireWall.volume + 0.1f;
+        while (fxEnvironnementFireWall.volume < 0.9f) {
+            fxEnvironnementFireWall.volume += 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
         fxEnvironnementFireWall.volume = 1.0f;
     }
 
     public IEnumerator FadeOnExitFireWall() {
-        while (fxEnvironnementFireWall.volume > 0.0f) {
-            fxEnvironnementFireWall.volume = fxEnvironnementFireWall.volume - 0.1f;
+        while (fxEnvironnementFireWall.volume > 0.1f) {
+            fxEnvironnementFireWall.volume -= 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
         fxEnvironnementFireWall.Stop();

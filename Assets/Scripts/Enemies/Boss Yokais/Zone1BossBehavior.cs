@@ -54,6 +54,8 @@ public class Zone1BossBehavior : YokaiController {
     private Color hitColor = new Color(1f, 0, 0, 50f / 255f);
     private Color chargeColor = new Color(220f / 255f, 20f / 255f, 110f / 255f, 40f / 255f);
 
+    [SerializeField] private GameObject endingTimeline;
+
     void Start() {
 
         target = GameObject.FindGameObjectWithTag("Player");
@@ -156,6 +158,9 @@ public class Zone1BossBehavior : YokaiController {
             }
 
             if (hp <= 0) {
+                //================================================
+                StartCoroutine(SoundController.instance.FadeOnExitTheme()); //Will launch an other theme automatically
+                //================================================
                 isInvincible = false;
                 isKnocked = true;
                 Instantiate(knockedParticle, transform.position, Quaternion.identity).transform.parent = transform;
@@ -209,17 +214,15 @@ public class Zone1BossBehavior : YokaiController {
         //================================================
         SoundController.instance.SelectYOKAI("Absorbed");
         //================================================
-        //Game.playerData.lightBoss1 = true;
-        Game.PreSave_Game_and_Save();
-        //================================================
-        StartCoroutine(SoundController.instance.FadeOnExitTheme()); //Will launch an other theme automatically
-        //================================================
+        
     }
 
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
-            GameObject.Find("VictoryTrigger").GetComponent<VictorySwitch>().VictoryScreen();
+            
+            //endingTimeline.SetActive(true);
+            //GameObject.Find("VictoryTrigger").GetComponent<VictorySwitch>().VictoryScreen();
             Destroy(gameObject);
         }
         else {

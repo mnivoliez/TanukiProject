@@ -156,6 +156,13 @@ public class LanternController : MonoBehaviour {
         return _range;
     }
 
+    public void SetRadiusForPurification(float newRange) {
+        _range = newRange;
+        _min_radius = newRange;
+        _max_radius = newRange;
+        _light.range = newRange;
+    }
+
     public void Respawn() {
         lanternBody = GetComponent<Rigidbody>();
         lanternBody.velocity = Vector3.zero;
