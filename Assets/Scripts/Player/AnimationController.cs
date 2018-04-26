@@ -20,12 +20,16 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
     public Transform glideTransform;
     private ParticleSystem.EmissionModule emissionGlide;
 
+    public Transform absorbTransform;
+    private ParticleSystem.EmissionModule emissionAbsorb;
+
     private float smoothVertSpeed;
 
     void Start() {
         animBody = GetComponent<Animator>();
         emissionRun = runParticleTransform.gameObject.GetComponent<ParticleSystem>().emission;
         emissionGlide = glideTransform.gameObject.GetComponent<ParticleSystem>().emission;
+        emissionAbsorb = absorbTransform.gameObject.GetComponent<ParticleSystem>().emission;
     }
 
     public void UpdateState(MovementState state, float speed, float lateralBend, float verticalSpeed) {
@@ -110,6 +114,8 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
             case InteractState.Absorb:
                 animBody.SetBool("IsAbsorbing", true);
+                emissionAbsorb.enabled = true;
+                AbsorbRotation.Toggle(true);
                 break;
 
             case InteractState.Nothing:
@@ -150,6 +156,8 @@ public class AnimationController : MonoBehaviour, /*IInterractState,*/ IMovement
 
             case InteractState.Absorb:
                 animBody.SetBool("IsAbsorbing", false);
+                emissionAbsorb.enabled = false;
+                AbsorbRotation.Toggle(false);
                 break;
         }
     }
