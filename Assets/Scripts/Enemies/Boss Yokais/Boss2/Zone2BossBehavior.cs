@@ -298,6 +298,10 @@ public class Zone2BossBehavior : YokaiController {
     }
 
     public override void BeingHit() {
+        //================================================
+        StartCoroutine(SoundController.instance.FadeOnExitTheme()); //Will launch an other theme automatically
+        Game.playerData.Boss2KO = true;
+        //================================================
         Invoke("EndHit", 0.5f);
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
         rendererMat.SetColor("_FirstLColor", Color.red);
@@ -324,8 +328,6 @@ public class Zone2BossBehavior : YokaiController {
         //================================================
         SoundController.instance.SelectYOKAI("Absorbed");
         //================================================
-        Game.playerData.lightBoss2 = true;
-        Game.PreSave_Game_and_Save();
     }
 
     public override void Die() {
