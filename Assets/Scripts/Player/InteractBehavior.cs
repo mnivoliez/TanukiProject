@@ -49,6 +49,8 @@ public class InteractBehavior : MonoBehaviour {
     private bool absorbing;
     //[SerializeField] private float absorptionTimer = 4f;
     [SerializeField] private GameObject sakePot;
+    [SerializeField] private GameObject sakeJnt;
+
     private bool pressedAbsorbingOnce = false;
 
     [Header("CARRY")]
@@ -241,13 +243,46 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     public void DoBeginAbsorption(GameObject absorbableObject) {
+        List<Material> mats = new List<Material>();
+        foreach (Transform tr in absorbableObject.GetComponent<YokaiController>().GameobjectMesh) {
+            if(tr.GetComponent<SkinnedMeshRenderer>() != null)
+                mats.AddRange(tr.GetComponent<SkinnedMeshRenderer>().materials);
+            else
+                mats.AddRange(tr.GetComponent<MeshRenderer>().materials);
+        }
+        foreach (Material mat in mats) {
+            mat.SetVector("_TargetPos", sakeJnt.transform.position - absorbableObject.transform.position);
+            mat.SetFloat("_AbsoptionPercent", 0);
+        }
         ActivateAbsorptionQTE();
         absorbing = true;
+    }
+
+    private float prevAbsorptionPercent = 0;
+    IEnumerator LerpAbsorptionPercent(List<Material> mats) {
+        while(prevAbsorptionPercent != absorptionGauge) {
+            if(mats == null) break;
+            prevAbsorptionPercent = Mathf.Lerp(prevAbsorptionPercent, (float)absorptionGauge/maxAbsorptionGauge, .05f);
+            foreach (Material mat in mats) {
+                   mat.SetFloat("_AbsorptionPercent", prevAbsorptionPercent);
+            }
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
     }
 
     public Pair<Capacity, float> DoContinueAbsorption(GameObject absorbableObject, InputController input) {
         Pair<Capacity, float> pairCapacity = new Pair<Capacity, float>(Capacity.Nothing, 0);
         InputParams inputParams = input.RetrieveUserRequest();
+        List<Material> mats = new List<Material>();
+        foreach (Transform tr in absorbableObject.GetComponent<YokaiController>().GameobjectMesh) {
+            if(tr.GetComponent<SkinnedMeshRenderer>() != null)
+                mats.AddRange(tr.GetComponent<SkinnedMeshRenderer>().materials);
+            else
+                mats.AddRange(tr.GetComponent<MeshRenderer>().materials);
+        }
+        foreach (Material mat in mats) {
+            mat.SetVector("_TargetPos", sakeJnt.transform.position - absorbableObject.transform.position);
+        }
         if (absorbableObject.CompareTag("Yokai") && absorbableObject.GetComponent<YokaiController>().GetIsKnocked() && absorbing) {
 
             centerButton.GetComponent<Image>().color = Color.white;
@@ -255,6 +290,7 @@ public class InteractBehavior : MonoBehaviour {
                 //centerButton.GetComponent<RectTransform>().sizeDelta = new Vector2(centerButton.GetComponent<RectTransform>().sizeDelta.x + 5, centerButton.GetComponent<RectTransform>().sizeDelta.y + 5);
                 //centerButton.GetComponent<Image>().color = Color.grey;
                 absorptionGauge += 1;
+                StartCoroutine(LerpAbsorptionPercent(mats));
                 inputParams.contextualButtonPressed = false;
                 if (!pressedAbsorbingOnce) {
                     //================================================

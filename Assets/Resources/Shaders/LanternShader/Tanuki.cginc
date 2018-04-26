@@ -16,6 +16,7 @@ struct v2f
 		float4 pos : SV_POSITION;
 		LIGHTING_COORDS(3,4)
 		UNITY_FOG_COORDS(5)
+		float4 posLocal : TEXCOORD6;
 	#endif
 
 	float2 uv0 : TEXCOORD0;
@@ -36,6 +37,8 @@ float4 _FirstTexture_ST;
 	uniform half _EmissiveSpeed;
 	uniform half _EmissiveStrength;
 
+	uniform half4 _InvincibilityColor;
+
 	uniform half _SpecIntensity;
 	uniform half _SpecPow;
 	uniform half _SpecStep;
@@ -51,10 +54,11 @@ v2f vert (appdata v)
 	v2f o;
 
 	o.uv0 = v.uv;
-	o.posWorld = mul(unity_ObjectToWorld, v.vertex);
 	o.pos = UnityObjectToClipPos(v.vertex);
+	o.posWorld = mul(unity_ObjectToWorld, v.vertex);
 
 	#if !defined(SHADOWCASTER_PASS)
+		o.posLocal = v.vertex;
 		o.normalDir = UnityObjectToWorldNormal(v.normal);
 		TRANSFER_VERTEX_TO_FRAGMENT(o);
 		UNITY_TRANSFER_FOG(o,o.pos);
@@ -102,7 +106,8 @@ half4 frag (v2f i) : SV_Target
 	#if defined(FORWARDBASE_PASS)
 	    float3 indirectDiff = ShadeSH9(float4(i.normalDir, 1));
 		half3 emissive = (sin(_Time.y*_EmissiveSpeed)/(1/_EmissiveStrength)+(1-_EmissiveStrength)) * tex.a * _EmissiveColor.rgb * _EmissiveColor.a *25 * _EmissiveIntensity;
-		
+		half3 worldNoise = snoise(i.posLocal.xyz - half3(0,_Time.y*1.5,0));
+		emissive += (sin(_Time.y*10)/4+.75) * (worldNoise*.5+.5) * _InvincibilityColor.rgb * _InvincibilityColor.a;
 		emissive += (stepDiff * diffCol.rgb * _FirstLColor.rgb*_FirstLColor.a*25.0)
 				+ (1-stepDiff) * diffCol.rgb * _FirstDColor.rgb*_FirstDColor.a*25.0;
 		half4 finalCol = half4(((directDiff + indirectDiff + spec + rim) * diffCol + emissive), 1.0);
