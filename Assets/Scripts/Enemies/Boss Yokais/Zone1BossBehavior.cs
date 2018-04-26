@@ -160,6 +160,7 @@ public class Zone1BossBehavior : YokaiController {
             if (hp <= 0) {
                 //================================================
                 StartCoroutine(SoundController.instance.FadeOnExitTheme()); //Will launch an other theme automatically
+                Game.playerData.Boss1KO = true;
                 //================================================
                 isInvincible = false;
                 isKnocked = true;

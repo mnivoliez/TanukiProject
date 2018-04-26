@@ -200,7 +200,9 @@ public static class Game {
             playerData.caught_yokai = 0;
 
             playerData.lightBoss1 = false;
+            playerData.Boss1KO = false;
             playerData.lightBoss2 = false;
+            playerData.Boss2KO = false;
 
             playerData.yokaiRemainingZ1P1 = new int[7];
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P1, playerData.yokaiRemainingZ1P1.Length);
@@ -256,7 +258,9 @@ public struct PlayerData {
     public int caught_yokai;
 
     public bool lightBoss1;
+    public bool Boss1KO;
     public bool lightBoss2;
+    public bool Boss2KO;
 
     public int[] yokaiRemainingZ1P1;
     public int[] yokaiRemainingZ1P2;
