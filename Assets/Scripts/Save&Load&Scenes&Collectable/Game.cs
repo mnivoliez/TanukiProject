@@ -197,26 +197,26 @@ public static class Game {
             playerData.caught_yokaiZ2P3 = 0;
             playerData.caught_yokai_test = 0;
 
-            playerData.caught_yokai = 0;
+            //playerData.caught_yokai = 0;
 
             playerData.lightBoss1 = false;
             playerData.Boss1KO = false;
             playerData.lightBoss2 = false;
             playerData.Boss2KO = false;
 
-            playerData.yokaiRemainingZ1P1 = new int[7];
+            playerData.yokaiRemainingZ1P1 = new int[30]; //3
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P1, playerData.yokaiRemainingZ1P1.Length);
-            playerData.yokaiRemainingZ1P2 = new int[14];
+            playerData.yokaiRemainingZ1P2 = new int[30]; //14
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P2, playerData.yokaiRemainingZ1P2.Length);
-            playerData.yokaiRemainingZ1P3 = new int[7];
+            playerData.yokaiRemainingZ1P3 = new int[30]; //7
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P3, playerData.yokaiRemainingZ1P3.Length);
-            playerData.yokaiRemainingZ2P1 = new int[11];
+            playerData.yokaiRemainingZ2P1 = new int[30]; //1
             Reset_Yokai_Scene(playerData.yokaiRemainingZ2P1, playerData.yokaiRemainingZ2P1.Length);
-            playerData.yokaiRemainingZ2P2 = new int[20];
+            playerData.yokaiRemainingZ2P2 = new int[30]; //20
             Reset_Yokai_Scene(playerData.yokaiRemainingZ2P2, playerData.yokaiRemainingZ2P2.Length);
-            playerData.yokaiRemainingZ2P3 = new int[12];
+            playerData.yokaiRemainingZ2P3 = new int[30]; //12
             Reset_Yokai_Scene(playerData.yokaiRemainingZ2P3, playerData.yokaiRemainingZ2P3.Length);
-            playerData.yokaiRemainingTEST = new int[3];
+            playerData.yokaiRemainingTEST = new int[30]; //3
             Reset_Yokai_Scene(playerData.yokaiRemainingTEST, playerData.yokaiRemainingTEST.Length);
 
             scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
