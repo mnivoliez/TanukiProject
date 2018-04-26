@@ -45,28 +45,29 @@ public static class Game {
         if (SceneManager.GetActiveScene().name == playerData.current_scene) {
             //////////////////////////////////////////////////////////
             koda = GameObject.FindGameObjectWithTag("Player");
-            koda_health = koda.GetComponent<PlayerHealth>();
-            koda_power = koda.GetComponent<KodaController>();
-            koda_score = koda.GetComponent<PlayerCollectableController>();
-            //////////////////////////////////////////////////////////
-            Load();
+            if (koda != null) { 
+                koda_health = koda.GetComponent<PlayerHealth>();
+                koda_power = koda.GetComponent<KodaController>();
+                koda_score = koda.GetComponent<PlayerCollectableController>();
+                //////////////////////////////////////////////////////////
+                Load();
 
-            koda_health.SetHealthCurrent(playerData.hp);
-            koda_health.SetHealthMax(playerData.hp_max);
-            koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
-            //SceneManager.SetActiveScene(playerData.current_scene); // Working ONLY if the saved scene IS IN the SceneManager !
+                koda_health.SetHealthCurrent(playerData.hp);
+                koda_health.SetHealthMax(playerData.hp_max);
+                koda_power.SetRespawnPointPosition(playerData.check_point_x, playerData.check_point_y, playerData.check_point_z);
+                //SceneManager.SetActiveScene(playerData.current_scene); // Working ONLY if the saved scene IS IN the SceneManager !
 
-            koda_power.SetPowerJump(playerData.lightBoss1);
-            koda_power.SetPowerLure(playerData.lightBoss2);
-            koda_power.SetPowerBall(playerData.power_ball);
-            koda_power.SetPowerShrink(playerData.power_shrink);
+                koda_power.SetPowerJump(playerData.lightBoss1);
+                koda_power.SetPowerLure(playerData.lightBoss2);
+                koda_power.SetPowerBall(playerData.power_ball);
+                koda_power.SetPowerShrink(playerData.power_shrink);
 
-            koda_score.SetnbYokai(playerData.caught_yokai);
-            selected_slot = playerData.selected_slot;
+                koda_score.SetnbYokai(playerData.caught_yokai);
+                selected_slot = playerData.selected_slot;
 
-            Debug.Log("Game Loaded !");
+                Debug.Log("Game Loaded !");
+            }
         }
-
         else {
             Debug.Log("Trying to load a scene that is not supposed to exist in this game.");
         }
@@ -75,63 +76,65 @@ public static class Game {
     public static void Update_Game() {
         //////////////////////////////////////////////////////////
         koda = GameObject.FindGameObjectWithTag("Player");
-        koda_health = koda.GetComponent<PlayerHealth>();
-        koda_power = koda.GetComponent<KodaController>();
-        koda_score = koda.GetComponent<PlayerCollectableController>();
-        //////////////////////////////////////////////////////////
+        if (koda != null) {
+            koda_health = koda.GetComponent<PlayerHealth>();
+            koda_power = koda.GetComponent<KodaController>();
+            koda_score = koda.GetComponent<PlayerCollectableController>();
+            //////////////////////////////////////////////////////////
 
-        playerData.hp_max = koda_health.GetHealthMax();
-        playerData.hp = koda_health.GetHealthCurrent();
+            playerData.hp_max = koda_health.GetHealthMax();
+            playerData.hp = koda_health.GetHealthCurrent();
 
-        Transform check_point = koda_power.GetRespawnPointPosition();
-        playerData.check_point_x = check_point.position.x;
-        playerData.check_point_y = check_point.position.y;
-        playerData.check_point_z = check_point.position.z;
+            Transform check_point = koda_power.GetRespawnPointPosition();
+            playerData.check_point_x = check_point.position.x;
+            playerData.check_point_y = check_point.position.y;
+            playerData.check_point_z = check_point.position.z;
 
-        playerData.current_scene = SceneManager.GetActiveScene().name;
+            playerData.current_scene = SceneManager.GetActiveScene().name;
 
-        if (!playerData.lightBoss1) { playerData.power_jump = koda_power.GetPowerJump(); }
-        if (!playerData.lightBoss2) { playerData.power_lure = koda_power.GetPowerLure(); }
-        playerData.power_ball = koda_power.GetPowerBall();
-        playerData.power_shrink = koda_power.GetPowerShrink();
+            if (!playerData.lightBoss1) { playerData.power_jump = koda_power.GetPowerJump(); }
+            if (!playerData.lightBoss2) { playerData.power_lure = koda_power.GetPowerLure(); }
+            playerData.power_ball = koda_power.GetPowerBall();
+            playerData.power_shrink = koda_power.GetPowerShrink();
 
-        switch (playerData.current_scene) {
-            case "Z1-P1-complete":
-                playerData.caught_yokaiZ1P1 = koda_score.GetnbYokai();
-                break;
+            switch (playerData.current_scene) {
+                case "Z1-P1-complete":
+                    playerData.caught_yokaiZ1P1 = koda_score.GetnbYokai();
+                    break;
 
-            case "Z1-P2-complete":
-                playerData.caught_yokaiZ1P2 = koda_score.GetnbYokai();
-                break;
+                case "Z1-P2-complete":
+                    playerData.caught_yokaiZ1P2 = koda_score.GetnbYokai();
+                    break;
 
-            case "Z1-P3-complete":
-                playerData.caught_yokaiZ1P3 = koda_score.GetnbYokai();
-                break;
+                case "Z1-P3-complete":
+                    playerData.caught_yokaiZ1P3 = koda_score.GetnbYokai();
+                    break;
 
-            case "Z2-P1-complete":
-                playerData.caught_yokaiZ2P1 = koda_score.GetnbYokai();
-                break;
+                case "Z2-P1-complete":
+                    playerData.caught_yokaiZ2P1 = koda_score.GetnbYokai();
+                    break;
 
-            case "Z2-P2-complete":
-                playerData.caught_yokaiZ2P2 = koda_score.GetnbYokai();
-                break;
+                case "Z2-P2-complete":
+                    playerData.caught_yokaiZ2P2 = koda_score.GetnbYokai();
+                    break;
 
-            case "Z2-P3-complete":
-                playerData.caught_yokaiZ2P3 = koda_score.GetnbYokai();
-                break;
+                case "Z2-P3-complete":
+                    playerData.caught_yokaiZ2P3 = koda_score.GetnbYokai();
+                    break;
 
-            case "Scene_AirStream":
-                playerData.caught_yokai_test = koda_score.GetnbYokai();
-                break;
+                case "Scene_AirStream":
+                    playerData.caught_yokai_test = koda_score.GetnbYokai();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+
+            playerData.caught_yokai = koda_score.GetnbYokai();
+            playerData.selected_slot = selected_slot;
+
+            scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
         }
-
-        playerData.caught_yokai = koda_score.GetnbYokai();
-        playerData.selected_slot = selected_slot;
-
-        scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
     }
 
     public static void yokai_Collectable_Caught(int yokaiID) {
