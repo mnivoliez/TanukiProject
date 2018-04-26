@@ -45,7 +45,7 @@
 				fixed shadow = tex2Dproj(_ShadowTex, UNITY_PROJ_COORD(i.uvShadow));
 				fixed falloff = tex2Dproj (_FalloffTex, UNITY_PROJ_COORD(i.uvFalloff)).a;
 				fixed res = lerp(1, shadow, falloff);
-				return 1-(1-res) * (1-_ShadowColor*25*_ShadowColor.a)/**_PawProgress*/;
+				return 1-(1-res) * (1-_ShadowColor*25*_ShadowColor.a)*_PawProgress;
 			}
 			ENDCG
 		}
