@@ -29,6 +29,9 @@ public class SesshoSekiBehavior : YokaiController {
     [SerializeField] private float durationOfPreparation = 2;
     [SerializeField] private float durationOfResearch = 2;
 
+    [SerializeField] private GameObject runFx;
+    private ParticleSystem.EmissionModule emissionRun;
+
     private Color initColor = new Color(97f / 255f, 88f / 255f, 99f / 255f, 84f / 255f);
     private Color chargeColor = new Color(210f / 255f, 210f / 255f, 70f / 255f, 80f / 255f);
     private Color hitColor = new Color(180f / 255f, 70f / 255f, 80f / 255f, 80f/ 255f);
@@ -44,7 +47,8 @@ public class SesshoSekiBehavior : YokaiController {
         positionTargetSet = false;
         rendererMat = GetComponent<Renderer>().material;
         myRenderer = GetComponent<Renderer>();
-}
+        emissionRun = runFx.GetComponent<ParticleSystem>().emission;
+    }
 
     void Update() {
         //===========================
@@ -76,6 +80,7 @@ public class SesshoSekiBehavior : YokaiController {
             RaycastHit myHit;
             if (target != null && Physics.Raycast(positionWithOffset, targetPositionWithOffset - positionWithOffset, out myHit, (targetPositionWithOffset - positionWithOffset).magnitude + 1f, 1 << LayerMask.NameToLayer("Player"))) {
                 comeBack = false;
+                emissionRun.enabled = true;
             }
 
             if (comeBack) {
@@ -115,11 +120,13 @@ public class SesshoSekiBehavior : YokaiController {
                     body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
                 }
                 else if (Time.time >= nextAction) {
+                    emissionRun.enabled = false;
                     body.constraints = RigidbodyConstraints.None;
                     prepare = false;
                     positionTargetSet = false;
                 }
             } else if (search) {
+                emissionRun.enabled = false;
                 body.velocity = new Vector3(0, body.velocity.y, 0);
                 transform.rotation = Quaternion.identity;
                 if (Time.time < nextAction) {
@@ -158,6 +165,7 @@ public class SesshoSekiBehavior : YokaiController {
                     positionToGo = hit.point - (relativePos.normalized * myRenderer.bounds.size.x * transform.localScale.x / 4);
                     relativePos = positionToGo - transform.position;
                     relativePos.y = 0;
+                    emissionRun.enabled = true;
                 }
 
                 Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
@@ -236,6 +244,8 @@ public class SesshoSekiBehavior : YokaiController {
         SoundController.instance.SelectYOKAI("Hurt");
         //================================================
         if (hp <= 0) {
+            runFx.SetActive(false);
+            emissionRun.enabled = false;
             isKnocked = true;
             Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
             posKnockedParticle.x = transform.position.x;
@@ -267,6 +277,7 @@ public class SesshoSekiBehavior : YokaiController {
     }
 
     public override void Die() {
+        
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
