@@ -20,6 +20,7 @@ public class EntityBehavior : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (!isAlreadyLight) {
             if (other.CompareTag("Player")) {
+                Lantern_Hiyoribou.transform.position = transform.position;
                 isAlreadyLight = true;
                 StartCoroutine(LightTransition());
                 other.gameObject.GetComponent<KodaController>().SetPowerJump(true);

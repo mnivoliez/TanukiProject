@@ -172,7 +172,7 @@ public class SesshoSekiBehavior : YokaiController {
 				RaycastHit hitGround = new RaycastHit ();
 				Vector3 nextPosition = transform.position + relativePos.normalized * 3;
 				if (Physics.Raycast (nextPosition, Vector3.down, out hitGround, 10.0f, layerMask)) {
-					Debug.Log (hitGround.collider.gameObject.name + ": " + hitGround.distance);
+					//Debug.Log (hitGround.collider.gameObject.name + ": " + hitGround.distance);
 					if (hitGround.distance > heightMinSuicide) {
 						positionToGo = transform.position;
 						relativePos = positionToGo - transform.position;
