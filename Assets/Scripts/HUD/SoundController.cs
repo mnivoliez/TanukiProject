@@ -174,7 +174,7 @@ public class SoundController : MonoBehaviour {
             PlayHUDTheme(HUDMainMenuTheme, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1) {
+        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1 && !Game.playerData.Boss1KO) {
             KillAll();
             StartCoroutine(PlayThemeBoss(themeBossZ1, true));
         }
@@ -184,7 +184,7 @@ public class SoundController : MonoBehaviour {
             PlayTheme(themeLightZ1, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2) {
+        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2 && !Game.playerData.Boss2KO) {
             KillAll();
             StartCoroutine(PlayThemeBoss(themeBossZ2, true));
         }
@@ -232,7 +232,7 @@ public class SoundController : MonoBehaviour {
     private IEnumerator PlayThemeBoss(AudioClip clip, bool loop) {
         fxThemeSource.clip = themePreBoss;
         fxThemeSource.Play();
-        yield return new WaitForSeconds(14.0f);
+        yield return new WaitForSeconds(16.0f);
         PlayTheme(clip, loop);
     }
 
