@@ -123,18 +123,18 @@ public class Pause : MonoBehaviour {
         score_to_display_Z2P3.text = "Z2P3 : " + score_valueZ2P3;
 
         bool has_power = Game.playerData.power_jump;
-        if (has_power) { logoDoubleJump.SetActive(true); }
+        logoDoubleJump.SetActive(has_power);
         has_doublejump.text = "Double Jump : ";
 
         has_power = Game.playerData.power_lure;
-        if (has_power) { logoLure.SetActive(true); }
+        logoLure.SetActive(has_power);
         has_lure.text = "Lure : ";
 
         has_power = Game.playerData.power_ball;
-        has_ball.text = "Ball Form : " + has_power;
+        has_ball.text = "Ball Form : "; //+ has_power;
 
         has_power = Game.playerData.power_shrink;
-        has_shrink.text = "Shrink : " + has_power;
+        has_shrink.text = "Shrink : ";// + has_power;
     }
 
     public void CountCollectableYokai() {
