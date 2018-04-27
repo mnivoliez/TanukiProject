@@ -9,10 +9,11 @@ using UnityEngine.UI;
 
 public class SkipVideo : MonoBehaviour {
 
-	public string nameScene;
-
-	private Image Black;
+	[SerializeField] private string nameScene;
+    [SerializeField] private float skipAfterSecond;
+    private Image Black;
 	private Animator anim;
+
 
 	void Start() {
         //================================================
@@ -23,7 +24,7 @@ public class SkipVideo : MonoBehaviour {
 		Black = transitionImageInstance.GetComponent<Image> ();
 		anim = transitionImageInstance.GetComponent<Animator> ();
 
-		Invoke ("SkipVideoToNextScene", 268f);
+		Invoke ("SkipVideoToNextScene", skipAfterSecond);
 		//Invoke ("SkipVideoToNextScene", 5f);
 	}
 
