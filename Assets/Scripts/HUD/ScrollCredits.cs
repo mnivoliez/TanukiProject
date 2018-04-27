@@ -8,6 +8,7 @@ public class ScrollCredits : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        StartCoroutine(WillQuitOnceEndCredit());
 		
 	}
 	
@@ -15,4 +16,17 @@ public class ScrollCredits : MonoBehaviour {
 	void FixedUpdate () {
 		transform.position += Vector3.up * Time.fixedDeltaTime * scrollSpeed;
 	}
+
+    public void Quit() {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+		Application.Quit();
+#endif
+    }
+
+    IEnumerator WillQuitOnceEndCredit() {
+        yield return new WaitForSeconds(45);
+        Quit();
+    }
 }
