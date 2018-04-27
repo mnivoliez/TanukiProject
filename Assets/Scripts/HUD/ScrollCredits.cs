@@ -26,7 +26,7 @@ public class ScrollCredits : MonoBehaviour {
     }
 
     IEnumerator WillQuitOnceEndCredit() {
-        yield return new WaitForSeconds(45);
+        yield return new WaitForSeconds(36);
         Quit();
     }
 }

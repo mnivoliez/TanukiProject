@@ -24,7 +24,7 @@ public class CollectableManager : MonoBehaviour {
 
         Game.Load();
         
-        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Zone Tuto" && SceneManager.GetActiveScene().name != "Sandbox GGS") {
+        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Zone Tuto" && SceneManager.GetActiveScene().name != "Sandbox GGS" && SceneManager.GetActiveScene().name != "FinTuto") {
             FindYokaiGeneralAndSetID();
             FindYokaiGeneralAndDisable();
             Game.Update_Game();

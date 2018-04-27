@@ -171,6 +171,7 @@ public class SoundController : MonoBehaviour {
     }
 
     public void SelectTHEME() {
+
         if (SceneManager.GetActiveScene().name == "MainMenu") {
             KillAll();
             PlayHUDTheme(HUDMainMenuTheme, true);
@@ -209,6 +210,11 @@ public class SoundController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             KillAll();
             SelectENVLong("Wind");
+            PlayTheme(themeLightZ1, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "FinTuto") {
+            KillAll();
             PlayTheme(themeLightZ1, true);
         }
 
