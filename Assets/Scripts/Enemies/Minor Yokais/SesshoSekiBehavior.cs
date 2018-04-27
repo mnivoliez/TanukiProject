@@ -259,6 +259,7 @@ public class SesshoSekiBehavior : YokaiController {
             runFx.SetActive(false);
             emissionRun.enabled = false;
             isKnocked = true;
+			body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
             Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
