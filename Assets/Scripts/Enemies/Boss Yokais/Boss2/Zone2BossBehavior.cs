@@ -225,6 +225,9 @@ public class Zone2BossBehavior : YokaiController {
                             transform.localRotation = Quaternion.identity;
                             if (corps.activeSelf == true) {
                                 corps.SetActive(false);
+                                //================================================
+                                SoundController.instance.SelectYOKAISESSHOSEKIBOSS("DigIn");
+                                //================================================
                                 foreach (GameObject oreille in oreilles) {
                                     oreille.SetActive(true);
                                 }
