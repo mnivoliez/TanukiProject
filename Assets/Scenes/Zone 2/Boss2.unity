@@ -4859,6 +4859,37 @@ Transform:
   m_PrefabParentObject: {fileID: 4982297453055336, guid: 3c7595beec4e7c74c9f8d48ebf924a6a,
     type: 2}
   m_PrefabInternal: {fileID: 257768283}
+--- !u!84 &263156313
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &264370967
 Prefab:
   m_ObjectHideFlags: 0
@@ -24392,6 +24423,61 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1266347975}
   m_Mesh: {fileID: 4300004, guid: 6f8c926fd1bfd674d9c5e9da1b2ab2cd, type: 3}
+--- !u!1 &1273592663
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1273592666}
+  - component: {fileID: 1273592665}
+  - component: {fileID: 1273592664}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1273592664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1273592663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb9bee9587d20d4392c0f9daeca2f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneNameToLoad: 
+  sceneNameToUnload: Boss2
+--- !u!65 &1273592665
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1273592663}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 25.136292, y: 26.163322, z: 4.7048864}
+  m_Center: {x: 1.751236, y: 12.581661, z: -1.8524418}
+--- !u!4 &1273592666
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1273592663}
+  m_LocalRotation: {x: 0, y: -0.10990786, z: 0, w: 0.9939418}
+  m_LocalPosition: {x: -182.09, y: 31.5, z: 593.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 221
+  m_LocalEulerAnglesHint: {x: 0, y: -12.62, z: 0}
 --- !u!1001 &1276212958
 Prefab:
   m_ObjectHideFlags: 0
@@ -26508,6 +26594,26 @@ Transform:
   m_PrefabParentObject: {fileID: 4982297453055336, guid: 3c7595beec4e7c74c9f8d48ebf924a6a,
     type: 2}
   m_PrefabInternal: {fileID: 1377911371}
+--- !u!21 &1378030041
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!1001 &1383444770
 Prefab:
   m_ObjectHideFlags: 0

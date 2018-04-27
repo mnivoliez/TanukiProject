@@ -627,7 +627,9 @@ public class KodaController : MonoBehaviour {
         }
         //Debug.Log ("inclinationNormals.Count=" + inclinationNormals.Count + " " + Time.time);
         direction.up = Vector3.up;
-        direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+        if (Camera.main != null) {
+            direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+        }
         if (allowedToWalk) {
             /*float angleX = Mathf.Abs(gO.transform.rotation.eulerAngles.x);
             if (angleX > 180)
