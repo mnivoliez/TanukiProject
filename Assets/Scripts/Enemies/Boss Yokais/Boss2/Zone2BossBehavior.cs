@@ -188,6 +188,9 @@ public class Zone2BossBehavior : YokaiController {
                 } else if (canBump) {
                     if (delayToBump > 0) {
                         FXBump.SetActive(true);
+                        //================================================
+                        SoundController.instance.SelectYOKAISESSHOSEKIBOSS("DigOut");
+                        //================================================
                         oreilles[0].GetComponent<Renderer>().material.SetColor("_FirstLColor", Color.yellow);
                         myRigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
                         if (target != null) {
@@ -222,6 +225,9 @@ public class Zone2BossBehavior : YokaiController {
                             transform.localRotation = Quaternion.identity;
                             if (corps.activeSelf == true) {
                                 corps.SetActive(false);
+                                //================================================
+                                SoundController.instance.SelectYOKAISESSHOSEKIBOSS("DigIn");
+                                //================================================
                                 foreach (GameObject oreille in oreilles) {
                                     oreille.SetActive(true);
                                 }
