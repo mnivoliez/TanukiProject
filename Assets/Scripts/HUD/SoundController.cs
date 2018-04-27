@@ -176,7 +176,7 @@ public class SoundController : MonoBehaviour {
             PlayHUDTheme(HUDMainMenuTheme, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Credit-Scene") {
+        if (SceneManager.GetActiveScene().name == "CreditScene") {
             KillAll();
             PlayHUDTheme(HUDCredits, true);
         }
