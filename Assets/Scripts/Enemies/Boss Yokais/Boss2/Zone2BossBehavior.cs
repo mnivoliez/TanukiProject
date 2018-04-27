@@ -56,7 +56,7 @@ public class Zone2BossBehavior : YokaiController {
         phasePattern = 1;
         throwRate = throwRateP1;
         interPhase = false;
-        nextThrow = 0;
+		nextThrow = throwRate;
         stop = false;
         currentRocksToThrow = nbRocksToThrow;
 
@@ -253,7 +253,9 @@ public class Zone2BossBehavior : YokaiController {
         GameObject theRock = Instantiate(prefabRock);
         theRock.transform.position = spawnRock.position;
         theRock.transform.LookAt(target.transform);
-        Vector3 direction = (target.transform.position - theRock.transform.position).normalized;
+		Vector3 positionOfPlayer = new Vector3 (target.transform.position.x, target.transform.position.y + 2, target.transform.position.z);
+		Vector3 direction = (positionOfPlayer - theRock.transform.position).normalized;
+		//Vector3 direction = (target.transform.position - theRock.transform.position).normalized;
         theRock.GetComponent<Rigidbody>().AddForce(direction * 20, ForceMode.Impulse);
         nextThrow = Time.time + throwRate;
     }
