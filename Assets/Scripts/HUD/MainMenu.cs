@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void Load_Game() {
+        Game.Load();
         CanvasMenu.GetComponent<LoadSceneManager>().LoadByIndexMM(Game.playerData.current_scene);
         MainPanel.SetActive(false);
         //Debug.Log("Will load ... Soon™.");

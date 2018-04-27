@@ -43,6 +43,7 @@ public class LoadSceneManager : MonoBehaviour {
     }
 
     public void LoadByIndexMM(string sceneNameToLoad) {
+        if(SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Credit-Scene" && SceneManager.GetActiveScene().name != "Introduction") { Game.PreSave_Game_and_Save(); }
 
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
         StartCoroutine(LoadAsyncScene(sceneNameToLoad));
@@ -51,6 +52,7 @@ public class LoadSceneManager : MonoBehaviour {
     }
 
     public void LoadByIndex(string sceneNameToLoad, string sceneNameToUnload) {
+        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "CreditScene" && SceneManager.GetActiveScene().name != "Introduction") { Game.PreSave_Game_and_Save(); }
 
         SceneManager.UnloadSceneAsync(sceneNameToUnload);
         StartCoroutine(LoadAsyncScene(sceneNameToLoad));
