@@ -307,33 +307,39 @@ public class KodaController : MonoBehaviour {
 
         if (runOnWater) {
             //Debug.Log("on water");
-            float distance = 0f;
-            if (lanterns.Length > 0) {
-                lanternNearest = lanterns[0];
-                distance = Vector3.Distance(lanternNearest.transform.position, transform.position);
-            }
-            else {
-                lanternNearest = null;
-            }
-            foreach (GameObject lantern in lanterns) {
-                float dis = Vector3.Distance(lantern.transform.position, transform.position);
-                if (dis < distance) {
-                    lanternNearest = lantern;
-                    distance = dis;
+            //Debug.Log(Game.playerData.lightSandbox);
+            if (!Game.playerData.lightSandbox) { 
+                float distance = 0f;
+                if (lanterns.Length > 0) {
+                    lanternNearest = lanterns[0];
+                    distance = Vector3.Distance(lanternNearest.transform.position, transform.position);
                 }
-            }
-            if (!levelIsLight) {
-                if (lanternNearest != null) {
-                    if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
-                        //Debug.Log("die distance");
+                else {
+                    lanternNearest = null;
+                }
+                foreach (GameObject lantern in lanterns) {
+                    float dis = Vector3.Distance(lantern.transform.position, transform.position);
+                    if (dis < distance) {
+                        lanternNearest = lantern;
+                        distance = dis;
+                    }
+                }
+                if (!levelIsLight) {
+                    if (lanternNearest != null) {
+                        if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
+                            //Debug.Log("die distance");
+                            playerHealth.PlayerDie();
+                            runOnWater = false;
+                        }
+                    }
+                    else {
                         playerHealth.PlayerDie();
                         runOnWater = false;
                     }
                 }
-                else {
-                    playerHealth.PlayerDie();
-                    runOnWater = false;
-                }
+            }
+            else {
+                runOnWater = true;
             }
         }
     }
