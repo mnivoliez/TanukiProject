@@ -19,6 +19,13 @@ public static class Game {
 
     public static PlayerData playerData;
 
+    public static int score_valueZ1P1 = 0;
+    public static int score_valueZ1P2 = 0;
+    public static int score_valueZ1P3 = 0;
+    public static int score_valueZ2P1 = 0;
+    public static int score_valueZ2P2 = 0;
+    public static int score_valueZ2P3 = 0;
+
     public static void PreSave_Game_and_Save() {
         Update_Game();
         Save();
@@ -97,29 +104,43 @@ public static class Game {
             playerData.power_ball = koda_power.GetPowerBall();
             playerData.power_shrink = koda_power.GetPowerShrink();
 
+            CountCollectableYokai();
+            playerData.caught_yokaiZ1P1 = score_valueZ1P1;
+            playerData.caught_yokaiZ1P2 = score_valueZ1P2;
+            playerData.caught_yokaiZ1P3 = score_valueZ1P3;
+            playerData.caught_yokaiZ2P1 = score_valueZ2P1;
+            playerData.caught_yokaiZ2P2 = score_valueZ2P2;
+            playerData.caught_yokaiZ2P3 = score_valueZ2P3;
+
             switch (playerData.current_scene) {
                 case "Z1-P1-complete":
-                    playerData.caught_yokaiZ1P1 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ1P1 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ1P1;
                     break;
 
                 case "Z1-P2-complete":
-                    playerData.caught_yokaiZ1P2 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ1P2 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ1P2;
                     break;
 
                 case "Z1-P3-complete":
-                    playerData.caught_yokaiZ1P3 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ1P3 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ1P3;
                     break;
 
                 case "Z2-P1-complete":
-                    playerData.caught_yokaiZ2P1 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ2P1 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ2P1;
                     break;
 
                 case "Z2-P2-complete":
-                    playerData.caught_yokaiZ2P2 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ2P2 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ2P2;
                     break;
 
                 case "Z2-P3-complete":
-                    playerData.caught_yokaiZ2P3 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ2P3 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ2P3;
                     break;
 
                 case "Scene_AirStream":
@@ -130,7 +151,6 @@ public static class Game {
                     break;
             }
 
-            playerData.caught_yokai = koda_score.GetnbYokai();
             playerData.selected_slot = selected_slot;
 
             scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
@@ -172,6 +192,25 @@ public static class Game {
         }
     }
 
+    public static void CountCollectableYokai() {
+
+        score_valueZ1P1 = 0;
+        score_valueZ1P2 = 0;
+        score_valueZ1P3 = 0;
+        score_valueZ2P1 = 0;
+        score_valueZ2P2 = 0;
+        score_valueZ2P3 = 0;
+
+        for (int i = 0; i < 30; i++) {
+            if (playerData.yokaiRemainingZ1P1[i] == -1) { score_valueZ1P1++; }
+            if (playerData.yokaiRemainingZ1P2[i] == -1) { score_valueZ1P2++; }
+            if (playerData.yokaiRemainingZ1P3[i] == -1) { score_valueZ1P3++; }
+            if (playerData.yokaiRemainingZ2P1[i] == -1) { score_valueZ2P1++; }
+            if (playerData.yokaiRemainingZ2P2[i] == -1) { score_valueZ2P2++; }
+            if (playerData.yokaiRemainingZ2P3[i] == -1) { score_valueZ2P3++; }
+        }
+    }
+
     public static void Reset_Game() {
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             playerData.hp = 3.0f;
@@ -197,7 +236,7 @@ public static class Game {
             playerData.caught_yokaiZ2P3 = 0;
             playerData.caught_yokai_test = 0;
 
-            //playerData.caught_yokai = 0;
+            playerData.caught_yokai = 0;
 
             playerData.lightBoss1 = false;
             playerData.Boss1KO = false;
