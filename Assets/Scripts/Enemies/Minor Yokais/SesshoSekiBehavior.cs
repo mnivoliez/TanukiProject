@@ -259,6 +259,7 @@ public class SesshoSekiBehavior : YokaiController {
             runFx.SetActive(false);
             emissionRun.enabled = false;
             isKnocked = true;
+			body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
             Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
@@ -289,7 +290,7 @@ public class SesshoSekiBehavior : YokaiController {
     }
 
     public override void Die() {
-        
+		body.constraints = RigidbodyConstraints.None;
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
