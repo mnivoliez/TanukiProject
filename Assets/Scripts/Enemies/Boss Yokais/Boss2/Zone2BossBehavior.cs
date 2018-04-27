@@ -36,6 +36,7 @@ public class Zone2BossBehavior : YokaiController {
     private GameObject[] respawnsLantern;
     private Color defaultColor;
 
+
     [SerializeField] private float timeToBump = 3;
     [SerializeField] private float timeToKnockBack;
     [SerializeField] private float throwRateP1 = 6;
@@ -44,6 +45,8 @@ public class Zone2BossBehavior : YokaiController {
     [SerializeField] private GameObject prefabRock;
     [SerializeField] private GameObject prefabSmoke;
     [SerializeField] private GameObject river;
+	[SerializeField] private GameObject barriers;
+	[SerializeField] private GameObject spawnerYokaisLure;
     [SerializeField] private GameObject positionLanternPhase1;
     [SerializeField] private GameObject FXBump;
 
@@ -103,6 +106,8 @@ public class Zone2BossBehavior : YokaiController {
             return;
         }
         //===========================
+
+
     }
 	
 	// Update is called once per frame
@@ -345,6 +350,21 @@ public class Zone2BossBehavior : YokaiController {
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
+
+			foreach (Transform child in barriers.transform) {
+				child.gameObject.SetActive (false);
+			}
+
+			foreach (Transform child in spawnerYokaisLure.transform) {
+				child.gameObject.SetActive (false);
+			}
+
+			foreach (GameObject yokai in GameObject.FindGameObjectsWithTag("Yokai")) {
+				if (yokai != gameObject) {
+					Destroy (yokai);
+				}
+			}
+
             Destroy(gameObject);
         }
         else {
