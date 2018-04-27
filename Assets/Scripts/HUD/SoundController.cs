@@ -44,6 +44,8 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip HUDPauseNavigate;
     [SerializeField] private AudioClip HUDPauseAccept;
     [SerializeField] private AudioClip HUDTutoPictureClose;
+    [SerializeField] private AudioClip HUDCredits;
+    [SerializeField] private AudioClip HUDIntro;
 
     [Header("KODA")]
     [Space(10)]
@@ -172,6 +174,16 @@ public class SoundController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "MainMenu") {
             KillAll();
             PlayHUDTheme(HUDMainMenuTheme, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "CreditScene") {
+            KillAll();
+            PlayHUDTheme(HUDCredits, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Introduction") {
+            KillAll();
+            PlayHUDTheme(HUDIntro, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1 && !Game.playerData.Boss1KO) {
