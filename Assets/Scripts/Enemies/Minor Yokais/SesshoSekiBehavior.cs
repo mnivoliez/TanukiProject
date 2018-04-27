@@ -290,7 +290,7 @@ public class SesshoSekiBehavior : YokaiController {
     }
 
     public override void Die() {
-        
+		body.constraints = RigidbodyConstraints.None;
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
