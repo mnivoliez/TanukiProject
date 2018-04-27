@@ -28,8 +28,8 @@ public class YokaiAIv2Controller : YokaiController {
     private bool bodyAttack = false;
     private Rigidbody body;
 
-    private Color initColor = new Color(10f / 255f, 10f / 255f, 10f / 255f, 1f);
-    private Color hitColor = new Color(250f / 255f, 250f / 255f, 0f / 255f, 1f);
+    private Color initColor = new Color(210f / 255f, 0f / 255f, 255f / 255f, 60f / 255f);
+    private Color hitColor = new Color(255f / 255f, 0, 0f / 255f, 60f / 255f);
 
     [SerializeField] private GameObject hpCollectable;
     private Vector3 positionCollectable;
@@ -67,7 +67,8 @@ public class YokaiAIv2Controller : YokaiController {
                 if (Vector3.Distance(transform.position, positionOrigin) > detectArea) {
                     comeBack = true;
                     target = null;
-                } else {
+                }
+                else {
                     Vector3 relativePos = target.transform.position - transform.position;
                     // all layers are = 0xFFFFFFFF => -1
                     int layerAll = -1;
@@ -95,24 +96,28 @@ public class YokaiAIv2Controller : YokaiController {
                                 SoundController.instance.SelectYOKAIAKASHITA("Attack");
                                 //================================================
                                 target.GetComponent<PlayerHealth>().LooseHP(damageBody);
-                            } else if (target.tag == "Lure") {
+                            }
+                            else if (target.tag == "Lure") {
                                 target.GetComponent<LureController>().BeingHit();
                             }
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 bodyAttack = false;
                 if (comeBack) {
                     if ((int)transform.position.x != (int)positionOrigin.x || (int)transform.position.z != (int)positionOrigin.z) {
                         agent.stoppingDistance = 0.0f;
                         agent.SetDestination(positionOrigin);
-                    } else {
+                    }
+                    else {
                         comeBack = false;
                         agent.stoppingDistance = stoppingDistance;
                         transform.rotation = rotationOrigin;
                     }
-                } else {
+                }
+                else {
                     Behavior();
                 }
             }
@@ -152,7 +157,8 @@ public class YokaiAIv2Controller : YokaiController {
             float damage = 1;
             if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MoveLeaf>() != null) {
                 damage = other.gameObject.GetComponent<MoveLeaf>().GetDamage();
-            } else if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MeleeAttackTrigger>() != null) {
+            }
+            else if (other.gameObject.tag == "Leaf" && other.gameObject.GetComponent<MeleeAttackTrigger>() != null) {
                 damage = other.gameObject.GetComponent<MeleeAttackTrigger>().GetDamage();
             }
 
@@ -175,7 +181,7 @@ public class YokaiAIv2Controller : YokaiController {
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
             Instantiate(knockedParticle, posKnockedParticle, Quaternion.identity).transform.parent = transform;
-            rendererMat.SetColor("_Color", hitColor);
+            rendererMat.SetColor("_FirstDColor", hitColor);
             //================================================
             SoundController.instance.SelectYOKAI("KO");
             //================================================
@@ -187,12 +193,12 @@ public class YokaiAIv2Controller : YokaiController {
     }
 
     public override void BeingHit() {
-        rendererMat.SetColor("_Color", hitColor);
+        rendererMat.SetColor("_FirstDColor", hitColor);
         Destroy(Instantiate(hitParticle, transform.position, Quaternion.identity), 1);
     }
 
     public override void EndHit() {
-        if (!isKnocked) rendererMat.SetColor("_Color", initColor);
+        if (!isKnocked) rendererMat.SetColor("_FirstDColor", initColor);
     }
 
     public override void Absorbed() {
@@ -215,7 +221,8 @@ public class YokaiAIv2Controller : YokaiController {
             }
             target.GetComponent<Animator>().SetBool("IsAbsorbing", false);
             Destroy(gameObject);
-        } else {
+        }
+        else {
             if (transform.localScale.x > 0 && transform.localScale.y > 0 && transform.localScale.z > 0) {
                 Vector3 scale = transform.localScale;
                 scale -= new Vector3(0.2f, 0.2f, 0.2f);
@@ -234,7 +241,7 @@ public class YokaiAIv2Controller : YokaiController {
 
     public override void Behavior() {
         if (Random.Range(0, 100) < 3) {
-            if(Time.time > nextRate) {
+            if (Time.time > nextRate) {
                 nextRate = Time.time + rateBehavior;
                 Vector3 direction = new Vector3(Random.Range(-zoneBehavior, zoneBehavior), Random.Range(-zoneBehavior, zoneBehavior), Random.Range(-zoneBehavior, zoneBehavior));
                 Vector3 positionBehavior = positionOrigin + direction;
