@@ -36,6 +36,7 @@ public class Zone2BossBehavior : YokaiController {
     private GameObject[] respawnsLantern;
     private Color defaultColor;
 
+
     [SerializeField] private float timeToBump = 3;
     [SerializeField] private float timeToKnockBack;
     [SerializeField] private float throwRateP1 = 6;
@@ -44,6 +45,8 @@ public class Zone2BossBehavior : YokaiController {
     [SerializeField] private GameObject prefabRock;
     [SerializeField] private GameObject prefabSmoke;
     [SerializeField] private GameObject river;
+	[SerializeField] private GameObject barriers;
+	[SerializeField] private GameObject spawnerYokaisLure;
     [SerializeField] private GameObject positionLanternPhase1;
     [SerializeField] private GameObject FXBump;
 
@@ -56,7 +59,7 @@ public class Zone2BossBehavior : YokaiController {
         phasePattern = 1;
         throwRate = throwRateP1;
         interPhase = false;
-        nextThrow = 0;
+		nextThrow = throwRate;
         stop = false;
         currentRocksToThrow = nbRocksToThrow;
 
@@ -103,6 +106,8 @@ public class Zone2BossBehavior : YokaiController {
             return;
         }
         //===========================
+
+
     }
 	
 	// Update is called once per frame
@@ -253,7 +258,9 @@ public class Zone2BossBehavior : YokaiController {
         GameObject theRock = Instantiate(prefabRock);
         theRock.transform.position = spawnRock.position;
         theRock.transform.LookAt(target.transform);
-        Vector3 direction = (target.transform.position - theRock.transform.position).normalized;
+		Vector3 positionOfPlayer = new Vector3 (target.transform.position.x, target.transform.position.y + 2, target.transform.position.z);
+		Vector3 direction = (positionOfPlayer - theRock.transform.position).normalized;
+		//Vector3 direction = (target.transform.position - theRock.transform.position).normalized;
         theRock.GetComponent<Rigidbody>().AddForce(direction * 20, ForceMode.Impulse);
         nextThrow = Time.time + throwRate;
     }
@@ -343,6 +350,21 @@ public class Zone2BossBehavior : YokaiController {
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
+
+			foreach (Transform child in barriers.transform) {
+				child.gameObject.SetActive (false);
+			}
+
+			foreach (Transform child in spawnerYokaisLure.transform) {
+				child.gameObject.SetActive (false);
+			}
+
+			foreach (GameObject yokai in GameObject.FindGameObjectsWithTag("Yokai")) {
+				if (yokai != gameObject) {
+					Destroy (yokai);
+				}
+			}
+
             Destroy(gameObject);
         }
         else {
