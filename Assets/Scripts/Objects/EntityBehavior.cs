@@ -8,15 +8,6 @@ public class EntityBehavior : MonoBehaviour {
     private bool isAlreadyLight = false;
     public static GameObject LoadingScreen;
 
-    void Start () {
-		
-	}
-	
-
-	void Update () {
-		
-	}
-
     private void OnTriggerEnter(Collider other) {
         if (!isAlreadyLight) {
             if (other.CompareTag("Player")) {
