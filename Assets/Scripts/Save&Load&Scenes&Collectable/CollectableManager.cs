@@ -16,7 +16,7 @@ public class CollectableManager : MonoBehaviour {
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        if(SceneManager.GetActiveScene().name == "Zone Tuto") {
+        if(SceneManager.GetActiveScene().name == "Zone Tuto" || SceneManager.GetActiveScene().name == "SandboxV2") {
             Game.Reset_Game();
             Game.PreSave_Game_and_Save();
             StartCoroutine(SavingLogo());

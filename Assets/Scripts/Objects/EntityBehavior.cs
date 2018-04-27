@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EntityBehavior : MonoBehaviour {
 
@@ -15,7 +16,9 @@ public class EntityBehavior : MonoBehaviour {
                 isAlreadyLight = true;
                 StartCoroutine(LightTransition());
                 other.gameObject.GetComponent<KodaController>().SetPowerJump(true);
-                Game.playerData.lightBoss1 = true;
+                if(SceneManager.GetActiveScene().name == "Boss1") { Game.playerData.lightBoss1 = true; }
+                if (SceneManager.GetActiveScene().name == "Boss2") { Game.playerData.lightBoss2 = true; }
+                if (SceneManager.GetActiveScene().name == "SandboxV2") { Game.playerData.lightSandbox = true; }
                 Game.PreSave_Game_and_Save();
                 //================================================
                 StartCoroutine(SoundController.instance.FadeOnEnterTheme()); //Will launch an other theme automatically

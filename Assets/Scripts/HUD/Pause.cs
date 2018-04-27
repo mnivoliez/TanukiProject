@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 //================================================
 //SOUNDCONTROLER
 //================================================
@@ -114,13 +115,15 @@ public class Pause : MonoBehaviour {
 
     public void Update_Pause_Menu_data() {
         Game.Update_Game();
-        CountCollectableYokai();
-        score_to_display_Z1P1.text = "Z1P1 : " + score_valueZ1P1;
-        score_to_display_Z1P2.text = "Z1P2 : " + score_valueZ1P2;
-        score_to_display_Z1P3.text = "Z1P3 : " + score_valueZ1P3;
-        score_to_display_Z2P1.text = "Z2P1 : " + score_valueZ2P1;
-        score_to_display_Z2P2.text = "Z2P2 : " + score_valueZ2P2;
-        score_to_display_Z2P3.text = "Z2P3 : " + score_valueZ2P3;
+        if (SceneManager.GetActiveScene().name != "SandboxV2") {
+            CountCollectableYokai();
+            score_to_display_Z1P1.text = "Z1P1 : " + score_valueZ1P1;
+            score_to_display_Z1P2.text = "Z1P2 : " + score_valueZ1P2;
+            score_to_display_Z1P3.text = "Z1P3 : " + score_valueZ1P3;
+            score_to_display_Z2P1.text = "Z2P1 : " + score_valueZ2P1;
+            score_to_display_Z2P2.text = "Z2P2 : " + score_valueZ2P2;
+            score_to_display_Z2P3.text = "Z2P3 : " + score_valueZ2P3;
+        }
 
         bool has_power = Game.playerData.power_jump;
         logoDoubleJump.SetActive(has_power);
