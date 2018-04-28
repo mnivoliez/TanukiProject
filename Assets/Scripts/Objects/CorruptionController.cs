@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 enum LanternEffect {
     Appear,
@@ -53,7 +54,7 @@ public class CorruptionController : MonoBehaviour {
     }
 
     private void ManageCollision(Collider other) {
-        if (Game.playerData.lightSandbox) {
+        if ((Game.playerData.lightBoss1 && SceneManager.GetActiveScene().name == "Boss1") || (Game.playerData.lightBoss2 && SceneManager.GetActiveScene().name == "Boss2")) {
             switch (_lanternEffect) {
                 case LanternEffect.Appear:
                     MakeAppearForCollider(other);

@@ -18,7 +18,6 @@ public class EntityBehavior : MonoBehaviour {
                 other.gameObject.GetComponent<KodaController>().SetPowerJump(true);
                 if(SceneManager.GetActiveScene().name == "Boss1") { Game.playerData.lightBoss1 = true; }
                 if (SceneManager.GetActiveScene().name == "Boss2") { Game.playerData.lightBoss2 = true; }
-                if (SceneManager.GetActiveScene().name == "SandboxV2") { Game.playerData.lightSandbox = true; }
                 Game.PreSave_Game_and_Save();
                 //================================================
                 StartCoroutine(SoundController.instance.FadeOnEnterTheme()); //Will launch an other theme automatically
