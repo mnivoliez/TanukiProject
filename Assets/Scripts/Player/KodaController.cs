@@ -307,8 +307,7 @@ public class KodaController : MonoBehaviour {
 
         if (runOnWater) {
             //Debug.Log("on water");
-            //Debug.Log(Game.playerData.lightSandbox);
-            if (!Game.playerData.lightSandbox) { 
+            if ((!Game.playerData.lightBoss1 && SceneManager.GetActiveScene().name != "Boss1") || (!Game.playerData.lightBoss2 && SceneManager.GetActiveScene().name != "Boss2")) { 
                 float distance = 0f;
                 if (lanterns.Length > 0) {
                     lanternNearest = lanterns[0];

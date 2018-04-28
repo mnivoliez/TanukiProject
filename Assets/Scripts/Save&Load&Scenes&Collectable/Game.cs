@@ -104,15 +104,14 @@ public static class Game {
             playerData.power_ball = koda_power.GetPowerBall();
             playerData.power_shrink = koda_power.GetPowerShrink();
 
-            if (SceneManager.GetActiveScene().name != "SandboxV2") { 
-                CountCollectableYokai();
-                playerData.caught_yokaiZ1P1 = score_valueZ1P1;
-                playerData.caught_yokaiZ1P2 = score_valueZ1P2;
-                playerData.caught_yokaiZ1P3 = score_valueZ1P3;
-                playerData.caught_yokaiZ2P1 = score_valueZ2P1;
-                playerData.caught_yokaiZ2P2 = score_valueZ2P2;
-                playerData.caught_yokaiZ2P3 = score_valueZ2P3;
-            }
+
+            CountCollectableYokai();
+            playerData.caught_yokaiZ1P1 = score_valueZ1P1;
+            playerData.caught_yokaiZ1P2 = score_valueZ1P2;
+            playerData.caught_yokaiZ1P3 = score_valueZ1P3;
+            playerData.caught_yokaiZ2P1 = score_valueZ2P1;
+            playerData.caught_yokaiZ2P2 = score_valueZ2P2;
+            playerData.caught_yokaiZ2P3 = score_valueZ2P3;
 
             switch (playerData.current_scene) {
                 case "Z1-P1-complete":
@@ -244,9 +243,6 @@ public static class Game {
             playerData.Boss1KO = false;
             playerData.lightBoss2 = false;
             playerData.Boss2KO = false;
-            //=======================================================================================
-            playerData.lightSandbox = false;
-            //=======================================================================================
 
             playerData.yokaiRemainingZ1P1 = new int[30]; //3
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P1, playerData.yokaiRemainingZ1P1.Length);
@@ -305,9 +301,6 @@ public struct PlayerData {
     public bool Boss1KO;
     public bool lightBoss2;
     public bool Boss2KO;
-    //=======================================================================================
-    public bool lightSandbox;
-    //=======================================================================================
 
     public int[] yokaiRemainingZ1P1;
     public int[] yokaiRemainingZ1P2;

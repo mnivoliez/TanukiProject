@@ -217,17 +217,7 @@ public class SoundController : MonoBehaviour {
             KillAll();
             PlayTheme(themeLightZ1, true);
         }
-        //=======================================================================================
-        if (SceneManager.GetActiveScene().name == "SandboxV2" && !Game.playerData.lightSandbox) {
-            KillAll();
-            PlayTheme(themeDarkZ1, true);
-        }
 
-        if (SceneManager.GetActiveScene().name == "SandboxV2" && Game.playerData.lightSandbox) {
-            KillAll();
-            PlayTheme(themeLightZ1, true);
-        }
-        //=======================================================================================
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
             KillAll();
             SelectENVCORRFOREST("CorruptedForest");

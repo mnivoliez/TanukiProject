@@ -16,7 +16,7 @@ public class CollectableManager : MonoBehaviour {
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        if(SceneManager.GetActiveScene().name == "Zone Tuto" || SceneManager.GetActiveScene().name == "SandboxV2") {
+        if(SceneManager.GetActiveScene().name == "Zone Tuto") {
             Game.Reset_Game();
             Game.PreSave_Game_and_Save();
             StartCoroutine(SavingLogo());
@@ -24,7 +24,7 @@ public class CollectableManager : MonoBehaviour {
 
         Game.Load();
         
-        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Zone Tuto" && SceneManager.GetActiveScene().name != "Sandbox GGS" && SceneManager.GetActiveScene().name != "FinTuto") {
+        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Zone Tuto" && SceneManager.GetActiveScene().name != "FinTuto" && SceneManager.GetActiveScene().name != "Introduction") {
             FindYokaiGeneralAndSetID();
             FindYokaiGeneralAndDisable();
             Game.Update_Game();
