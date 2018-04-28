@@ -2432,6 +2432,37 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 135365761}
   m_Mesh: {fileID: 4300006, guid: 6f8c926fd1bfd674d9c5e9da1b2ab2cd, type: 3}
+--- !u!84 &135807038
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 153
+  m_Height: 192
+  m_AntiAliasing: 1
+  m_DepthFormat: 0
+  m_ColorFormat: 16
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &147136699
 Prefab:
   m_ObjectHideFlags: 0
@@ -6560,37 +6591,6 @@ MonoBehaviour:
   prefabsStem:
   - {fileID: 1031951803274252, guid: 1c066feef6b17f543a474b693d375c17, type: 2}
   - {fileID: 1892409250026600, guid: ea1d2a9076b1f6142b80f192676308d2, type: 2}
---- !u!84 &418574396
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 153
-  m_Height: 192
-  m_AntiAliasing: 1
-  m_DepthFormat: 0
-  m_ColorFormat: 16
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!4 &424207960 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4652334933173340, guid: e17728f4e53c11540aff12bea8b59ff9,
@@ -7960,26 +7960,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4889759525679578, guid: 99d038e157da73e41bb6cdf50052ef54,
     type: 2}
   m_PrefabInternal: {fileID: 461507258}
---- !u!21 &499758166
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Custom/Projector/ProjectorShadow
-  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs: []
-    m_Floats: []
-    m_Colors: []
 --- !u!1001 &513775176
 Prefab:
   m_ObjectHideFlags: 0
@@ -8223,6 +8203,11 @@ Prefab:
         type: 2}
       propertyPath: hp
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114259744709687526, guid: e4c71325b06e7fa4296cbc86759ac4b1,
+        type: 2}
+      propertyPath: capacity
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e4c71325b06e7fa4296cbc86759ac4b1, type: 2}
@@ -11287,12 +11272,12 @@ Prefab:
         type: 2}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 499758166}
+      objectReference: {fileID: 1423623964}
     - target: {fileID: 20144259831111884, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 418574396}
+      objectReference: {fileID: 135807038}
     - target: {fileID: 119785275203550714, guid: a95e21316b361044681464f5613ea9f0,
         type: 2}
       propertyPath: m_FarClipPlane
@@ -23459,6 +23444,26 @@ Transform:
   m_PrefabParentObject: {fileID: 4889759525679578, guid: 99d038e157da73e41bb6cdf50052ef54,
     type: 2}
   m_PrefabInternal: {fileID: 1422605941}
+--- !u!21 &1423623964
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Custom/Projector/ProjectorShadow
+  m_Shader: {fileID: 4800000, guid: 114d0a3dcc35706438763034f33763b2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats: []
+    m_Colors: []
 --- !u!1 &1434128850
 GameObject:
   m_ObjectHideFlags: 0
