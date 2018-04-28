@@ -43,7 +43,7 @@ public class LoadSceneManager : MonoBehaviour {
     }
 
     public void LoadByIndexMM(string sceneNameToLoad) {
-        if(SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Credit-Scene" && SceneManager.GetActiveScene().name != "Introduction" && SceneManager.GetActiveScene().name != "FinTuto") { Game.PreSave_Game_and_Save(); }
+        if(SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "CreditScene" && SceneManager.GetActiveScene().name != "Introduction" && SceneManager.GetActiveScene().name != "FinTuto") { Game.PreSave_Game_and_Save(); }
         if (Pause.Paused) {
             GameObject PauseCanvas = GameObject.Find("PauseCanvas");
             if(PauseCanvas != null) {

@@ -6,27 +6,27 @@ public class ScrollCredits : MonoBehaviour {
 
 	[SerializeField] private float scrollSpeed = 1f;
 
-	// Use this for initialization
-	void Start () {
-        StartCoroutine(WillQuitOnceEndCredit());
-		
+    private Canvas CanvasCredits;
+
+    private GameObject CreditPanel;
+    private GameObject CreditText;
+    private GameObject ExitPanel;
+
+    // Use this for initialization
+    void Start () {
+        CanvasCredits = GetComponent<Canvas>();
+
+        CreditPanel = CanvasCredits.transform.GetChild(0).gameObject;
+        CreditPanel.SetActive(true);
+
+        CreditText = CreditPanel.transform.GetChild(0).gameObject;
+
+        ExitPanel = CanvasCredits.transform.GetChild(1).gameObject;
+        ExitPanel.SetActive(true);	
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		transform.position += Vector3.up * Time.fixedDeltaTime * scrollSpeed;
+        CreditText.transform.position += Vector3.up * Time.fixedDeltaTime * scrollSpeed;
 	}
-
-    public void Quit() {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-		Application.Quit();
-#endif
-    }
-
-    IEnumerator WillQuitOnceEndCredit() {
-        yield return new WaitForSeconds(36);
-        Quit();
-    }
 }
