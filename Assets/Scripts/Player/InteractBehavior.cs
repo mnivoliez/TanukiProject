@@ -375,7 +375,7 @@ public class InteractBehavior : MonoBehaviour {
             smokeSpawn.transform.localScale = Vector3.one * 0.3f;
             Destroy(smokeSpawn, 2f);
             lure.GetComponent<LureController>().DestroyLure();
-            tempLeafHead.SetActive(false);
+            tempLeafHead.SetActive(true);
         }
     }
 

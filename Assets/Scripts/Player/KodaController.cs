@@ -224,6 +224,21 @@ public class KodaController : MonoBehaviour {
             return;
         }
         //===========================
+		List<int> groundsToDelete = null;
+		for (int i = 0 ; i < _grounds.Count ; i++) {
+			if (_grounds[i] == null) {
+				if (groundsToDelete == null) {
+					groundsToDelete = new List<int> ();
+				}
+				groundsToDelete.Add (i);
+			}
+		}
+
+		if (groundsToDelete != null) {
+			foreach (int groundToDelete in groundsToDelete) {
+				_grounds.Remove (_grounds[groundToDelete]);
+			}
+		}
 
         ratio = (40 * Time.deltaTime);
 
