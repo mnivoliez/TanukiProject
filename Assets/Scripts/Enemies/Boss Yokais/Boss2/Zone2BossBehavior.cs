@@ -59,7 +59,7 @@ public class Zone2BossBehavior : YokaiController {
         phasePattern = 1;
         throwRate = throwRateP1;
         interPhase = false;
-		nextThrow = throwRate;
+		nextThrow = 10.0f;
         stop = false;
         currentRocksToThrow = nbRocksToThrow;
 
@@ -152,7 +152,7 @@ public class Zone2BossBehavior : YokaiController {
                     interPhase = false;
                     phasePattern = 2;
                 }
-            } else if (phasePattern == 1) {                                                     //PHASE 1
+			} else if (phasePattern == 1) {                                                     //PHASE 1
                 if (lanterns == null) {
                     lanterns = GameObject.FindGameObjectsWithTag("Lantern");
                     respawnsLantern = GameObject.FindGameObjectsWithTag("LoveHotel");
