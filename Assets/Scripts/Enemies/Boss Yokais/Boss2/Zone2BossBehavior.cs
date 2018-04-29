@@ -49,6 +49,7 @@ public class Zone2BossBehavior : YokaiController {
 	[SerializeField] private GameObject spawnerYokaisLure;
     [SerializeField] private GameObject positionLanternPhase1;
     [SerializeField] private GameObject FXBump;
+	[SerializeField] private GameObject videoIntroBoss;
 
     // Use this for initialization
     void Start () {
@@ -56,10 +57,10 @@ public class Zone2BossBehavior : YokaiController {
         canBump = false;
         delayToBump = timeToBump;
         doKnockBack = false;
-        phasePattern = 1;
+        phasePattern = 0;
         throwRate = throwRateP1;
         interPhase = false;
-		nextThrow = 10.0f;
+		nextThrow = 5.0f;
         stop = false;
         currentRocksToThrow = nbRocksToThrow;
 
@@ -135,7 +136,11 @@ public class Zone2BossBehavior : YokaiController {
                 }
             }
 
-            if (interPhase) {
+			if (phasePattern == 0) {
+				if (videoIntroBoss == null) {
+					phasePattern = 1;
+				}
+			} else if (interPhase) {
                 if (yokais.Count > 0) {
                     GameObject objectToDestroy = yokais[yokais.Count - 1];
                     yokais.Remove(objectToDestroy);
