@@ -65,8 +65,8 @@ public class FireBarrierController : MonoBehaviour {
 
     void OnTriggerEnter(Collider collid) {
         if (collid.gameObject.CompareTag("Player")) {
-
-            if (collid.gameObject.GetComponent<PlayerCollectableController>().GetnbYokai() >= nbYokaiNeeded) {
+            Game.Update_Game();
+            if (Game.playerData.caught_yokai >= nbYokaiNeeded) {
                 //================================================
                 SoundController.instance.SelectENVQuick("FireWallExtinguished");
                 //================================================

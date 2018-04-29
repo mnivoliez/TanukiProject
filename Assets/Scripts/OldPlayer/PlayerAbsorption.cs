@@ -56,7 +56,6 @@ public class PlayerAbsorption : MonoBehaviour {
 
                 if (absorptionGauge > maxAbsorptionGauge) {
                     collid.gameObject.GetComponent<YokaiController>().Absorbed();
-                    gameObject.GetComponent<PlayerCollectableController>().AddYokai();
                     currentAbsorption = false;
                     absorptionTimer = 4f;
                     absorptionGauge = 0;
