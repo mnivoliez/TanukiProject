@@ -199,6 +199,9 @@ public static class Game {
             if (playerData.yokaiRemainingZ2P2[i] == -1) { score_valueZ2P2++; }
             if (playerData.yokaiRemainingZ2P3[i] == -1) { score_valueZ2P3++; }
         }
+
+        playerData.caught_yokaiZ1 = score_valueZ1P1 + score_valueZ1P2 + score_valueZ1P3;
+        playerData.caught_yokaiZ2 = score_valueZ2P1 + score_valueZ2P2 + score_valueZ2P3;
     }
 
     public static void Reset_Game() {
@@ -221,9 +224,11 @@ public static class Game {
             playerData.caught_yokaiZ1P1 = 0;
             playerData.caught_yokaiZ1P2 = 0;
             playerData.caught_yokaiZ1P3 = 0;
+            playerData.caught_yokaiZ1 = 0;
             playerData.caught_yokaiZ2P1 = 0;
             playerData.caught_yokaiZ2P2 = 0;
             playerData.caught_yokaiZ2P3 = 0;
+            playerData.caught_yokaiZ2 = 0;
 
             playerData.caught_yokai = 0;
 
@@ -278,9 +283,11 @@ public struct PlayerData {
     public int caught_yokaiZ1P1;
     public int caught_yokaiZ1P2;
     public int caught_yokaiZ1P3;
+    public int caught_yokaiZ1;
     public int caught_yokaiZ2P1;
     public int caught_yokaiZ2P2;
     public int caught_yokaiZ2P3;
+    public int caught_yokaiZ2;
 
     public int caught_yokai;
 

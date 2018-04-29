@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class FireBarrierController : MonoBehaviour {
 
@@ -66,14 +67,24 @@ public class FireBarrierController : MonoBehaviour {
     void OnTriggerEnter(Collider collid) {
         if (collid.gameObject.CompareTag("Player")) {
             Game.Update_Game();
-            if (Game.playerData.caught_yokai >= nbYokaiNeeded) {
-                //================================================
-                SoundController.instance.SelectENVQuick("FireWallExtinguished");
-                //================================================
-                disappear = true;
-                nbYokaiNeededText.text = " ";
+            if(SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") { 
+                if (Game.playerData.caught_yokaiZ1 >= nbYokaiNeeded) {
+                    //================================================
+                    SoundController.instance.SelectENVQuick("FireWallExtinguished");
+                    //================================================
+                    disappear = true;
+                    nbYokaiNeededText.text = " ";
+                }
             }
-
+            if (SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") {
+                if (Game.playerData.caught_yokaiZ2 >= nbYokaiNeeded) {
+                    //================================================
+                    SoundController.instance.SelectENVQuick("FireWallExtinguished");
+                    //================================================
+                    disappear = true;
+                    nbYokaiNeededText.text = " ";
+                }
+            }
         }
     }
 
