@@ -11,7 +11,6 @@ using UnityEngine.SceneManagement;
 public class Pause : MonoBehaviour {
 
     public static bool Paused = false;
-    //public GameObject eventSystem;
 
     private Canvas CanvasPause;
 
@@ -63,7 +62,6 @@ public class Pause : MonoBehaviour {
         if (Input.GetButtonDown("Cancel") && !VictorySwitch.Victory) {
             if (!Paused) {
                 PauseGame(true);
-                //showPaused();
             }
             else if (Paused) {
                 UnpauseGame();

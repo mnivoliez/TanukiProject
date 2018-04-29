@@ -12,7 +12,6 @@ public static class Game {
     public static GameObject koda;
     public static PlayerHealth koda_health;
     public static KodaController koda_power;
-    public static PlayerCollectableController koda_score;
 
     public static int selected_slot = 0;
     public static string scene_path;
@@ -55,7 +54,6 @@ public static class Game {
             if (koda != null) { 
                 koda_health = koda.GetComponent<PlayerHealth>();
                 koda_power = koda.GetComponent<KodaController>();
-                koda_score = koda.GetComponent<PlayerCollectableController>();
                 //////////////////////////////////////////////////////////
                 Load();
 
@@ -69,7 +67,7 @@ public static class Game {
                 koda_power.SetPowerBall(playerData.power_ball);
                 koda_power.SetPowerShrink(playerData.power_shrink);
 
-                koda_score.SetnbYokai(playerData.caught_yokai);
+                //koda_score.SetnbYokai(playerData.caught_yokai);
                 selected_slot = playerData.selected_slot;
 
                 Debug.Log("Game Loaded !");
@@ -86,7 +84,6 @@ public static class Game {
         if (koda != null) {
             koda_health = koda.GetComponent<PlayerHealth>();
             koda_power = koda.GetComponent<KodaController>();
-            koda_score = koda.GetComponent<PlayerCollectableController>();
             //////////////////////////////////////////////////////////
 
             playerData.hp_max = koda_health.GetHealthMax();
@@ -144,10 +141,6 @@ public static class Game {
                     playerData.caught_yokai = score_valueZ2P3;
                     break;
 
-                case "Scene_AirStream":
-                    playerData.caught_yokai_test = koda_score.GetnbYokai();
-                    break;
-
                 default:
                     break;
             }
@@ -182,10 +175,6 @@ public static class Game {
 
             case "Z2-P3-complete":
                 playerData.yokaiRemainingZ2P3[yokaiID] = -1;
-                break;
-
-            case "Scene_AirStream":
-                playerData.yokaiRemainingTEST[yokaiID] = -1;
                 break;
 
             default:
@@ -235,7 +224,6 @@ public static class Game {
             playerData.caught_yokaiZ2P1 = 0;
             playerData.caught_yokaiZ2P2 = 0;
             playerData.caught_yokaiZ2P3 = 0;
-            playerData.caught_yokai_test = 0;
 
             playerData.caught_yokai = 0;
 
@@ -293,7 +281,6 @@ public struct PlayerData {
     public int caught_yokaiZ2P1;
     public int caught_yokaiZ2P2;
     public int caught_yokaiZ2P3;
-    public int caught_yokai_test;
 
     public int caught_yokai;
 

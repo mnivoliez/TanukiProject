@@ -9,7 +9,6 @@ public class CollectableManager : MonoBehaviour {
     private GameObject KiyomoriLightHiyoribou;
     private GameObject[] gOList;
     private int yokaiGeneralCurrentScene = 0;
-    //private GameObject[] yokais;
 
     void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -148,12 +147,6 @@ public class CollectableManager : MonoBehaviour {
 
             case "Z2-P3-complete":
                 if (Game.playerData.yokaiRemainingZ2P3[yokaiID] != yokaiID) {
-                    gOList[gONbr].SetActive(false);
-                }
-                break;
-
-            case "Scene_AirStream":
-                if (Game.playerData.yokaiRemainingTEST[yokaiID] != yokaiID) {
                     gOList[gONbr].SetActive(false);
                 }
                 break;
