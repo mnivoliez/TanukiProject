@@ -21,7 +21,9 @@ public class CollectableManager : MonoBehaviour {
             StartCoroutine(SavingLogo());
         }
 
-        Game.Load();
+        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "CreditScene") {
+            Game.Load();
+        }
         
         if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Zone Tuto" && SceneManager.GetActiveScene().name != "FinTuto" && SceneManager.GetActiveScene().name != "Introduction") {
             FindYokaiGeneralAndSetID();
