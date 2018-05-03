@@ -1175,10 +1175,11 @@ public class KodaController : MonoBehaviour {
         timerCapacity = 0;
 
         SetPowerUpMaterials(0);
-
+        if (temporaryCapacity == Capacity.DoubleJump) { doubleJump_Logo.SetActive(false); }
         if (temporaryCapacity == Capacity.Lure) {
             interactBehaviorCtrl.DestroyLure(actualLure);
             ResetLeafLock();
+            spawnLure_Logo.SetActive(false);
         }
 
         temporaryCapacity = Capacity.Nothing;
