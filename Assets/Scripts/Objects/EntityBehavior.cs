@@ -15,7 +15,6 @@ public class EntityBehavior : MonoBehaviour {
                 Lantern_Hiyoribou.transform.position = transform.position;
                 isAlreadyLight = true;
                 StartCoroutine(LightTransition());
-                other.gameObject.GetComponent<KodaController>().SetPowerJump(true);
                 if(SceneManager.GetActiveScene().name == "Boss1") { Game.playerData.lightBoss1 = true; }
                 if (SceneManager.GetActiveScene().name == "Boss2") { Game.playerData.lightBoss2 = true; }
                 Game.PreSave_Game_and_Save();
