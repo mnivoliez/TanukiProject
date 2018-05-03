@@ -55,7 +55,8 @@ public class InteractBehavior : MonoBehaviour {
 
     [Header("CARRY")]
     [Space(8)]
-    [SerializeField][Range(2000, 10000)]
+    [SerializeField]
+    [Range(2000, 10000)]
     private int throwCoef = 5000;
 
     [Header("LURE")]
@@ -64,16 +65,17 @@ public class InteractBehavior : MonoBehaviour {
     private GameObject lure;
     [SerializeField]
     private Transform tanukiPlayer;
-    [SerializeField][Range(0,3)]
+    [SerializeField]
+    [Range(0, 3)]
     private float lureSpawnHeight = 1f;
 
     //QTE
     private float maxAbsorptionGauge = 4f;
     private float absorptionGauge = 0f;
     private GameObject absorptionTarget;
-    public GameObject canvasQTE;
-    public Transform loadingBar;
-    public Transform centerButton;
+    [SerializeField] private GameObject canvasQTEAbsorption;
+    [SerializeField] private Transform loadingBar;
+    [SerializeField] private Transform centerButton;
 
     //Catchable Object
     private GameObject catchSlot;
@@ -83,7 +85,7 @@ public class InteractBehavior : MonoBehaviour {
         enemiesInRange = new HashSet<GameObject>();
         attackRange.GetComponent<MeleeAttackTrigger>().SetDamage(meleeDamage);
         leafHand.SetActive(false);
-		catchSlot = GameObject.FindGameObjectWithTag ("Hand");
+        catchSlot = GameObject.FindGameObjectWithTag("Hand");
         absorbing = false;
     }
 
@@ -245,7 +247,7 @@ public class InteractBehavior : MonoBehaviour {
     public void DoBeginAbsorption(GameObject absorbableObject) {
         List<Material> mats = new List<Material>();
         foreach (Transform tr in absorbableObject.GetComponent<YokaiController>().GameobjectMesh) {
-            if(tr.GetComponent<SkinnedMeshRenderer>() != null)
+            if (tr.GetComponent<SkinnedMeshRenderer>() != null)
                 mats.AddRange(tr.GetComponent<SkinnedMeshRenderer>().materials);
             else
                 mats.AddRange(tr.GetComponent<MeshRenderer>().materials);
@@ -260,11 +262,11 @@ public class InteractBehavior : MonoBehaviour {
 
     private float prevAbsorptionPercent = 0;
     IEnumerator LerpAbsorptionPercent(List<Material> mats) {
-        while(prevAbsorptionPercent != absorptionGauge) {
-            if(mats == null) break;
-            prevAbsorptionPercent = Mathf.Lerp(prevAbsorptionPercent, (float)absorptionGauge/maxAbsorptionGauge, .05f);
+        while (prevAbsorptionPercent != absorptionGauge) {
+            if (mats == null) break;
+            prevAbsorptionPercent = Mathf.Lerp(prevAbsorptionPercent, (float)absorptionGauge / maxAbsorptionGauge, .05f);
             foreach (Material mat in mats) {
-                   mat.SetFloat("_AbsorptionPercent", prevAbsorptionPercent);
+                mat.SetFloat("_AbsorptionPercent", prevAbsorptionPercent);
             }
             yield return new WaitForSeconds(Time.deltaTime);
         }
@@ -275,7 +277,7 @@ public class InteractBehavior : MonoBehaviour {
         InputParams inputParams = input.RetrieveUserRequest();
         List<Material> mats = new List<Material>();
         foreach (Transform tr in absorbableObject.GetComponent<YokaiController>().GameobjectMesh) {
-            if(tr.GetComponent<SkinnedMeshRenderer>() != null)
+            if (tr.GetComponent<SkinnedMeshRenderer>() != null)
                 mats.AddRange(tr.GetComponent<SkinnedMeshRenderer>().materials);
             else
                 mats.AddRange(tr.GetComponent<MeshRenderer>().materials);
@@ -335,11 +337,11 @@ public class InteractBehavior : MonoBehaviour {
     }
 
     private void ActivateAbsorptionQTE() {
-        canvasQTE.SetActive(true);
+        canvasQTEAbsorption.SetActive(true);
     }
 
     private void DeactivateAbsorptionQTE() {
-        canvasQTE.SetActive(false);
+        canvasQTEAbsorption.SetActive(false);
     }
 
     private Pair<Capacity, float> AbsorbeYokai(GameObject absorbableObject) {
@@ -397,7 +399,7 @@ public class InteractBehavior : MonoBehaviour {
         body.transform.position += inputVelocityAxis * 0.1f;
         float x = inputVelocityAxis.x;
         float z = inputVelocityAxis.z;
-        float y = (float)Math.Sqrt(x*x + z*z) / 2f;
+        float y = (float)Math.Sqrt(x * x + z * z) / 2f;
         Vector3 force = new Vector3(x, y, z) * throwCoef;
         //Debug.Log(force);
         body.AddForce(force);
