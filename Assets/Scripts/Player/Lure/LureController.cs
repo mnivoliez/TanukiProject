@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class LureController : MonoBehaviour {
 
@@ -63,6 +66,12 @@ public class LureController : MonoBehaviour {
         }
         else */
 
+        if(collider.gameObject.layer == LayerMask.NameToLayer("Ground") || collider.gameObject.layer == LayerMask.NameToLayer("Rock")) {
+            //================================================
+            SoundController.instance.SelectLEAF("LureGround");
+            //================================================
+        }
+
         if (collider.gameObject.layer == LayerMask.NameToLayer("Water")) {
             DestroyLure();
         }
@@ -73,6 +82,9 @@ public class LureController : MonoBehaviour {
     }
 
     public void DestroyLure() {
+        //================================================
+        SoundController.instance.SelectLEAF("LureVanish");
+        //================================================
         if (isActivatePlate) {
             interactPlate.GetComponent<PressPlateSwitch>().UnpressPlate();
             isActivatePlate = false;
