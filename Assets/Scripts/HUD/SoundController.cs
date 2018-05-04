@@ -192,7 +192,7 @@ public class SoundController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name == "FinTuto") {
             KillAll();
-            PlayTheme(themeLightZ1, true);
+            SelectENVLong("Wind");
         }
 
         if (SceneManager.GetActiveScene().name == "Introduction") {
