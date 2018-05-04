@@ -46,6 +46,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip HUDTutoPictureClose;
     [SerializeField] private AudioClip HUDCredits;
     [SerializeField] private AudioClip HUDIntro;
+    [SerializeField] private AudioClip HUDFinTuto;
 
     [Header("KODA")]
     [Space(10)]
@@ -193,6 +194,7 @@ public class SoundController : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "FinTuto") {
             KillAll();
             SelectENVLong("Wind");
+            PlayTheme(HUDFinTuto, false);
         }
 
         if (SceneManager.GetActiveScene().name == "Introduction") {
