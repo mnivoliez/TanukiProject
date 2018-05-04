@@ -189,11 +189,8 @@ public class SoundController : MonoBehaviour {
         }
 
         if (SceneManager.GetActiveScene().name == "FinTuto") {
-            Debug.Log("Coucou 01");
             KillAll();
-            Debug.Log("Coucou 02");
             PlayTheme(themeLightZ1, true);
-            Debug.Log("Coucou 04");
         }
 
         if (SceneManager.GetActiveScene().name == "Introduction") {
@@ -246,13 +243,9 @@ public class SoundController : MonoBehaviour {
     }
 
     private void PlayTheme(AudioClip clip, bool loop) {
-        Debug.Log("Coucou 03.01");
         fxThemeSource.clip = clip;
-        Debug.Log("Coucou 03.02");
         fxThemeSource.Play();
-        Debug.Log("Coucou 03.03");
         fxThemeSource.loop = loop;
-        Debug.Log("Coucou 03.04");
     }
 
     private IEnumerator PlayThemeBoss(AudioClip clip, bool loop) {
@@ -303,7 +296,7 @@ public class SoundController : MonoBehaviour {
 
         fxKodaEffect.Stop();
         fxKodaEffect.volume = 1.0f;
-        fxHUD_Effect.loop = false;
+        fxKodaEffect.loop = false;
 
         fxLeafEffect.Stop();
         fxLeafEffect.volume = 1.0f;
