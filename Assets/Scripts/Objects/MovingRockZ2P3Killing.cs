@@ -38,12 +38,12 @@ public class MovingRockZ2P3Killing : MonoBehaviour {
             LureBlocking = false;
         }
 
-        if (Player_Crunched) {
+        if (!LureBlocking && Player_Crunched) {
             KodaPlayerHP.LooseHP(5.0f);
+            Player_Crunched = false;
         }
 
         if (!Pause.Paused && !LureBlocking) {
-
             if (x >= 2.0f) {
                 x = 0.0f;
             }
@@ -60,9 +60,16 @@ public class MovingRockZ2P3Killing : MonoBehaviour {
 
         if (col.gameObject.CompareTag("Lure")) {
             LureBlocking = true;
+            Player_Crunched = false;
         }
         if (col.gameObject.CompareTag("Player")) {
-            Player_Crunched = true;
+
+            if (col.gameObject.transform.position.y < transform.position.y) {
+                Player_Crunched = true;
+            }
+            else {
+                Player_Crunched = false;
+            }
         }
     }
 

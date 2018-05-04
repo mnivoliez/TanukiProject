@@ -229,8 +229,9 @@ GameObject:
   - component: {fileID: 1118941187}
   - component: {fileID: 1118941186}
   - component: {fileID: 1118941190}
-  - component: {fileID: 1118941191}
   - component: {fileID: 1118941192}
+  - component: {fileID: 1118941191}
+  - component: {fileID: 1118941193}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -320,7 +321,7 @@ VideoPlayer:
   m_AspectRatio: 5
   m_DataSource: 0
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 1
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
@@ -334,7 +335,32 @@ VideoPlayer:
   m_Looping: 0
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
---- !u!82 &1118941191
+--- !u!114 &1118941191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1118941185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 49d3d02b8ac0ce64c887308ef33faf69, type: 2}
+--- !u!114 &1118941192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1118941185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d0a2193a34632469c6958f82e36f55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameScene: Introduction
+  skipAfterSecond: 35
+--- !u!82 &1118941193
 AudioSource:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -343,9 +369,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 82b038a11b83ec64cb0dfd50115c157f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 46b40c73db06c7543a7269c44dcccb05, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.7
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -414,19 +440,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &1118941192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1118941185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0d0a2193a34632469c6958f82e36f55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameScene: Introduction
-  skipAfterSecond: 35
 --- !u!1 &1259647811
 GameObject:
   m_ObjectHideFlags: 0

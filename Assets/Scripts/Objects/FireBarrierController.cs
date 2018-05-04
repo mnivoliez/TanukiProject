@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+//================================================
+//SOUNDCONTROLER
+//================================================
 
 public class FireBarrierController : MonoBehaviour {
 

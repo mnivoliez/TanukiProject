@@ -39,7 +39,7 @@ public class EntityBehavior : MonoBehaviour {
 
     private IEnumerator LightTransition() {
         float lerpRay = 10;
-        while ( lerpRay < 1000f) {
+        while ( lerpRay < 1500f) {
             lerpRay+= 0.2f;
             Lantern_Hiyoribou.SetRadiusForPurification(lerpRay);
             yield return new WaitForSeconds(0.01f);
