@@ -17,7 +17,7 @@ public class SkipVideo : MonoBehaviour {
 
 	void Start() {
         //================================================
-        SoundController.instance.StopTheme();
+        SoundController.instance.SelectTHEME();
         //================================================
         GameObject transitionImageInstance = GameObject.Find("TransitionImage");
 
@@ -46,8 +46,10 @@ public class SkipVideo : MonoBehaviour {
 	}
 
 	IEnumerator Fading() {
-		anim.SetBool("Fade", true);
-		yield return new WaitUntil(() => Black.color.a == 1);
-		SceneManager.LoadScene(nameScene);
+        //anim.SetBool("Fade", true);
+        //yield return new WaitUntil(() => Black.color.a == 1);
+        yield return new WaitForSeconds(1);
+        gameObject.transform.GetComponent<LoadSceneManager>().LoadByIndexMM(nameScene);
+		//SceneManager.LoadScene(nameScene);
 	}
 }
