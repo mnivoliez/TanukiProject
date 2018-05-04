@@ -182,31 +182,6 @@ public class SoundController : MonoBehaviour {
             PlayHUDTheme(HUDCredits, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Introduction") {
-            KillAll();
-            PlayHUDTheme(HUDIntro, true);
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1 && !Game.playerData.Boss1KO) {
-            KillAll();
-            StartCoroutine(PlayThemeBoss(themeBossZ1, true));
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
-            KillAll();
-            PlayTheme(themeLightZ1, true);
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2 && !Game.playerData.Boss2KO) {
-            KillAll();
-            StartCoroutine(PlayThemeBoss(themeBossZ2, true));
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
-            KillAll();
-            PlayTheme(themeLightZ2, true);
-        }
-
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             KillAll();
             SelectENVLong("Wind");
@@ -214,9 +189,18 @@ public class SoundController : MonoBehaviour {
         }
 
         if (SceneManager.GetActiveScene().name == "FinTuto") {
+            Debug.Log("Coucou 01");
             KillAll();
+            Debug.Log("Coucou 02");
             PlayTheme(themeLightZ1, true);
+            Debug.Log("Coucou 04");
         }
+
+        if (SceneManager.GetActiveScene().name == "Introduction") {
+            KillAll();
+            PlayHUDTheme(HUDIntro, true);
+        }
+
 
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
             KillAll();
@@ -239,12 +223,36 @@ public class SoundController : MonoBehaviour {
             KillAll();
             PlayTheme(themeLightZ2, true);
         }
+
+        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1 && !Game.playerData.Boss1KO) {
+            KillAll();
+            StartCoroutine(PlayThemeBoss(themeBossZ1, true));
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
+            KillAll();
+            PlayTheme(themeLightZ1, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2 && !Game.playerData.Boss2KO) {
+            KillAll();
+            StartCoroutine(PlayThemeBoss(themeBossZ2, true));
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
+            KillAll();
+            PlayTheme(themeLightZ2, true);
+        }
     }
 
     private void PlayTheme(AudioClip clip, bool loop) {
+        Debug.Log("Coucou 03.01");
         fxThemeSource.clip = clip;
+        Debug.Log("Coucou 03.02");
         fxThemeSource.Play();
+        Debug.Log("Coucou 03.03");
         fxThemeSource.loop = loop;
+        Debug.Log("Coucou 03.04");
     }
 
     private IEnumerator PlayThemeBoss(AudioClip clip, bool loop) {
