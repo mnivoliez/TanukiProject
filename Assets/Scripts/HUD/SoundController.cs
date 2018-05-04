@@ -78,6 +78,8 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip leafThrow;
     [SerializeField] private AudioClip leafVanish;
     [SerializeField] private AudioClip leafCC;
+    [SerializeField] private AudioClip leafLureGround;
+    [SerializeField] private AudioClip leafLureVanish;
 
     [Header("YOKAI")]
     [Space(10)]
@@ -521,6 +523,14 @@ public class SoundController : MonoBehaviour {
 
             case "CloseCombat":
                 PlayLeafEffect(leafCC);
+                break;
+
+            case "LureGround":
+                PlayLeafEffect(leafLureGround);
+                break;
+
+            case "LureVanish":
+                PlayLeafEffect(leafLureVanish);
                 break;
 
             default:
