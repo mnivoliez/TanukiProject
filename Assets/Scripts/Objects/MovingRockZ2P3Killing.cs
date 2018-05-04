@@ -43,11 +43,10 @@ public class MovingRockZ2P3Killing : MonoBehaviour {
         }
 
         if (!Pause.Paused && !LureBlocking) {
-
             if (x >= 2.0f) {
                 x = 0.0f;
             }
-
+            Debug.Log("JE BOUGE");
             position_movingrock.y = position_movingrock_origin.y / 2.0f * Mathf.Cos(x * pi) + position_movingrock_origin.y / 2.0f;
             transform.position = position_movingrock;
             x = x + 0.003f;
@@ -63,7 +62,13 @@ public class MovingRockZ2P3Killing : MonoBehaviour {
             Debug.Log("LEURRE TOUCHE !");
         }
         if (col.gameObject.CompareTag("Player")) {
-            Player_Crunched = true;
+            if (col.gameObject.transform.position.y < transform.position.y) {
+                Debug.Log("KILL IT !");
+                Player_Crunched = true;
+            }
+            else {
+                Debug.Log("DONT DIE !");
+            }
         }
     }
 
