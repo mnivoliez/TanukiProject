@@ -48,43 +48,37 @@ public class CollectableManager : MonoBehaviour {
         switch (currentScene) {
             case "Z1-P1-complete":
                 if (Game.playerData.lightBoss1) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1200);
                 }
                 break;
 
             case "Z1-P2-complete":
                 if (Game.playerData.lightBoss1) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1200);
                 }
                 break;
 
             case "Z1-P3-complete":
                 if (Game.playerData.lightBoss1) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1200);
                 }
                 break;
 
             case "Z2-P1-complete":
                 if (Game.playerData.lightBoss2) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1200);
                 }
                 break;
 
             case "Z2-P2-complete":
                 if (Game.playerData.lightBoss2) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1200);
                 }
                 break;
 
             case "Z2-P3-complete":
                 if (Game.playerData.lightBoss2) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1200);
                 }
                 break;
 
