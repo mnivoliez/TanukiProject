@@ -407,7 +407,8 @@ public class KodaController : MonoBehaviour {
 
             if (contacts.Length > 0) {
                 bool found = false;
-                timerStepSound -= Time.deltaTime;
+                float normeXZ = Mathf.Sqrt(Mathf.Pow(moveStateParameters.moveX, 2) + Mathf.Pow(moveStateParameters.moveZ, 2));
+                timerStepSound -= Time.deltaTime * normeXZ;
                 if (timerStepSound <= 0 && speed > 0 && (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock"))) {
                     //================================================
                     SoundController.instance.SelectKODA("FootStepGround");

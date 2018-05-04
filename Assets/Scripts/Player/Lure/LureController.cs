@@ -25,6 +25,9 @@ public class LureController : MonoBehaviour {
 
     private void Start() {
         gravity = -gravityGlobal * gravityScale * Vector3.up;
+        //================================================
+        SoundController.instance.SelectLEAF("LureVanish");
+        //================================================
     }
 
     private void OnEnable() {
