@@ -28,6 +28,8 @@
 		_StepCount	("", Range(0,20))	= 10
 
 		_DistortStrength ("", Range(0,5))	= 1
+
+		_BorderFoamScale ("", Float)	= 60
 	}
 
 	SubShader
