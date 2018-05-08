@@ -222,6 +222,7 @@ public class Zone1BossBehavior : YokaiController {
 
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
+            target.GetComponent<PlayerHealth>().SetHealthCurrent(target.GetComponent<PlayerHealth>().GetHealthMax());
             Destroy(spawnerAllBazekori);
             GameObject[] yokaiInScene = GameObject.FindGameObjectsWithTag("Yokai");
             foreach( GameObject yokai in yokaiInScene) {

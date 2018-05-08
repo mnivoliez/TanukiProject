@@ -47,6 +47,8 @@ public class YokaiAIv2Controller : YokaiController {
     private void Update() {
         //===========================
         if (Pause.Paused) {
+            agent.SetDestination(transform.position);
+            agent.stoppingDistance = stoppingDistance;
             return;
         }
         //===========================
@@ -58,6 +60,8 @@ public class YokaiAIv2Controller : YokaiController {
     private void FixedUpdate() {
         //===========================
         if (Pause.Paused) {
+            agent.SetDestination(transform.position);
+            agent.stoppingDistance = stoppingDistance;
             return;
         }
         //===========================
