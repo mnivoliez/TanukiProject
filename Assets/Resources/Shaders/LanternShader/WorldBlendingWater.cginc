@@ -17,6 +17,8 @@ uniform half _WaveSpeed;
 uniform half _WaveAmount;
 uniform half _WaveHeight;
 
+uniform half _BorderFoamScale;
+
 uniform half _NoiseScale;
 uniform half _NoiseIntensity;
 
@@ -119,12 +121,23 @@ half4 frag (v2f i) : SV_Target
 		float3 directDiff = NdotL * attenColor;
 
 		half3 firstWaterColor = _FirstLColor * (1-(tex1 + invEdgeIntensity)) + (tex1 + invEdgeIntensity) * _FirstFoamColor;
+		float3 diffCol;
+		float dotRes = dot(i.normalDir, float3(0,1,0));
+		float topDot = .9;
+		float botDot = .4;
+		float foam = 0;
+		if(dotRes > botDot && dotRes < topDot) {
+			float stepFoam = step(dotRes, .7f);
+			float foamLerp = (dotRes-.7)*(1/(lerp(topDot, botDot, stepFoam)-.7));
+			float2 tmpUV = lerp(half2(i.uv.x, i.uv.y + _Time.x*_WaveSpeed), half2(i.uv.x*3, i.uv.y), stepFoam)*_BorderFoamScale;
+			foam = saturate(1-round(snoise(float3(tmpUV, _Time.x/_WaveSpeed))*.5+.5 + foamLerp-.5));
+		}
 		#if defined(_LANTERN)
 			half3 secondWaterColor = _SecondLColor * (1-(tex2 + invEdgeIntensity)) + (tex2 + invEdgeIntensity) * _SecondFoamColor;
-			float3 diffCol = saturate(lerp(firstWaterColor, secondWaterColor, lrp));
+			diffCol = saturate(lerp(firstWaterColor + fixed3(foam,foam,foam), secondWaterColor + fixed3(foam,foam,foam), lrp));
 			fixed opacity = saturate(invEdgeIntensity * _EdgeIntensity + edgeDetect * lerp(_FirstLColor.a, _SecondLColor.a, lrp));
 		#else
-			float3 diffCol = firstWaterColor;
+			diffCol = saturate(firstWaterColor + fixed3(foam,foam,foam));
 			fixed opacity = saturate(invEdgeIntensity * _EdgeIntensity + edgeDetect * _FirstLColor.a);
 		#endif
 
@@ -133,9 +146,9 @@ half4 frag (v2f i) : SV_Target
 			float3 emissive = 0;
 			#if defined(_LANTERN)
 				emissive += (1.0-saturate((len-_Offset) + ns * _Interpolation) - lrp) * _ColorDisso.rgb*(_ColorDisso.a*25.0);
-				emissive += lerp((tex1+invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a, (tex2+invEdgeIntensity) * _SecondFoamColor*_SecondFoamColor.a, lrp) *25.0;
+				emissive += lerp((tex1+invEdgeIntensity + foam) * _FirstFoamColor*_FirstFoamColor.a, (tex2+invEdgeIntensity+foam) * _SecondFoamColor*_SecondFoamColor.a, lrp) *25.0;
 			#else
-				emissive += (tex1 + invEdgeIntensity) * _FirstFoamColor*_FirstFoamColor.a*25.0;
+				emissive += (tex1 + invEdgeIntensity + foam) * _FirstFoamColor*_FirstFoamColor.a*25.0;
 			#endif
 			half4 finalCol = half4((directDiff + indirectDiff) * diffCol + emissive, opacity);
 			UNITY_APPLY_FOG(i.fogCoord, finalCol);
