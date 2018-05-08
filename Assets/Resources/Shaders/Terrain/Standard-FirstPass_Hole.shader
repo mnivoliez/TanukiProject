@@ -1,6 +1,6 @@
 // Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-Shader "Nature/Terrain/Custom/Standard" {
+Shader "Nature/Terrain/Custom/Hole" {
     Properties {
         // set by terrain engine
         [HideInInspector] _Control ("Control (RGBA)", 2D) = "red" {}
@@ -31,6 +31,12 @@ Shader "Nature/Terrain/Custom/Standard" {
             "Queue" = "Geometry-100"
             "RenderType" = "Opaque"
         }
+
+        Stencil {
+	        Ref 1
+	        Comp notequal
+	        Pass keep
+	    }
 
         CGPROGRAM
         #pragma surface surf Standard vertex:SplatmapVert finalcolor:SplatmapFinalColor finalgbuffer:SplatmapFinalGBuffer fullforwardshadows noinstancing
