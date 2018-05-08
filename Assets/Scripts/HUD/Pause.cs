@@ -60,11 +60,13 @@ public class Pause : MonoBehaviour {
     void Update() {
 
         if (Input.GetButtonDown("Cancel") && !VictorySwitch.Victory) {
-            if (!Paused) {
-                PauseGame(true);
-            }
-            else if (Paused) {
-                UnpauseGame();
+            if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "FinTuto" && SceneManager.GetActiveScene().name != "Introduction") { 
+                if (!Paused) {
+                    PauseGame(true);
+                }
+                else if (Paused) {
+                    UnpauseGame();
+                }
             }
         }
     }
@@ -113,7 +115,7 @@ public class Pause : MonoBehaviour {
 
     public void Update_Pause_Menu_data() {
         Game.Update_Game();
-        if (SceneManager.GetActiveScene().name != "SandboxV2") {
+        if (SceneManager.GetActiveScene().name != "Introduction" && SceneManager.GetActiveScene().name != "FinTuto") {
             CountCollectableYokai();
             score_to_display_Z1P1.text = "Z1P1 : " + score_valueZ1P1;
             score_to_display_Z1P2.text = "Z1P2 : " + score_valueZ1P2;

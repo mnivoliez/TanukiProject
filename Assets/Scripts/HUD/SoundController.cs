@@ -46,6 +46,7 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip HUDTutoPictureClose;
     [SerializeField] private AudioClip HUDCredits;
     [SerializeField] private AudioClip HUDIntro;
+    [SerializeField] private AudioClip HUDFinTuto;
 
     [Header("KODA")]
     [Space(10)]
@@ -78,6 +79,8 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip leafThrow;
     [SerializeField] private AudioClip leafVanish;
     [SerializeField] private AudioClip leafCC;
+    [SerializeField] private AudioClip leafLureGround;
+    [SerializeField] private AudioClip leafLureVanish;
 
     [Header("YOKAI")]
     [Space(10)]
@@ -182,31 +185,6 @@ public class SoundController : MonoBehaviour {
             PlayHUDTheme(HUDCredits, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Introduction") {
-            KillAll();
-            PlayHUDTheme(HUDIntro, true);
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1 && !Game.playerData.Boss1KO) {
-            KillAll();
-            StartCoroutine(PlayThemeBoss(themeBossZ1, true));
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
-            KillAll();
-            PlayTheme(themeLightZ1, true);
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2 && !Game.playerData.Boss2KO) {
-            KillAll();
-            StartCoroutine(PlayThemeBoss(themeBossZ2, true));
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
-            KillAll();
-            PlayTheme(themeLightZ2, true);
-        }
-
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
             KillAll();
             SelectENVLong("Wind");
@@ -215,8 +193,15 @@ public class SoundController : MonoBehaviour {
 
         if (SceneManager.GetActiveScene().name == "FinTuto") {
             KillAll();
-            PlayTheme(themeLightZ1, true);
+            SelectENVLong("Wind");
+            PlayTheme(HUDFinTuto, false);
         }
+
+        if (SceneManager.GetActiveScene().name == "Introduction") {
+            KillAll();
+            PlayHUDTheme(HUDIntro, true);
+        }
+
 
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
             KillAll();
@@ -236,6 +221,26 @@ public class SoundController : MonoBehaviour {
         }
 
         if ((SceneManager.GetActiveScene().name == "Z2-P1-complete" || SceneManager.GetActiveScene().name == "Z2-P2-complete" || SceneManager.GetActiveScene().name == "Z2-P3-complete") && Game.playerData.lightBoss2) {
+            KillAll();
+            PlayTheme(themeLightZ2, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1 && !Game.playerData.Boss1KO) {
+            KillAll();
+            StartCoroutine(PlayThemeBoss(themeBossZ1, true));
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
+            KillAll();
+            PlayTheme(themeLightZ1, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2 && !Game.playerData.Boss2KO) {
+            KillAll();
+            StartCoroutine(PlayThemeBoss(themeBossZ2, true));
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
             KillAll();
             PlayTheme(themeLightZ2, true);
         }
@@ -295,7 +300,7 @@ public class SoundController : MonoBehaviour {
 
         fxKodaEffect.Stop();
         fxKodaEffect.volume = 1.0f;
-        fxHUD_Effect.loop = false;
+        fxKodaEffect.loop = false;
 
         fxLeafEffect.Stop();
         fxLeafEffect.volume = 1.0f;
@@ -520,6 +525,14 @@ public class SoundController : MonoBehaviour {
 
             case "CloseCombat":
                 PlayLeafEffect(leafCC);
+                break;
+
+            case "LureGround":
+                PlayLeafEffect(leafLureGround);
+                break;
+
+            case "LureVanish":
+                PlayLeafEffect(leafLureVanish);
                 break;
 
             default:

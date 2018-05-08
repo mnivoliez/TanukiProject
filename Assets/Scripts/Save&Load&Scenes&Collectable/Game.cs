@@ -97,7 +97,15 @@ public static class Game {
             playerData.current_scene = SceneManager.GetActiveScene().name;
 
             if (!playerData.lightBoss1) { playerData.power_jump = koda_power.GetPowerJump(); }
+            else {
+                playerData.power_jump = playerData.lightBoss1;
+                koda_power.SetPowerJump(playerData.lightBoss1);
+            }
             if (!playerData.lightBoss2) { playerData.power_lure = koda_power.GetPowerLure(); }
+            else {
+                playerData.power_lure = playerData.lightBoss2;
+                koda_power.SetPowerLure(playerData.lightBoss2);
+            }
             playerData.power_ball = koda_power.GetPowerBall();
             playerData.power_shrink = koda_power.GetPowerShrink();
 
