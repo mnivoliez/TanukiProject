@@ -95,6 +95,8 @@ public class LanternShaderGUI : ShaderGUI {
 	GUIContent noiseIntensityGUI = new GUIContent ("Intensity", "Noise Intensity");
 	private MaterialProperty _DistortStrength = null;
 	GUIContent distortStrengthGUI = new GUIContent ("Factor", "Distort Strength");
+	private MaterialProperty _BorderFoamScale = null;
+	GUIContent borderFoamScaleGUI = new GUIContent ("Scale", "Border Foam Scale");
 
 	private MaterialProperty _EmissiveColor = null;
 	GUIContent emissiveColorGUI = new GUIContent ("Color", "Emissive Color");
@@ -168,6 +170,8 @@ public class LanternShaderGUI : ShaderGUI {
 			_NoiseIntensity = ShaderGUI.FindProperty ("_NoiseIntensity", props);
 
 			_DistortStrength = ShaderGUI.FindProperty ("_DistortStrength", props);
+
+			_BorderFoamScale = ShaderGUI.FindProperty ("_BorderFoamScale", props);
 		} else {
 			_FirstTexture = FindProperty ("_FirstTexture", props);
 			_FirstLColor = FindProperty ("_FirstLColor", props);
@@ -384,6 +388,10 @@ public class LanternShaderGUI : ShaderGUI {
 		GUILayout.Space(pixelSpace);
 		EditorGUILayout.LabelField ("Distortion", EditorStyles.boldLabel);
 		editor.ShaderProperty (_DistortStrength, distortStrengthGUI);
+
+		GUILayout.Space(pixelSpace);
+		EditorGUILayout.LabelField ("Border Foam", EditorStyles.boldLabel);
+		editor.ShaderProperty (_BorderFoamScale, borderFoamScaleGUI);
 	}
 
 	void TextureInline(MaterialProperty propTex, MaterialProperty propLCol, MaterialProperty propDCol, GUIContent tex, GUIContent lCol, GUIContent dCol) {
