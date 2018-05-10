@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 //================================================
 //SOUNDCONTROLER
 //================================================
@@ -53,17 +54,25 @@ public class PressPlateSwitch : MonoBehaviour {
     //Call by a Lure when is destroy
     public void UnpressPlate() {
         if (isPressedByLure) {
-            //================================================
-            SoundController.instance.SelectENVQuick("PressPlate");
-            //================================================
-            transform.position = transform.position + (Vector3.up * 0.1f);
-            isPressedByLure = false;
-            foreach (SwitchObject obj in actionOnSwitch) {
-                if (obj.gameObject != null) {
-                    obj.gameObject.SetActive(!obj.action.Equals(ActionLantern.Activate));
-                }
-            }
+			bool hasTimeLine = false;
+			foreach (SwitchObject obj in actionOnSwitch) {
+				if (obj.gameObject.GetComponent<PlayableDirector>()) {
+					hasTimeLine = true;
+				}
+			}
+
+			if (!hasTimeLine) {
+				//================================================
+				SoundController.instance.SelectENVQuick("PressPlate");
+				//================================================
+				transform.position = transform.position + (Vector3.up * 0.1f);
+				isPressedByLure = false;
+				foreach (SwitchObject obj in actionOnSwitch) {
+					if (obj.gameObject != null) {
+						obj.gameObject.SetActive (!obj.action.Equals (ActionLantern.Activate));
+					}
+				}
+			}
         }
     }
-
 }

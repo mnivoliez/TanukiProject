@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 enum LanternEffect {
     Appear,
@@ -53,27 +54,39 @@ public class CorruptionController : MonoBehaviour {
     }
 
     private void ManageCollision(Collider other) {
-        bool isInLanternRange = CheckIfInLanternRange(other);
-        switch (_lanternEffect) {
-            case LanternEffect.Appear:
-                if (isInLanternRange) {
-                    //if (this.name == "P_PlateformTree_Logs_02") { Debug.Log("appear collider" + this.name); }                    
+        if ((Game.playerData.lightBoss1 && SceneManager.GetActiveScene().name == "Boss1") || (Game.playerData.lightBoss2 && SceneManager.GetActiveScene().name == "Boss2")) {
+            switch (_lanternEffect) {
+                case LanternEffect.Appear:
                     MakeAppearForCollider(other);
-                }
-                else {
-                    //if (this.name == "P_PlateformTree_Logs_02") { Debug.Log("disappear collider" + this.name); }
+                    break;
+                case LanternEffect.Disappear:
                     MakeDisappearForCollider(other);
-                }
-                break;
-            case LanternEffect.Disappear:
-                if (isInLanternRange) {
-                    MakeDisappearForCollider(other);
-                }
-                else {
-                    MakeAppearForCollider(other);
-                }
-                break;
+                    break;
+            }
+        } else {
+            bool isInLanternRange = CheckIfInLanternRange(other);
+            switch (_lanternEffect) {
+                case LanternEffect.Appear:
+                    if (isInLanternRange) {
+                        //if (this.name == "P_PlateformTree_Logs_02") { Debug.Log("appear collider" + this.name); }                    
+                        MakeAppearForCollider(other);
+                    }
+                    else {
+                        //if (this.name == "P_PlateformTree_Logs_02") { Debug.Log("disappear collider" + this.name); }
+                        MakeDisappearForCollider(other);
+                    }
+                    break;
+                case LanternEffect.Disappear:
+                    if (isInLanternRange) {
+                        MakeDisappearForCollider(other);
+                    }
+                    else {
+                        MakeAppearForCollider(other);
+                    }
+                    break;
+            }
         }
+           
 
     }
 

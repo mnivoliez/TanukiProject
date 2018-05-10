@@ -12,12 +12,18 @@ public static class Game {
     public static GameObject koda;
     public static PlayerHealth koda_health;
     public static KodaController koda_power;
-    public static PlayerCollectableController koda_score;
 
     public static int selected_slot = 0;
     public static string scene_path;
 
     public static PlayerData playerData;
+
+    public static int score_valueZ1P1 = 0;
+    public static int score_valueZ1P2 = 0;
+    public static int score_valueZ1P3 = 0;
+    public static int score_valueZ2P1 = 0;
+    public static int score_valueZ2P2 = 0;
+    public static int score_valueZ2P3 = 0;
 
     public static void PreSave_Game_and_Save() {
         Update_Game();
@@ -48,7 +54,6 @@ public static class Game {
             if (koda != null) { 
                 koda_health = koda.GetComponent<PlayerHealth>();
                 koda_power = koda.GetComponent<KodaController>();
-                koda_score = koda.GetComponent<PlayerCollectableController>();
                 //////////////////////////////////////////////////////////
                 Load();
 
@@ -62,7 +67,7 @@ public static class Game {
                 koda_power.SetPowerBall(playerData.power_ball);
                 koda_power.SetPowerShrink(playerData.power_shrink);
 
-                koda_score.SetnbYokai(playerData.caught_yokai);
+                //koda_score.SetnbYokai(playerData.caught_yokai);
                 selected_slot = playerData.selected_slot;
 
                 Debug.Log("Game Loaded !");
@@ -79,7 +84,6 @@ public static class Game {
         if (koda != null) {
             koda_health = koda.GetComponent<PlayerHealth>();
             koda_power = koda.GetComponent<KodaController>();
-            koda_score = koda.GetComponent<PlayerCollectableController>();
             //////////////////////////////////////////////////////////
 
             playerData.hp_max = koda_health.GetHealthMax();
@@ -93,44 +97,62 @@ public static class Game {
             playerData.current_scene = SceneManager.GetActiveScene().name;
 
             if (!playerData.lightBoss1) { playerData.power_jump = koda_power.GetPowerJump(); }
+            else {
+                playerData.power_jump = playerData.lightBoss1;
+                koda_power.SetPowerJump(playerData.lightBoss1);
+            }
             if (!playerData.lightBoss2) { playerData.power_lure = koda_power.GetPowerLure(); }
+            else {
+                playerData.power_lure = playerData.lightBoss2;
+                koda_power.SetPowerLure(playerData.lightBoss2);
+            }
             playerData.power_ball = koda_power.GetPowerBall();
             playerData.power_shrink = koda_power.GetPowerShrink();
 
+
+            CountCollectableYokai();
+            playerData.caught_yokaiZ1P1 = score_valueZ1P1;
+            playerData.caught_yokaiZ1P2 = score_valueZ1P2;
+            playerData.caught_yokaiZ1P3 = score_valueZ1P3;
+            playerData.caught_yokaiZ2P1 = score_valueZ2P1;
+            playerData.caught_yokaiZ2P2 = score_valueZ2P2;
+            playerData.caught_yokaiZ2P3 = score_valueZ2P3;
+
             switch (playerData.current_scene) {
                 case "Z1-P1-complete":
-                    playerData.caught_yokaiZ1P1 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ1P1 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ1P1;
                     break;
 
                 case "Z1-P2-complete":
-                    playerData.caught_yokaiZ1P2 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ1P2 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ1P2;
                     break;
 
                 case "Z1-P3-complete":
-                    playerData.caught_yokaiZ1P3 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ1P3 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ1P3;
                     break;
 
                 case "Z2-P1-complete":
-                    playerData.caught_yokaiZ2P1 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ2P1 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ2P1;
                     break;
 
                 case "Z2-P2-complete":
-                    playerData.caught_yokaiZ2P2 = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ2P2 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ2P2;
                     break;
 
                 case "Z2-P3-complete":
-                    playerData.caught_yokaiZ2P3 = koda_score.GetnbYokai();
-                    break;
-
-                case "Scene_AirStream":
-                    playerData.caught_yokai_test = koda_score.GetnbYokai();
+                    //playerData.caught_yokaiZ2P3 = koda_score.GetnbYokai();
+                    playerData.caught_yokai = score_valueZ2P3;
                     break;
 
                 default:
                     break;
             }
 
-            playerData.caught_yokai = koda_score.GetnbYokai();
             playerData.selected_slot = selected_slot;
 
             scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
@@ -163,13 +185,31 @@ public static class Game {
                 playerData.yokaiRemainingZ2P3[yokaiID] = -1;
                 break;
 
-            case "Scene_AirStream":
-                playerData.yokaiRemainingTEST[yokaiID] = -1;
-                break;
-
             default:
                 break;
         }
+    }
+
+    public static void CountCollectableYokai() {
+        
+        score_valueZ1P1 = 0;
+        score_valueZ1P2 = 0;
+        score_valueZ1P3 = 0;
+        score_valueZ2P1 = 0;
+        score_valueZ2P2 = 0;
+        score_valueZ2P3 = 0;
+
+        for (int i = 0; i < 30; i++) {
+            if (playerData.yokaiRemainingZ1P1[i] == -1) { score_valueZ1P1++; }
+            if (playerData.yokaiRemainingZ1P2[i] == -1) { score_valueZ1P2++; }
+            if (playerData.yokaiRemainingZ1P3[i] == -1) { score_valueZ1P3++; }
+            if (playerData.yokaiRemainingZ2P1[i] == -1) { score_valueZ2P1++; }
+            if (playerData.yokaiRemainingZ2P2[i] == -1) { score_valueZ2P2++; }
+            if (playerData.yokaiRemainingZ2P3[i] == -1) { score_valueZ2P3++; }
+        }
+
+        playerData.caught_yokaiZ1 = score_valueZ1P1 + score_valueZ1P2 + score_valueZ1P3;
+        playerData.caught_yokaiZ2 = score_valueZ2P1 + score_valueZ2P2 + score_valueZ2P3;
     }
 
     public static void Reset_Game() {
@@ -192,10 +232,11 @@ public static class Game {
             playerData.caught_yokaiZ1P1 = 0;
             playerData.caught_yokaiZ1P2 = 0;
             playerData.caught_yokaiZ1P3 = 0;
+            playerData.caught_yokaiZ1 = 0;
             playerData.caught_yokaiZ2P1 = 0;
             playerData.caught_yokaiZ2P2 = 0;
             playerData.caught_yokaiZ2P3 = 0;
-            playerData.caught_yokai_test = 0;
+            playerData.caught_yokaiZ2 = 0;
 
             playerData.caught_yokai = 0;
 
@@ -204,19 +245,19 @@ public static class Game {
             playerData.lightBoss2 = false;
             playerData.Boss2KO = false;
 
-            playerData.yokaiRemainingZ1P1 = new int[7];
+            playerData.yokaiRemainingZ1P1 = new int[30]; //3
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P1, playerData.yokaiRemainingZ1P1.Length);
-            playerData.yokaiRemainingZ1P2 = new int[14];
+            playerData.yokaiRemainingZ1P2 = new int[30]; //14
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P2, playerData.yokaiRemainingZ1P2.Length);
-            playerData.yokaiRemainingZ1P3 = new int[7];
+            playerData.yokaiRemainingZ1P3 = new int[30]; //7
             Reset_Yokai_Scene(playerData.yokaiRemainingZ1P3, playerData.yokaiRemainingZ1P3.Length);
-            playerData.yokaiRemainingZ2P1 = new int[11];
+            playerData.yokaiRemainingZ2P1 = new int[30]; //1
             Reset_Yokai_Scene(playerData.yokaiRemainingZ2P1, playerData.yokaiRemainingZ2P1.Length);
-            playerData.yokaiRemainingZ2P2 = new int[20];
+            playerData.yokaiRemainingZ2P2 = new int[30]; //20
             Reset_Yokai_Scene(playerData.yokaiRemainingZ2P2, playerData.yokaiRemainingZ2P2.Length);
-            playerData.yokaiRemainingZ2P3 = new int[12];
+            playerData.yokaiRemainingZ2P3 = new int[30]; //12
             Reset_Yokai_Scene(playerData.yokaiRemainingZ2P3, playerData.yokaiRemainingZ2P3.Length);
-            playerData.yokaiRemainingTEST = new int[3];
+            playerData.yokaiRemainingTEST = new int[30]; //3
             Reset_Yokai_Scene(playerData.yokaiRemainingTEST, playerData.yokaiRemainingTEST.Length);
 
             scene_path = Application.persistentDataPath + "/savedGames_slot_" + playerData.selected_slot.ToString() + ".gs";
@@ -250,10 +291,11 @@ public struct PlayerData {
     public int caught_yokaiZ1P1;
     public int caught_yokaiZ1P2;
     public int caught_yokaiZ1P3;
+    public int caught_yokaiZ1;
     public int caught_yokaiZ2P1;
     public int caught_yokaiZ2P2;
     public int caught_yokaiZ2P3;
-    public int caught_yokai_test;
+    public int caught_yokaiZ2;
 
     public int caught_yokai;
 

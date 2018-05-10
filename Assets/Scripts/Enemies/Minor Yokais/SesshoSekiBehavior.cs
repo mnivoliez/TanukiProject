@@ -26,8 +26,12 @@ public class SesshoSekiBehavior : YokaiController {
     private Vector3 positionWithOffset;
     private Vector3 targetPositionWithOffset;
 
+    [SerializeField] private GameObject hpCollectable;
+    private Vector3 positionCollectable;
+
     [SerializeField] private float durationOfPreparation = 2;
     [SerializeField] private float durationOfResearch = 2;
+	[SerializeField] private float heightMinSuicide = 1.2f;
 
     [SerializeField] private GameObject runFx;
     private ParticleSystem.EmissionModule emissionRun;
@@ -168,6 +172,17 @@ public class SesshoSekiBehavior : YokaiController {
                     emissionRun.enabled = true;
                 }
 
+				RaycastHit hitGround = new RaycastHit ();
+				Vector3 nextPosition = transform.position + relativePos.normalized * 3;
+				if (Physics.Raycast (nextPosition, Vector3.down, out hitGround, 10.0f, layerMask)) {
+					//Debug.Log (hitGround.collider.gameObject.name + ": " + hitGround.distance);
+					if (hitGround.distance > heightMinSuicide) {
+						positionToGo = transform.position;
+						relativePos = positionToGo - transform.position;
+						relativePos.y = 0;
+					}
+				}
+
                 Quaternion rotation = Quaternion.LookRotation(lookAtTarget);
                 rotation.x = transform.rotation.x;
                 rotation.z = transform.rotation.z;
@@ -247,6 +262,7 @@ public class SesshoSekiBehavior : YokaiController {
             runFx.SetActive(false);
             emissionRun.enabled = false;
             isKnocked = true;
+			body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
             Vector3 posKnockedParticle = GetComponent<MeshRenderer>().bounds.max;
             posKnockedParticle.x = transform.position.x;
             posKnockedParticle.z = transform.position.z;
@@ -270,6 +286,7 @@ public class SesshoSekiBehavior : YokaiController {
 
     public override void Absorbed() {
         isAbsorbed = true;
+        positionCollectable = transform.position + Vector3.up;
         gameObject.GetComponent<Collider>().enabled = false;
         //================================================
         SoundController.instance.SelectYOKAI("Absorbed");
@@ -277,8 +294,14 @@ public class SesshoSekiBehavior : YokaiController {
     }
 
     public override void Die() {
-        
+		body.constraints = RigidbodyConstraints.None;
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
+            if (UnityEngine.Random.Range(0, 10) > 4.9f) {
+                Instantiate(hpCollectable, positionCollectable, Quaternion.identity);
+                //================================================
+                SoundController.instance.SelectENVQuick("FruitLoot");
+                //================================================
+            }
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
             Destroy(gameObject);
         }
