@@ -44,6 +44,9 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip HUDPauseNavigate;
     [SerializeField] private AudioClip HUDPauseAccept;
     [SerializeField] private AudioClip HUDTutoPictureClose;
+    [SerializeField] private AudioClip HUDCredits;
+    [SerializeField] private AudioClip HUDIntro;
+    [SerializeField] private AudioClip HUDFinTuto;
 
     [Header("KODA")]
     [Space(10)]
@@ -76,6 +79,8 @@ public class SoundController : MonoBehaviour {
     [SerializeField] private AudioClip leafThrow;
     [SerializeField] private AudioClip leafVanish;
     [SerializeField] private AudioClip leafCC;
+    [SerializeField] private AudioClip leafLureGround;
+    [SerializeField] private AudioClip leafLureVanish;
 
     [Header("YOKAI")]
     [Space(10)]
@@ -169,29 +174,15 @@ public class SoundController : MonoBehaviour {
     }
 
     public void SelectTHEME() {
+
         if (SceneManager.GetActiveScene().name == "MainMenu") {
             KillAll();
             PlayHUDTheme(HUDMainMenuTheme, true);
         }
 
-        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1 && !Game.playerData.Boss1KO) {
+        if (SceneManager.GetActiveScene().name == "CreditScene") {
             KillAll();
-            StartCoroutine(PlayThemeBoss(themeBossZ1, true));
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
-            KillAll();
-            PlayTheme(themeLightZ1, true);
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2 && !Game.playerData.Boss2KO) {
-            KillAll();
-            StartCoroutine(PlayThemeBoss(themeBossZ2, true));
-        }
-
-        if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
-            KillAll();
-            PlayTheme(themeLightZ2, true);
+            PlayHUDTheme(HUDCredits, true);
         }
 
         if (SceneManager.GetActiveScene().name == "Zone Tuto") {
@@ -199,6 +190,18 @@ public class SoundController : MonoBehaviour {
             SelectENVLong("Wind");
             PlayTheme(themeLightZ1, true);
         }
+
+        if (SceneManager.GetActiveScene().name == "FinTuto") {
+            KillAll();
+            SelectENVLong("Wind");
+            PlayTheme(HUDFinTuto, false);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Introduction") {
+            KillAll();
+            PlayHUDTheme(HUDIntro, true);
+        }
+
 
         if (SceneManager.GetActiveScene().name == "Z1-P1-complete" || SceneManager.GetActiveScene().name == "Z1-P2-complete" || SceneManager.GetActiveScene().name == "Z1-P3-complete") {
             KillAll();
@@ -221,6 +224,26 @@ public class SoundController : MonoBehaviour {
             KillAll();
             PlayTheme(themeLightZ2, true);
         }
+
+        if (SceneManager.GetActiveScene().name == "Boss1" && !Game.playerData.lightBoss1 && !Game.playerData.Boss1KO) {
+            KillAll();
+            StartCoroutine(PlayThemeBoss(themeBossZ1, true));
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss1" && Game.playerData.lightBoss1) {
+            KillAll();
+            PlayTheme(themeLightZ1, true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss2" && !Game.playerData.lightBoss2 && !Game.playerData.Boss2KO) {
+            KillAll();
+            StartCoroutine(PlayThemeBoss(themeBossZ2, true));
+        }
+
+        if (SceneManager.GetActiveScene().name == "Boss2" && Game.playerData.lightBoss2) {
+            KillAll();
+            PlayTheme(themeLightZ2, true);
+        }
     }
 
     private void PlayTheme(AudioClip clip, bool loop) {
@@ -232,7 +255,8 @@ public class SoundController : MonoBehaviour {
     private IEnumerator PlayThemeBoss(AudioClip clip, bool loop) {
         fxThemeSource.clip = themePreBoss;
         fxThemeSource.Play();
-        yield return new WaitForSeconds(16.0f);
+        fxThemeSource.loop = false;
+        yield return new WaitForSeconds(14.0f);
         PlayTheme(clip, loop);
     }
 
@@ -264,40 +288,77 @@ public class SoundController : MonoBehaviour {
     private void KillAll() {
         fxThemeSource.Stop();
         fxThemeSource.volume = 1.0f;
+        fxThemeSource.loop = false;
+
         fxHUD_Source.Stop();
         fxHUD_Source.volume = 1.0f;
+        fxHUD_Source.loop = false;
+
         fxHUD_Effect.Stop();
         fxHUD_Effect.volume = 1.0f;
+        fxHUD_Effect.loop = false;
+
         fxKodaEffect.Stop();
         fxKodaEffect.volume = 1.0f;
+        fxKodaEffect.loop = false;
+
         fxLeafEffect.Stop();
         fxLeafEffect.volume = 1.0f;
+        fxLeafEffect.loop = false;
+
         fxYokaiEffect.Stop();
         fxYokaiEffect.volume = 1.0f;
+        fxYokaiEffect.loop = false;
+
         fxYokaiAkashitaEffect.Stop();
         fxYokaiAkashitaEffect.volume = 1.0f;
+        fxYokaiAkashitaEffect.loop = false;
+
         fxYokaiBazekoriEffect.Stop();
         fxYokaiBazekoriEffect.volume = 1.0f;
+        fxYokaiBazekoriEffect.loop = false;
+
         fxYokaiSesshosekiBossEffect.Stop();
         fxYokaiSesshosekiBossEffect.volume = 1.0f;
+        fxYokaiSesshosekiBossEffect.loop = false;
+
         fxLanternSource.Stop();
         fxLanternSource.volume = 1.0f;
+        fxLanternSource.loop = false;
+
         fxLanternEffect.Stop();
         fxLanternEffect.volume = 1.0f;
+        fxLanternEffect.loop = false;
+
         fxEnvironnementCorruptedWater.Stop();
         fxEnvironnementCorruptedWater.volume = 1.0f;
+        fxEnvironnementCorruptedWater.loop = false;
+
         fxEnvironnementCorruptedForest.Stop();
         fxEnvironnementCorruptedForest.volume = 1.0f;
+        fxEnvironnementCorruptedForest.loop = false;
+
         fxEnvironnementWaterFall.Stop();
         fxEnvironnementWaterFall.volume = 1.0f;
+        fxEnvironnementWaterFall.loop = false;
+
         fxEnvironnementFireflies.Stop();
         fxEnvironnementFireflies.volume = 1.0f;
+        fxEnvironnementFireflies.loop = false;
+
         fxEnvironnementFireWall.Stop();
         fxEnvironnementFireWall.volume = 1.0f;
+        fxEnvironnementFireWall.loop = false;
+
         fxEnvironnementEffectQuick.Stop();
         fxEnvironnementEffectQuick.volume = 1.0f;
+        fxEnvironnementEffectQuick.loop = false;
+
         fxEnvironnementEffectLong.Stop();
         fxEnvironnementEffectLong.volume = 1.0f;
+        fxEnvironnementEffectLong.loop = false;
+
+        lanterClosestFoundPlay = false;
     }
 
     //===================================================================================================================================================================================
@@ -464,6 +525,14 @@ public class SoundController : MonoBehaviour {
 
             case "CloseCombat":
                 PlayLeafEffect(leafCC);
+                break;
+
+            case "LureGround":
+                PlayLeafEffect(leafLureGround);
+                break;
+
+            case "LureVanish":
+                PlayLeafEffect(leafLureVanish);
                 break;
 
             default:

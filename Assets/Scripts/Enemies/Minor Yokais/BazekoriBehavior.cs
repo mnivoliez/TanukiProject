@@ -30,14 +30,15 @@ public class BazekoriBehavior : YokaiController {
         if (Pause.Paused) {
             return;
         }
-        //===========================
-        transform.GetChild(0).transform.LookAt(target.transform);
-        if (followPlayer) {
-            MoveToPosition();
-        }
-        else {
-            transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
-        }
+		if (!isKnocked) {
+			//===========================
+			transform.GetChild (0).transform.LookAt (target.transform);
+			if (followPlayer) {
+				MoveToPosition ();
+			} else {
+				transform.LookAt (new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z));
+			}
+		}
 
         if (isAbsorbed) {
             Die();

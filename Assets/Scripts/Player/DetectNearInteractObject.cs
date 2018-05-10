@@ -7,20 +7,18 @@ public class DetectNearInteractObject : MonoBehaviour {
     private float rangeNearestObject;
     private GameObject nearestObject;
 
-    [SerializeField]
-    private float fieldOfView = 45f;
-    [SerializeField]
-    private float rangeInteract = 4f;
-    [SerializeField]
-    private float prioritizationRange = 0.2f;
-    [SerializeField]
-    private float offSet = 0f;
+    [SerializeField] private float fieldOfView = 45f;
+    [SerializeField] private float rangeInteract = 4f;
+    [SerializeField] private float prioritizationRange = 0.2f;
+    [SerializeField] private float offSet = 0f;
 
-    [SerializeField]
-    private Transform direction;
+    [SerializeField] private Transform direction;
 
-	// Update is called once per frame
-	void Update () {
+    [SerializeField] private GameObject hudTake;
+    [SerializeField] private GameObject hudInvoke;
+
+    // Update is called once per frame
+    void Update() {
         //===========================
         if (Pause.Paused) {
             return;
@@ -50,14 +48,16 @@ public class DetectNearInteractObject : MonoBehaviour {
         bool newObjectIsActivable = collider.gameObject.layer == LayerMask.NameToLayer("Activable");
         bool newObjectIsAbsorbable = collider.gameObject.CompareTag("Yokai") && collider.gameObject.GetComponent<YokaiController>().GetIsKnocked();
 
-        bool needDetectObject =  isInCone && (newObjectIsCatchable || newObjectIsActivable || newObjectIsAbsorbable);
+        bool needDetectObject = isInCone && (newObjectIsCatchable || newObjectIsActivable || newObjectIsAbsorbable);
 
         if (needDetectObject) {
             //Debug.Log(collider.gameObject.layer + " " + LayerMask.LayerToName(collider.gameObject.layer));
             if (nearestObject == null) {
                 rangeNearestObject = distanceObject;
                 nearestObject = collider.gameObject;
-            } else  {
+
+            }
+            else {
                 //the new object should be prioritize if he is catchable and the previous object is not. The prioritization should work only in a short range.
 
                 // if the range is positive, the new object is closer, else it's more distant.
@@ -67,11 +67,24 @@ public class DetectNearInteractObject : MonoBehaviour {
                 bool withinPrioritizationRange = System.Math.Abs(distanceDiff) < prioritizationRange;
 
                 bool storedObjectIsCatchable = nearestObject.layer == LayerMask.NameToLayer("Catchable");
-                if( (withinPrioritizationRange && newObjectIsCatchable) || (distanceDiff > 0 && !storedObjectIsCatchable) ) {
+                if ((withinPrioritizationRange && newObjectIsCatchable) || (distanceDiff > 0 && !storedObjectIsCatchable)) {
                     rangeNearestObject = distanceObject;
                     nearestObject = collider.gameObject;
-                } 
+                }
             }
+
+            if (nearestObject.layer == LayerMask.NameToLayer("Catchable")) {
+                hudTake.SetActive(true);
+                hudInvoke.SetActive(false);
+            }
+            else if (nearestObject.layer == LayerMask.NameToLayer("Activable")) {
+                hudInvoke.SetActive(true);
+                hudTake.SetActive(false);
+            }
+        }
+        else {
+            hudTake.SetActive(false);
+            hudInvoke.SetActive(false);
         }
     }
 
@@ -80,6 +93,7 @@ public class DetectNearInteractObject : MonoBehaviour {
             nearestObject = null;
             rangeNearestObject = 0;
         }
+            
     }
 
     public GameObject GetNearestObject() {

@@ -9,21 +9,22 @@ using UnityEngine.UI;
 
 public class SkipVideo : MonoBehaviour {
 
-	public string nameScene;
-
-	private Image Black;
+	[SerializeField] private string nameScene;
+    [SerializeField] private float skipAfterSecond;
+    private Image Black;
 	private Animator anim;
+
 
 	void Start() {
         //================================================
-        SoundController.instance.StopTheme();
+        SoundController.instance.SelectTHEME();
         //================================================
         GameObject transitionImageInstance = GameObject.Find("TransitionImage");
 
 		Black = transitionImageInstance.GetComponent<Image> ();
 		anim = transitionImageInstance.GetComponent<Animator> ();
 
-		Invoke ("SkipVideoToNextScene", 268f);
+		Invoke ("SkipVideoToNextScene", skipAfterSecond);
 		//Invoke ("SkipVideoToNextScene", 5f);
 	}
 
@@ -45,8 +46,10 @@ public class SkipVideo : MonoBehaviour {
 	}
 
 	IEnumerator Fading() {
-		anim.SetBool("Fade", true);
-		yield return new WaitUntil(() => Black.color.a == 1);
-		SceneManager.LoadScene(nameScene);
+        //anim.SetBool("Fade", true);
+        //yield return new WaitUntil(() => Black.color.a == 1);
+        yield return new WaitForSeconds(1);
+        gameObject.transform.GetComponent<LoadSceneManager>().LoadByIndexMM(nameScene);
+		//SceneManager.LoadScene(nameScene);
 	}
 }

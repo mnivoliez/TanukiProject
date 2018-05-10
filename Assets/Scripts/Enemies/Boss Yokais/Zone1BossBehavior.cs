@@ -55,6 +55,7 @@ public class Zone1BossBehavior : YokaiController {
     private Color chargeColor = new Color(220f / 255f, 20f / 255f, 110f / 255f, 40f / 255f);
 
     [SerializeField] private GameObject endingTimeline;
+    [SerializeField] private GameObject spawnerAllBazekori;
 
     void Start() {
 
@@ -71,6 +72,7 @@ public class Zone1BossBehavior : YokaiController {
             return;
         }
         //===========================
+
         if (!isKnocked) {
             transform.GetChild(0).transform.LookAt(target.transform);
 
@@ -220,9 +222,14 @@ public class Zone1BossBehavior : YokaiController {
 
     public override void Die() {
         if (Mathf.Abs(Vector3.Magnitude(transform.position) - Vector3.Magnitude(target.transform.position)) < 0.2) {
+            target.GetComponent<PlayerHealth>().SetHealthCurrent(target.GetComponent<PlayerHealth>().GetHealthMax());
+            Destroy(spawnerAllBazekori);
+            GameObject[] yokaiInScene = GameObject.FindGameObjectsWithTag("Yokai");
+            foreach( GameObject yokai in yokaiInScene) {
+                Destroy(yokai);
+            }
             target.GetComponent<Animator>().SetBool("isAbsorbing", false);
-            
-            //endingTimeline.SetActive(true);
+            endingTimeline.SetActive(true);
             //GameObject.Find("VictoryTrigger").GetComponent<VictorySwitch>().VictoryScreen();
             Destroy(gameObject);
         }

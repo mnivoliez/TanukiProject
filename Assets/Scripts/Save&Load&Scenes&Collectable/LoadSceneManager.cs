@@ -43,7 +43,13 @@ public class LoadSceneManager : MonoBehaviour {
     }
 
     public void LoadByIndexMM(string sceneNameToLoad) {
-
+        if(SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "CreditScene" && SceneManager.GetActiveScene().name != "Introduction" && SceneManager.GetActiveScene().name != "FinTuto") { Game.PreSave_Game_and_Save(); }
+        if (Pause.Paused) {
+            GameObject PauseCanvas = GameObject.Find("PauseCanvas");
+            if(PauseCanvas != null) {
+                PauseCanvas.transform.GetComponent<Pause>().UnpauseGame();
+            }
+        }
         SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
         StartCoroutine(LoadAsyncScene(sceneNameToLoad));
         Resources.UnloadUnusedAssets();
@@ -51,7 +57,13 @@ public class LoadSceneManager : MonoBehaviour {
     }
 
     public void LoadByIndex(string sceneNameToLoad, string sceneNameToUnload) {
-
+        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "CreditScene" && SceneManager.GetActiveScene().name != "Introduction" && SceneManager.GetActiveScene().name != "FinTuto") { Game.PreSave_Game_and_Save(); }
+        if (Pause.Paused) {
+            GameObject PauseCanvas = GameObject.Find("PauseCanvas");
+            if (PauseCanvas != null) {
+                PauseCanvas.transform.GetComponent<Pause>().UnpauseGame();
+            }
+        }
         SceneManager.UnloadSceneAsync(sceneNameToUnload);
         StartCoroutine(LoadAsyncScene(sceneNameToLoad));
         Resources.UnloadUnusedAssets();

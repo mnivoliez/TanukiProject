@@ -224,8 +224,23 @@ public class KodaController : MonoBehaviour {
             return;
         }
         //===========================
+		List<int> groundsToDelete = null;
+		for (int i = 0 ; i < _grounds.Count ; i++) {
+			if (_grounds[i] == null) {
+				if (groundsToDelete == null) {
+					groundsToDelete = new List<int> ();
+				}
+				groundsToDelete.Add (i);
+			}
+		}
 
-        ratio = (40 * Time.deltaTime) / (Time.fixedDeltaTime / 0.02f);
+		if (groundsToDelete != null) {
+			foreach (int groundToDelete in groundsToDelete) {
+				_grounds.Remove (_grounds[groundToDelete]);
+			}
+		}
+
+        ratio = (40 * Time.deltaTime);
 
         if (timerCapacity > 0) {
             timerCapacity -= Time.deltaTime;
@@ -307,33 +322,38 @@ public class KodaController : MonoBehaviour {
 
         if (runOnWater) {
             //Debug.Log("on water");
-            float distance = 0f;
-            if (lanterns.Length > 0) {
-                lanternNearest = lanterns[0];
-                distance = Vector3.Distance(lanternNearest.transform.position, transform.position);
-            }
-            else {
-                lanternNearest = null;
-            }
-            foreach (GameObject lantern in lanterns) {
-                float dis = Vector3.Distance(lantern.transform.position, transform.position);
-                if (dis < distance) {
-                    lanternNearest = lantern;
-                    distance = dis;
+            if ((!Game.playerData.lightBoss1 && SceneManager.GetActiveScene().name != "Boss1") || (!Game.playerData.lightBoss2 && SceneManager.GetActiveScene().name != "Boss2")) { 
+                float distance = 0f;
+                if (lanterns.Length > 0) {
+                    lanternNearest = lanterns[0];
+                    distance = Vector3.Distance(lanternNearest.transform.position, transform.position);
                 }
-            }
-            if (!levelIsLight) {
-                if (lanternNearest != null) {
-                    if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
-                        //Debug.Log("die distance");
+                else {
+                    lanternNearest = null;
+                }
+                foreach (GameObject lantern in lanterns) {
+                    float dis = Vector3.Distance(lantern.transform.position, transform.position);
+                    if (dis < distance) {
+                        lanternNearest = lantern;
+                        distance = dis;
+                    }
+                }
+                if (!levelIsLight) {
+                    if (lanternNearest != null) {
+                        if (distance > lanternNearest.GetComponent<LanternController>().GetRadiusEffect()) {
+                            //Debug.Log("die distance");
+                            playerHealth.PlayerDie();
+                            runOnWater = false;
+                        }
+                    }
+                    else {
                         playerHealth.PlayerDie();
                         runOnWater = false;
                     }
                 }
-                else {
-                    playerHealth.PlayerDie();
-                    runOnWater = false;
-                }
+            }
+            else {
+                runOnWater = true;
             }
         }
     }
@@ -387,7 +407,8 @@ public class KodaController : MonoBehaviour {
 
             if (contacts.Length > 0) {
                 bool found = false;
-                timerStepSound -= Time.deltaTime;
+                float normeXZ = Mathf.Sqrt(Mathf.Pow(moveStateParameters.moveX, 2) + Mathf.Pow(moveStateParameters.moveZ, 2));
+                timerStepSound -= Time.deltaTime * normeXZ;
                 if (timerStepSound <= 0 && speed > 0 && (gO.layer == LayerMask.NameToLayer("Ground") || gO.layer == LayerMask.NameToLayer("Rock"))) {
                     //================================================
                     SoundController.instance.SelectKODA("FootStepGround");
@@ -627,7 +648,9 @@ public class KodaController : MonoBehaviour {
         }
         //Debug.Log ("inclinationNormals.Count=" + inclinationNormals.Count + " " + Time.time);
         direction.up = Vector3.up;
-        direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+        if (Camera.main != null) {
+            direction.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector3.up);
+        }
         if (allowedToWalk) {
             /*float angleX = Mathf.Abs(gO.transform.rotation.eulerAngles.x);
             if (angleX > 180)
@@ -723,7 +746,7 @@ public class KodaController : MonoBehaviour {
                         }
                         interactBehaviorCtrl.DoGlide();
                         if (interactStateParameter.canAirStream) {
-                            body.AddForce(Vector3.up * (airStreamForce / body.mass) * ratio + (Vector3.up * Mathf.Abs(body.velocity.y)), ForceMode.Acceleration);
+                            body.AddForce((Vector3.up * (airStreamForce / body.mass) + (Vector3.up * Mathf.Abs(body.velocity.y)) * ratio), ForceMode.Acceleration);
                             if (body.velocity.y > 8.0f) {
                                 //Debug.Log ("STOP AIRSTREAM!!!");
                                 // force the velocity to 0.02f (near 0) in order to reset the Y velocity (for better jump)
@@ -1153,10 +1176,11 @@ public class KodaController : MonoBehaviour {
         timerCapacity = 0;
 
         SetPowerUpMaterials(0);
-
+        if (temporaryCapacity == Capacity.DoubleJump) { doubleJump_Logo.SetActive(false); }
         if (temporaryCapacity == Capacity.Lure) {
             interactBehaviorCtrl.DestroyLure(actualLure);
             ResetLeafLock();
+            spawnLure_Logo.SetActive(false);
         }
 
         temporaryCapacity = Capacity.Nothing;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EntityBehavior : MonoBehaviour {
 
@@ -8,22 +9,14 @@ public class EntityBehavior : MonoBehaviour {
     private bool isAlreadyLight = false;
     public static GameObject LoadingScreen;
 
-    void Start () {
-		
-	}
-	
-
-	void Update () {
-		
-	}
-
     private void OnTriggerEnter(Collider other) {
         if (!isAlreadyLight) {
             if (other.CompareTag("Player")) {
+                Lantern_Hiyoribou.transform.position = transform.position;
                 isAlreadyLight = true;
                 StartCoroutine(LightTransition());
-                other.gameObject.GetComponent<KodaController>().SetPowerJump(true);
-                Game.playerData.lightBoss1 = true;
+                if(SceneManager.GetActiveScene().name == "Boss1") { Game.playerData.lightBoss1 = true; }
+                if (SceneManager.GetActiveScene().name == "Boss2") { Game.playerData.lightBoss2 = true; }
                 Game.PreSave_Game_and_Save();
                 //================================================
                 StartCoroutine(SoundController.instance.FadeOnEnterTheme()); //Will launch an other theme automatically
@@ -45,8 +38,8 @@ public class EntityBehavior : MonoBehaviour {
     }
 
     private IEnumerator LightTransition() {
-        float lerpRay = 0;
-        while ( lerpRay < 1000f) {
+        float lerpRay = 10;
+        while ( lerpRay < 1500f) {
             lerpRay+= 0.2f;
             Lantern_Hiyoribou.SetRadiusForPurification(lerpRay);
             yield return new WaitForSeconds(0.01f);

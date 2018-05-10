@@ -9,7 +9,6 @@ public class CollectableManager : MonoBehaviour {
     private GameObject KiyomoriLightHiyoribou;
     private GameObject[] gOList;
     private int yokaiGeneralCurrentScene = 0;
-    //private GameObject[] yokais;
 
     void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -22,9 +21,11 @@ public class CollectableManager : MonoBehaviour {
             StartCoroutine(SavingLogo());
         }
 
-        Game.Load();
+        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "CreditScene") {
+            Game.Load();
+        }
         
-        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Zone Tuto" && SceneManager.GetActiveScene().name != "Sandbox GGS") {
+        if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "Zone Tuto" && SceneManager.GetActiveScene().name != "FinTuto" && SceneManager.GetActiveScene().name != "Introduction") {
             FindYokaiGeneralAndSetID();
             FindYokaiGeneralAndDisable();
             Game.Update_Game();
@@ -47,43 +48,49 @@ public class CollectableManager : MonoBehaviour {
         switch (currentScene) {
             case "Z1-P1-complete":
                 if (Game.playerData.lightBoss1) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1500);
                 }
                 break;
 
             case "Z1-P2-complete":
                 if (Game.playerData.lightBoss1) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1500);
                 }
                 break;
 
             case "Z1-P3-complete":
                 if (Game.playerData.lightBoss1) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1500);
+                }
+                break;
+
+            case "Boss1":
+                if (Game.playerData.lightBoss1) {
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1500);
                 }
                 break;
 
             case "Z2-P1-complete":
                 if (Game.playerData.lightBoss2) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1500);
                 }
                 break;
 
             case "Z2-P2-complete":
                 if (Game.playerData.lightBoss2) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1500);
                 }
                 break;
 
             case "Z2-P3-complete":
                 if (Game.playerData.lightBoss2) {
-                    KiyomoriLightHiyoribou.GetComponent<Light>().range = 1200;
-                    KiyomoriLightHiyoribou.GetComponent<LanternController>()._min_radius = 1200;
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1500);
+                }
+                break;
+
+            case "Boss2":
+                if (Game.playerData.lightBoss1) {
+                    KiyomoriLightHiyoribou.GetComponent<LanternController>().SetRadiusForPurification(1500);
                 }
                 break;
 
@@ -148,12 +155,6 @@ public class CollectableManager : MonoBehaviour {
 
             case "Z2-P3-complete":
                 if (Game.playerData.yokaiRemainingZ2P3[yokaiID] != yokaiID) {
-                    gOList[gONbr].SetActive(false);
-                }
-                break;
-
-            case "Scene_AirStream":
-                if (Game.playerData.yokaiRemainingTEST[yokaiID] != yokaiID) {
                     gOList[gONbr].SetActive(false);
                 }
                 break;

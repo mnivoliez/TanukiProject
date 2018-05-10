@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 //================================================
 //SOUNDCONTROLER
 //================================================
@@ -10,7 +11,6 @@ using UnityEngine.UI;
 public class Pause : MonoBehaviour {
 
     public static bool Paused = false;
-    //public GameObject eventSystem;
 
     private Canvas CanvasPause;
 
@@ -19,7 +19,19 @@ public class Pause : MonoBehaviour {
     private GameObject ExitPanel;
     private GameObject LoadingCanva;
 
-    public Text score_to_display;
+    public Text score_to_display_Z1P1;
+    public Text score_to_display_Z1P2;
+    public Text score_to_display_Z1P3;
+    public Text score_to_display_Z2P1;
+    public Text score_to_display_Z2P2;
+    public Text score_to_display_Z2P3;
+
+    private int score_valueZ1P1 = 0;
+    private int score_valueZ1P2 = 0;
+    private int score_valueZ1P3 = 0;
+    private int score_valueZ2P1 = 0;
+    private int score_valueZ2P2 = 0;
+    private int score_valueZ2P3 = 0;
 
     [SerializeField] private Text has_doublejump;
     [SerializeField] private GameObject logoDoubleJump;
@@ -48,12 +60,13 @@ public class Pause : MonoBehaviour {
     void Update() {
 
         if (Input.GetButtonDown("Cancel") && !VictorySwitch.Victory) {
-            if (!Paused) {
-                PauseGame(true);
-                //showPaused();
-            }
-            else if (Paused) {
-                UnpauseGame();
+            if (SceneManager.GetActiveScene().name != "MainMenu" && SceneManager.GetActiveScene().name != "FinTuto" && SceneManager.GetActiveScene().name != "Introduction") { 
+                if (!Paused) {
+                    PauseGame(true);
+                }
+                else if (Paused) {
+                    UnpauseGame();
+                }
             }
         }
     }
@@ -102,21 +115,47 @@ public class Pause : MonoBehaviour {
 
     public void Update_Pause_Menu_data() {
         Game.Update_Game();
-        int score_value = Game.playerData.caught_yokai;
-        score_to_display.text = " : " + score_value;
+        if (SceneManager.GetActiveScene().name != "Introduction" && SceneManager.GetActiveScene().name != "FinTuto") {
+            CountCollectableYokai();
+            score_to_display_Z1P1.text = "Z1P1 : " + score_valueZ1P1;
+            score_to_display_Z1P2.text = "Z1P2 : " + score_valueZ1P2;
+            score_to_display_Z1P3.text = "Z1P3 : " + score_valueZ1P3;
+            score_to_display_Z2P1.text = "Z2P1 : " + score_valueZ2P1;
+            score_to_display_Z2P2.text = "Z2P2 : " + score_valueZ2P2;
+            score_to_display_Z2P3.text = "Z2P3 : " + score_valueZ2P3;
+        }
 
         bool has_power = Game.playerData.power_jump;
-        if (has_power) { logoDoubleJump.SetActive(true); }
+        logoDoubleJump.SetActive(has_power);
         has_doublejump.text = "Double Jump : ";
 
         has_power = Game.playerData.power_lure;
-        if (has_power) { logoLure.SetActive(true); }
+        logoLure.SetActive(has_power);
         has_lure.text = "Lure : ";
 
         has_power = Game.playerData.power_ball;
-        has_ball.text = "Ball Form : " + has_power;
+        has_ball.text = "Ball Form : "; //+ has_power;
 
         has_power = Game.playerData.power_shrink;
-        has_shrink.text = "Shrink : " + has_power;
+        has_shrink.text = "Shrink : ";// + has_power;
+    }
+
+    public void CountCollectableYokai() {
+
+        score_valueZ1P1 = 0;
+        score_valueZ1P2 = 0;
+        score_valueZ1P3 = 0;
+        score_valueZ2P1 = 0;
+        score_valueZ2P2 = 0;
+        score_valueZ2P3 = 0;
+
+        for (int i = 0; i <30; i++) {
+            if (Game.playerData.yokaiRemainingZ1P1[i] == -1) { score_valueZ1P1++; }
+            if (Game.playerData.yokaiRemainingZ1P2[i] == -1) { score_valueZ1P2++; }
+            if (Game.playerData.yokaiRemainingZ1P3[i] == -1) { score_valueZ1P3++; }
+            if (Game.playerData.yokaiRemainingZ2P1[i] == -1) { score_valueZ2P1++; }
+            if (Game.playerData.yokaiRemainingZ2P2[i] == -1) { score_valueZ2P2++; }
+            if (Game.playerData.yokaiRemainingZ2P3[i] == -1) { score_valueZ2P3++; }
+        }
     }
 }
